@@ -1,9 +1,9 @@
-export type ProviderType = 
-  | "telekom"
-  | "vodafone"
-  | "o2"
-  | "sparhandy"
-  | "deinhandy"
+﻿export type ProviderType = 
+  | "anifit"
+  | "wolfsblut"
+  | "Zooplus"
+  | "sparhund"
+  | "deinhund"
   | "logitel"
   | "mediamarkt"
   | "saturn"

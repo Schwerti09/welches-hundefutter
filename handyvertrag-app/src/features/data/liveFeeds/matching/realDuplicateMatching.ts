@@ -1,4 +1,4 @@
-import { NormalizedOffer, DuplicateMatch } from "../types";
+﻿import { NormalizedOffer, DuplicateMatch } from "../types";
 
 export interface DuplicateGroup {
   groupId: string;
@@ -214,8 +214,8 @@ export class RealDuplicateMatching {
   }
 
   private calculateDeviceConfidence(offer1: NormalizedOffer, offer2: NormalizedOffer): number {
-    const device1 = offer1.smartphoneName.toLowerCase();
-    const device2 = offer2.smartphoneName.toLowerCase();
+    const device1 = offer1.hundefutterName.toLowerCase();
+    const device2 = offer2.hundefutterName.toLowerCase();
 
     if (device1 === device2) return 1.0;
 

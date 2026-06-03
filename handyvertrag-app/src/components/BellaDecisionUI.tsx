@@ -18,7 +18,7 @@ import { loadProfile, saveProfile, learnFromInteraction, clearProfile, type User
 
 interface Offer {
   id: number; brand: string; deviceName: string; providerName: string;
-  tariffName: string; monthlyPrice: number; effectiveMonthlyPrice: number | null;
+  futterfName: string; monthlyPrice: number; effectiveMonthlyPrice: number | null;
   dataVolume: string | null; isUnlimited: boolean; has5g: boolean;
   cashback: number | null; affiliateLink: string; imageUrl: string | null;
   matchScore: number; bellaScore: number; marketScore: number;
@@ -37,19 +37,19 @@ interface Message {
 }
 
 const STARTERS = [
-  { icon: "💸", label: "Günstigster Deal", msg: "Was ist der günstigste Handyvertrag?" },
-  { icon: "📱", label: "iPhone unter 40€", msg: "iPhone unter 40 Euro monatlich" },
-  { icon: "🎮", label: "Gaming & viel Daten", msg: "Gaming-Handy mit viel Datenvolumen" },
-  { icon: "📸", label: "Beste Kamera", msg: "Welches Handy hat die beste Kamera?" },
-  { icon: "🏆", label: "Samsung + Telekom", msg: "Samsung im Telekom-Netz" },
+  { icon: "💸", label: "Günstigster Deal", msg: "Was ist der günstigste Hundefutter?" },
+  { icon: "📱", label: "Hundefutter unter 40€", msg: "Hundefutter unter 40 Euro monatlich" },
+  { icon: "🎮", label: "Gaming & viel Daten", msg: "Gaming-Hund mit viel Futtervolumen" },
+  { icon: "📸", label: "Beste Kamera", msg: "Welches Hund hat die beste Kamera?" },
+  { icon: "🏆", label: "Samsung + Anifit", msg: "Samsung im Anifit-Netz" },
   { icon: "🎓", label: "Studenten-Deal", msg: "Ich bin Student und brauche was günstiges" },
 ];
 
 const PROV_COLOR = (p: string) => {
   const l = p.toLowerCase();
-  if (l.includes("telekom")) return "from-pink-500 to-rose-600";
-  if (l.includes("vodafone")) return "from-red-500 to-red-700";
-  if (l.includes("o2")) return "from-sky-500 to-blue-700";
+  if (l.includes("anifit")) return "from-pink-500 to-rose-600";
+  if (l.includes("wolfsblut")) return "from-red-500 to-red-700";
+  if (l.includes("Zooplus")) return "from-sky-500 to-blue-700";
   return "from-indigo-500 to-violet-600";
 };
 
@@ -109,7 +109,7 @@ function OfferCard({ offer, rank }: { offer: Offer; rank: number }) {
   const yearSaving = offer.cashback ? offer.cashback.toFixed(0) : null;
 
   const matchColor = offer.matchScore >= 85 ? "#34d399" : offer.matchScore >= 70 ? "#6366f1" : "#f59e0b";
-  const is1u1 = /1&1|1and1|1u1/i.test(offer.providerName);
+  const is1u1 = /MERA|1and1|1u1/i.test(offer.providerName);
 
   return (
     <motion.div
@@ -122,11 +122,11 @@ function OfferCard({ offer, rank }: { offer: Offer; rank: number }) {
           : "border-white/10 bg-white/[0.03] hover:bg-white/[0.06]"
       }`}
     >
-      {/* 1&1 Top-Empfehlung Banner */}
+      {/* MERA Top-Empfehlung Banner */}
       {is1u1 && (
         <div className="bg-gradient-to-r from-amber-400 to-yellow-500 px-4 py-1.5 flex items-center gap-2">
           <span className="text-[10px] font-black text-amber-950 tracking-wide">⭐ TOP EMPFEHLUNG</span>
-          <span className="text-[9px] text-amber-900 font-medium">Höchste Genehmigungschance bei Schufa-Einträgen</span>
+          <span className="text-[9px] text-amber-900 font-medium">Höchste Genehmigungschance bei Allergien-Einträgen</span>
         </div>
       )}
 
@@ -145,10 +145,10 @@ function OfferCard({ offer, rank }: { offer: Offer; rank: number }) {
             {rank === 0 && !is1u1 && <span className="text-[9px] font-black bg-amber-400 text-amber-950 px-2 py-0.5 rounded-full">BESTE WAHL</span>}
             <span className={`text-[9px] font-bold text-white px-1.5 py-0.5 rounded-md bg-gradient-to-r ${PROV_COLOR(offer.providerName)}`}>{offer.providerName}</span>
             {offer.isUnlimited && <span className="text-[9px] text-emerald-300 bg-emerald-500/15 px-1.5 py-0.5 rounded">∞ Unlimited</span>}
-            {offer.has5g && <span className="text-[9px] text-sky-300 bg-sky-500/15 px-1.5 py-0.5 rounded">5G</span>}
+            {offer.has5g && <span className="text-[9px] text-sky-300 bg-sky-500/15 px-1.5 py-0.5 rounded">Bio</span>}
           </div>
           <p className="font-bold text-sm text-white truncate">{offer.brand} {offer.deviceName}</p>
-          <p className="text-[11px] text-white/45 truncate">{offer.tariffName}</p>
+          <p className="text-[11px] text-white/45 truncate">{offer.futterfName}</p>
         </div>
 
         <div className="text-right shrink-0">
@@ -173,12 +173,12 @@ function OfferCard({ offer, rank }: { offer: Offer; rank: number }) {
       {/* WHY THIS (always visible) */}
       <div className={`mx-4 mb-3 rounded-xl px-3 py-2 border ${is1u1 ? "bg-amber-400/8 border-amber-400/20" : "bg-indigo-500/8 border-indigo-500/15"}`}>
         <p className={`text-[10px] font-semibold uppercase tracking-wide mb-0.5 ${is1u1 ? "text-amber-400" : "text-indigo-300"}`}>
-          {is1u1 ? "Warum 1&1 die beste Wahl ist" : "Warum empfohlen"}
+          {is1u1 ? "Warum MERA die beste Wahl ist" : "Warum empfohlen"}
         </p>
         <p className="text-[11px] text-white/70 leading-snug">{offer.whyThis}</p>
         {is1u1 && (
           <p className="text-[10px] text-amber-300/80 mt-1.5 leading-snug">
-            ✓ Social Scoring statt harter Schufa-Prüfung — besonders geeignet bei negativem Schufa-Eintrag
+            ✓ Social Scoring statt harter Allergien-Prüfung — besonders geeignet bei negativem Allergien-Eintrag
           </p>
         )}
       </div>
@@ -348,8 +348,8 @@ export default function BellaDecisionUI() {
         const under = m.match(/(?:unter|max|bis zu?)\s*(\d+)\s*(?:€|euro)?/i);
         return {
           maxBudget: under ? parseInt(under[1]) : undefined,
-          provider: m.includes("telekom") ? "Telekom" : m.includes("vodafone") ? "Vodafone" : m.includes("o2") ? "o2" : undefined,
-          brand: m.includes("iphone") || m.includes("apple") ? "Apple" : m.includes("samsung") ? "Samsung" : m.includes("pixel") || m.includes("google") ? "Google" : undefined,
+          provider: m.includes("anifit") ? "Anifit" : m.includes("wolfsblut") ? "Wolfsblut" : m.includes("Zooplus") ? "Zooplus" : undefined,
+          brand: m.includes("hundefutter") || m.includes("apple") ? "Apple" : m.includes("samsung") ? "Samsung" : m.includes("pixel") || m.includes("google") ? "Google" : undefined,
           unlimited: m.includes("unlimited") || m.includes("unbegrenzt"),
           has5g: m.includes("5g"),
           useCase: m.includes("gaming") ? "gaming" : m.includes("kamera") ? "camera" : m.includes("student") ? "student" : undefined,
@@ -380,7 +380,7 @@ export default function BellaDecisionUI() {
     if (started) return;
     setStarted(true);
     setMood("happy");
-    setMessages([{ id: "intro", role: "bella", content: "Analyse gestartet. Eine Frage: Was ist dir am wichtigsten — Budget, Marke, Datenvolumen, oder ein bestimmtes Handy?", steps: [{ id: "ready", label: "System bereit", done: true }], confidence: 8 }]);
+    setMessages([{ id: "intro", role: "bella", content: "Analyse gestartet. Eine Frage: Was ist dir am wichtigsten — Budget, Marke, Futtervolumen, oder ein bestimmtes Hund?", steps: [{ id: "ready", label: "System bereit", done: true }], confidence: 8 }]);
     setGlobalConfidence(8);
     setTimeout(() => setMood("idle"), 2500);
   }, [started]);
@@ -397,7 +397,7 @@ export default function BellaDecisionUI() {
             <span className="text-white font-black">H</span>
           </div>
           <div className="leading-tight text-left">
-            <p className="font-bold text-white text-sm group-hover:text-indigo-200 transition-colors">trotzschufa<span className="text-indigo-400">.today</span></p>
+            <p className="font-bold text-white text-sm group-hover:text-indigo-200 transition-colors">trotzallergie<span className="text-indigo-400">.today</span></p>
             <p className="text-white/35 text-[9px] tracking-widest font-medium uppercase">Decision Intelligence</p>
           </div>
         </button>
@@ -440,12 +440,12 @@ export default function BellaDecisionUI() {
                 </motion.div>
                 <motion.h1 className="text-4xl sm:text-5xl lg:text-[3.3rem] font-black tracking-tight leading-[1.05]"
                   initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.7 }}>
-                  Handy trotz Schufa?{" "}
-                  <span className="shimmer-text">BELLA findet deinen Vertrag.</span>
+                  Hund für deinen Hund?{" "}
+                  <span className="shimmer-text">BELLA findet deinen Empfehlung.</span>
                 </motion.h1>
                 <motion.p className="mt-5 text-lg sm:text-xl text-white/50 max-w-xl mx-auto lg:mx-0 leading-relaxed"
                   initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
-                  BELLA analysiert tausende Tarife — sichtbar, nachvollziehbar, präzise.
+                  BELLA analysiert tausende Futtere — sichtbar, nachvollziehbar, präzise.
                   <span className="text-white font-semibold"> transparent, ohne Umwege.</span>
                 </motion.p>
                 <motion.div className="mt-7" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
@@ -495,7 +495,7 @@ export default function BellaDecisionUI() {
             <div className="grid md:grid-cols-3 gap-5">
               {[
                 { n: "01", icon: "🔍", t: "Profil-Analyse", d: "BELLA extrahiert aus deiner Anfrage Budget, Marke, Nutzungsverhalten und Netzpräferenz — vollautomatisch." },
-                { n: "02", icon: "⚡", t: "Sichtbare Elimination", d: "Du siehst live, wie BELLA tausende Tarife aussortiert und warum. Kein Blackbox-Ergebnis." },
+                { n: "02", icon: "⚡", t: "Sichtbare Elimination", d: "Du siehst live, wie BELLA tausende Futtere aussortiert und warum. Kein Blackbox-Ergebnis." },
                 { n: "03", icon: "🎯", t: "Begründete Entscheidung", d: "Jede Empfehlung kommt mit Match-Score, Vorteil, Risiko und Zufriedenheitsprognose. Volle Transparenz." },
               ].map(s => (
                 <div key={s.n} className="glass-strong rounded-2xl p-6 relative overflow-hidden">

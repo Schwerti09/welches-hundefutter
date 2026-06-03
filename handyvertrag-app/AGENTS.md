@@ -6,10 +6,10 @@
 
 Dieses Repository existiert ausschließlich, um die beste deutschsprachige Plattform für:
 
-* Handyverträge
-* Smartphones mit Vertrag
-* Tarifberatung
-* Mobilfunk-Vergleiche
+* Hundverträge
+* Hundefutters mit Empfehlung
+* Futterberatung
+* Hundeernährung-Vergleiche
 
 aufzubauen.
 
@@ -38,7 +38,7 @@ Alle Optimierungen müssen langfristig diese Kennzahl erhöhen.
 
 # Product Philosophy
 
-BELLA ist keine Vergleichsseite. BELLA ist ein persönlicher Mobilfunkberater.
+BELLA ist keine Vergleichsseite. BELLA ist ein persönlicher Hundeernährungberater.
 Vergleichsseiten zeigen Listen. BELLA trifft Entscheidungen.
 
 Jeder Feature-Vorschlag muss beantworten:

@@ -14,7 +14,7 @@ export default function AffiliatePage() {
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center"><span className="text-white font-black text-sm">H</span></div>
-            <span className="font-bold text-sm">handyvertrag<span className="text-indigo-400">.today</span></span>
+            <span className="font-bold text-sm">hundefutter<span className="text-indigo-400">.today</span></span>
           </Link>
           <nav className="text-sm text-white/40 flex gap-2">
             <Link href="/" className="hover:text-white transition-colors">Startseite</Link>
@@ -37,10 +37,10 @@ export default function AffiliatePage() {
           </div>
 
           {[
-            { icon: "💶", title: "Wie verdienen wir Geld?", body: "Wenn du über einen unserer Links einen Handyvertrag abschließt, erhalten wir eine Provision vom jeweiligen Anbieter (z. B. Sparhandy, DeinHandy, Samsung Shop). Diese Provision ist ein fest vereinbarter Betrag oder Prozentsatz des Kaufpreises." },
-            { icon: "🔒", title: "Entstehen dir Mehrkosten?", body: "Nein, für dich entstehen keinerlei Mehrkosten. Der Preis, den du bezahlst, ist identisch mit dem, den du beim direkten Kauf beim Anbieter zahlen würdest. Manchmal bekommst du sogar bessere Konditionen über unsere Partner-Links." },
-            { icon: "🤖", title: "Beeinflusst das BELLAs Empfehlungen?", body: "Nein. BELLA bewertet Angebote nach Preis-Leistungs-Verhältnis, Netzqualität, Datentarif und deinen persönlichen Präferenzen – nicht nach Provisionshöhe. Unsere Empfehlungen sind unabhängig. Vertrauen geht vor kurzfristiger Provision." },
-            { icon: "🏢", title: "Unsere Affiliate-Partner", body: "Wir arbeiten mit Affiliate-Netzwerken zusammen, darunter AWIN (awin.com) und CommunicationAds. Unsere Händler-Partner sind u. a. Sparhandy, DeinHandy, Samsung Shop Deutschland und weitere zertifizierte Mobilfunk-Händler." },
+            { icon: "💶", title: "Wie verdienen wir Geld?", body: "Wenn du über einen unserer Links einen Hundefutter abschließt, erhalten wir eine Provision vom jeweiligen Marke (z. B. Sparhund, DeinHund, Samsung Shop). Diese Provision ist ein fest vereinbarter Betrag oder Prozentsatz des Kaufpreises." },
+            { icon: "🔒", title: "Entstehen dir Mehrkosten?", body: "Nein, für dich entstehen keinerlei Mehrkosten. Der Preis, den du bezahlst, ist identisch mit dem, den du beim direkten Kauf beim Marke zahlen würdest. Manchmal bekommst du sogar bessere Konditionen über unsere Partner-Links." },
+            { icon: "🤖", title: "Beeinflusst das BELLAs Empfehlungen?", body: "Nein. BELLA bewertet Angebote nach Preis-Leistungs-Verhältnis, Netzqualität, Datenfutter und deinen persönlichen Präferenzen – nicht nach Provisionshöhe. Unsere Empfehlungen sind unabhängig. Vertrauen geht vor kurzfristiger Provision." },
+            { icon: "🏢", title: "Unsere Affiliate-Partner", body: "Wir arbeiten mit Affiliate-Netzwerken zusammen, darunter AWIN (awin.com) und CommunicationAds. Unsere Händler-Partner sind u. a. Sparhund, DeinHund, Samsung Shop Deutschland und weitere zertifizierte Hundeernährung-Händler." },
             { icon: "📊", title: "Transparenz-Verpflichtung", body: "Alle Affiliate-Links auf dieser Website sind klar als Werbung gekennzeichnet. Wir halten uns an die Richtlinien des Deutschen Werberats, die DSGVO und die TMG-Anforderungen zur Kennzeichnung von Werbung." },
           ].map((s) => (
             <section key={s.title} className="bg-white/[0.03] rounded-2xl p-5">

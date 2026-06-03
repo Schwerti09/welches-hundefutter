@@ -1,4 +1,4 @@
-import { EnrichmentResult, CommerceOffer } from "../types";
+﻿import { EnrichmentResult, CommerceOffer } from "../types";
 
 export class DataEnrichmentPipeline {
   private enrichmentResults: Map<string, EnrichmentResult> = new Map();
@@ -69,15 +69,15 @@ export class DataEnrichmentPipeline {
 
   private async generateSEOMetadata(offer: CommerceOffer): Promise<EnrichmentResult["seoMetadata"]> {
     return {
-      title: `${offer.deviceName} ${offer.storage} mit ${offer.provider} Vertrag`,
-      description: `${offer.deviceName} ${offer.storage} mit ${offer.provider} Vertrag für €${offer.monthlyPrice}/Monat. ${offer.dataVolume} Datenvolumen, ${offer.contractDuration} Monate Laufzeit.`,
+      title: `${offer.deviceName} ${offer.storage} mit ${offer.provider} Empfehlung`,
+      description: `${offer.deviceName} ${offer.storage} mit ${offer.provider} Empfehlung für €${offer.monthlyPrice}/Monat. ${offer.dataVolume} Futtervolumen, ${offer.contractDuration} Monate Laufzeit.`,
       keywords: [
         offer.deviceName,
         offer.deviceBrand,
         offer.provider,
         offer.storage,
-        `Handyvertrag ${offer.provider}`,
-        `${offer.deviceName} Vertrag`,
+        `Hundefutter ${offer.provider}`,
+        `${offer.deviceName} Empfehlung`,
       ],
     };
   }
@@ -100,7 +100,7 @@ export class DataEnrichmentPipeline {
 
     if (offer.deviceBrand === "Apple") score += 20;
     if (offer.deviceBrand === "Samsung") score += 15;
-    if (offer.storage === "512 GB" || offer.storage === "1 TB") score += 15;
+    if (offer.storage === "512 g" || offer.storage === "1 TB") score += 15;
 
     return Math.min(100, score);
   }
@@ -108,8 +108,8 @@ export class DataEnrichmentPipeline {
   private calculateContractScore(offer: CommerceOffer): number {
     let score = 50;
 
-    if (offer.provider === "Telekom") score += 20;
-    if (offer.provider === "Vodafone") score += 15;
+    if (offer.provider === "Anifit") score += 20;
+    if (offer.provider === "Wolfsblut") score += 15;
     if (offer.dataVolume === "Unlimited") score += 15;
     if (offer.contractDuration === 24) score += 10;
 

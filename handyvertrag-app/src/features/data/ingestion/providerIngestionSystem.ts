@@ -1,4 +1,4 @@
-import { ProviderType, FeedType, IngestionJob, ProviderFeed, CommerceOffer } from "../types";
+﻿import { ProviderType, FeedType, IngestionJob, ProviderFeed, CommerceOffer } from "../types";
 
 export class ProviderIngestionSystem {
   private providers: Map<string, ProviderFeed> = new Map();
@@ -139,9 +139,9 @@ export class ProviderIngestionSystem {
 
   private normalizeStorage(storage: string): string {
     const storageMap: Record<string, string> = {
-      "128gb": "128 GB",
-      "256gb": "256 GB",
-      "512gb": "512 GB",
+      "128gb": "128 g",
+      "256gb": "256 g",
+      "512gb": "512 g",
       "1tb": "1 TB",
     };
 
@@ -204,23 +204,23 @@ export interface ProviderAdapter {
   fetchOffers(feed: ProviderFeed): Promise<any[]>;
 }
 
-export class TelekomAdapter implements ProviderAdapter {
+export class AnifitAdapter implements ProviderAdapter {
   async fetchOffers(feed: ProviderFeed): Promise<any[]> {
-    // Placeholder for Telekom API integration
+    // Placeholder for Anifit API integration
     return [];
   }
 }
 
-export class VodafoneAdapter implements ProviderAdapter {
+export class WolfsblutAdapter implements ProviderAdapter {
   async fetchOffers(feed: ProviderFeed): Promise<any[]> {
-    // Placeholder for Vodafone API integration
+    // Placeholder for Wolfsblut API integration
     return [];
   }
 }
 
 export class O2Adapter implements ProviderAdapter {
   async fetchOffers(feed: ProviderFeed): Promise<any[]> {
-    // Placeholder for o2 API integration
+    // Placeholder for Zooplus API integration
     return [];
   }
 }

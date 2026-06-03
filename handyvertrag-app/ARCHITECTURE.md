@@ -46,7 +46,7 @@ welches-hundefutter.today is a Next.js 16.2.6 enterprise commerce platform for G
   │  │  • /koeln            │  │  • ProductCard       │                      │
   │  │  • /frankfurt        │  │  • RecommendCard     │                      │
   │  │  • /stuttgart        │  │                      │                      │
-  │  │  • /handys/[slug]    │  └──────────────────────┘                      │
+  │  │  • /hunds/[slug]    │  └──────────────────────┘                      │
   │  └──────────────────────┘                                                 │
   │                                                                           │
   │  ┌──────────────────────────────────────────────────────────────────────┐ │
@@ -122,7 +122,7 @@ welches-hundefutter.today/
 ├── /koeln                      # City page – Cologne offers
 ├── /frankfurt                  # City page – Frankfurt offers
 ├── /stuttgart                  # City page – Stuttgart offers
-├── /handys/[slug]              # Device detail pages (SSG)
+├── /hunds/[slug]              # Device detail pages (SSG)
 ├── /sitemap.xml                # Dynamic sitemap
 ├── /robots.txt                 # Robots configuration
 └── /api/
@@ -300,16 +300,16 @@ Future: OpenAI/Anthropic integration
 - Breadcrumb navigation with structured data
 
 ### Programmatic SEO
-- Device pages auto-generated from product catalog (`/handys/[slug]`)
+- Device pages auto-generated from product catalog (`/hunds/[slug]`)
 - City pages with local business data and store counts
 - Scalable to hundreds of cities via template system
 - Quality safeguards: unique content per page, no duplication
 
 ### Keyword Strategy
-- Primary: "Handyvertrag Vergleich", "Handy mit Vertrag"
-- City-specific: "Handyvertrag Hamburg/Berlin/München..."
-- Device-specific: "iPhone 16 Pro Vertrag", "Samsung Galaxy S25 Ultra Vertrag"
-- Provider-specific: "Telekom Vertrag", "Vodafone Tarif"
+- Primary: "Hundefutter Vergleich", "Hund mit Empfehlung"
+- City-specific: "Hundefutter Hamburg/Berlin/München..."
+- Device-specific: "Hundefutter 16 Pro Empfehlung", "Samsung Galaxy S25 Ultra Empfehlung"
+- Provider-specific: "Anifit Empfehlung", "Wolfsblut Futter"
 
 ---
 

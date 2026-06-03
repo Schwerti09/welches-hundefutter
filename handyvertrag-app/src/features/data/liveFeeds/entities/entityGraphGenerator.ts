@@ -1,4 +1,4 @@
-import { NormalizedOffer } from "../types";
+﻿import { NormalizedOffer } from "../types";
 
 export interface Entity {
   entityId: string;
@@ -107,11 +107,11 @@ export class EntityGraphGenerator {
   generateSEOClusters(offers: NormalizedOffer[]): SEOCluster[] {
     const clusters: SEOCluster[] = [];
 
-    const deviceNames = Array.from(new Set(offers.map(o => o.smartphoneName)));
+    const deviceNames = Array.from(new Set(offers.map(o => o.hundefutterName)));
     const providerNames = Array.from(new Set(offers.map(o => o.providerName)));
 
     for (const deviceName of deviceNames) {
-      const cluster = this.createSEOCluster(deviceName, offers.filter(o => o.smartphoneName === deviceName));
+      const cluster = this.createSEOCluster(deviceName, offers.filter(o => o.hundefutterName === deviceName));
       clusters.push(cluster);
       this.seoClusters.set(cluster.clusterId, cluster);
     }
@@ -127,9 +127,9 @@ export class EntityGraphGenerator {
 
   private createDeviceEntity(offer: NormalizedOffer): Entity {
     return {
-      entityId: `device-${offer.smartphoneName.toLowerCase().replace(/\s+/g, "-")}`,
+      entityId: `device-${offer.hundefutterName.toLowerCase().replace(/\s+/g, "-")}`,
       entityType: "device",
-      entityName: offer.smartphoneName,
+      entityName: offer.hundefutterName,
       metadata: {
         storageSize: offer.storageSize,
         color: offer.color,
@@ -202,7 +202,7 @@ export class EntityGraphGenerator {
   }
 
   private createSEOCluster(clusterName: string, offers: NormalizedOffer[]): SEOCluster {
-    const entities = Array.from(new Set(offers.map(o => o.smartphoneName.toLowerCase())));
+    const entities = Array.from(new Set(offers.map(o => o.hundefutterName.toLowerCase())));
     const internalLinks = entities.map(e => `/offers/${e.replace(/\s+/g, "-")}`);
     const comparisonCandidates = entities.slice(0, 5);
 
@@ -217,15 +217,15 @@ export class EntityGraphGenerator {
   }
 
   private isGamingOffer(offer: NormalizedOffer): boolean {
-    return offer.smartphoneName.toLowerCase().includes("galaxy s") || 
-           offer.smartphoneName.toLowerCase().includes("iphone pro") ||
-           offer.smartphoneName.toLowerCase().includes("pixel");
+    return offer.hundefutterName.toLowerCase().includes("galaxy s") || 
+           offer.hundefutterName.toLowerCase().includes("hundefutter pro") ||
+           offer.hundefutterName.toLowerCase().includes("pixel");
   }
 
   private isCameraOffer(offer: NormalizedOffer): boolean {
-    return offer.smartphoneName.toLowerCase().includes("iphone pro") ||
-           offer.smartphoneName.toLowerCase().includes("galaxy s") ||
-           offer.smartphoneName.toLowerCase().includes("pixel");
+    return offer.hundefutterName.toLowerCase().includes("hundefutter pro") ||
+           offer.hundefutterName.toLowerCase().includes("galaxy s") ||
+           offer.hundefutterName.toLowerCase().includes("pixel");
   }
 
   private isValueOffer(offer: NormalizedOffer): boolean {

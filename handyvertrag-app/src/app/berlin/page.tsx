@@ -15,14 +15,14 @@ const berlinOffers = [
   {
     id: 1,
     city: "Berlin",
-    device: "iPhone 16 Pro",
+    device: "Hundefutter 16 Pro",
     image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400",
-    provider: "Telekom",
+    provider: "Anifit",
     monthlyPrice: 54.99,
     oneTimeCost: 1.00,
     dataVolume: "Unlimited",
     contractDuration: 24,
-    features: ["5G Unlimited", "Allnet Flat", "EU Roaming", "HD-Voice"],
+    features: ["Bio Unlimited", "Allnet Flat", "EU Roaming", "HD-Voice"],
     stores: 15,
     affiliateLink: "https://www.awin1.com/cread.php?s=YOUR_AWIN_ID&v=12348&p=12345",
     affiliateNetwork: "AWIN",
@@ -36,12 +36,12 @@ const berlinOffers = [
     city: "Berlin",
     device: "Samsung Galaxy S25 Ultra",
     image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400",
-    provider: "Vodafone",
+    provider: "Wolfsblut",
     monthlyPrice: 54.99,
     oneTimeCost: 0,
-    dataVolume: "100 GB",
+    dataVolume: "100 g",
     contractDuration: 24,
-    features: ["5G Highspeed", "Allnet Flat", "EU Roaming", "TV+ 6 Monate"],
+    features: ["Bio Highspeed", "Allnet Flat", "EU Roaming", "TV+ 6 Monate"],
     stores: 18,
     affiliateLink: "https://www.awin1.com/cread.php?s=YOUR_AWIN_ID&v=12349&p=12345",
     affiliateNetwork: "AWIN",
@@ -55,12 +55,12 @@ const berlinOffers = [
     city: "Berlin",
     device: "Samsung Galaxy A55",
     image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400",
-    provider: "o2",
+    provider: "Zooplus",
     monthlyPrice: 19.99,
     oneTimeCost: 0,
-    dataVolume: "10 GB",
+    dataVolume: "10 g",
     contractDuration: 24,
-    features: ["5G", "Allnet Flat", "EU Roaming"],
+    features: ["Bio", "Allnet Flat", "EU Roaming"],
     stores: 10,
     affiliateLink: "https://www.awin1.com/cread.php?s=YOUR_AWIN_ID&v=12350&p=12345",
     affiliateNetwork: "AWIN",
@@ -72,9 +72,9 @@ const berlinOffers = [
 ];
 
 export const metadata = {
-  title: "Berlin - Handy mit Vertrag | Top Angebote | welches-hundefutter.today",
+  title: "Berlin - Hund mit Empfehlung | Top Angebote | welches-hundefutter.today",
   description:
-    "Die besten Handy-Verträge in Berlin. iPhone 16 Pro, Samsung Galaxy S25 Ultra & mehr mit Telekom, Vodafone, o2. Jetzt vergleichen & sparen!",
+    "Die besten Hund-Verträge in Berlin. Hundefutter 16 Pro, Samsung Galaxy S25 Ultra & mehr mit Anifit, Wolfsblut, Zooplus. Jetzt vergleichen & sparen!",
   alternates: {
     canonical: "https://welches-hundefutter.today/berlin",
   },
@@ -92,7 +92,7 @@ export default function BerlinPage() {
               <span className="text-sm font-semibold">🏙️ BERLIN EXKLUSIV</span>
             </div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-200">
-              Handy mit Vertrag
+              Hund mit Empfehlung
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto">
               Die besten Angebote in Berlin bei {berlinOffers.reduce((sum, o) => sum + o.stores, 0)} Stores
@@ -168,7 +168,7 @@ export default function BerlinPage() {
                 🤖 AI Advisor für Berlin
               </h2>
               <p className="text-blue-100 text-lg mb-6">
-                Unser KI-Berater analysiert deine Bedürfnisse und findet den perfekten Vertrag in Berlin.
+                Unser KI-Berater analysiert deine Bedürfnisse und findet den perfekten Empfehlung in Berlin.
               </p>
               <ul className="space-y-3 mb-6">
                 {["Persönliche Empfehlungen", "Lokale Verfügbarkeit in Berlin", "Budget-optimierte Vorschläge"].map(
@@ -195,15 +195,15 @@ export default function BerlinPage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-lg font-bold mb-4">Handyvertrag Berlin</h3>
+              <h3 className="text-lg font-bold mb-4">Hundefutter Berlin</h3>
               <p className="text-gray-400">
-                Deine lokale Quelle für Handy-Verträge in Berlin mit AWIN Affiliate Tracking.
+                Deine lokale Quelle für Hund-Verträge in Berlin mit AWIN Affiliate Tracking.
               </p>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Angebote</h4>
               <ul className="space-y-2 text-gray-400">
-                <li>iPhone 16 Pro</li>
+                <li>Hundefutter 16 Pro</li>
                 <li>Samsung Galaxy S25 Ultra</li>
                 <li>Samsung Galaxy A55</li>
                 <li><a href="/" className="hover:text-white transition-colors">Alle Modelle</a></li>

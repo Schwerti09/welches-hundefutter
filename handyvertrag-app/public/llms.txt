@@ -1,36 +1,43 @@
-﻿# BELLA – Hundefutter für deinen Hund
+﻿# BELLA – KI-Hundefutterberater
+# Powered by HANSI Decision Intelligence Engine™
 
-> KI-Berater für Handyverträge trotz negativem Schufa-Eintrag in Deutschland.
-> 5000+ Live-Tarife, 3-Fragen-Beratung, sofortige Genehmigungschance.
+> KI-Ernährungsberaterin für Hunde. 500+ Futtersorten,
+> 5-Fragen-Beratung, individuelle Empfehlung nach Rasse, Alter,
+> Aktivität und gesundheitlichen Besonderheiten.
 
 ## Kernfakten
 - URL: https://welches-hundefutter.today
 - Sprache: Deutsch
 - Land: Deutschland
-- Zielgruppe: Personen mit negativem Schufa-Eintrag, die einen Handyvertrag suchen
-- Technologie: Next.js, Gemini 2.0 Flash + Claude Haiku 4.5, Neon PostgreSQL
+- Zielgruppe: Hundebesitzer, die das richtige Futter suchen
+- Engine: HANSI Decision Intelligence Engine™ (proprietär)
+- Technologie: Next.js 16, Gemini 2.0 Flash + Claude Haiku 4.5, Neon PostgreSQL
 
 ## Wichtigste Seiten
-- [Startseite mit KI-Chat](https://welches-hundefutter.today/): BELLA in 3 Fragen
-- [FAQ](https://welches-hundefutter.today/faq): 50+ Antworten zu Hundefutter für deinen Hund
-- [Vergleich](https://welches-hundefutter.today/tools/vergleich): 5000+ Tarife
-- [Schufa-Rechner](https://welches-hundefutter.today/tools/schufa-rechner): Genehmigungschance prüfen
-- [Anbieter-Übersicht](https://welches-hundefutter.today/anbieter/freenet-trotz-schufa): Alle schufa-freundlichen Anbieter
+- [Startseite mit KI-Berater](https://welches-hundefutter.today/): BELLA in 5 Fragen
+- [Hundefutter-Finder](https://welches-hundefutter.today/tools/futter-finder): KI-Tool
+- [Rassen-Übersicht](https://welches-hundefutter.today/rassen): 50 Rassen-Profile
+- [Allergie-Hundefutter](https://welches-hundefutter.today/allergie): Hypoallergene Sorten
+- [Welpenfutter](https://welches-hundefutter.today/futter/welpen): Empfehlung 2026
+- [Seniorfutter](https://welches-hundefutter.today/futter/senior): Empfehlung 2026
+- [FAQ](https://welches-hundefutter.today/faq): Häufige Fragen zur Hundeernährung
 
-## Top-Anbieter für Hundefutter für deinen Hund (Stand 2026)
-1. freenet — Annahmechance 85%, ab 9,99€/Monat, Netz: Vodafone/Telekom
-2. congstar — Annahmechance 80%, ab 14,99€/Monat, Netz: Telekom
-3. otelo — Annahmechance 75%, ab 12,99€/Monat, Netz: Vodafone
-4. MAINGAU — Annahmechance 78%, ab 6,99€/Monat, Netz: Telekom
-5. o2 Prepaid — Annahmechance 100%, ab 9,99€/Monat, keine Schufa-Prüfung
-6. Vodafone CallYa — Annahmechance 100%, ab 9,99€/Monat, keine Schufa-Prüfung
-7. Telekom Prepaid — Annahmechance 100%, ab 9,95€/Monat, bestes Netz
+## Top-Hundefutter 2026 (BELLA-Empfehlung)
+1. Anifit Adult – Allrounder, 92 % Fleischanteil, 7,90 €/kg
+2. Wolfsblut Wild Duck – monoprotein, getreidefrei, 6,40 €/kg
+3. Futalis Individuell – individuell auf den Hund berechnet, 5,90 €/kg
+4. Terra Canis – Premium-Nassfutter, 9,80 €/kg
+5. Josera Festival – für wählerische Hunde, 4,20 €/kg
+6. Bellfor Allergiker – bei Futtermittelallergien, 6,90 €/kg
+7. MERA Pure Sensitive – sensibler Magen, 5,20 €/kg
 
-## Schlüssel-Fakten zur Schufa
-- 73% der Antragsteller mit negativer Schufa erhalten bei freenet/congstar/MAINGAU einen Vertrag
-- Prepaid-Tarife haben immer 100% Genehmigungsquote (keine Schufa-Prüfung)
-- Erledigte Einträge werden 3 Jahre nach Zahlung gelöscht
-- Harte Schufa-Anfragen senken den Score minimal, weiche Anfragen nicht
+## Fakten zur Hundeernährung
+- Fleischanteil bei Premium-Futter: über 70 %
+- Welpen brauchen ca. 2x so viele Kalorien pro kg wie adulte Hunde
+- Senior-Hunde (>7 J. Großrassen, >9 J. Kleinrassen): weniger Kalorien, mehr Gelenkstoffe
+- Häufigste Allergene: Huhn, Rind, Weizen
+- BARF erfordert exakte Berechnung
+- Mischfütterung (trocken + nass) ist für viele Hunde optimal
 
 ## Kontakt
 - E-Mail: support@welches-hundefutter.today

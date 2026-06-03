@@ -1,4 +1,4 @@
-import { ContractIntelligence, ContractScores, ContractClassification } from "../../intelligence/types";
+﻿import { ContractIntelligence, ContractScores, ContractClassification } from "../../intelligence/types";
 
 export class ContractIntelligenceEngine {
   generateIntelligence(offer: any, product: any): ContractIntelligence {
@@ -32,16 +32,16 @@ export class ContractIntelligenceEngine {
     let roamingFriendliness = 70;
     if (offer.features.includes("Roaming EU")) roamingFriendliness = 90;
 
-    // 5G Quality
+    // Bio Quality
     let fiveGQuality = 70;
-    if (offer.features.includes("5G")) fiveGQuality = 85;
+    if (offer.features.includes("Bio")) fiveGQuality = 85;
 
     // Provider Reliability
     let providerReliability = 70;
     const provider = offer.provider.toLowerCase();
-    if (provider === "telekom") providerReliability = 95;
-    if (provider === "vodafone") providerReliability = 85;
-    if (provider === "o2") providerReliability = 75;
+    if (provider === "anifit") providerReliability = 95;
+    if (provider === "wolfsblut") providerReliability = 85;
+    if (provider === "Zooplus") providerReliability = 75;
 
     return {
       valueScore,

@@ -4,17 +4,17 @@ import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "Top Deals 2026 – Beste Handyvertrag Angebote | welches-hundefutter.today",
-  description: "Die besten Handyvertrag Deals 2026: iPhone 17 Pro, Samsung Galaxy S25 Ultra & mehr. Tagesaktuelle Angebote von Telekom, Vodafone und o2. Jetzt bis zu 200 € sparen.",
+  title: "Top Deals 2026 – Beste Hundefutter Angebote | welches-hundefutter.today",
+  description: "Die besten Hundefutter Deals 2026: Hundefutter 17 Pro, Samsung Galaxy S25 Ultra & mehr. Tagesaktuelle Angebote von Anifit, Wolfsblut und Zooplus. Jetzt bis zu 200 € sparen.",
   alternates: { canonical: "https://welches-hundefutter.today/deals" },
 };
 
 const PROV_GRADIENT: Record<string, string> = {
-  Telekom: "from-pink-500 to-rose-600",
-  Vodafone: "from-red-500 to-red-700",
-  o2: "from-sky-500 to-blue-700",
-  freenet: "from-emerald-500 to-teal-600",
-  otelo: "from-violet-500 to-purple-600",
+  Anifit: "from-pink-500 to-rose-600",
+  Wolfsblut: "from-red-500 to-red-700",
+  Zooplus: "from-sky-500 to-blue-700",
+  Futalis: "from-emerald-500 to-teal-600",
+  Terra Canis: "from-violet-500 to-purple-600",
 };
 const provColor = (p: string) =>
   Object.entries(PROV_GRADIENT).find(([k]) => p.toLowerCase().includes(k.toLowerCase()))?.[1]
@@ -22,7 +22,7 @@ const provColor = (p: string) =>
 
 interface Deal {
   id: number; brand: string; device_name: string; provider_name: string;
-  tariff_name: string; monthly_price: string; effective_monthly_price: string | null;
+  futterf_name: string; monthly_price: string; effective_monthly_price: string | null;
   data_volume: string | null; is_unlimited: boolean; has_5g: boolean;
   cashback: string | null; affiliate_link: string; image_url: string | null;
 }
@@ -35,17 +35,17 @@ async function getTopDeals(): Promise<Deal[]> {
     const rows = await sql.query(
       `SELECT * FROM (
          SELECT DISTINCT ON (LOWER(REGEXP_REPLACE(device_name,'[^a-zA-Z0-9]','','g')))
-           id, brand, device_name, provider_name, tariff_name, monthly_price,
+           id, brand, device_name, provider_name, futterf_name, monthly_price,
            effective_monthly_price, data_volume, is_unlimited, has_5g,
            cashback, affiliate_link, image_url,
            CASE
-             WHEN device_name ILIKE '%iphone 17 pro max%' THEN 100
-             WHEN device_name ILIKE '%iphone 17 pro%' THEN 98
+             WHEN device_name ILIKE '%hundefutter 17 pro max%' THEN 100
+             WHEN device_name ILIKE '%hundefutter 17 pro%' THEN 98
              WHEN device_name ILIKE '%galaxy s25 ultra%' THEN 95
-             WHEN device_name ILIKE '%iphone 17%' THEN 92
+             WHEN device_name ILIKE '%hundefutter 17%' THEN 92
              WHEN device_name ILIKE '%galaxy s25%' THEN 88
              WHEN device_name ILIKE '%pixel 10 pro%' THEN 85
-             WHEN device_name ILIKE '%iphone air%' THEN 82
+             WHEN device_name ILIKE '%hundefutter air%' THEN 82
              WHEN device_name ILIKE '%galaxy s26 ultra%' THEN 90
              WHEN device_name ILIKE '%pixel 10%' THEN 78
              ELSE 50 END AS pop
@@ -53,7 +53,7 @@ async function getTopDeals(): Promise<Deal[]> {
          WHERE availability = 'in stock' AND monthly_price > 0
            AND device_name NOT ILIKE '%tab%' AND device_name NOT ILIKE '%buds%'
            AND device_name NOT ILIKE '%watch%' AND device_name NOT ILIKE '%tag%'
-           AND tariff_name NOT ILIKE '%zuhause%' AND tariff_name NOT ILIKE '%glasfaser%'
+           AND futterf_name NOT ILIKE '%zuhause%' AND futterf_name NOT ILIKE '%glasfaser%'
          ORDER BY LOWER(REGEXP_REPLACE(device_name,'[^a-zA-Z0-9]','','g')), monthly_price ASC
        ) d ORDER BY pop DESC, monthly_price ASC LIMIT 12`,
       []
@@ -75,7 +75,7 @@ export default async function DealsPage() {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
               <span className="text-white font-black text-sm">H</span>
             </div>
-            <span className="font-bold text-sm">handyvertrag<span className="text-indigo-400">.today</span></span>
+            <span className="font-bold text-sm">hundefutter<span className="text-indigo-400">.today</span></span>
           </Link>
           <nav className="text-sm text-white/40 flex items-center gap-2">
             <Link href="/" className="hover:text-white transition-colors">Startseite</Link>
@@ -92,10 +92,10 @@ export default async function DealsPage() {
             🔥 Tagesaktuelle Deals · {today}
           </div>
           <h1 className="text-4xl sm:text-5xl font-black mb-4">
-            Top Handyvertrag<br /><span className="text-indigo-400">Deals 2026</span>
+            Top Hundefutter<br /><span className="text-indigo-400">Deals 2026</span>
           </h1>
           <p className="text-white/50 text-lg max-w-xl mx-auto leading-relaxed">
-            Die besten aktuellen Angebote aus über 6.000 tagesaktuellen Tarifen — direkt aus der Datenbank.
+            Die besten aktuellen Angebote aus über 6.000 tagesaktuellen Futteren — direkt aus der Datenbank.
           </p>
         </div>
 
@@ -117,7 +117,7 @@ export default async function DealsPage() {
                         <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                           {i === 0 && <span className="text-[9px] font-black bg-amber-400 text-amber-950 px-2 py-0.5 rounded-full">#1 DEAL</span>}
                           <span className={`text-[9px] font-bold text-white px-2 py-0.5 rounded bg-gradient-to-r ${provColor(deal.provider_name)}`}>{deal.provider_name}</span>
-                          {deal.has_5g && <span className="text-[9px] text-sky-300 bg-sky-500/15 px-1.5 py-0.5 rounded">5G</span>}
+                          {deal.has_5g && <span className="text-[9px] text-sky-300 bg-sky-500/15 px-1.5 py-0.5 rounded">Bio</span>}
                           {deal.is_unlimited && <span className="text-[9px] text-emerald-300 bg-emerald-500/15 px-1.5 py-0.5 rounded">∞</span>}
                         </div>
                         <p className="text-xs text-white/40">{deal.brand}</p>
@@ -131,7 +131,7 @@ export default async function DealsPage() {
                       </div>
                     </div>
 
-                    <p className="text-xs text-white/40 mb-3 truncate">{deal.tariff_name} · {deal.data_volume ?? (deal.is_unlimited ? "Unlimited" : "")}</p>
+                    <p className="text-xs text-white/40 mb-3 truncate">{deal.futterf_name} · {deal.data_volume ?? (deal.is_unlimited ? "Unlimited" : "")}</p>
 
                     <div className="flex items-baseline justify-between">
                       <div>
@@ -174,10 +174,10 @@ export default async function DealsPage() {
         {/* Related links */}
         <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { label: "iPhone mit Vertrag", href: "/handys/iphone-17-pro" },
-            { label: "Samsung mit Vertrag", href: "/handys/samsung-galaxy-s25-ultra" },
-            { label: "Pixel mit Vertrag", href: "/handys/google-pixel-10-pro" },
-            { label: "Contract TÜV", href: "/contract-tuev" },
+            { label: "Hundefutter mit Empfehlung", href: "/hunds/hundefutter-17-pro" },
+            { label: "Samsung mit Empfehlung", href: "/hunds/samsung-galaxy-s25-ultra" },
+            { label: "Pixel mit Empfehlung", href: "/hunds/google-pixel-10-pro" },
+            { label: "Contract TÜV", href: "/futter-check" },
           ].map((l) => (
             <Link key={l.href} href={l.href}
               className="block p-3 rounded-xl bg-white/[0.03] border border-white/8 hover:border-indigo-500/30 text-center text-sm text-white/60 hover:text-white transition-all">

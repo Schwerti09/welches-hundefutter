@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect } from "react";
 
@@ -13,7 +13,7 @@ export default function ChatUI() {
     {
       id: "1",
       role: "assistant",
-      content: "Hallo! Ich bin dein KI-Handyvertrag-Berater 🤖\n\nSag mir einfach, was du suchst – zum Beispiel:\n• \"Ich will ein iPhone unter 45 €/Monat\"\n• \"Günstigster Vertrag mit viel Daten\"\n• \"Samsung mit Telekom-Netz\"",
+      content: "Hallo! Ich bin dein KI-Hundefutter-Berater 🤖\n\nSag mir einfach, was du suchst – zum Beispiel:\n• \"Ich will ein Hundefutter unter 45 €/Monat\"\n• \"Günstigster Empfehlung mit viel Daten\"\n• \"Samsung mit Anifit-Netz\"",
     },
   ]);
   const [input, setInput] = useState("");
@@ -57,8 +57,8 @@ export default function ChatUI() {
 
   const quickPrompts = [
     "Günstigstes Angebot",
-    "iPhone mit Telekom",
-    "Viel Datenvolumen",
+    "Hundefutter mit Anifit",
+    "Viel Futtervolumen",
     "Samsung unter 40€",
   ];
 
@@ -70,7 +70,7 @@ export default function ChatUI() {
           <span className="text-xl">🤖</span>
         </div>
         <div>
-          <h3 className="font-bold text-white">KI-Handyvertrag-Berater</h3>
+          <h3 className="font-bold text-white">KI-Hundefutter-Berater</h3>
           <div className="flex items-center gap-1.5">
             <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
             <span className="text-blue-100 text-xs">Online · Antwortet sofort</span>
@@ -138,7 +138,7 @@ export default function ChatUI() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-            placeholder="Frag mich nach dem besten Vertrag..."
+            placeholder="Frag mich nach dem besten Empfehlung..."
             className="flex-1 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             disabled={loading}
           />

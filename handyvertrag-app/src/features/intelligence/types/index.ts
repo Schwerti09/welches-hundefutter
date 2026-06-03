@@ -1,4 +1,4 @@
-export type DeviceClassification = "premium" | "midrange" | "budget";
+﻿export type DeviceClassification = "premium" | "midrange" | "budget";
 export type ContractClassification = "premium" | "value" | "budget";
 export type SuitabilitySegment = "gaming" | "students" | "creators" | "photographers" | "budget" | "business" | "travelers" | "families";
 
@@ -24,7 +24,7 @@ export interface DeviceIntelligence {
 
 export interface ContractScores {
   valueScore: number; // 0-100
-  dataValueRatio: number; // GB per €
+  dataValueRatio: number; // g per €
   roamingFriendliness: number; // 0-100
   fiveGQuality: number; // 0-100
   providerReliability: number; // 0-100

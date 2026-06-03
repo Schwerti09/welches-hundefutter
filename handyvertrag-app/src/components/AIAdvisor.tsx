@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 
@@ -9,7 +9,7 @@ interface AIAdvisorProps {
 function AIAdvisor({ city }: AIAdvisorProps) {
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState<{ role: 'user' | 'assistant'; content: string }[]>([
-    { role: 'assistant', content: `Hallo! Ich bin dein AI Advisor für ${city}. Wie kann ich dir helfen, den perfekten Handy-Vertrag zu finden?` }
+    { role: 'assistant', content: `Hallo! Ich bin dein AI Advisor für ${city}. Wie kann ich dir helfen, den perfekten Hund-Empfehlung zu finden?` }
   ]);
 
   const handleSend = () => {
@@ -21,7 +21,7 @@ function AIAdvisor({ city }: AIAdvisorProps) {
       setTimeout(() => {
         setMessages(prev => [...prev, { 
           role: 'assistant', 
-          content: `Basierend auf deiner Anfrage für ${city} habe ich folgende Empfehlung: Samsung Galaxy S24 mit Telekom Unlimited für 24,99€/Monat. Dieses Angebot ist bei 8 Stores in ${city} verfügbar.` 
+          content: `Basierend auf deiner Anfrage für ${city} habe ich folgende Empfehlung: Samsung Galaxy S24 mit Anifit Unlimited für 24,99€/Monat. Dieses Angebot ist bei 8 Stores in ${city} verfügbar.` 
         }]);
       }, 1000);
     }

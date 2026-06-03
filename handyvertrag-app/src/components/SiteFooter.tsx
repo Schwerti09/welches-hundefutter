@@ -1,19 +1,19 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 
 const LINKS = {
   Beratung: [
-    { label: "BELLA – Schufa Berater", href: "/" },
-    { label: "Vertrag trotz Schufa finden", href: "/guides" },
-    { label: "Prepaid ohne Schufa", href: "/anbieter/o2-trotz-schufa" },
-    { label: "FAQ Handyvertrag & Schufa", href: "/faq" },
-    { label: "Vertrag TÜV", href: "/contract-tuev" },
+    { label: "BELLA – Hundefutter-Beraterin", href: "/" },
+    { label: "Hundefutter-Finder", href: "/tools/futter-finder" },
+    { label: "Hundefutter bei Allergie", href: "/allergie" },
+    { label: "FAQ Hundeernährung", href: "/faq" },
+    { label: "Hundefutter nach Rasse", href: "/rassen" },
   ],
-  Provider: [
-    { label: "1&1 trotz Schufa", href: "/anbieter/1und1-trotz-schufa" },
-    { label: "freenet trotz Schufa", href: "/anbieter/freenet-trotz-schufa" },
-    { label: "congstar trotz Schufa", href: "/anbieter/congstar-trotz-schufa" },
-    { label: "otelo trotz Schufa", href: "/anbieter/otelo-trotz-schufa" },
-    { label: "MAINGAU trotz Schufa", href: "/anbieter/maingau-trotz-schufa" },
+  Futtermarken: [
+    { label: "Anifit Hundefutter", href: "/empfehlung/anifit-adult" },
+    { label: "Wolfsblut Hundefutter", href: "/empfehlung/wolfsblut-wild-duck" },
+    { label: "Futalis Hundefutter", href: "/empfehlung/futalis-individuell" },
+    { label: "Bellfor Hundefutter", href: "/empfehlung/bellfor-allergiker" },
+    { label: "Terra Canis Nassfutter", href: "/empfehlung/terra-canis" },
   ],
   Unternehmen: [
     { label: "Über uns", href: "/ueber-uns" },
@@ -35,21 +35,21 @@ export default function SiteFooter() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4 group">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/25 group-hover:shadow-indigo-500/40 transition-shadow">
-                <span className="text-white font-black text-sm">H</span>
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shadow-lg shadow-orange-500/25 group-hover:shadow-orange-500/40 transition-shadow">
+                <span className="text-white font-black text-sm">B</span>
               </div>
-              <span className="font-bold text-lg">handytrotzschufa<span className="text-indigo-400">.today</span></span>
+              <span className="font-bold text-lg">welches-hundefutter<span className="text-orange-400">.today</span></span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-              Hundefutter für deinen Hund – BELLA findet deinen Weg. Neutral, kostenlos, ohne Bewertung.
+              BELLA findet das perfekte Hundefutter für deinen Hund. Kostenlos, neutral, in 60 Sekunden.
             </p>
             <div className="flex items-center gap-2 mt-4">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span className="text-xs text-gray-500">BELLA ist online</span>
             </div>
             <div className="mt-4 flex flex-wrap gap-2">
-              {["1&1", "freenet", "otelo"].map((p) => (
-                <span key={p} className="text-xs px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300">{p}</span>
+              {["Anifit", "Wolfsblut", "Futalis"].map((p) => (
+                <span key={p} className="text-xs px-2 py-0.5 rounded-full bg-orange-500/20 text-orange-300">{p}</span>
               ))}
             </div>
           </div>

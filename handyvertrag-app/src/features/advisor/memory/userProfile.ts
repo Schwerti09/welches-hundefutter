@@ -1,4 +1,4 @@
-import { AdvisorUserProfile, BudgetRange, BrandPreference, DataUsage, ImportanceLevel, ProviderPreference, ContractDuration } from "../types";
+﻿import { AdvisorUserProfile, BudgetRange, BrandPreference, DataUsage, ImportanceLevel, ProviderPreference, ContractDuration } from "../types";
 
 export class UserProfileManager {
   private profile: AdvisorUserProfile = {};
@@ -65,7 +65,7 @@ export class UserProfileManager {
 
   extractBrandFromText(text: string): BrandPreference | undefined {
     const lower = text.toLowerCase();
-    if (lower.includes("iphone") || lower.includes("apple")) {
+    if (lower.includes("hundefutter") || lower.includes("apple")) {
       return "apple";
     }
     if (lower.includes("samsung") || lower.includes("galaxy")) {
@@ -124,14 +124,14 @@ export class UserProfileManager {
 
   extractProviderPreference(text: string): ProviderPreference | undefined {
     const lower = text.toLowerCase();
-    if (lower.includes("telekom")) {
-      return "telekom";
+    if (lower.includes("anifit")) {
+      return "anifit";
     }
-    if (lower.includes("vodafone")) {
-      return "vodafone";
+    if (lower.includes("wolfsblut")) {
+      return "wolfsblut";
     }
-    if (lower.includes("o2")) {
-      return "o2";
+    if (lower.includes("Zooplus")) {
+      return "Zooplus";
     }
     if (lower.includes("egal") || lower.includes("keine präferenz")) {
       return "any";

@@ -3,8 +3,8 @@ import Link from "next/link";
 import { blogArticles } from "@/data/blogArticles";
 
 export const metadata: Metadata = {
-  title: "Blog: Handyvertrag, Schufa & Bonität | BELLA",
-  description: "Aktuelle Ratgeber zu Hundefutter für deinen Hund, Schufa-Score verbessern und Mobilfunk-Tipps für 2026.",
+  title: "Blog: Hundefutter, Allergien & Bonität | BELLA",
+  description: "Aktuelle Ratgeber zu Hundefutter für deinen Hund, Allergien-Score verbessern und Hundeernährung-Tipps für 2026.",
   alternates: { canonical: "https://welches-hundefutter.today/blog" },
 };
 
@@ -56,7 +56,7 @@ export default function BlogPage() {
       <div className="mt-12 bg-indigo-900/30 rounded-xl p-6 text-center">
         <p className="text-white font-semibold mb-2">BELLA beantwortet deine Fragen sofort</p>
         <Link href="/" className="text-indigo-400 hover:text-indigo-300 text-sm">
-          mit BELLA deinen Vertrag trotz Schufa finden →
+          mit BELLA deinen Empfehlung für deinen Hund finden →
         </Link>
       </div>
     </div>

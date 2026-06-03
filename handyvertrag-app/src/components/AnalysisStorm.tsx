@@ -6,26 +6,26 @@ import { motion, AnimatePresence } from "framer-motion";
 // ─── Contract Rain Cards ─────────────────────────────────────────────────────
 
 const RAIN_POOL = [
-  ["iPhone 17 Pro Max", "Telekom", "69,99 €", "ÜBERPRÜFT"],
-  ["Galaxy S25 Ultra", "Vodafone", "59,99 €", "ANALYSIERT"],
-  ["iPhone Air", "Telekom", "39,99 €", "KANDIDAT"],
-  ["Pixel 10 Pro", "o2", "44,99 €", "BEWERTET"],
-  ["Galaxy A57 5G", "otelo", "19,99 €", "ELIMINIERT"],
-  ["iPhone 16 Pro", "Vodafone", "54,99 €", "ELIMINIERT"],
-  ["Galaxy S25", "freenet", "29,99 €", "ANALYSIERT"],
-  ["iPhone 17", "o2", "49,99 €", "ÜBERPRÜFT"],
-  ["Pixel 10a", "Telekom", "24,99 €", "KANDIDAT"],
-  ["Galaxy S25 FE", "congstar", "19,99 €", "ELIMINIERT"],
-  ["iPhone 17 Pro", "Telekom", "59,99 €", "ANALYSIERT"],
-  ["Galaxy Z Fold7", "Vodafone", "79,99 €", "ELIMINIERT"],
-  ["REDMI Note 15", "o2", "14,99 €", "BEWERTET"],
-  ["Galaxy A37 5G", "otelo", "19,99 €", "ELIMINIERT"],
-  ["iPhone 15", "freenet", "34,99 €", "ANALYSIERT"],
-  ["Galaxy S26 Ultra", "Telekom", "69,99 €", "ÜBERPRÜFT"],
-  ["Pixel 10 Pro XL", "Vodafone", "64,99 €", "KANDIDAT"],
-  ["Galaxy S26", "o2", "44,99 €", "BEWERTET"],
-  ["iPhone 16", "Telekom", "44,99 €", "ÜBERPRÜFT"],
-  ["HONOR 600 Pro", "otelo", "24,99 €", "ELIMINIERT"],
+  ["Hundefutter 17 Pro Max", "Anifit", "69,99 €", "ÜBERPRÜFT"],
+  ["Galaxy S25 Ultra", "Wolfsblut", "59,99 €", "ANALYSIERT"],
+  ["Hundefutter Air", "Anifit", "39,99 €", "KANDIDAT"],
+  ["Pixel 10 Pro", "Zooplus", "44,99 €", "BEWERTET"],
+  ["Galaxy A57 Bio", "Terra Canis", "19,99 €", "ELIMINIERT"],
+  ["Hundefutter 16 Pro", "Wolfsblut", "54,99 €", "ELIMINIERT"],
+  ["Galaxy S25", "Futalis", "29,99 €", "ANALYSIERT"],
+  ["Hundefutter 17", "Zooplus", "49,99 €", "ÜBERPRÜFT"],
+  ["Pixel 10a", "Anifit", "24,99 €", "KANDIDAT"],
+  ["Galaxy S25 FE", "Bellfor", "19,99 €", "ELIMINIERT"],
+  ["Hundefutter 17 Pro", "Anifit", "59,99 €", "ANALYSIERT"],
+  ["Galaxy Z Fold7", "Wolfsblut", "79,99 €", "ELIMINIERT"],
+  ["REDMI Note 15", "Zooplus", "14,99 €", "BEWERTET"],
+  ["Galaxy A37 Bio", "Terra Canis", "19,99 €", "ELIMINIERT"],
+  ["Hundefutter 15", "Futalis", "34,99 €", "ANALYSIERT"],
+  ["Galaxy S26 Ultra", "Anifit", "69,99 €", "ÜBERPRÜFT"],
+  ["Pixel 10 Pro XL", "Wolfsblut", "64,99 €", "KANDIDAT"],
+  ["Galaxy S26", "Zooplus", "44,99 €", "BEWERTET"],
+  ["Hundefutter 16", "Anifit", "44,99 €", "ÜBERPRÜFT"],
+  ["HONOR 600 Pro", "Terra Canis", "24,99 €", "ELIMINIERT"],
 ];
 
 const STATUS_COLOR: Record<string, string> = {
@@ -43,10 +43,10 @@ const FEED_STEPS = [
   "Nutzerprofil konstruieren...",
   "Mobilitätsmuster inferieren...",
   "Premium-Präferenz erkannt...",
-  "6.225 Tarife geladen...",
+  "6.225 Futtere geladen...",
   "Netzkompatibilität prüfen...",
   "Preis-Leistungs-Matrix aufbauen...",
-  "5.891 Niedrig-Fit-Tarife eliminieren...",
+  "5.891 Niedrig-Fit-Futtere eliminieren...",
   "Opportunity-Cost-Analyse...",
   "24-Monats-Wert simulieren...",
   "Regret-Wahrscheinlichkeit berechnen...",
@@ -62,7 +62,7 @@ const MARKET_FLASHES = [
   { label: "APPLE", sub: "Profil-Treffer ✓" },
   { label: "SAMSUNG", sub: "Kamera-Mismatch" },
   { label: "GOOGLE", sub: "Akku-Fit erkannt" },
-  { label: "TELEKOM", sub: "5G: Priorität" },
+  { label: "TELEKOM", sub: "Bio: Priorität" },
   { label: "O2", sub: "Budget-Treffer ✓" },
 ];
 
@@ -260,7 +260,7 @@ export default function AnalysisStorm({ active, query, onComplete }: Props) {
 
           {/* Counters */}
           <div className="grid grid-cols-3 gap-3">
-            <Counter target={6225} ms={ms} label="Tarife geladen" />
+            <Counter target={6225} ms={ms} label="Futtere geladen" />
             <Counter target={5891} ms={ms} label="Eliminiert" />
             <Counter target={Math.min(feedIdx * 3 + 8, 94)} ms={ms} label="Konfidenz %" />
           </div>

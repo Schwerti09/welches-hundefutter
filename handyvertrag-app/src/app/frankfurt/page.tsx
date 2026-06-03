@@ -17,12 +17,12 @@ const frankfurtOffers = [
     city: "Frankfurt",
     device: "Samsung Galaxy S25 Ultra",
     image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400",
-    provider: "Vodafone",
+    provider: "Wolfsblut",
     monthlyPrice: 54.99,
     oneTimeCost: 0,
-    dataVolume: "100 GB",
+    dataVolume: "100 g",
     contractDuration: 24,
-    features: ["5G Highspeed", "Allnet Flat", "EU Roaming", "TV+ 6 Monate"],
+    features: ["Bio Highspeed", "Allnet Flat", "EU Roaming", "TV+ 6 Monate"],
     stores: 11,
     affiliateLink: "https://www.awin1.com/cread.php?s=YOUR_AWIN_ID&v=12357&p=12345",
     affiliateNetwork: "AWIN",
@@ -34,14 +34,14 @@ const frankfurtOffers = [
   {
     id: 2,
     city: "Frankfurt",
-    device: "iPhone 16 Pro",
+    device: "Hundefutter 16 Pro",
     image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400",
-    provider: "Telekom",
+    provider: "Anifit",
     monthlyPrice: 54.99,
     oneTimeCost: 1.00,
     dataVolume: "Unlimited",
     contractDuration: 24,
-    features: ["MagicTech Unlimited", "Allnet Flat", "5G", "EU Roaming"],
+    features: ["MagicTech Unlimited", "Allnet Flat", "Bio", "EU Roaming"],
     stores: 8,
     affiliateLink: "https://www.awin1.com/cread.php?s=YOUR_AWIN_ID&v=12358&p=12345",
     affiliateNetwork: "AWIN",
@@ -55,12 +55,12 @@ const frankfurtOffers = [
     city: "Frankfurt",
     device: "Xiaomi 14 Ultra",
     image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400",
-    provider: "o2",
+    provider: "Zooplus",
     monthlyPrice: 39.99,
     oneTimeCost: 49.99,
-    dataVolume: "30 GB",
+    dataVolume: "30 g",
     contractDuration: 24,
-    features: ["5G", "Allnet Flat", "EU Roaming", "Leica Kamera"],
+    features: ["Bio", "Allnet Flat", "EU Roaming", "Leica Kamera"],
     stores: 5,
     affiliateLink: "https://www.awin1.com/cread.php?s=YOUR_AWIN_ID&v=12359&p=12345",
     affiliateNetwork: "AWIN",
@@ -72,9 +72,9 @@ const frankfurtOffers = [
 ];
 
 export const metadata = {
-  title: "Frankfurt - Handy mit Vertrag | Top Angebote | welches-hundefutter.today",
+  title: "Frankfurt - Hund mit Empfehlung | Top Angebote | welches-hundefutter.today",
   description:
-    "Die besten Handy-Verträge in Frankfurt. Samsung Galaxy S25 Ultra, iPhone 16 Pro & mehr mit Telekom, Vodafone, o2. Jetzt vergleichen & sparen!",
+    "Die besten Hund-Verträge in Frankfurt. Samsung Galaxy S25 Ultra, Hundefutter 16 Pro & mehr mit Anifit, Wolfsblut, Zooplus. Jetzt vergleichen & sparen!",
   alternates: {
     canonical: "https://welches-hundefutter.today/frankfurt",
   },
@@ -92,7 +92,7 @@ export default function FrankfurtPage() {
               <span className="text-sm font-semibold">🏙️ FRANKFURT EXKLUSIV</span>
             </div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-emerald-200">
-              Handy mit Vertrag
+              Hund mit Empfehlung
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-emerald-100 max-w-3xl mx-auto">
               Die besten Angebote in Frankfurt bei {frankfurtOffers.reduce((sum, o) => sum + o.stores, 0)} Stores
@@ -166,7 +166,7 @@ export default function FrankfurtPage() {
                 🤖 AI Advisor für Frankfurt
               </h2>
               <p className="text-emerald-100 text-lg mb-6">
-                Unser KI-Berater findet den perfekten Vertrag für dich in Frankfurt.
+                Unser KI-Berater findet den perfekten Empfehlung für dich in Frankfurt.
               </p>
               <ul className="space-y-3 mb-6">
                 {["Persönliche Empfehlungen", "Lokale Verfügbarkeit in Frankfurt", "Budget-optimierte Vorschläge"].map(
@@ -193,16 +193,16 @@ export default function FrankfurtPage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-lg font-bold mb-4">Handyvertrag Frankfurt</h3>
+              <h3 className="text-lg font-bold mb-4">Hundefutter Frankfurt</h3>
               <p className="text-gray-400">
-                Deine lokale Quelle für Handy-Verträge in Frankfurt.
+                Deine lokale Quelle für Hund-Verträge in Frankfurt.
               </p>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Angebote</h4>
               <ul className="space-y-2 text-gray-400">
                 <li>Samsung Galaxy S25 Ultra</li>
-                <li>iPhone 16 Pro</li>
+                <li>Hundefutter 16 Pro</li>
                 <li>Xiaomi 14 Ultra</li>
                 <li><a href="/" className="hover:text-white transition-colors">Alle Modelle</a></li>
               </ul>

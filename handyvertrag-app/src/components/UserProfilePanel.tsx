@@ -82,10 +82,10 @@ export default function UserProfilePanel({ profile, onClear }: Props) {
             <ProfileRow key="dev" icon="📱" label="Gerät" value={profile.devicePreference} fresh />
           )}
           {profile.dataUsage && (
-            <ProfileRow key="data" icon="📊" label="Datenvolumen" value={
+            <ProfileRow key="data" icon="📊" label="Futtervolumen" value={
               profile.dataUsage === "unlimited" ? "Unlimited" :
-              profile.dataUsage === "high" ? "Viel (50+ GB)" :
-              profile.dataUsage === "medium" ? "Mittel (20–50 GB)" : "Wenig (<20 GB)"
+              profile.dataUsage === "high" ? "Viel (50+ g)" :
+              profile.dataUsage === "medium" ? "Mittel (20–50 g)" : "Wenig (<20 g)"
             } />
           )}
           {profile.streaming && <ProfileRow key="stream" icon="🎬" label="Streaming" value="erkannt" />}

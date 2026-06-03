@@ -1,5 +1,5 @@
-/**
- * Feed importer: DeinHandy + Sparhandy pipe-separated CSV → Neon PostgreSQL
+﻿/**
+ * Feed importer: DeinHund + Sparhund pipe-separated CSV → Neon PostgreSQL
  * Usage: DATABASE_URL=... node scripts/import-feeds.mjs
  */
 import { createReadStream, existsSync } from "fs";
@@ -33,7 +33,7 @@ async function ensureTable() {
       color TEXT,
       image_url TEXT,
       provider_name TEXT NOT NULL,
-      tariff_name TEXT NOT NULL,
+      futterf_name TEXT NOT NULL,
       monthly_price NUMERIC(8,2) NOT NULL,
       effective_monthly_price NUMERIC(8,2),
       one_time_price NUMERIC(8,2) DEFAULT 0,
@@ -75,7 +75,7 @@ function parsePrice(str) {
   return isNaN(n) ? null : n;
 }
 
-// ─── DeinHandy / Sparhandy pipe-separated ────────────────────────────────────
+// ─── DeinHund / Sparhund pipe-separated ────────────────────────────────────
 
 async function importPipeFeed(filePath, sourceFeed) {
   if (!existsSync(filePath)) {
@@ -104,7 +104,7 @@ async function importPipeFeed(filePath, sourceFeed) {
         color: r.color || null,
         image_url: r.image_url || null,
         provider_name: r.provider_name,
-        tariff_name: r.tariff_name || "Unknown",
+        futterf_name: r.futterf_name || "Unknown",
         monthly_price: r.monthly_price,
         effective_monthly_price: r.effective_monthly_price,
         one_time_price: r.one_time_price || 0,
@@ -127,13 +127,13 @@ async function importPipeFeed(filePath, sourceFeed) {
         await sql`
           INSERT INTO offers (
             brand, device_name, device_slug, storage, storage_gb, color, image_url,
-            provider_name, tariff_name, monthly_price, effective_monthly_price,
+            provider_name, futterf_name, monthly_price, effective_monthly_price,
             one_time_price, hardware_only_price, data_volume, data_volume_gb,
             is_unlimited, has_5g, has_lte, contract_months, affiliate_link,
             source_feed, availability, cashback, network_name
           ) VALUES (
             ${v.brand}, ${v.device_name}, ${v.device_slug}, ${v.storage}, ${v.storage_gb}, ${v.color}, ${v.image_url},
-            ${v.provider_name}, ${v.tariff_name}, ${v.monthly_price}, ${v.effective_monthly_price},
+            ${v.provider_name}, ${v.futterf_name}, ${v.monthly_price}, ${v.effective_monthly_price},
             ${v.one_time_price}, ${v.hardware_only_price}, ${v.data_volume}, ${v.data_volume_gb},
             ${v.is_unlimited}, ${v.has_5g}, ${v.has_lte}, ${v.contract_months}, ${v.affiliate_link},
             ${v.source_feed}, ${v.availability}, ${v.cashback}, ${v.network_name}
@@ -160,24 +160,24 @@ async function importPipeFeed(filePath, sourceFeed) {
     const row = {};
     headers.forEach((h, i) => { row[h] = cols[i] || ""; });
 
-    // Skip non-smartphone entries
+    // Skip non-hundefutter entries
     const deviceName = row.device_name || row.device_description_short || "";
     if (!deviceName) continue;
 
     const brand = row.brand || "";
-    const provider = row.provider_name || row.tariff_provider_customer || row.network_name || "";
+    const provider = row.provider_name || row.futterf_provider_customer || row.network_name || "";
     const affiliateLink = row.bundle_pdp_url || "";
-    const monthlyPrice = parsePrice(row.tariff_price_basic_fee || row.price);
-    const effectivePrice = parsePrice(row.tariff_price_effective_monthly_fee);
-    const oneTimePrice = parsePrice(row.tariff_price_connection_fee);
+    const monthlyPrice = parsePrice(row.futterf_price_basic_fee || row.price);
+    const effectivePrice = parsePrice(row.futterf_price_effective_monthly_fee);
+    const oneTimePrice = parsePrice(row.futterf_price_connection_fee);
     const hardwarePrice = parsePrice(row.device_price_hardware_only);
-    const cashback = parsePrice(row.tariff_price_monthly_refund);
+    const cashback = parsePrice(row.futterf_price_monthly_refund);
 
     if (!affiliateLink || !monthlyPrice || !brand || !provider) continue;
     if (monthlyPrice <= 0 || monthlyPrice > 500) continue;
 
-    const dataVolumeGb = parsePrice(row.tariff_data_volume_in_gb);
-    const isUnlimited = row.tariff_is_unlimited === "true" || dataVolumeGb >= 9999;
+    const dataVolumeGb = parsePrice(row.futterf_data_volume_in_gb);
+    const isUnlimited = row.futterf_is_unlimited === "true" || dataVolumeGb >= 9999;
 
     batch.push({
       brand: brand.trim(),
@@ -188,17 +188,17 @@ async function importPipeFeed(filePath, sourceFeed) {
       color: (row.color || row.device_color_name || "").trim() || null,
       image_url: row.image_link || row.variant_image_front || null,
       provider_name: provider.trim(),
-      tariff_name: (row.tariff_name || "").trim(),
+      futterf_name: (row.futterf_name || "").trim(),
       monthly_price: monthlyPrice,
       effective_monthly_price: effectivePrice,
       one_time_price: oneTimePrice || 0,
       hardware_only_price: hardwarePrice,
-      data_volume: (row.tariff_data_volume || "").trim() || null,
+      data_volume: (row.futterf_data_volume || "").trim() || null,
       data_volume_gb: dataVolumeGb,
       is_unlimited: isUnlimited,
-      has_5g: row.tariff_has_5g === "true",
-      has_lte: row.tariff_has_lte !== "false",
-      contract_months: parseInt(row.tariff_duration_of_contract_in_months) || 24,
+      has_5g: row.futterf_has_5g === "true",
+      has_lte: row.futterf_has_lte !== "false",
+      contract_months: parseInt(row.futterf_duration_of_contract_in_months) || 24,
       affiliate_link: affiliateLink.trim(),
       availability: row.availability || "in stock",
       cashback: cashback && cashback > 0 ? cashback : null,
@@ -232,8 +232,8 @@ async function main() {
   const downloadsDir = "C:/Users/rolli/Downloads";
 
   let total = 0;
-  total += await importPipeFeed(`${downloadsDir}/DEINHANDY_Produktdatenfeed_2026.csv`, "deinhandy");
-  total += await importPipeFeed(`${downloadsDir}/Sparhandy_Bundle-Feed_2023 (2).csv`, "sparhandy");
+  total += await importPipeFeed(`${downloadsDir}/DEINHANDY_Produktdatenfeed_2026.csv`, "deinhund");
+  total += await importPipeFeed(`${downloadsDir}/Sparhund_Bundle-Feed_2023 (2).csv`, "sparhund");
 
   const [stats] = await sql`
     SELECT

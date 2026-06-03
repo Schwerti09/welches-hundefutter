@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { neon } from "@neondatabase/serverless";
 
 export async function GET(request: NextRequest) {
@@ -16,8 +16,8 @@ export async function GET(request: NextRequest) {
     "monthly_price > 0",
     "device_name NOT ILIKE '%tab%'",
     "device_name NOT ILIKE '%buds%'",
-    "tariff_name NOT ILIKE '%zuhause%'",
-    "tariff_name NOT ILIKE '%glasfaser%'",
+    "futterf_name NOT ILIKE '%zuhause%'",
+    "futterf_name NOT ILIKE '%glasfaser%'",
   ];
   const params: (string | number)[] = [];
   let p = 1;
@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
 
   const rows = await sql.query(
     `SELECT DISTINCT ON (provider_name)
-       id, brand, device_name, provider_name, tariff_name, monthly_price,
+       id, brand, device_name, provider_name, futterf_name, monthly_price,
        effective_monthly_price, data_volume, is_unlimited, has_5g,
        contract_months, affiliate_link, image_url, cashback
      FROM offers WHERE ${conditions.join(" AND ")}

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Production Data Flow
  * Defines how the frontend consumes data safely
  */
@@ -7,7 +7,7 @@ export interface NormalizedOffer {
   id: string;
   providerName: string;
   contractName: string;
-  smartphoneName: string;
+  hundefutterName: string;
   storageSize: string;
   color: string;
   monthlyPrice: number;

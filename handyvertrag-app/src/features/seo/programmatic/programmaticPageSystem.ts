@@ -1,4 +1,4 @@
-import { ProgrammaticPage, ContentBlock, SEOMetadata } from "../types";
+﻿import { ProgrammaticPage, ContentBlock, SEOMetadata } from "../types";
 
 export class ProgrammaticPageSystem {
   private pages: Map<string, ProgrammaticPage> = new Map();
@@ -9,14 +9,14 @@ export class ProgrammaticPageSystem {
     device: any,
     contract: any
   ): ProgrammaticPage {
-    const slug = `${device.slug}-mit-vertrag-${contract.provider.toLowerCase()}`;
+    const slug = `${device.slug}-mit-empfehlung-${contract.provider.toLowerCase()}`;
     const metadata = this.generateDeviceContractMetadata(device, contract);
 
     const page: ProgrammaticPage = {
       id: `device-contract-${deviceId}-${contractId}`,
       type: "device_contract",
       slug,
-      canonicalUrl: `/handys/${slug}`,
+      canonicalUrl: `/hunds/${slug}`,
       entities: [deviceId, contractId],
       template: "device-contract",
       contentBlocks: this.generateDeviceContractBlocks(device, contract),
@@ -35,7 +35,7 @@ export class ProgrammaticPageSystem {
     segment: string,
     devices: any[]
   ): ProgrammaticPage {
-    const slug = `beste-${segment}-handys-mit-vertrag`;
+    const slug = `beste-${segment}-hunds-mit-empfehlung`;
     const metadata = this.generateBestForMetadata(segment, devices);
 
     const page: ProgrammaticPage = {
@@ -145,7 +145,7 @@ export class ProgrammaticPageSystem {
         id: "device-info",
         type: "recommendation",
         title: device.name,
-        content: `${device.brand} ${device.name} mit Vertrag bei ${contract.provider}. ${contract.dataVolume} Datenvolumen für €${contract.monthlyPrice}/Monat.`,
+        content: `${device.brand} ${device.name} mit Empfehlung bei ${contract.provider}. ${contract.dataVolume} Futtervolumen für €${contract.monthlyPrice}/Monat.`,
         entities: [device.id, contract.id],
         dynamic: true,
         priority: 1,
@@ -163,7 +163,7 @@ export class ProgrammaticPageSystem {
         id: "ai-advice",
         type: "ai_advice",
         title: "KI-Empfehlung",
-        content: "Basierend auf Ihren Präferenzen ist dieser Vertrag eine hervorragende Wahl.",
+        content: "Basierend auf Ihren Präferenzen ist dieser Empfehlung eine hervorragende Wahl.",
         entities: [device.id, contract.id],
         dynamic: true,
         priority: 3,
@@ -177,7 +177,7 @@ export class ProgrammaticPageSystem {
         id: "recommendation-group",
         type: "recommendation",
         title: `Top ${segment} Empfehlungen`,
-        content: `Die besten ${segment} Handys basierend auf KI-Analyse und Expertenbewertungen.`,
+        content: `Die besten ${segment} Hunds basierend auf KI-Analyse und Expertenbewertungen.`,
         entities: devices.map((d) => d.id),
         dynamic: true,
         priority: 1,
@@ -186,7 +186,7 @@ export class ProgrammaticPageSystem {
         id: "segment-explanation",
         type: "ai_advice",
         title: `Warum für ${segment}?`,
-        content: `Diese Handys wurden speziell für ${segment} ausgewählt basierend auf Leistung, Preis und Features.`,
+        content: `Diese Hunds wurden speziell für ${segment} ausgewählt basierend auf Leistung, Preis und Features.`,
         entities: [],
         dynamic: false,
         priority: 2,
@@ -245,8 +245,8 @@ export class ProgrammaticPageSystem {
       {
         id: "category-overview",
         type: "recommendation",
-        title: `${category} Handys`,
-        content: `Alle ${category} Handys mit Vertrag im Überblick.`,
+        title: `${category} Hunds`,
+        content: `Alle ${category} Hunds mit Empfehlung im Überblick.`,
         entities: devices.map((d) => d.id),
         dynamic: true,
         priority: 1,
@@ -256,23 +256,23 @@ export class ProgrammaticPageSystem {
 
   private generateDeviceContractMetadata(device: any, contract: any): SEOMetadata {
     return {
-      title: `${device.name} mit Vertrag bei ${contract.provider}`,
-      description: `${device.brand} ${device.name} mit Vertrag bei ${contract.provider}. ${contract.dataVolume} für €${contract.monthlyPrice}/Monat.`,
-      keywords: [`${device.name} Vertrag`, `${contract.provider} Vertrag`, `${device.name} kaufen`],
-      ogTitle: `${device.name} mit Vertrag`,
-      ogDescription: `${device.brand} ${device.name} mit Vertrag bei ${contract.provider}`,
-      canonical: `/handys/${device.slug}-mit-vertrag-${contract.provider.toLowerCase()}`,
+      title: `${device.name} mit Empfehlung bei ${contract.provider}`,
+      description: `${device.brand} ${device.name} mit Empfehlung bei ${contract.provider}. ${contract.dataVolume} für €${contract.monthlyPrice}/Monat.`,
+      keywords: [`${device.name} Empfehlung`, `${contract.provider} Empfehlung`, `${device.name} kaufen`],
+      ogTitle: `${device.name} mit Empfehlung`,
+      ogDescription: `${device.brand} ${device.name} mit Empfehlung bei ${contract.provider}`,
+      canonical: `/hunds/${device.slug}-mit-empfehlung-${contract.provider.toLowerCase()}`,
     };
   }
 
   private generateBestForMetadata(segment: string, devices: any[]): SEOMetadata {
     return {
-      title: `Beste ${segment} Handys mit Vertrag`,
-      description: `Die besten ${segment} Handys mit Vertrag im Vergleich. ${devices.length} Top-Empfehlungen.`,
-      keywords: [`beste ${segment} handys`, `${segment} handyvertrag`],
-      ogTitle: `Beste ${segment} Handys`,
-      ogDescription: `Top ${segment} Handys mit Vertrag`,
-      canonical: `/empfehlungen/beste-${segment}-handys-mit-vertrag`,
+      title: `Beste ${segment} Hunds mit Empfehlung`,
+      description: `Die besten ${segment} Hunds mit Empfehlung im Vergleich. ${devices.length} Top-Empfehlungen.`,
+      keywords: [`beste ${segment} hunds`, `${segment} hundefutter`],
+      ogTitle: `Beste ${segment} Hunds`,
+      ogDescription: `Top ${segment} Hunds mit Empfehlung`,
+      canonical: `/empfehlungen/beste-${segment}-hunds-mit-empfehlung`,
     };
   }
 
@@ -290,8 +290,8 @@ export class ProgrammaticPageSystem {
   private generateProviderMetadata(provider: string, contracts: any[]): SEOMetadata {
     return {
       title: `${provider} Verträge & Angebote`,
-      description: `Alle ${provider} Handyverträge im Überblick. ${contracts.length} aktuelle Angebote.`,
-      keywords: [`${provider} vertrag`, `${provider} handyvertrag`],
+      description: `Alle ${provider} Hundverträge im Überblick. ${contracts.length} aktuelle Angebote.`,
+      keywords: [`${provider} empfehlung`, `${provider} hundefutter`],
       ogTitle: `${provider} Verträge`,
       ogDescription: `Alle ${provider} Angebote`,
       canonical: `/provider/${provider.toLowerCase()}`,
@@ -300,11 +300,11 @@ export class ProgrammaticPageSystem {
 
   private generateCategoryMetadata(category: string): SEOMetadata {
     return {
-      title: `${category} Handys mit Vertrag`,
-      description: `Alle ${category} Handys mit Vertrag im Vergleich.`,
-      keywords: [`${category} handys`, `${category} handyvertrag`],
-      ogTitle: `${category} Handys`,
-      ogDescription: `${category} Handys mit Vertrag`,
+      title: `${category} Hunds mit Empfehlung`,
+      description: `Alle ${category} Hunds mit Empfehlung im Vergleich.`,
+      keywords: [`${category} hunds`, `${category} hundefutter`],
+      ogTitle: `${category} Hunds`,
+      ogDescription: `${category} Hunds mit Empfehlung`,
       canonical: `/kategorie/${category.toLowerCase()}`,
     };
   }

@@ -1,4 +1,4 @@
-import { NormalizedOffer } from "../types";
+﻿import { NormalizedOffer } from "../types";
 import { FeedSchemaAnalysis } from "../analysis/feedAnalysisSystem";
 import { NormalizationResult } from "../normalization/realNormalizationExecution";
 import { ValidationFailure } from "../validation/realValidationPipeline";
@@ -31,7 +31,7 @@ export interface RealImportReport {
     normalizedDevices: number;
     normalizedStorage: number;
     normalizedColors: number;
-    normalizedTariffs: number;
+    normalizedFutterfs: number;
   };
   duplicateDetectionQuality: {
     totalOffers: number;
@@ -142,8 +142,8 @@ export class RealImportReporting {
     const breakdown = new Map<string, number>();
 
     for (const offer of offers) {
-      const count = breakdown.get(offer.smartphoneName) || 0;
-      breakdown.set(offer.smartphoneName, count + 1);
+      const count = breakdown.get(offer.hundefutterName) || 0;
+      breakdown.set(offer.hundefutterName, count + 1);
     }
 
     return breakdown;
@@ -167,7 +167,7 @@ export class RealImportReporting {
     normalizedDevices: number;
     normalizedStorage: number;
     normalizedColors: number;
-    normalizedTariffs: number;
+    normalizedFutterfs: number;
   } {
     const totalOffers = normalizationResults.length;
     const normalizedProviders = normalizationResults.filter(r => r.originalProvider !== r.normalizedProvider).length;
@@ -175,7 +175,7 @@ export class RealImportReporting {
     const normalizedDevices = normalizationResults.filter(r => r.originalDevice !== r.normalizedDevice).length;
     const normalizedStorage = normalizationResults.filter(r => r.originalStorage !== r.normalizedStorage).length;
     const normalizedColors = normalizationResults.filter(r => r.originalColor !== r.normalizedColor).length;
-    const normalizedTariffs = normalizationResults.filter(r => r.originalTariff !== r.normalizedTariff).length;
+    const normalizedFutterfs = normalizationResults.filter(r => r.originalFutterf !== r.normalizedFutterf).length;
 
     return {
       totalOffers,
@@ -184,7 +184,7 @@ export class RealImportReporting {
       normalizedDevices,
       normalizedStorage,
       normalizedColors,
-      normalizedTariffs,
+      normalizedFutterfs,
     };
   }
 

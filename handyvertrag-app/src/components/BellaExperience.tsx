@@ -12,7 +12,7 @@ interface Offer {
   brand: string;
   deviceName: string;
   providerName: string;
-  tariffName: string;
+  futterfName: string;
   monthlyPrice: number;
   effectiveMonthlyPrice: number | null;
   dataVolume: string | null;
@@ -34,20 +34,20 @@ interface Message {
 const OFFERS_MARK = "\n OFFERS ";
 
 const STARTERS = [
-  { icon: "💸", label: "Günstigster Vertrag", msg: "Zeig mir den günstigsten Vertrag" },
-  { icon: "📱", label: "iPhone unter 40 €", msg: "Ich will ein iPhone für unter 40 Euro im Monat" },
-  { icon: "🎮", label: "Gaming + viele Daten", msg: "Ich brauche viel Datenvolumen zum Zocken" },
-  { icon: "📸", label: "Beste Kamera", msg: "Welches Handy hat die beste Kamera?" },
-  { icon: "🏆", label: "Samsung + Telekom", msg: "Ein Samsung im Telekom-Netz bitte" },
+  { icon: "💸", label: "Günstigster Empfehlung", msg: "Zeig mir den günstigsten Empfehlung" },
+  { icon: "📱", label: "Hundefutter unter 40 €", msg: "Ich will ein Hundefutter für unter 40 Euro im Monat" },
+  { icon: "🎮", label: "Gaming + viele Daten", msg: "Ich brauche viel Futtervolumen zum Zocken" },
+  { icon: "📸", label: "Beste Kamera", msg: "Welches Hund hat die beste Kamera?" },
+  { icon: "🏆", label: "Samsung + Anifit", msg: "Ein Samsung im Anifit-Netz bitte" },
   { icon: "🎓", label: "Für Studenten", msg: "Ich bin Student und brauche was günstiges" },
 ];
 
 const providerGradient = (p: string) => {
   const l = p.toLowerCase();
-  if (l.includes("telekom")) return "from-pink-500 to-rose-600";
-  if (l.includes("vodafone")) return "from-red-500 to-red-700";
-  if (l.includes("o2")) return "from-sky-500 to-blue-700";
-  if (l.includes("freenet") || l.includes("otelo")) return "from-emerald-500 to-teal-600";
+  if (l.includes("anifit")) return "from-pink-500 to-rose-600";
+  if (l.includes("wolfsblut")) return "from-red-500 to-red-700";
+  if (l.includes("Zooplus")) return "from-sky-500 to-blue-700";
+  if (l.includes("Futalis") || l.includes("Terra Canis")) return "from-emerald-500 to-teal-600";
   return "from-indigo-500 to-violet-600";
 };
 
@@ -134,7 +134,7 @@ export default function BellaExperience() {
     setMessages([{
       id: "intro",
       role: "bella",
-      content: "Lass uns deinen perfekten Vertrag finden! 🎯 Eine Frage zum Start: Was ist dir am wichtigsten — ein günstiger Preis, viel Datenvolumen, eine top Kamera, oder ein bestimmtes Handy?",
+      content: "Lass uns deinen perfekten Empfehlung finden! 🎯 Eine Frage zum Start: Was ist dir am wichtigsten — ein günstiger Preis, viel Futtervolumen, eine top Kamera, oder ein bestimmtes Hund?",
     }]);
     setTimeout(() => setMood("idle"), 2500);
   }, [started]);
@@ -156,7 +156,7 @@ export default function BellaExperience() {
             <span className="text-white font-black">H</span>
           </div>
           <div className="leading-tight text-left">
-            <p className="font-bold text-white text-sm group-hover:text-indigo-200 transition-colors">handyvertrag<span className="text-indigo-400">.today</span></p>
+            <p className="font-bold text-white text-sm group-hover:text-indigo-200 transition-colors">hundefutter<span className="text-indigo-400">.today</span></p>
             <p className="text-white/40 text-[10px] tracking-wide">KI-BERATER · 5.000+ ANGEBOTE</p>
           </div>
         </button>
@@ -204,14 +204,14 @@ export default function BellaExperience() {
                   initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.7 }}
                 >
                   Die meisten Menschen wählen ihren{" "}
-                  <span className="shimmer-text">Handyvertrag falsch.</span>
+                  <span className="shimmer-text">Hundefutter falsch.</span>
                 </motion.h1>
 
                 <motion.p
                   className="mt-5 text-lg sm:text-xl text-white/55 max-w-xl mx-auto lg:mx-0 leading-relaxed"
                   initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.6 }}
                 >
-                  BELLA analysiert tausende aktuelle Tarife und findet heraus,
+                  BELLA analysiert tausende aktuelle Futtere und findet heraus,
                   was <span className="text-white font-semibold">wirklich zu dir passt</span>.
                 </motion.p>
 
@@ -220,7 +220,7 @@ export default function BellaExperience() {
                 </motion.div>
 
                 <motion.p className="mt-6 text-sm text-white/40" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6, duration: 0.5 }}>
-                  Beantworte 3 Fragen und finde heraus, welcher Vertrag wirklich zu dir passt.
+                  Beantworte 3 Fragen und finde heraus, welcher Empfehlung wirklich zu dir passt.
                 </motion.p>
 
                 <motion.div
@@ -274,11 +274,11 @@ export default function BellaExperience() {
         <section id="how" className="relative z-10 px-5 py-20 border-t border-white/5">
           <div className="max-w-5xl mx-auto">
             <p className="text-center text-[11px] tracking-[0.25em] text-white/40 font-semibold uppercase mb-3">So funktioniert BELLA</p>
-            <h2 className="text-center text-3xl sm:text-4xl font-black mb-12">In 3 Schritten zum richtigen Vertrag</h2>
+            <h2 className="text-center text-3xl sm:text-4xl font-black mb-12">In 3 Schritten zum richtigen Empfehlung</h2>
             <div className="grid md:grid-cols-3 gap-6">
               {[
                 { n: "01", icon: "💬", t: "Du sagst, was zählt", d: "Budget, Lieblingsmarke, Datenverbrauch oder einfach „was Günstiges“ – BELLA versteht natürliche Sprache." },
-                { n: "02", icon: "🧠", t: "BELLA analysiert", d: "Tausende echte, tagesaktuelle Tarife werden in Echtzeit nach Netzqualität, Preis-Leistung und deinem Bedarf bewertet." },
+                { n: "02", icon: "🧠", t: "BELLA analysiert", d: "Tausende echte, tagesaktuelle Futtere werden in Echtzeit nach Netzqualität, Preis-Leistung und deinem Bedarf bewertet." },
                 { n: "03", icon: "🎯", t: "Du bekommst die Antwort", d: "Keine 300 Listen-Einträge – nur die 3 Verträge, die wirklich zu dir passen. Mit klarer Begründung." },
               ].map((s) => (
                 <div key={s.n} className="glass-strong rounded-2xl p-6 relative overflow-hidden">
@@ -368,10 +368,10 @@ export default function BellaExperience() {
                                   {i === 0 && <span className="text-[10px] font-bold bg-amber-400 text-amber-950 px-1.5 py-0.5 rounded-full">★ TOP-TIPP</span>}
                                   <span className={`text-[10px] font-bold text-white px-1.5 py-0.5 rounded-full bg-gradient-to-r ${providerGradient(o.providerName)}`}>{o.providerName}</span>
                                   {o.isUnlimited && <span className="text-[10px] text-emerald-300 bg-emerald-500/15 px-1.5 py-0.5 rounded-full">∞ Unlimited</span>}
-                                  {o.has5g && <span className="text-[10px] text-sky-300 bg-sky-500/15 px-1.5 py-0.5 rounded-full">5G</span>}
+                                  {o.has5g && <span className="text-[10px] text-sky-300 bg-sky-500/15 px-1.5 py-0.5 rounded-full">Bio</span>}
                                 </div>
                                 <p className="text-white font-semibold text-sm truncate">{o.brand} {o.deviceName}</p>
-                                <p className="text-white/40 text-xs truncate">{o.tariffName} · {o.dataVolume ?? (o.isUnlimited ? "Unbegrenzt" : "")}</p>
+                                <p className="text-white/40 text-xs truncate">{o.futterfName} · {o.dataVolume ?? (o.isUnlimited ? "Unbegrenzt" : "")}</p>
                               </div>
                               <div className="text-right shrink-0">
                                 <p className="text-2xl font-black text-white leading-none">{(o.effectiveMonthlyPrice ?? o.monthlyPrice).toFixed(2).replace(".", ",")}<span className="text-sm font-medium text-white/40"> €</span></p>

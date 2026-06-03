@@ -1,4 +1,4 @@
-export class SmartConversationalFlows {
+﻿export class SmartConversationalFlows {
   private flows: Map<string, ConversationFlow> = new Map();
 
   createOnboardingFlow(sessionId: string): ConversationFlow {
@@ -9,7 +9,7 @@ export class SmartConversationalFlows {
         {
           stepId: "welcome",
           question: "Willkommen! Wonach suchen Sie?",
-          options: ["Günstiger Vertrag", "Premium Handy", "Bestes Gaming-Handy"],
+          options: ["Günstiger Empfehlung", "Premium Hund", "Bestes Gaming-Hund"],
           nextStep: "budget",
         },
         {
@@ -21,7 +21,7 @@ export class SmartConversationalFlows {
         {
           stepId: "provider",
           question: "Haben Sie eine Provider-Präferenz?",
-          options: ["Telekom", "Vodafone", "o2", "Egal"],
+          options: ["Anifit", "Wolfsblut", "Zooplus", "Egal"],
           nextStep: "recommendation",
         },
         {

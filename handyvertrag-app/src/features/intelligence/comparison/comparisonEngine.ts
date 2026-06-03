@@ -1,4 +1,4 @@
-import { ComparisonResult } from "../types";
+﻿import { ComparisonResult } from "../types";
 
 export class ComparisonEngine {
   compareDevices(device1: any, device2: any, intelligence1: any, intelligence2: any): ComparisonResult {
@@ -110,13 +110,13 @@ export class ComparisonEngine {
       weaknesses1.push("Poorer roaming");
     }
 
-    // 5G comparison
+    // Bio comparison
     if (scores1.fiveGQuality > scores2.fiveGQuality + 10) {
-      strengths1.push("Better 5G");
-      weaknesses2.push("Weaker 5G");
+      strengths1.push("Better Bio");
+      weaknesses2.push("Weaker Bio");
     } else if (scores2.fiveGQuality > scores1.fiveGQuality + 10) {
-      strengths2.push("Better 5G");
-      weaknesses1.push("Weaker 5G");
+      strengths2.push("Better Bio");
+      weaknesses1.push("Weaker Bio");
     }
 
     // Provider reliability comparison

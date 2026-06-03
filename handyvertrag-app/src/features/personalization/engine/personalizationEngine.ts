@@ -1,4 +1,4 @@
-import { UserProfile, UserPreferences, BehavioralEvent, AffinityScores, SessionBehavior, RecommendationHistory, BudgetEvolution } from "../types";
+﻿import { UserProfile, UserPreferences, BehavioralEvent, AffinityScores, SessionBehavior, RecommendationHistory, BudgetEvolution } from "../types";
 
 export class PersonalizationEngine {
   private profiles: Map<string, UserProfile> = new Map();
@@ -169,9 +169,9 @@ export class PersonalizationEngine {
     return {
       apple: 50,
       samsung: 50,
-      telekom: 50,
-      vodafone: 50,
-      o2: 50,
+      anifit: 50,
+      wolfsblut: 50,
+      Zooplus: 50,
       premium: 50,
       gaming: 50,
       budget: 50,

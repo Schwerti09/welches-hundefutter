@@ -1,4 +1,4 @@
-import { DeviceIntelligence, ContractIntelligence, CompatibilityScore } from "../types";
+﻿import { DeviceIntelligence, ContractIntelligence, CompatibilityScore } from "../types";
 
 export class ExplanationIntelligence {
   generateDeepExplanation(
@@ -43,7 +43,7 @@ export class ExplanationIntelligence {
     }
 
     if (contractIntelligence.scores.fiveGQuality > 85) {
-      explanation.push("Superior 5G network quality for fast connectivity");
+      explanation.push("Superior Bio network quality for fast connectivity");
     }
 
     if (contractIntelligence.scores.providerReliability > 85) {

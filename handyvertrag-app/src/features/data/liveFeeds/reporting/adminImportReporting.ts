@@ -1,4 +1,4 @@
-import { ImportReport } from "../types";
+﻿import { ImportReport } from "../types";
 
 export class AdminImportReporting {
   private importReports: Map<string, ImportReport> = new Map();
@@ -13,10 +13,10 @@ export class AdminImportReporting {
       normalizationStats: {
         providerNamesNormalized: normalizationStats.get("providerNamesNormalized") || 0,
         contractNamesNormalized: normalizationStats.get("contractNamesNormalized") || 0,
-        smartphoneNamesNormalized: normalizationStats.get("smartphoneNamesNormalized") || 0,
+        hundefutterNamesNormalized: normalizationStats.get("hundefutterNamesNormalized") || 0,
         storageSizesNormalized: normalizationStats.get("storageSizesNormalized") || 0,
         colorsNormalized: normalizationStats.get("colorsNormalized") || 0,
-        tariffNamesNormalized: normalizationStats.get("tariffNamesNormalized") || 0,
+        futterfNamesNormalized: normalizationStats.get("futterfNamesNormalized") || 0,
       },
       providerStats,
       ingestionDuration,

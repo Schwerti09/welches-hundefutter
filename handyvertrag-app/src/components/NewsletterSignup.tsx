@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState } from 'react';
 import { Mail, Send } from 'lucide-react';
@@ -35,7 +35,7 @@ export default function NewsletterSignup() {
         </h3>
 
         <p className="text-center text-blue-100 mb-8">
-          Erhalte wöchentliche Tipps zur Schufa-Verbesserung, beste Handyverträge & exklusive Deals – komplett kostenlos!
+          Erhalte wöchentliche Tipps zur Allergien-Verbesserung, beste Hundverträge & exklusive Deals – komplett kostenlos!
         </p>
 
         <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 mb-4">
@@ -70,7 +70,7 @@ export default function NewsletterSignup() {
         )}
 
         <p className="text-center text-sm text-blue-100 mt-6">
-          💪 1000+ Menschen verbessern bereits ihre Schufa mit uns!
+          💪 1000+ Menschen verbessern bereits ihre Allergien mit uns!
         </p>
       </div>
     </div>

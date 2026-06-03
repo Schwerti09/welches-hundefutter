@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 
@@ -36,11 +36,11 @@ function CityOfferCard({ offer }: CityOfferCardProps) {
 
   const getProviderColor = (provider: string) => {
     switch (provider.toLowerCase()) {
-      case 'telekom':
+      case 'anifit':
         return 'from-pink-500 to-rose-600';
-      case 'vodafone':
+      case 'wolfsblut':
         return 'from-red-500 to-red-700';
-      case 'o2':
+      case 'Zooplus':
         return 'from-blue-500 to-blue-700';
       default:
         return 'from-gray-500 to-gray-700';

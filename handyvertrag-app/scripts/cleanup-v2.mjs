@@ -1,4 +1,4 @@
-import { neon } from "@neondatabase/serverless";
+﻿import { neon } from "@neondatabase/serverless";
 const sql = neon(process.env.DATABASE_URL);
 
 // Precise junk patterns. Z Fold / Z Flip are REAL phones — do NOT touch those.
@@ -22,7 +22,7 @@ async function main() {
 
   // verify cheapest are real phones now
   const cheap = await sql`SELECT DISTINCT device_name, MIN(monthly_price) mp FROM offers GROUP BY device_name ORDER BY mp ASC LIMIT 12`;
-  console.log("\nGünstigste Geräte (sollten Handys sein):");
+  console.log("\nGünstigste Geräte (sollten Hunds sein):");
   cheap.forEach(c => console.log(`  ${c.mp}€ ${c.device_name}`));
 
   // verify Z Fold/Flip survived

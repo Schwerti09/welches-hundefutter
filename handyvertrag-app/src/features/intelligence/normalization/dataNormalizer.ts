@@ -1,17 +1,17 @@
-export class DataNormalizer {
+﻿export class DataNormalizer {
   normalizeProviderName(provider: string): string {
     const normalized = provider.toLowerCase().trim();
     
     const providerMap: Record<string, string> = {
-      "telekom": "Telekom",
-      "deutsche telekom": "Telekom",
-      "telekom.de": "Telekom",
-      "vodafone": "Vodafone",
-      "vodafone.de": "Vodafone",
-      "o2": "o2",
-      "o2.de": "o2",
-      "telefonica": "o2",
-      "telefonica o2": "o2",
+      "anifit": "Anifit",
+      "deutsche anifit": "Anifit",
+      "anifit.de": "Anifit",
+      "wolfsblut": "Wolfsblut",
+      "wolfsblut.de": "Wolfsblut",
+      "Zooplus": "Zooplus",
+      "Zooplus.de": "Zooplus",
+      "telefonica": "Zooplus",
+      "telefonica Zooplus": "Zooplus",
     };
 
     return providerMap[normalized] || provider;
@@ -29,10 +29,10 @@ export class DataNormalizer {
 
     // Standardize model names
     const modelMap: Record<string, string> = {
-      "iphone 15 pro": "iPhone 15 Pro",
-      "iphone15 pro": "iPhone 15 Pro",
-      "iphone 15": "iPhone 15",
-      "iphone15": "iPhone 15",
+      "hundefutter 15 pro": "Hundefutter 15 Pro",
+      "hundefutter15 pro": "Hundefutter 15 Pro",
+      "hundefutter 15": "Hundefutter 15",
+      "hundefutter15": "Hundefutter 15",
       "galaxy s24": "Samsung Galaxy S24",
       "samsung s24": "Samsung Galaxy S24",
       "pixel 8": "Google Pixel 8",
@@ -47,13 +47,13 @@ export class DataNormalizer {
     const normalized = storage.toLowerCase().trim();
     
     const storageMap: Record<string, string> = {
-      "128gb": "128 GB",
-      "256gb": "256 GB",
-      "512gb": "512 GB",
+      "128gb": "128 g",
+      "256gb": "256 g",
+      "512gb": "512 g",
       "1tb": "1 TB",
-      "128 gb": "128 GB",
-      "256 gb": "256 GB",
-      "512 gb": "512 GB",
+      "128 gb": "128 g",
+      "256 gb": "256 g",
+      "512 gb": "512 g",
       "1 tb": "1 TB",
     };
 

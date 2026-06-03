@@ -177,12 +177,12 @@ export default async function BlogArticlePage({
 
         {/* CTA */}
         <div className="mt-10 bg-indigo-900/30 rounded-xl p-6 text-center">
-          <p className="text-white font-semibold mb-2">BELLA findet deinen Vertrag trotz Schufa</p>
+          <p className="text-white font-semibold mb-2">BELLA findet deinen Empfehlung für deinen Hund</p>
           <Link
             href="/"
             className="inline-block bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
           >
-            Jetzt Vertrag trotz Schufa finden
+            Jetzt Empfehlung für deinen Hund finden
           </Link>
         </div>
       </article>

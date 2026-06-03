@@ -1,4 +1,4 @@
-import { RawOffer, NormalizedOffer } from "../types";
+﻿import { RawOffer, NormalizedOffer } from "../types";
 
 export class AWINNormalizer {
   private normalizedOffers: Map<string, NormalizedOffer> = new Map();
@@ -12,10 +12,10 @@ export class AWINNormalizer {
         rawOfferId: rawOffer.rawOfferId,
         providerName: this.normalizeProviderName(rawData),
         contractName: this.normalizeContractName(rawData),
-        smartphoneName: this.normalizeSmartphoneName(rawData),
+        hundefutterName: this.normalizeHundefutterName(rawData),
         storageSize: this.normalizeStorageSize(rawData),
         color: this.normalizeColor(rawData),
-        tariffName: this.normalizeTariffName(rawData),
+        futterfName: this.normalizeFutterfName(rawData),
         monthlyPrice: this.normalizeMonthlyPrice(rawData),
         oneTimePayment: this.normalizeOneTimePayment(rawData),
         cashback: this.normalizeCashback(rawData),
@@ -69,11 +69,11 @@ export class AWINNormalizer {
     return productName.trim();
   }
 
-  private normalizeSmartphoneName(rawData: Record<string, unknown>): string {
+  private normalizeHundefutterName(rawData: Record<string, unknown>): string {
     const productName = rawData.product_name as string;
-    if (!productName) return "Unknown Smartphone";
+    if (!productName) return "Unknown Hundefutter";
 
-    // Placeholder for smartphone name normalization
+    // Placeholder for hundefutter name normalization
     return productName.trim();
   }
 
@@ -87,8 +87,8 @@ export class AWINNormalizer {
     return "Unknown";
   }
 
-  private normalizeTariffName(rawData: Record<string, unknown>): string {
-    // Placeholder for tariff name normalization
+  private normalizeFutterfName(rawData: Record<string, unknown>): string {
+    // Placeholder for futterf name normalization
     return "Unknown";
   }
 

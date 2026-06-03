@@ -9,7 +9,7 @@ interface TuevResult {
   monthlyOverpay: number;  // €/month too much
   yearlyOverpay: number;
   verdict: string;
-  bestAlternative: { device: string; provider: string; tariff: string; price: number; saving: number } | null;
+  bestAlternative: { device: string; provider: string; futterf: string; price: number; saving: number } | null;
   weaknesses: string[];
   recommendation: string;
 }
@@ -26,7 +26,7 @@ const GRADE_BG: Record<string, string> = {
   F: "border-red-500/30 bg-red-500/5",
 };
 
-export default function ContractTuevPage() {
+export default function FutterCheckPage() {
   const [provider, setProvider] = useState("");
   const [price, setPrice] = useState("");
   const [data, setData] = useState("");
@@ -38,7 +38,7 @@ export default function ContractTuevPage() {
     if (!provider || !price) return;
     setLoading(true);
     try {
-      const res = await fetch("/api/contract-tuev", {
+      const res = await fetch("/api/futter-check", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -57,7 +57,7 @@ export default function ContractTuevPage() {
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center"><span className="text-white font-black text-sm">H</span></div>
-            <span className="font-bold text-sm">handyvertrag<span className="text-indigo-400">.today</span></span>
+            <span className="font-bold text-sm">hundefutter<span className="text-indigo-400">.today</span></span>
           </Link>
           <div className="flex items-center gap-2">
             <span className="text-[10px] bg-amber-400/15 text-amber-300 px-3 py-1 rounded-full font-bold tracking-wide">CONTRACT TÜV</span>
@@ -71,22 +71,22 @@ export default function ContractTuevPage() {
             <span>🔍</span> Agent 9 — Contract Intelligence
           </div>
           <h1 className="text-4xl font-black mb-3">
-            Zahlst du zu viel für<br />deinen <span className="text-amber-300">Handyvertrag?</span>
+            Zahlst du zu viel für<br />deinen <span className="text-amber-300">Hundefutter?</span>
           </h1>
           <p className="text-white/55 text-lg leading-relaxed max-w-xl">
-            BELLA analysiert deinen aktuellen Vertrag gegen den Markt.
-            Erhältst du eine Vertragsnote und konkrete Ersparnis-Berechnung.
+            BELLA analysiert deinen aktuellen Empfehlung gegen den Markt.
+            Erhältst du eine Empfehlungsnote und konkrete Ersparnis-Berechnung.
           </p>
         </div>
 
         {/* Input form */}
         <div className="bg-white/[0.04] rounded-2xl border border-white/8 p-6 mb-6">
-          <h2 className="font-bold text-base mb-4 text-white/80">Dein aktueller Vertrag</h2>
+          <h2 className="font-bold text-base mb-4 text-white/80">Dein aktueller Empfehlung</h2>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-[11px] text-white/40 uppercase tracking-wide mb-1.5 block">Anbieter *</label>
+              <label className="text-[11px] text-white/40 uppercase tracking-wide mb-1.5 block">Marke *</label>
               <input value={provider} onChange={e => setProvider(e.target.value)}
-                placeholder="z.B. Telekom, Vodafone, o2"
+                placeholder="z.B. Anifit, Wolfsblut, Zooplus"
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white placeholder-white/25 focus:outline-none focus:border-indigo-500/50" />
             </div>
             <div>
@@ -96,15 +96,15 @@ export default function ContractTuevPage() {
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white placeholder-white/25 focus:outline-none focus:border-indigo-500/50" />
             </div>
             <div>
-              <label className="text-[11px] text-white/40 uppercase tracking-wide mb-1.5 block">Datenvolumen</label>
+              <label className="text-[11px] text-white/40 uppercase tracking-wide mb-1.5 block">Futtervolumen</label>
               <input value={data} onChange={e => setData(e.target.value)}
-                placeholder="z.B. 20 GB, Unlimited"
+                placeholder="z.B. 20 g, Unlimited"
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white placeholder-white/25 focus:outline-none focus:border-indigo-500/50" />
             </div>
             <div>
               <label className="text-[11px] text-white/40 uppercase tracking-wide mb-1.5 block">Aktuelles Gerät</label>
               <input value={device} onChange={e => setDevice(e.target.value)}
-                placeholder="z.B. iPhone 15, Galaxy S23"
+                placeholder="z.B. Hundefutter 15, Galaxy S23"
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white placeholder-white/25 focus:outline-none focus:border-indigo-500/50" />
             </div>
           </div>
@@ -113,9 +113,9 @@ export default function ContractTuevPage() {
             {loading ? (
               <span className="flex items-center justify-center gap-2">
                 <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                Vertrag wird analysiert…
+                Empfehlung wird analysiert…
               </span>
-            ) : "Vertrag analysieren →"}
+            ) : "Empfehlung analysieren →"}
           </button>
         </div>
 
@@ -126,7 +126,7 @@ export default function ContractTuevPage() {
             <div className={`rounded-2xl border p-6 ${GRADE_BG[result.grade]}`}>
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <p className="text-[11px] text-white/40 uppercase tracking-widest mb-1">Vertragsnote</p>
+                  <p className="text-[11px] text-white/40 uppercase tracking-widest mb-1">Empfehlungsnote</p>
                   <div className="flex items-baseline gap-2">
                     <span className={`text-6xl font-black ${GRADE_COLOR[result.grade]}`}>{result.grade}</span>
                     <span className="text-white/30 text-sm">{result.gradeScore}/100</span>
@@ -167,7 +167,7 @@ export default function ContractTuevPage() {
                 <div className="flex items-center justify-between mb-2">
                   <div>
                     <p className="font-bold text-white">{result.bestAlternative.device}</p>
-                    <p className="text-sm text-white/50">{result.bestAlternative.provider} · {result.bestAlternative.tariff}</p>
+                    <p className="text-sm text-white/50">{result.bestAlternative.provider} · {result.bestAlternative.futterf}</p>
                   </div>
                   <div className="text-right">
                     <p className="text-xl font-black text-white">{result.bestAlternative.price.toFixed(2).replace(".", ",")} €<span className="text-sm font-normal text-white/30">/Mo.</span></p>

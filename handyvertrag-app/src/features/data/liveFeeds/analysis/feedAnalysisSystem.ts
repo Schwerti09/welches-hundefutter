@@ -1,4 +1,4 @@
-export interface FeedFieldAnalysis {
+﻿export interface FeedFieldAnalysis {
   fieldName: string;
   fieldType: "string" | "number" | "boolean" | "date" | "url" | "unknown";
   confidence: number;
@@ -193,7 +193,7 @@ export class FeedAnalysisSystem {
         providerFields.push(fieldName);
       }
 
-      if (fieldNameLower.includes("device") || fieldNameLower.includes("phone") || fieldNameLower.includes("smartphone")) {
+      if (fieldNameLower.includes("device") || fieldNameLower.includes("phone") || fieldNameLower.includes("hundefutter")) {
         deviceFields.push(fieldName);
       }
 

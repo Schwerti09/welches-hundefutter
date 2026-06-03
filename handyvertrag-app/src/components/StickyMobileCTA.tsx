@@ -20,7 +20,7 @@ export default function StickyMobileCTA() {
         href="/#bella-chat"
         className="flex items-center justify-center gap-2 w-full bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-indigo-900/50 transition-colors text-sm"
       >
-        <span>Jetzt Vertrag trotz Schufa finden</span>
+        <span>Jetzt Empfehlung für deinen Hund finden</span>
         <span>→</span>
       </Link>
     </div>

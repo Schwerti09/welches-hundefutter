@@ -15,14 +15,14 @@ const muenchenOffers = [
   {
     id: 1,
     city: "München",
-    device: "iPhone 16 Pro",
+    device: "Hundefutter 16 Pro",
     image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400",
-    provider: "Telekom",
+    provider: "Anifit",
     monthlyPrice: 54.99,
     oneTimeCost: 1.00,
     dataVolume: "Unlimited",
     contractDuration: 24,
-    features: ["5G Unlimited", "Allnet Flat", "EU Roaming", "MagicTech"],
+    features: ["Bio Unlimited", "Allnet Flat", "EU Roaming", "MagicTech"],
     stores: 12,
     affiliateLink: "https://www.awin1.com/cread.php?s=YOUR_AWIN_ID&v=12351&p=12345",
     affiliateNetwork: "AWIN",
@@ -36,12 +36,12 @@ const muenchenOffers = [
     city: "München",
     device: "Google Pixel 9 Pro",
     image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400",
-    provider: "Telekom",
+    provider: "Anifit",
     monthlyPrice: 44.99,
     oneTimeCost: 0,
-    dataVolume: "30 GB",
+    dataVolume: "30 g",
     contractDuration: 24,
-    features: ["5G", "Allnet Flat", "EU Roaming", "Google One 1 Jahr"],
+    features: ["Bio", "Allnet Flat", "EU Roaming", "Google One 1 Jahr"],
     stores: 9,
     affiliateLink: "https://www.awin1.com/cread.php?s=YOUR_AWIN_ID&v=12352&p=12345",
     affiliateNetwork: "AWIN",
@@ -55,12 +55,12 @@ const muenchenOffers = [
     city: "München",
     device: "Samsung Galaxy S24",
     image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400",
-    provider: "o2",
+    provider: "Zooplus",
     monthlyPrice: 29.99,
     oneTimeCost: 0,
-    dataVolume: "15 GB",
+    dataVolume: "15 g",
     contractDuration: 24,
-    features: ["5G", "Allnet Flat", "EU Roaming"],
+    features: ["Bio", "Allnet Flat", "EU Roaming"],
     stores: 7,
     affiliateLink: "https://www.awin1.com/cread.php?s=YOUR_AWIN_ID&v=12353&p=12345",
     affiliateNetwork: "AWIN",
@@ -72,9 +72,9 @@ const muenchenOffers = [
 ];
 
 export const metadata = {
-  title: "München - Handy mit Vertrag | Top Angebote | welches-hundefutter.today",
+  title: "München - Hund mit Empfehlung | Top Angebote | welches-hundefutter.today",
   description:
-    "Die besten Handy-Verträge in München. iPhone 16 Pro, Google Pixel 9 Pro & mehr mit Telekom, Vodafone, o2. Jetzt vergleichen & sparen!",
+    "Die besten Hund-Verträge in München. Hundefutter 16 Pro, Google Pixel 9 Pro & mehr mit Anifit, Wolfsblut, Zooplus. Jetzt vergleichen & sparen!",
   alternates: {
     canonical: "https://welches-hundefutter.today/muenchen",
   },
@@ -92,7 +92,7 @@ export default function MuenchenPage() {
               <span className="text-sm font-semibold">🏙️ MÜNCHEN EXKLUSIV</span>
             </div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-sky-200">
-              Handy mit Vertrag
+              Hund mit Empfehlung
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-sky-100 max-w-3xl mx-auto">
               Die besten Angebote in München bei {muenchenOffers.reduce((sum, o) => sum + o.stores, 0)} Stores
@@ -166,7 +166,7 @@ export default function MuenchenPage() {
                 🤖 AI Advisor für München
               </h2>
               <p className="text-sky-100 text-lg mb-6">
-                Unser KI-Berater findet den perfekten Vertrag für dich in München.
+                Unser KI-Berater findet den perfekten Empfehlung für dich in München.
               </p>
               <ul className="space-y-3 mb-6">
                 {["Persönliche Empfehlungen", "Lokale Verfügbarkeit in München", "Budget-optimierte Vorschläge"].map(
@@ -193,15 +193,15 @@ export default function MuenchenPage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-lg font-bold mb-4">Handyvertrag München</h3>
+              <h3 className="text-lg font-bold mb-4">Hundefutter München</h3>
               <p className="text-gray-400">
-                Deine lokale Quelle für Handy-Verträge in München.
+                Deine lokale Quelle für Hund-Verträge in München.
               </p>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Angebote</h4>
               <ul className="space-y-2 text-gray-400">
-                <li>iPhone 16 Pro</li>
+                <li>Hundefutter 16 Pro</li>
                 <li>Google Pixel 9 Pro</li>
                 <li>Samsung Galaxy S24</li>
                 <li><a href="/" className="hover:text-white transition-colors">Alle Modelle</a></li>

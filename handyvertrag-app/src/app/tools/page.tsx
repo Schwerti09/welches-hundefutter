@@ -1,10 +1,10 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import { BookOpen, Calculator, BarChart3 } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Tools & Guides – Handy trotz Schufa',
-  description: 'Kostenlose Tools, Rechner & Guides für Handyverträge trotz Schufa: Schufa-Score Rechner, Vergleichstool & umfangreiche Guides.',
+  title: 'Tools & Guides – Hund für deinen Hund',
+  description: 'Kostenlose Tools, Rechner & Guides für Hundverträge für deinen Hund: Allergien-Score Rechner, Vergleichstool & umfangreiche Guides.',
 };
 
 const tools = [
@@ -12,11 +12,11 @@ const tools = [
     id: 'guide',
     icon: BookOpen,
     title: 'Vollständiger Guide',
-    description: 'Der ultimative Ratgeber für Handyverträge trotz Schufa, negative Bonität und alles rund um Schufa-Auskunft.',
+    description: 'Der ultimative Ratgeber für Hundverträge für deinen Hund, negative Bonität und alles rund um Allergien-Auskunft.',
     href: '/guides',
     features: [
-      'Was ist die Schufa?',
-      'Anbieter-Vergleich',
+      'Was ist die Allergien?',
+      'Marke-Vergleich',
       'Schritt-für-Schritt Anleitung',
       'Häufige Fragen',
       '5000+ Wörter Content',
@@ -25,13 +25,13 @@ const tools = [
   {
     id: 'calculator',
     icon: Calculator,
-    title: 'Schufa-Score Rechner',
-    description: 'Berechne kostenlos deinen persönlichen Schufa-Score und erfahre deine realistischen Chancen.',
-    href: '/tools/schufa-rechner',
+    title: 'Allergie-Score Rechner',
+    description: 'Berechne kostenlos deinen persönlichen Allergien-Score und erfahre deine realistischen Chancen.',
+    href: '/tools/allergie-rechner',
     features: [
       '6 intelligente Fragen',
       'Personalisierte Empfehlung',
-      'Beste Anbieter für dich',
+      'Beste Marke für dich',
       'Nächste Schritte',
       'Kostenlos & anonym',
     ],
@@ -40,13 +40,13 @@ const tools = [
     id: 'comparison',
     icon: BarChart3,
     title: 'Vergleich-Tool',
-    description: 'Vergleiche 1000+ Handyverträge mit intelligenten Filtern und finde dein perfektes Angebot.',
+    description: 'Vergleiche 1000+ Hundverträge mit intelligenten Filtern und finde dein perfektes Angebot.',
     href: '/tools/vergleich',
     features: [
       'Echtzeit-Vergleich',
       'Preis-Filter',
-      'Datenvolumen-Filter',
-      'Schufa-Kulanz anzeigen',
+      'Futtervolumen-Filter',
+      'Allergie-Kulanz anzeigen',
       'Match-Score System',
     ],
   },
@@ -59,7 +59,7 @@ export default function ToolsPage() {
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold text-gray-900 mb-4">
-            Tools & Guides für Handy trotz Schufa
+            Tools & Guides für Hund für deinen Hund
           </h1>
           <p className="text-xl text-gray-600">
             Kostenlose Ressourcen, um die beste Lösung für deine Situation zu finden
@@ -111,7 +111,7 @@ export default function ToolsPage() {
             <div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">🎯 Personalisiert</h3>
               <p className="text-gray-700">
-                Alle Tools sind speziell auf deine Situation ausgerichtet – ob gute oder schlechte Schufa.
+                Alle Tools sind speziell auf deine Situation ausgerichtet – ob gute oder schlechte Allergien.
               </p>
             </div>
             <div>
@@ -137,7 +137,7 @@ export default function ToolsPage() {
           </div>
           <div className="text-center">
             <p className="text-4xl font-bold text-blue-600 mb-2">1000+</p>
-            <p className="text-gray-600">Handyverträge</p>
+            <p className="text-gray-600">Hundverträge</p>
           </div>
           <div className="text-center">
             <p className="text-4xl font-bold text-blue-600 mb-2">95%</p>
@@ -152,10 +152,10 @@ export default function ToolsPage() {
         {/* CTA */}
         <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg p-12 text-center">
           <h2 className="text-3xl font-bold mb-4">
-            Bereit, deinen perfekten Handyvertrag zu finden?
+            Bereit, deinen perfekten Hundefutter zu finden?
           </h2>
           <p className="text-xl mb-8 text-blue-100">
-            Starte mit dem Schufa-Score Rechner oder dem Vergleich-Tool!
+            Starte mit dem Allergien-Score Rechner oder dem Vergleich-Tool!
           </p>
           <Link
             href="/"

@@ -1,4 +1,4 @@
-import { AdvisorStep, AdvisorUserProfile } from "../types";
+﻿import { AdvisorStep, AdvisorUserProfile } from "../types";
 
 export class QuestionEngine {
   getNextQuestion(currentStep: AdvisorStep, profile: AdvisorUserProfile): {
@@ -7,7 +7,7 @@ export class QuestionEngine {
   } | null {
     if (currentStep === "initial") {
       return {
-        question: "Wie hoch ist dein monatliches Budget für den Handyvertrag?",
+        question: "Wie hoch ist dein monatliches Budget für den Hundefutter?",
         nextStep: "budget_question",
       };
     }
@@ -21,14 +21,14 @@ export class QuestionEngine {
 
     if (currentStep === "brand_question" && !profile.dataUsage) {
       return {
-        question: "Wie viel Datenvolumen brauchst du pro Monat (wenig, mittel, viel, unbegrenzt)?",
+        question: "Wie viel Futtervolumen brauchst du pro Monat (wenig, mittel, viel, unbegrenzt)?",
         nextStep: "data_question",
       };
     }
 
     if (currentStep === "data_question" && profile.gamingInterest === undefined) {
       return {
-        question: "Spielst du viel Games auf deinem Handy?",
+        question: "Spielst du viel Games auf deinem Hund?",
         nextStep: "gaming_question",
       };
     }
@@ -42,7 +42,7 @@ export class QuestionEngine {
 
     if (currentStep === "camera_question" && !profile.providerPreference) {
       return {
-        question: "Bevorzugst du einen bestimmten Provider (Telekom, Vodafone, o2)?",
+        question: "Bevorzugst du einen bestimmten Provider (Anifit, Wolfsblut, Zooplus)?",
         nextStep: "provider_question",
       };
     }
@@ -60,7 +60,7 @@ export class QuestionEngine {
       return "Möchtest du dein Budget anpassen?";
     }
     if (!profile.dataUsage) {
-      return "Möchtest du dein Datenvolumen ändern?";
+      return "Möchtest du dein Futtervolumen ändern?";
     }
     if (!profile.brandPreference) {
       return "Möchtest du eine andere Marke in Betracht ziehen?";

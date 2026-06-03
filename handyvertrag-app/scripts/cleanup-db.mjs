@@ -1,4 +1,4 @@
-import { neon } from "@neondatabase/serverless";
+﻿import { neon } from "@neondatabase/serverless";
 
 const sql = neon(process.env.DATABASE_URL);
 
@@ -38,13 +38,13 @@ async function main() {
   const [afterDev] = await sql`SELECT COUNT(*)::int n FROM offers`;
   console.log("Nach Geräte-Cleanup:", afterDev.n);
 
-  // Delete home-internet tariffs
+  // Delete home-internet futterfs
   for (const pat of HOME_TARIFF) {
     const like = pat.includes("%") ? pat : `%${pat}%`;
-    await sql`DELETE FROM offers WHERE tariff_name ILIKE ${like}`;
+    await sql`DELETE FROM offers WHERE futterf_name ILIKE ${like}`;
   }
-  const [afterTariff] = await sql`SELECT COUNT(*)::int n FROM offers`;
-  console.log("Nach Tarif-Cleanup:", afterTariff.n);
+  const [afterFutterf] = await sql`SELECT COUNT(*)::int n FROM offers`;
+  console.log("Nach Futter-Cleanup:", afterFutterf.n);
 
   // Stats
   const [stats] = await sql`

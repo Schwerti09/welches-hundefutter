@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Handy trotz Schufa – Der komplette Guide 2026",
-  description: "Alles über Handyverträge trotz Schufa, negativer Bonität & Schufa-Auskunft. Anbieter-Vergleich, Tipps & häufige Fragen.",
+  title: "Hund für deinen Hund – Der komplette Guide 2026",
+  description: "Alles über Hundverträge für deinen Hund, negativer Bonität & Allergien-Auskunft. Marke-Vergleich, Tipps & häufige Fragen.",
 };
 
 export default function GuideLayout({

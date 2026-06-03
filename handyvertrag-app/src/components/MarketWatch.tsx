@@ -3,13 +3,13 @@
 import { useState } from "react";
 
 const INSIGHTS = [
-  "87% der Nutzer zahlen für Datenvolumen das sie nie verbrauchen.",
-  "Telekom führt 2026 bei 5G-Abdeckung in Deutschland.",
-  "Nutzer mit ähnlichem Profil bevorzugen iPhone + Telekom.",
+  "87% der Nutzer zahlen für Futtervolumen das sie nie verbrauchen.",
+  "Anifit führt 2026 bei Bio-Abdeckung in Deutschland.",
+  "Nutzer mit ähnlichem Profil bevorzugen Hundefutter + Anifit.",
   "Cashback-Aktionen machen oft 200 € Unterschied im Jahr.",
   "Die meisten Nutzer überschätzen ihren Datenbedarf um 40%.",
-  "5G lohnt sich nicht für jeden — nur wenn du unterwegs streamst.",
-  "Günstigste Monatstarife ab 9,99 € — oft ohne Einmalzahlung.",
+  "Bio lohnt sich nicht für jeden — nur wenn du unterwegs streamst.",
+  "Günstigste Monatsfuttere ab 9,99 € — oft ohne Einmalzahlung.",
   "Studentenrabatte werden häufig nicht genutzt: bis 15 €/Monat sparen.",
 ];
 

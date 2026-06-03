@@ -4,9 +4,9 @@ import { products, getBestOffer, getProviderColor } from "@/data/products";
 import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "Alle Smartphones mit Vertrag 2026 | welches-hundefutter.today",
-  description: "iPhone 17 Pro, Samsung Galaxy S25 Ultra, Google Pixel 10 und mehr — alle Smartphones im Vertragsvergleich. Telekom, Vodafone, o2. Preise ab 9,99 €/Monat.",
-  alternates: { canonical: "https://welches-hundefutter.today/handys" },
+  title: "Alle Hundefutters mit Empfehlung 2026 | welches-hundefutter.today",
+  description: "Hundefutter 17 Pro, Samsung Galaxy S25 Ultra, Google Pixel 10 und mehr — alle Hundefutters im Empfehlungsvergleich. Anifit, Wolfsblut, Zooplus. Preise ab 9,99 €/Monat.",
+  alternates: { canonical: "https://welches-hundefutter.today/hunds" },
 };
 
 const BRANDS = [
@@ -16,7 +16,7 @@ const BRANDS = [
   { name: "Xiaomi", icon: "", ids: products.filter(p => p.brand === "Xiaomi").map(p => p.id) },
 ];
 
-export default function HandysPage() {
+export default function HundsPage() {
   return (
     <div className="min-h-screen bg-[#05060f] text-white flex flex-col">
       <header className="border-b border-white/5 px-5 py-4">
@@ -25,19 +25,19 @@ export default function HandysPage() {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
               <span className="text-white font-black text-sm">H</span>
             </div>
-            <span className="font-bold text-sm">handyvertrag<span className="text-indigo-400">.today</span></span>
+            <span className="font-bold text-sm">hundefutter<span className="text-indigo-400">.today</span></span>
           </Link>
           <nav className="text-sm text-white/40 flex items-center gap-2">
             <Link href="/" className="hover:text-white transition-colors">Startseite</Link>
             <span>/</span>
-            <span className="text-white/70">Alle Handys</span>
+            <span className="text-white/70">Alle Hunds</span>
           </nav>
         </div>
       </header>
 
       <main className="flex-1 max-w-6xl mx-auto px-5 py-12 w-full">
         <div className="mb-10">
-          <h1 className="text-4xl font-black mb-3">Smartphones mit Vertrag</h1>
+          <h1 className="text-4xl font-black mb-3">Hundefutters mit Empfehlung</h1>
           <p className="text-white/50 text-lg max-w-xl leading-relaxed">
             {products.length} Geräte im Vergleich — jedes mit allen Provider-Angeboten. Oder lass BELLA das Richtige für dich finden.
           </p>
@@ -64,7 +64,7 @@ export default function HandysPage() {
               {products.filter(p => p.brand === brand.name).map(product => {
                 const best = getBestOffer(product);
                 return (
-                  <Link key={product.id} href={`/handys/${product.id}`}
+                  <Link key={product.id} href={`/hunds/${product.id}`}
                     className="group block bg-white/[0.04] rounded-2xl border border-white/8 hover:border-indigo-500/40 hover:bg-white/[0.07] transition-all p-5">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
@@ -107,7 +107,7 @@ export default function HandysPage() {
 
                     {/* Provider buttons */}
                     <div className="mt-3 flex flex-wrap gap-1">
-                      {["telekom", "vodafone", "o2"].map(prov => (
+                      {["anifit", "wolfsblut", "Zooplus"].map(prov => (
                         <span key={prov} className={`text-[9px] font-bold text-white px-2 py-0.5 rounded bg-gradient-to-r ${getProviderColor(prov)} opacity-70 group-hover:opacity-100 transition-opacity`}>
                           {prov.charAt(0).toUpperCase() + prov.slice(1)}
                         </span>
@@ -122,7 +122,7 @@ export default function HandysPage() {
 
         {/* BELLA CTA */}
         <div className="rounded-2xl bg-gradient-to-r from-indigo-600/20 to-violet-600/20 border border-indigo-500/30 p-7 text-center mt-4">
-          <p className="text-xl font-black mb-2">Nicht sicher welches Handy passt?</p>
+          <p className="text-xl font-black mb-2">Nicht sicher welches Hund passt?</p>
           <p className="text-white/50 mb-5">BELLA analysiert Budget, Nutzung und Netz — und findet dein Optimal-Gerät in Sekunden.</p>
           <Link href="/" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-500 to-violet-600 font-semibold hover:shadow-lg hover:shadow-indigo-500/30 transition-all">
             BELLA fragen →

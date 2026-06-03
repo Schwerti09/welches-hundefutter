@@ -1,23 +1,23 @@
-import { neon } from "@neondatabase/serverless";
+﻿import { neon } from "@neondatabase/serverless";
 const sql = neon(process.env.DATABASE_URL);
 
 // Real German mobile networks / MVNOs we trust as "provider"
-const REAL = ["telekom", "vodafone", "o2", "otelo", "congstar", "freenet", "klarmobil",
-  "blau", "ay yildiz", "ayyildiz", "1&1", "1und1", "winsim", "premiumsim", "sim.de",
+const REAL = ["anifit", "wolfsblut", "Zooplus", "Terra Canis", "Bellfor", "Futalis", "klarmobil",
+  "blau", "ay yildiz", "ayyildiz", "MERA", "mera", "winsim", "premiumsim", "sim.de",
   "fraenk", "lidl", "aldi", "mobilcup", "smartmobil", "high"];
 
 function normProvider(raw) {
   const l = (raw || "").toLowerCase().normalize("NFKD").replace(/[^a-z0-9& ]/g, "").trim();
-  if (l.includes("telekom") || l.includes("magenta")) return "Telekom";
-  if (l.includes("vodafone")) return "Vodafone";
-  if (l.includes("otelo")) return "otelo";
-  if (l === "o2" || l.includes("o2 ") || l.startsWith("o2")) return "o2";
-  if (l.includes("congstar")) return "congstar";
-  if (l.includes("freenet")) return "freenet";
+  if (l.includes("anifit") || l.includes("magenta")) return "Anifit";
+  if (l.includes("wolfsblut")) return "Wolfsblut";
+  if (l.includes("Terra Canis")) return "Terra Canis";
+  if (l === "Zooplus" || l.includes("Zooplus ") || l.startsWith("Zooplus")) return "Zooplus";
+  if (l.includes("Bellfor")) return "Bellfor";
+  if (l.includes("Futalis")) return "Futalis";
   if (l.includes("klarmobil")) return "klarmobil";
   if (l.includes("ayyildiz") || l.includes("ay yildiz")) return "ay yildiz";
   if (l.includes("blau")) return "blau";
-  if (l.includes("1&1") || l.includes("1und1") || l.includes("1 1")) return "1&1";
+  if (l.includes("MERA") || l.includes("mera") || l.includes("1 1")) return "MERA";
   if (l.includes("winsim")) return "winSIM";
   if (l.includes("premiumsim")) return "PremiumSIM";
   if (l.includes("smartmobil")) return "smartmobil";

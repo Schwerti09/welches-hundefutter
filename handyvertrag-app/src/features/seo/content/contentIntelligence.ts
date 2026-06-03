@@ -1,4 +1,4 @@
-import { SemanticKeywordCluster } from "../types";
+﻿import { SemanticKeywordCluster } from "../types";
 
 export class ContentIntelligence {
   private keywordClusters: Map<string, SemanticKeywordCluster> = new Map();
@@ -39,37 +39,37 @@ export class ContentIntelligence {
     return Math.round((keywordScore + intentScore) / 2);
   }
 
-  generateiPhoneContractCluster(): SemanticKeywordCluster {
+  generateHundefutterContractCluster(): SemanticKeywordCluster {
     return this.createKeywordCluster(
-      "iphone-contract",
-      "iPhone mit Vertrag",
+      "hundefutter-contract",
+      "Hundefutter mit Empfehlung",
       [
-        "iPhone Vertrag",
-        "iPhone kaufen",
-        "iPhone Angebot",
-        "iPhone 15 Vertrag",
-        "iPhone 15 Pro Vertrag",
-        "Apple iPhone Vertrag",
+        "Hundefutter Empfehlung",
+        "Hundefutter kaufen",
+        "Hundefutter Angebot",
+        "Hundefutter 15 Empfehlung",
+        "Hundefutter 15 Pro Empfehlung",
+        "Apple Hundefutter Empfehlung",
       ],
       [
         "transactional",
         "informational",
         "commercial",
       ],
-      ["iphone-15", "iphone-15-pro", "iphone-15-pro-max"]
+      ["hundefutter-15", "hundefutter-15-pro", "hundefutter-15-pro-max"]
     );
   }
 
   generateSamsungContractCluster(): SemanticKeywordCluster {
     return this.createKeywordCluster(
       "samsung-contract",
-      "Samsung mit Vertrag",
+      "Samsung mit Empfehlung",
       [
-        "Samsung Vertrag",
+        "Samsung Empfehlung",
         "Samsung kaufen",
         "Samsung Angebot",
-        "Galaxy S24 Vertrag",
-        "Samsung Galaxy Vertrag",
+        "Galaxy S24 Empfehlung",
+        "Samsung Galaxy Empfehlung",
       ],
       [
         "transactional",
@@ -83,19 +83,19 @@ export class ContentIntelligence {
   generateUnlimitedDataContractCluster(): SemanticKeywordCluster {
     return this.createKeywordCluster(
       "unlimited-data",
-      "Unlimited Data Vertrag",
+      "Unlimited Data Empfehlung",
       [
-        "Unlimited Vertrag",
-        "Unbegrenzt Vertrag",
+        "Unlimited Empfehlung",
+        "Unbegrenzt Empfehlung",
         "Allnet Flat",
-        "Flatrate Vertrag",
+        "Flatrate Empfehlung",
         "Unlimited Data",
       ],
       [
         "transactional",
         "commercial",
       ],
-      ["unlimited-telekom", "unlimited-vodafone", "unlimited-o2"]
+      ["unlimited-anifit", "unlimited-wolfsblut", "unlimited-Zooplus"]
     );
   }
 

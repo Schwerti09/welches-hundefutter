@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useMemo } from "react";
 import type { Product } from "@/data/products";
@@ -8,7 +8,7 @@ interface FilteredProductsProps {
   products: Product[];
 }
 
-const PROVIDERS = ["Alle", "Telekom", "Vodafone", "o2"];
+const PROVIDERS = ["Alle", "Anifit", "Wolfsblut", "Zooplus"];
 const BUDGETS = [
   { label: "Alle Preise", max: Infinity },
   { label: "bis 25 €/Monat", max: 25 },
@@ -20,7 +20,7 @@ const TAGS = [
   { label: "Kamera", value: "kamera" },
   { label: "Gaming", value: "gaming" },
   { label: "Budget", value: "budget" },
-  { label: "5G", value: "5g" },
+  { label: "Bio", value: "5g" },
   { label: "KI", value: "ki" },
 ];
 

@@ -7,7 +7,7 @@ export class StructuredDataGenerator {
       "@type": "Product",
       name: product.name,
       image: product.image,
-      description: `${product.brand} ${product.name} mit Vertrag bei ${offer.provider}`,
+      description: `${product.brand} ${product.name} mit Empfehlung bei ${offer.provider}`,
       brand: {
         "@type": "Brand",
         name: product.brand,
@@ -143,13 +143,13 @@ export class StructuredDataGenerator {
     const data = {
       "@context": "https://schema.org",
       "@type": "Organization",
-      name: "Handyvertrag.today",
+      name: "Hundefutter.today",
       url: "https://welches-hundefutter.today",
       logo: "https://welches-hundefutter.today/logo.png",
-      description: "Deutschlands intelligente Handyvertrag-Vergleichsplattform mit AI-powered Recommendations",
+      description: "Deutschlands intelligente Hundefutter-Vergleichsplattform mit AI-powered Recommendations",
       sameAs: [
-        "https://twitter.com/handyvertrag",
-        "https://facebook.com/handyvertrag",
+        "https://twitter.com/hundefutter",
+        "https://facebook.com/hundefutter",
       ],
       contactPoint: {
         "@type": "ContactPoint",
@@ -177,7 +177,7 @@ export class StructuredDataGenerator {
       },
       publisher: {
         "@type": "Organization",
-        name: "Handyvertrag.today",
+        name: "Hundefutter.today",
         logo: {
           "@type": "ImageObject",
           url: "https://welches-hundefutter.today/logo.png",

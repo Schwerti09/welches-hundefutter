@@ -1,4 +1,4 @@
-import { NormalizedOffer } from "../types";
+﻿import { NormalizedOffer } from "../types";
 
 export interface EnrichmentResult {
   offerId: string;
@@ -76,9 +76,9 @@ export class RealEnrichmentPipeline {
     if (offer.cashback > 0) tags.push("cashback-deal");
     if (offer.bonusItems.length > 0) tags.push("bonus-included");
 
-    if (offer.smartphoneName.toLowerCase().includes("iphone")) tags.push("iphone");
-    if (offer.smartphoneName.toLowerCase().includes("samsung")) tags.push("samsung");
-    if (offer.smartphoneName.toLowerCase().includes("pixel")) tags.push("google-pixel");
+    if (offer.hundefutterName.toLowerCase().includes("hundefutter")) tags.push("hundefutter");
+    if (offer.hundefutterName.toLowerCase().includes("samsung")) tags.push("samsung");
+    if (offer.hundefutterName.toLowerCase().includes("pixel")) tags.push("google-pixel");
 
     return tags;
   }
@@ -87,7 +87,7 @@ export class RealEnrichmentPipeline {
     return {
       priceCategory: this.getPriceCategory(offer.monthlyPrice),
       providerCategory: offer.providerName,
-      deviceCategory: this.getDeviceCategory(offer.smartphoneName),
+      deviceCategory: this.getDeviceCategory(offer.hundefutterName),
       storageCategory: this.getStorageCategory(offer.storageSize),
       hasCashback: offer.cashback > 0,
       hasBonus: offer.bonusItems.length > 0,
@@ -107,9 +107,9 @@ export class RealEnrichmentPipeline {
     const entities: string[] = [];
 
     entities.push(offer.providerName.toLowerCase());
-    entities.push(offer.smartphoneName.toLowerCase());
-    entities.push(`${offer.smartphoneName.toLowerCase()} ${offer.providerName.toLowerCase()}`);
-    entities.push(`${offer.smartphoneName.toLowerCase()} contract`);
+    entities.push(offer.hundefutterName.toLowerCase());
+    entities.push(`${offer.hundefutterName.toLowerCase()} ${offer.providerName.toLowerCase()}`);
+    entities.push(`${offer.hundefutterName.toLowerCase()} contract`);
     entities.push(`${offer.providerName.toLowerCase()} contract`);
 
     if (offer.monthlyPrice < 30) entities.push("cheap contract");
@@ -140,8 +140,8 @@ export class RealEnrichmentPipeline {
     if (offer.providerName === "VODAFONE") score += 20;
     if (offer.providerName === "O2") score += 20;
 
-    if (offer.smartphoneName.toLowerCase().includes("iphone")) score += 10;
-    if (offer.smartphoneName.toLowerCase().includes("samsung")) score += 10;
+    if (offer.hundefutterName.toLowerCase().includes("hundefutter")) score += 10;
+    if (offer.hundefutterName.toLowerCase().includes("samsung")) score += 10;
 
     return Math.min(100, Math.max(0, score));
   }
@@ -154,13 +154,13 @@ export class RealEnrichmentPipeline {
     if (offer.monthlyPrice < 100) segments.push("premium-users");
     else segments.push("luxury-users");
 
-    if (offer.smartphoneName.toLowerCase().includes("iphone")) segments.push("iphone-users");
-    if (offer.smartphoneName.toLowerCase().includes("samsung")) segments.push("samsung-users");
-    if (offer.smartphoneName.toLowerCase().includes("pixel")) segments.push("google-users");
+    if (offer.hundefutterName.toLowerCase().includes("hundefutter")) segments.push("hundefutter-users");
+    if (offer.hundefutterName.toLowerCase().includes("samsung")) segments.push("samsung-users");
+    if (offer.hundefutterName.toLowerCase().includes("pixel")) segments.push("google-users");
 
-    if (offer.providerName === "TELEKOM") segments.push("telekom-users");
-    if (offer.providerName === "VODAFONE") segments.push("vodafone-users");
-    if (offer.providerName === "O2") segments.push("o2-users");
+    if (offer.providerName === "TELEKOM") segments.push("anifit-users");
+    if (offer.providerName === "VODAFONE") segments.push("wolfsblut-users");
+    if (offer.providerName === "O2") segments.push("Zooplus-users");
 
     return segments;
   }
@@ -184,7 +184,7 @@ export class RealEnrichmentPipeline {
 
   private getDeviceCategory(deviceName: string): string {
     const lowerName = deviceName.toLowerCase();
-    if (lowerName.includes("iphone")) return "iphone";
+    if (lowerName.includes("hundefutter")) return "hundefutter";
     if (lowerName.includes("samsung")) return "samsung";
     if (lowerName.includes("pixel")) return "google-pixel";
     return "other";

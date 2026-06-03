@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -29,7 +29,7 @@ export default function Navbar() {
               <span className="text-white font-black text-sm">H</span>
             </div>
             <span className={`font-bold text-lg transition-colors ${scrolled ? "text-gray-900" : "text-white"}`}>
-              handyvertrag<span className="text-blue-400">.today</span>
+              hundefutter<span className="text-blue-400">.today</span>
             </span>
           </Link>
 

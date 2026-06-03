@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 const refineSchema = z.object({
@@ -15,9 +15,9 @@ export async function POST(request: NextRequest) {
     const refinementMessages: Record<string, string> = {
       too_expensive: "Verstanden! Ich suche günstigere Optionen für dich. Was ist dein maximales Budget pro Monat?",
       wrong_brand: "Kein Problem! Welche Marke bevorzugst du? Apple, Samsung oder Google?",
-      need_more_data: "Du brauchst mehr Datenvolumen? Ab welchem Volumen wärst du zufrieden?",
-      wrong_provider: "Welchen Provider bevorzugst du – Telekom, Vodafone oder o2?",
-      satisfied: "Super! Ich freue mich, dass ich helfen konnte. Viel Spaß mit deinem neuen Vertrag!",
+      need_more_data: "Du brauchst mehr Futtervolumen? Ab welchem Volumen wärst du zufrieden?",
+      wrong_provider: "Welchen Provider bevorzugst du – Anifit, Wolfsblut oder Zooplus?",
+      satisfied: "Super! Ich freue mich, dass ich helfen konnte. Viel Spaß mit deinem neuen Empfehlung!",
     };
 
     return NextResponse.json({

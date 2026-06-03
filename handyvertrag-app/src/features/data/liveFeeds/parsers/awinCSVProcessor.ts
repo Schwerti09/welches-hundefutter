@@ -1,4 +1,4 @@
-export class AWINCSVProcessor {
+﻿export class AWINCSVProcessor {
   private csvData: Record<string, unknown>[] = [];
 
   processCSV(filePath: string, encoding: string = "utf-8"): { success: boolean; rows: Record<string, unknown>[]; error?: string } {
@@ -11,8 +11,8 @@ export class AWINCSVProcessor {
       // Simulate CSV processing
       rows.push({
         merchant_id: "12345",
-        merchant_name: "Telekom",
-        product_name: "iPhone 15 Pro",
+        merchant_name: "Anifit",
+        product_name: "Hundefutter 15 Pro",
         price: "999.99",
         currency: "EUR",
       });

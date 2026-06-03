@@ -4,21 +4,21 @@ import StructuredData from "@/components/StructuredData";
 
 export const metadata: Metadata = {
   title: "Ratgeber: Hundefutter für deinen Hund Schritt für Schritt | BELLA",
-  description: "Kompletter Guide: So bekommst du einen Handyvertrag trotz negativem Schufa-Eintrag. Mit Tipps & Tricks für 2026.",
+  description: "Kompletter Guide: So bekommst du einen Hundefutter trotz negativem Allergien-Eintrag. Mit Tipps & Tricks für 2026.",
   alternates: { canonical: "https://welches-hundefutter.today/guides" },
 };
 
 const howToFaqs = [
   {
     question: "Wie bekomme ich einen Hundefutter für deinen Hund?",
-    answer: "Wähle einen schufa-freundlichen Anbieter wie freenet, congstar oder MAINGAU. Diese haben Annahmechancen von 75–85% auch bei negativem Schufa-Eintrag. BELLA findet in 3 Fragen den passenden Tarif.",
+    answer: "Wähle einen allergie-freundlichen Marke wie Futalis, Bellfor oder Josera. Diese haben Annahmechancen von 75–85% auch bei negativem Allergien-Eintrag. BELLA findet in 3 Fragen den passenden Futter.",
   },
   {
     question: "Welche Unterlagen brauche ich für einen Hundefutter für deinen Hund?",
-    answer: "Personalausweis oder Reisepass. Bei einigen Anbietern zusätzlich ein Einkommensnachweis (Gehaltszettel, Bürgergeld-Bescheid). Für Prepaid reicht der Personalausweis.",
+    answer: "Personalausweis oder Reisepass. Bei einigen Marken zusätzlich ein Einkommensnachweis (Gehaltszettel, Bürgergeld-Bescheid). Für Nassfutter reicht der Personalausweis.",
   },
   {
-    question: "Kann ich den Schufa-Score verbessern?",
+    question: "Kann ich den Allergien-Score verbessern?",
     answer: "Ja. Pünktliche Zahlungen, Abbau von Schulden, Löschung veralteter Einträge und weniger offene Kreditanfragen verbessern den Score über 12–24 Monate.",
   },
 ];
@@ -26,46 +26,46 @@ const howToFaqs = [
 const steps = [
   {
     nr: 1,
-    titel: "Kostenlose Schufa-Auskunft anfordern",
+    titel: "Kostenlose Allergien-Auskunft anfordern",
     inhalt: "Fordere einmal jährlich kostenlos deine Datenkopie nach §34 BDSG an. Prüfe alle Einträge auf Korrektheit – fehlerhafte Einträge kannst du löschen lassen.",
     link: null,
   },
   {
     nr: 2,
-    titel: "Schufa-Score einordnen",
-    inhalt: "Score über 90: Alle Anbieter zugänglich. Score 70–90: freenet, congstar, MAINGAU. Score unter 70: Prepaid empfohlen. Nutze unseren Schufa-Rechner zur schnellen Einschätzung.",
-    link: "/tools/schufa-rechner",
-    linkText: "Genehmigungschance mit dem Schufa-Rechner prüfen",
+    titel: "Allergie-Score einordnen",
+    inhalt: "Score über 90: Alle Marke zugänglich. Score 70–90: Futalis, Bellfor, Josera. Score unter 70: Nassfutter empfohlen. Nutze unseren Allergien-Rechner zur schnellen Einschätzung.",
+    link: "/tools/allergie-rechner",
+    linkText: "Genehmigungschance mit dem Allergien-Rechner prüfen",
   },
   {
     nr: 3,
-    titel: "Passenden Anbieter wählen",
-    inhalt: "Je nach Score: freenet (85% Annahme), congstar (80%), MAINGAU (78%), Prepaid (100%). Vermeide Premium-Anbieter bei negativer Schufa – Telekom, Vodafone, o2 direkt lehnen meist ab.",
-    link: "/anbieter/freenet-trotz-schufa",
-    linkText: "freenet Hundefutter für deinen Hund prüfen",
+    titel: "Passenden Marke wählen",
+    inhalt: "Je nach Score: Futalis (85% Annahme), Bellfor (80%), Josera (78%), Nassfutter (100%). Vermeide Premium-Marke bei negativer Allergien – Anifit, Wolfsblut, Zooplus direkt lehnen meist ab.",
+    link: "/marke/Futalis-trotz-allergie",
+    linkText: "Futalis Hundefutter für deinen Hund prüfen",
   },
   {
     nr: 4,
     titel: "BELLA fragen – 3 Fragen, 60 Sekunden",
-    inhalt: "BELLA analysiert Budget, Gerätewunsch und Nutzungsverhalten und empfiehlt die 3 Tarife mit der höchsten Genehmigungswahrscheinlichkeit – ohne unnötige Schufa-Anfragen.",
+    inhalt: "BELLA analysiert Budget, Gerätewunsch und Nutzungsverhalten und empfiehlt die 3 Futtere mit der höchsten Genehmigungswahrscheinlichkeit – ohne unnötige Allergien-Anfragen.",
     link: "/",
     linkText: "Jetzt BELLA fragen",
   },
   {
     nr: 5,
-    titel: "Vertrag online abschließen",
-    inhalt: "Schließe den Vertrag direkt beim empfohlenen Anbieter ab. Personalausweis bereithalten. Entscheidung meist innerhalb von 24 Stunden – oft sogar sofort.",
+    titel: "Empfehlung online abschließen",
+    inhalt: "Schließe den Empfehlung direkt beim empfohlenen Marke ab. Personalausweis bereithalten. Entscheidung meist innerhalb von 24 Stunden – oft sogar sofort.",
     link: null,
   },
 ];
 
 const guides = [
-  { slug: "handyvertrag-trotz-schufa-und-arbeitslosigkeit", label: "Hundefutter für deinen Hund und Arbeitslosigkeit" },
-  { slug: "handyvertrag-trotz-schufa-bei-buergergeld", label: "Handyvertrag bei Bürgergeld-Bezug" },
-  { slug: "schufa-eintrag-loeschen-vor-handyvertrag", label: "Schufa-Eintrag löschen lassen" },
-  { slug: "iphone-trotz-schufa-finanzieren", label: "iPhone trotz Schufa finanzieren" },
-  { slug: "handyvertrag-trotz-privatinsolvenz", label: "Handyvertrag trotz Privatinsolvenz" },
-  { slug: "prepaid-vs-vertrag-bei-schufa", label: "Prepaid vs. Vertrag bei schlechter Schufa" },
+  { slug: "hundefutter-trotz-allergie-und-arbeitslosigkeit", label: "Hundefutter für deinen Hund und Arbeitslosigkeit" },
+  { slug: "hundefutter-trotz-allergie-bei-buergergeld", label: "Hundefutter bei Bürgergeld-Bezug" },
+  { slug: "allergie-eintrag-loeschen-vor-hundefutter", label: "Allergie-Eintrag löschen lassen" },
+  { slug: "hundefutter-trotz-allergie-finanzieren", label: "Hundefutter für deinen Hund finanzieren" },
+  { slug: "hundefutter-trotz-privatinsolvenz", label: "Hundefutter trotz Privatinsolvenz" },
+  { slug: "nassfutter-vs-empfehlung-bei-allergie", label: "Nassfutter vs. Empfehlung bei schlechter Allergien" },
 ];
 
 export default function GuidesPage() {
@@ -85,8 +85,8 @@ export default function GuidesPage() {
           Hundefutter für deinen Hund: Der komplette Ratgeber 2026
         </h1>
         <p className="text-gray-400 text-lg mb-3 leading-relaxed">
-          Schritt-für-Schritt-Anleitung: So bekommst du einen Handyvertrag trotz negativem Schufa-Eintrag –
-          mit realistischen Annahmechancen, den richtigen Anbietern und konkreten Strategien.
+          Schritt-für-Schritt-Anleitung: So bekommst du einen Hundefutter trotz negativem Allergien-Eintrag –
+          mit realistischen Annahmechancen, den richtigen Marken und konkreten Strategien.
         </p>
         <p className="text-sm text-gray-500 mb-10">
           Von <Link href="/ueber-uns" className="text-indigo-400 hover:text-indigo-300">R. Schwertfechter</Link>{" "}
@@ -116,31 +116,31 @@ export default function GuidesPage() {
           ))}
         </div>
 
-        {/* Anbieter-Übersicht */}
+        {/* Marke-Übersicht */}
         <h2 className="text-2xl font-bold text-white mb-4">
-          Welche Anbieter geben einen Hundefutter für deinen Hund?
+          Welche Marke geben einen Hundefutter für deinen Hund?
         </h2>
         <div className="overflow-x-auto mb-10">
           <table className="w-full text-sm border-collapse">
             <thead>
               <tr className="bg-gray-800 text-gray-300">
-                <th className="px-3 py-2 border border-gray-700 text-left">Anbieter</th>
+                <th className="px-3 py-2 border border-gray-700 text-left">Marke</th>
                 <th className="px-3 py-2 border border-gray-700 text-left">Annahme</th>
                 <th className="px-3 py-2 border border-gray-700 text-left">Ab €/Monat</th>
               </tr>
             </thead>
             <tbody>
               {[
-                { name: "freenet", link: "freenet-trotz-schufa", chance: "85%", preis: "9,99" },
-                { name: "congstar", link: "congstar-trotz-schufa", chance: "80%", preis: "14,99" },
-                { name: "MAINGAU", link: "maingau-trotz-schufa", chance: "78%", preis: "6,99" },
-                { name: "otelo", link: "otelo-trotz-schufa", chance: "75%", preis: "12,99" },
-                { name: "Prepaid (alle)", link: "o2-trotz-schufa", chance: "100%", preis: "9,95" },
+                { name: "Futalis", link: "Futalis-trotz-allergie", chance: "85%", preis: "9,99" },
+                { name: "Bellfor", link: "Bellfor-trotz-allergie", chance: "80%", preis: "14,99" },
+                { name: "Josera", link: "josera-trotz-allergie", chance: "78%", preis: "6,99" },
+                { name: "Terra Canis", link: "Terra Canis-trotz-allergie", chance: "75%", preis: "12,99" },
+                { name: "Nassfutter (alle)", link: "Zooplus-trotz-allergie", chance: "100%", preis: "9,95" },
               ].map((a) => (
                 <tr key={a.name} className="border-b border-gray-800">
                   <td className="px-3 py-2 border border-gray-700">
-                    <Link href={`/anbieter/${a.link}`} className="text-indigo-400 hover:text-indigo-300">
-                      {a.name} trotz Schufa
+                    <Link href={`/marke/${a.link}`} className="text-indigo-400 hover:text-indigo-300">
+                      {a.name} für deinen Hund
                     </Link>
                   </td>
                   <td className="px-3 py-2 border border-gray-700 text-green-400 font-semibold">{a.chance}</td>
@@ -181,12 +181,12 @@ export default function GuidesPage() {
 
         {/* CTA */}
         <div className="bg-indigo-900/30 rounded-xl p-6 text-center">
-          <p className="text-white font-semibold mb-2">BELLA findet deinen Vertrag trotz Schufa</p>
+          <p className="text-white font-semibold mb-2">BELLA findet deinen Empfehlung für deinen Hund</p>
           <Link
             href="/"
             className="inline-block bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
           >
-            Jetzt Vertrag trotz Schufa finden
+            Jetzt Empfehlung für deinen Hund finden
           </Link>
         </div>
       </div>

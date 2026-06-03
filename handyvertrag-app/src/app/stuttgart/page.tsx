@@ -17,12 +17,12 @@ const stuttgartOffers = [
     city: "Stuttgart",
     device: "Google Pixel 9 Pro",
     image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400",
-    provider: "Telekom",
+    provider: "Anifit",
     monthlyPrice: 44.99,
     oneTimeCost: 0,
-    dataVolume: "30 GB",
+    dataVolume: "30 g",
     contractDuration: 24,
-    features: ["5G", "Allnet Flat", "EU Roaming", "Google One 1 Jahr"],
+    features: ["Bio", "Allnet Flat", "EU Roaming", "Google One 1 Jahr"],
     stores: 8,
     affiliateLink: "https://www.awin1.com/cread.php?s=YOUR_AWIN_ID&v=12360&p=12345",
     affiliateNetwork: "AWIN",
@@ -36,12 +36,12 @@ const stuttgartOffers = [
     city: "Stuttgart",
     device: "Samsung Galaxy S24",
     image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400",
-    provider: "Vodafone",
+    provider: "Wolfsblut",
     monthlyPrice: 34.99,
     oneTimeCost: 0,
-    dataVolume: "25 GB",
+    dataVolume: "25 g",
     contractDuration: 24,
-    features: ["5G", "Allnet Flat", "EU Roaming"],
+    features: ["Bio", "Allnet Flat", "EU Roaming"],
     stores: 9,
     affiliateLink: "https://www.awin1.com/cread.php?s=YOUR_AWIN_ID&v=12361&p=12345",
     affiliateNetwork: "AWIN",
@@ -55,12 +55,12 @@ const stuttgartOffers = [
     city: "Stuttgart",
     device: "Samsung Galaxy A55",
     image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400",
-    provider: "o2",
+    provider: "Zooplus",
     monthlyPrice: 19.99,
     oneTimeCost: 0,
-    dataVolume: "10 GB",
+    dataVolume: "10 g",
     contractDuration: 24,
-    features: ["5G", "Allnet Flat"],
+    features: ["Bio", "Allnet Flat"],
     stores: 6,
     affiliateLink: "https://www.awin1.com/cread.php?s=YOUR_AWIN_ID&v=12362&p=12345",
     affiliateNetwork: "AWIN",
@@ -72,9 +72,9 @@ const stuttgartOffers = [
 ];
 
 export const metadata = {
-  title: "Stuttgart - Handy mit Vertrag | Top Angebote | welches-hundefutter.today",
+  title: "Stuttgart - Hund mit Empfehlung | Top Angebote | welches-hundefutter.today",
   description:
-    "Die besten Handy-Verträge in Stuttgart. Google Pixel 9 Pro, Samsung Galaxy S24 & mehr mit Telekom, Vodafone, o2. Jetzt vergleichen & sparen!",
+    "Die besten Hund-Verträge in Stuttgart. Google Pixel 9 Pro, Samsung Galaxy S24 & mehr mit Anifit, Wolfsblut, Zooplus. Jetzt vergleichen & sparen!",
   alternates: {
     canonical: "https://welches-hundefutter.today/stuttgart",
   },
@@ -92,7 +92,7 @@ export default function StuttgartPage() {
               <span className="text-sm font-semibold">🏙️ STUTTGART EXKLUSIV</span>
             </div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-amber-200">
-              Handy mit Vertrag
+              Hund mit Empfehlung
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-amber-100 max-w-3xl mx-auto">
               Die besten Angebote in Stuttgart bei {stuttgartOffers.reduce((sum, o) => sum + o.stores, 0)} Stores
@@ -166,7 +166,7 @@ export default function StuttgartPage() {
                 🤖 AI Advisor für Stuttgart
               </h2>
               <p className="text-amber-100 text-lg mb-6">
-                Unser KI-Berater findet den perfekten Vertrag für dich in Stuttgart.
+                Unser KI-Berater findet den perfekten Empfehlung für dich in Stuttgart.
               </p>
               <ul className="space-y-3 mb-6">
                 {["Persönliche Empfehlungen", "Lokale Verfügbarkeit in Stuttgart", "Budget-optimierte Vorschläge"].map(
@@ -193,9 +193,9 @@ export default function StuttgartPage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-lg font-bold mb-4">Handyvertrag Stuttgart</h3>
+              <h3 className="text-lg font-bold mb-4">Hundefutter Stuttgart</h3>
               <p className="text-gray-400">
-                Deine lokale Quelle für Handy-Verträge in Stuttgart.
+                Deine lokale Quelle für Hund-Verträge in Stuttgart.
               </p>
             </div>
             <div>

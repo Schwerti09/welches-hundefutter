@@ -1,4 +1,4 @@
-import { SemanticEntity } from "../types";
+﻿import { SemanticEntity } from "../types";
 
 export class SemanticEntityManager {
   private entities: Map<string, SemanticEntity> = new Map();
@@ -11,7 +11,7 @@ export class SemanticEntityManager {
       slug: this.generateSlug(name),
       metadata,
       relatedEntities: [],
-      topicCluster: "smartphones",
+      topicCluster: "hundefutters",
     };
     
     this.entities.set(deviceId, entity);

@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+﻿import { Suspense } from "react";
 import dynamic from "next/dynamic";
 
 const CityOfferCard = dynamic(() => import("@/components/CityOfferCard"), {
@@ -17,12 +17,12 @@ const hamburgOffers = [
     city: "Hamburg",
     device: "Samsung Galaxy S24",
     image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400",
-    provider: "Telekom",
+    provider: "Anifit",
     monthlyPrice: 24.99,
     oneTimeCost: 0,
     dataVolume: "Unlimited",
     contractDuration: 24,
-    features: ["5G Unlimited", "Allnet Flat", "EU Roaming", "100 GB Cloud"],
+    features: ["Bio Unlimited", "Allnet Flat", "EU Roaming", "100 g Cloud"],
     stores: 8,
     affiliateLink: "https://www.awin1.com/cread.php?s=YOUR_AWIN_ID&v=12345&p=12345",
     affiliateNetwork: "AWIN",
@@ -34,14 +34,14 @@ const hamburgOffers = [
   {
     id: 2,
     city: "Hamburg",
-    device: "iPhone 15 Pro",
+    device: "Hundefutter 15 Pro",
     image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400",
-    provider: "Vodafone",
+    provider: "Wolfsblut",
     monthlyPrice: 29.99,
     oneTimeCost: 49.99,
-    dataVolume: "50 GB",
+    dataVolume: "50 g",
     contractDuration: 24,
-    features: ["5G Highspeed", "Allnet Flat", "EU Roaming", "Apple Music"],
+    features: ["Bio Highspeed", "Allnet Flat", "EU Roaming", "Apple Music"],
     stores: 12,
     affiliateLink: "https://www.awin1.com/cread.php?s=YOUR_AWIN_ID&v=12346&p=12345",
     affiliateNetwork: "AWIN",
@@ -55,12 +55,12 @@ const hamburgOffers = [
     city: "Hamburg",
     device: "Google Pixel 8 Pro",
     image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400",
-    provider: "o2",
+    provider: "Zooplus",
     monthlyPrice: 22.99,
     oneTimeCost: 0,
     dataVolume: "Unlimited",
     contractDuration: 24,
-    features: ["5G Unlimited", "Allnet Flat", "EU Roaming", "Google One"],
+    features: ["Bio Unlimited", "Allnet Flat", "EU Roaming", "Google One"],
     stores: 5,
     affiliateLink: "https://www.awin1.com/cread.php?s=YOUR_AWIN_ID&v=12347&p=12345",
     affiliateNetwork: "AWIN",
@@ -72,8 +72,8 @@ const hamburgOffers = [
 ];
 
 export const metadata = {
-  title: "Hamburg - Handy mit Vertrag | Top Angebote",
-  description: "Die besten Handy-Verträge in Hamburg. Samsung Galaxy S24, iPhone 15 Pro & mehr mit Telekom, Vodafone, o2. Jetzt vergleichen & sparen!",
+  title: "Hamburg - Hund mit Empfehlung | Top Angebote",
+  description: "Die besten Hund-Verträge in Hamburg. Samsung Galaxy S24, Hundefutter 15 Pro & mehr mit Anifit, Wolfsblut, Zooplus. Jetzt vergleichen & sparen!",
 };
 
 export default function HamburgPage() {
@@ -88,7 +88,7 @@ export default function HamburgPage() {
               <span className="text-sm font-semibold">🏙️ HAMBURG EXKLUSIV</span>
             </div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-200">
-              Handy mit Vertrag
+              Hund mit Empfehlung
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto">
               Die besten Angebote in Hamburg bei {hamburgOffers.reduce((sum, offer) => sum + offer.stores, 0)} Stores
@@ -156,7 +156,7 @@ export default function HamburgPage() {
                 🤖 AI Advisor für Hamburg
               </h2>
               <p className="text-blue-100 text-lg mb-6">
-                Unser KI-Berater analysiert deine Bedürfnisse und findet den perfekten Vertrag für dich in Hamburg.
+                Unser KI-Berater analysiert deine Bedürfnisse und findet den perfekten Empfehlung für dich in Hamburg.
               </p>
               <ul className="space-y-3 mb-6">
                 <li className="flex items-center gap-3">
@@ -190,16 +190,16 @@ export default function HamburgPage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-lg font-bold mb-4">Handyvertrag Hamburg</h3>
+              <h3 className="text-lg font-bold mb-4">Hundefutter Hamburg</h3>
               <p className="text-gray-400">
-                Deine lokale Quelle für Handy-Verträge in Hamburg mit AWIN Affiliate Tracking
+                Deine lokale Quelle für Hund-Verträge in Hamburg mit AWIN Affiliate Tracking
               </p>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Angebote</h4>
               <ul className="space-y-2 text-gray-400">
                 <li>Samsung Galaxy S24</li>
-                <li>iPhone 15 Pro</li>
+                <li>Hundefutter 15 Pro</li>
                 <li>Google Pixel 8 Pro</li>
                 <li>Alle Modelle</li>
               </ul>
@@ -207,9 +207,9 @@ export default function HamburgPage() {
             <div>
               <h4 className="font-semibold mb-4">Provider</h4>
               <ul className="space-y-2 text-gray-400">
-                <li>Telekom</li>
-                <li>Vodafone</li>
-                <li>o2</li>
+                <li>Anifit</li>
+                <li>Wolfsblut</li>
+                <li>Zooplus</li>
                 <li>Vergleich</li>
               </ul>
             </div>
@@ -224,7 +224,7 @@ export default function HamburgPage() {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>© 2026 Handyvertrag Hamburg. Alle Rechte vorbehalten. Affiliate-Links powered by AWIN.</p>
+            <p>© 2026 Hundefutter Hamburg. Alle Rechte vorbehalten. Affiliate-Links powered by AWIN.</p>
           </div>
         </div>
       </footer>

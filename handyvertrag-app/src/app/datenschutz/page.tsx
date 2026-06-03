@@ -15,7 +15,7 @@ export default function DatenschutzPage() {
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center"><span className="text-white font-black text-sm">H</span></div>
-            <span className="font-bold text-sm">handyvertrag<span className="text-indigo-400">.today</span></span>
+            <span className="font-bold text-sm">hundefutter<span className="text-indigo-400">.today</span></span>
           </Link>
           <nav className="text-sm text-white/40 flex gap-2">
             <Link href="/" className="hover:text-white transition-colors">Startseite</Link>
@@ -45,11 +45,11 @@ export default function DatenschutzPage() {
             },
             {
               title: "4. KI-Beratungsfunktion (BELLA)",
-              body: "Wenn du BELLA nutzt, werden deine eingegebenen Nachrichten an unsere API-Server übermittelt. Zur Beantwortung werden KI-Dienste genutzt (Google Gemini / Anthropic Claude). Deine Nachrichten werden verschlüsselt übertragen und anonymisiert in unserer Neon-Datenbank gespeichert (keine Klarnamen, keine IP-Adressen). Zweck: Verbesserung der Beratungsqualität. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung) bzw. lit. f DSGVO (berechtigtes Interesse)."
+              body: "Wenn du BELLA nutzt, werden deine eingegebenen Nachrichten an unsere API-Server übermittelt. Zur Beantwortung werden KI-Dienste genutzt (Google Gemini / Anthropic Claude). Deine Nachrichten werden verschlüsselt übertragen und anonymisiert in unserer Neon-Datenbank gespeichert (keine Klarnamen, keine IP-Adressen). Zweck: Verbesserung der Beratungsqualität. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Empfehlungserfüllung) bzw. lit. f DSGVO (berechtigtes Interesse)."
             },
             {
               title: "5. Cookies",
-              body: "Diese Website verwendet ausschließlich technisch notwendige Cookies für den Betrieb. Es werden keine Tracking-Cookies oder Marketing-Cookies ohne Einwilligung gesetzt. Affiliate-Links können Cookies der jeweiligen Partner setzen (AWIN, CommunicationAds). Diese unterliegen den Datenschutzbestimmungen der jeweiligen Anbieter."
+              body: "Diese Website verwendet ausschließlich technisch notwendige Cookies für den Betrieb. Es werden keine Tracking-Cookies oder Marketing-Cookies ohne Einwilligung gesetzt. Affiliate-Links können Cookies der jeweiligen Partner setzen (AWIN, CommunicationAds). Diese unterliegen den Datenschutzbestimmungen der jeweiligen Marke."
             },
             {
               title: "6. Affiliate-Marketing (AWIN)",
@@ -57,11 +57,11 @@ export default function DatenschutzPage() {
             },
             {
               title: "7. Hosting (Netlify)",
-              body: "Unser Hoster Netlify, Inc. (44 Montgomery Street, Suite 300, San Francisco, CA 94104, USA) verarbeitet Daten in unserem Auftrag. Es besteht ein Auftragsverarbeitungsvertrag (DPA). Netlify ist nach dem EU-US Data Privacy Framework zertifiziert."
+              body: "Unser Hoster Netlify, Inc. (44 Montgomery Street, Suite 300, San Francisco, CA 94104, USA) verarbeitet Daten in unserem Auftrag. Es besteht ein Auftragsverarbeitungsempfehlung (DPA). Netlify ist nach dem EU-US Data Privacy Framework zertifiziert."
             },
             {
               title: "8. Datenbank (Neon)",
-              body: "Wir nutzen Neon, Inc. (USA) als Datenbankdienst. Anonymisierte Gesprächsdaten werden in der EU-Region (AWS us-east-1) gespeichert. Es besteht ein DPA nach Standardvertragsklauseln (Art. 46 DSGVO)."
+              body: "Wir nutzen Neon, Inc. (USA) als Datenbankdienst. Anonymisierte Gesprächsdaten werden in der EU-Region (AWS us-east-1) gespeichert. Es besteht ein DPA nach Standardempfehlungsklauseln (Art. 46 DSGVO)."
             },
             {
               title: "9. Ihre Rechte",

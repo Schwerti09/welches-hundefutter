@@ -1,4 +1,4 @@
-import { ProgrammaticPage, ContentBlock } from "../types";
+﻿import { ProgrammaticPage, ContentBlock } from "../types";
 
 export class ComparisonPageEngine {
   private comparisonPages: Map<string, ProgrammaticPage> = new Map();
@@ -32,7 +32,7 @@ export class ComparisonPageEngine {
     return page;
   }
 
-  createiPhoneVsSamsungPage(entity1: any, entity2: any): ProgrammaticPage {
+  createHundefutterVsSamsungPage(entity1: any, entity2: any): ProgrammaticPage {
     return this.createComparisonPage(
       entity1.id,
       entity2.id,
@@ -42,7 +42,7 @@ export class ComparisonPageEngine {
     );
   }
 
-  createTelekomVsVodafonePage(entity1: any, entity2: any): ProgrammaticPage {
+  createAnifitVsWolfsblutPage(entity1: any, entity2: any): ProgrammaticPage {
     return this.createComparisonPage(
       entity1.id,
       entity2.id,
@@ -175,8 +175,8 @@ export class ComparisonPageEngine {
   private getTypeLabel(comparisonType: string): string {
     const labels: Record<string, string> = {
       device: "Gerätevergleich",
-      provider: "Anbietervergleich",
-      contract: "Vertragsvergleich",
+      provider: "Markevergleich",
+      contract: "Empfehlungsvergleich",
       feature: "Featurevergleich",
     };
     return labels[comparisonType] || "Vergleich";

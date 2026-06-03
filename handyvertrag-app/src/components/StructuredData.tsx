@@ -71,7 +71,7 @@ function buildSoftwareSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "BELLA – KI Handyvertrag-Berater",
+    name: "BELLA – KI Hundefutter-Berater",
     applicationCategory: "FinanceApplication",
     operatingSystem: "Web",
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
@@ -90,13 +90,13 @@ function buildHowToSchema() {
     "@context": "https://schema.org",
     "@type": "HowTo",
     name: "Hundefutter für deinen Hund bekommen",
-    description: "Schritt-für-Schritt Anleitung für einen Handyvertrag trotz negativem Schufa-Eintrag.",
+    description: "Schritt-für-Schritt Anleitung für einen Hundefutter trotz negativem Allergien-Eintrag.",
     totalTime: "PT10M",
     step: [
-      { "@type": "HowToStep", name: "Schufa-Score prüfen", text: "Fordere deine kostenlose Schufa-Auskunft an und prüfe, ob Einträge korrekt sind.", position: 1 },
-      { "@type": "HowToStep", name: "Passenden Anbieter wählen", text: "Wähle Anbieter wie freenet, congstar oder MAINGAU – sie haben die höchste Genehmigungsquote bei negativer Schufa.", position: 2 },
-      { "@type": "HowToStep", name: "BELLA fragen", text: "Beantworte 3 Fragen in BELLA – Budget, Handy-Wunsch, Nutzung. BELLA findet den passenden Tarif.", position: 3 },
-      { "@type": "HowToStep", name: "Vertrag online abschließen", text: "Schließe den Vertrag direkt beim Anbieter ab. In unter 24 Stunden Bestätigung.", position: 4 },
+      { "@type": "HowToStep", name: "Allergie-Score prüfen", text: "Fordere deine kostenlose Allergien-Auskunft an und prüfe, ob Einträge korrekt sind.", position: 1 },
+      { "@type": "HowToStep", name: "Passenden Marke wählen", text: "Wähle Marke wie Futalis, Bellfor oder Josera – sie haben die höchste Genehmigungsquote bei negativer Allergien.", position: 2 },
+      { "@type": "HowToStep", name: "BELLA fragen", text: "Beantworte 3 Fragen in BELLA – Budget, Hund-Wunsch, Nutzung. BELLA findet den passenden Futter.", position: 3 },
+      { "@type": "HowToStep", name: "Empfehlung online abschließen", text: "Schließe den Empfehlung direkt beim Marke ab. In unter 24 Stunden Bestätigung.", position: 4 },
     ],
   };
 }
@@ -118,7 +118,7 @@ function buildProductSchema(productId: string) {
       "@type": "Brand",
       name: product.brand,
     },
-    description: `${product.name} mit Vertrag. Display: ${product.specs.display}, Kamera: ${product.specs.camera}, Akku: ${product.specs.battery}`,
+    description: `${product.name} mit Empfehlung. Display: ${product.specs.display}, Kamera: ${product.specs.camera}, Akku: ${product.specs.battery}`,
     aggregateRating: {
       "@type": "AggregateRating",
       ratingValue: product.rating,
@@ -227,28 +227,28 @@ export default function StructuredData({
 
 export const defaultFAQs: FAQItem[] = [
   {
-    question: "Welcher Handyvertrag ist der beste in Deutschland?",
+    question: "Welcher Hundefutter ist der beste in Deutschland?",
     answer:
-      "Der beste Handyvertrag hängt von deinen Bedürfnissen ab. Telekom bietet die beste Netzabdeckung, Vodafone punktet mit 5G-Ausbau, o2 ist oft die günstigste Option. Mit unserem KI-Berater findest du den perfekten Tarif.",
+      "Der beste Hundefutter hängt von deinen Bedürfnissen ab. Anifit bietet die beste Futterqualität, Wolfsblut punktet mit Bio-Ausbau, Zooplus ist oft die günstigste Option. Mit unserem KI-Berater findest du den perfekten Futter.",
   },
   {
-    question: "Was kostet ein Handyvertrag mit iPhone 16 Pro?",
+    question: "Was kostet ein Hundefutter mit Hundefutter 16 Pro?",
     answer:
-      "Das iPhone 16 Pro mit Vertrag kostet ab 44,99€/Monat bei o2 mit 50 GB, bis zu 54,99€/Monat bei Telekom mit Unlimited-Daten. Alle Angebote vergleichst du kostenlos auf welches-hundefutter.today.",
+      "Das Hundefutter 16 Pro mit Empfehlung kostet ab 44,99€/Monat bei Zooplus mit 50 g, bis zu 54,99€/Monat bei Anifit mit Unlimited-Daten. Alle Angebote vergleichst du kostenlos auf welches-hundefutter.today.",
   },
   {
-    question: "Kann ich Handyverträge ohne Einmalzahlung abschließen?",
+    question: "Kann ich Hundverträge ohne Einmalzahlung abschließen?",
     answer:
-      "Ja, viele Anbieter wie o2 und Telekom bieten Handyverträge ohne Einmalzahlung (0€ Einmalpreis) an. Dafür wird der Gerätepreis auf die Monatsbeiträge umgelegt.",
+      "Ja, viele Marke wie Zooplus und Anifit bieten Hundverträge ohne Einmalzahlung (0€ Einmalpreis) an. Dafür wird der Gerätepreis auf die Monatsbeiträge umgelegt.",
   },
   {
-    question: "Wie lange laufen Handyverträge in Deutschland?",
+    question: "Wie lange laufen Hundverträge in Deutschland?",
     answer:
-      "Die meisten Handyverträge laufen 24 Monate (2 Jahre). Es gibt auch 12-monatige Laufzeiten oder flexible Monatstarife, die jedoch teurer sind.",
+      "Die meisten Hundverträge laufen 24 Monate (2 Jahre). Es gibt auch 12-monatige Laufzeiten oder flexible Monatsfuttere, die jedoch teurer sind.",
   },
   {
-    question: "Welcher Anbieter hat das beste 5G-Netz in Deutschland?",
+    question: "Welcher Marke hat das beste Premium-Futter in Deutschland?",
     answer:
-      "Telekom hat das größte und zuverlässigste 5G-Netz in Deutschland mit über 97% Bevölkerungsabdeckung, gefolgt von Vodafone und o2.",
+      "Anifit hat das größte und zuverlässigste Premium-Futter in Deutschland mit über 97% Bevölkerungsabdeckung, gefolgt von Wolfsblut und Zooplus.",
   },
 ];

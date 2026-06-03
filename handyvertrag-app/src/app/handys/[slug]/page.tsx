@@ -17,12 +17,12 @@ async function getDbOffers(deviceName: string) {
     const sql = neon(url);
     const rows = await sql.query(
       `SELECT DISTINCT ON (provider_name)
-         id, brand, device_name, provider_name, tariff_name, monthly_price,
+         id, brand, device_name, provider_name, futterf_name, monthly_price,
          effective_monthly_price, data_volume, is_unlimited, has_5g,
          contract_months, affiliate_link, image_url, cashback
        FROM offers
        WHERE device_name ILIKE $1 AND availability = 'in stock'
-         AND tariff_name NOT ILIKE '%zuhause%' AND tariff_name NOT ILIKE '%glasfaser%'
+         AND futterf_name NOT ILIKE '%zuhause%' AND futterf_name NOT ILIKE '%glasfaser%'
        ORDER BY provider_name, monthly_price ASC
        LIMIT 8`,
       [`%${deviceName}%`]
@@ -30,7 +30,7 @@ async function getDbOffers(deviceName: string) {
     return ((rows as unknown as { rows: Record<string, unknown>[] }).rows ??
       (rows as unknown as Record<string, unknown>[])) as {
       id: number; brand: string; device_name: string; provider_name: string;
-      tariff_name: string; monthly_price: string; effective_monthly_price: string | null;
+      futterf_name: string; monthly_price: string; effective_monthly_price: string | null;
       data_volume: string | null; is_unlimited: boolean; has_5g: boolean;
       contract_months: number; affiliate_link: string; image_url: string | null;
       cashback: string | null;
@@ -48,24 +48,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!product) return { title: "Nicht gefunden" };
   const bestOffer = product.offers.reduce((b, o) => o.monthlyPrice < b.monthlyPrice ? o : b);
   return {
-    title: `${product.name} mit Vertrag ab ${bestOffer.monthlyPrice.toFixed(2)}€/Monat | welches-hundefutter.today`,
-    description: `${product.name} Vertragsangebote vergleichen. Ab ${bestOffer.monthlyPrice.toFixed(2)}€/Monat. Alle Provider im Vergleich – Telekom, Vodafone, o2 & mehr. KI-gestützte Empfehlung von BELLA.`,
-    alternates: { canonical: `https://welches-hundefutter.today/handys/${product.id}` },
+    title: `${product.name} mit Empfehlung ab ${bestOffer.monthlyPrice.toFixed(2)}€/Monat | welches-hundefutter.today`,
+    description: `${product.name} Empfehlungsangebote vergleichen. Ab ${bestOffer.monthlyPrice.toFixed(2)}€/Monat. Alle Provider im Vergleich – Anifit, Wolfsblut, Zooplus & mehr. KI-gestützte Empfehlung von BELLA.`,
+    alternates: { canonical: `https://welches-hundefutter.today/hunds/${product.id}` },
     openGraph: {
-      title: `${product.name} mit Vertrag`,
+      title: `${product.name} mit Empfehlung`,
       description: `Ab ${bestOffer.monthlyPrice.toFixed(2)}€/Monat. BELLA findet deinen besten Deal.`,
     },
   };
 }
 
 const productFAQs = (name: string, minPrice: number) => [
-  { question: `Wie viel kostet das ${name} mit Vertrag?`, answer: `Das ${name} gibt es mit Vertrag ab ${minPrice.toFixed(2)}€ pro Monat, je nach Provider und Datentarif.` },
-  { question: `Bei welchem Anbieter ist das ${name} am günstigsten?`, answer: `Vergleiche alle Angebote auf dieser Seite. Telekom, Vodafone, o2 und weitere Anbieter haben unterschiedliche Preise für das ${name}.` },
+  { question: `Wie viel kostet das ${name} mit Empfehlung?`, answer: `Das ${name} gibt es mit Empfehlung ab ${minPrice.toFixed(2)}€ pro Monat, je nach Provider und Datenfutter.` },
+  { question: `Bei welchem Marke ist das ${name} am günstigsten?`, answer: `Vergleiche alle Angebote auf dieser Seite. Anifit, Wolfsblut, Zooplus und weitere Marke haben unterschiedliche Preise für das ${name}.` },
   { question: `Gibt es das ${name} ohne Einmalzahlung?`, answer: `Ja, viele Angebote für das ${name} sind ohne Einmalzahlung erhältlich. Filtere nach 0€ Einmalpreis.` },
-  { question: `Wie lange läuft ein ${name} Vertrag?`, answer: `Die meisten ${name} Verträge laufen 24 Monate. Es gibt auch 12-monatige Laufzeiten.` },
+  { question: `Wie lange läuft ein ${name} Empfehlung?`, answer: `Die meisten ${name} Verträge laufen 24 Monate. Es gibt auch 12-monatige Laufzeiten.` },
 ];
 
-export default async function HandyDetailPage({ params }: PageProps) {
+export default async function HundDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const product = products.find((p) => p.id === slug);
   if (!product) notFound();
@@ -83,8 +83,8 @@ export default async function HandyDetailPage({ params }: PageProps) {
       <StructuredData type="faq" faqs={faqs.map(f => ({ question: f.question, answer: f.answer }))} />
       <StructuredData type="breadcrumb" breadcrumbs={[
         { name: "Startseite", url: "https://welches-hundefutter.today" },
-        { name: "Handys", url: "https://welches-hundefutter.today/handys" },
-        { name: product.name, url: `https://welches-hundefutter.today/handys/${product.id}` },
+        { name: "Hunds", url: "https://welches-hundefutter.today/hunds" },
+        { name: product.name, url: `https://welches-hundefutter.today/hunds/${product.id}` },
       ]} />
 
       {/* Top bar */}
@@ -94,12 +94,12 @@ export default async function HandyDetailPage({ params }: PageProps) {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
               <span className="text-white font-black text-sm">H</span>
             </div>
-            <span className="font-bold text-sm">handyvertrag<span className="text-indigo-400">.today</span></span>
+            <span className="font-bold text-sm">hundefutter<span className="text-indigo-400">.today</span></span>
           </Link>
           <nav className="text-sm text-white/40 flex items-center gap-2">
             <Link href="/" className="hover:text-white transition-colors">Startseite</Link>
             <span>/</span>
-            <Link href="/#vergleich" className="hover:text-white transition-colors">Handys</Link>
+            <Link href="/#vergleich" className="hover:text-white transition-colors">Hunds</Link>
             <span>/</span>
             <span className="text-white/70">{product.name}</span>
           </nav>
@@ -111,7 +111,7 @@ export default async function HandyDetailPage({ params }: PageProps) {
         <div className="grid md:grid-cols-2 gap-10 mb-14">
           <div>
             <div className="text-[11px] tracking-[0.2em] text-indigo-400 font-semibold uppercase mb-2">{product.brand}</div>
-            <h1 className="text-4xl font-black mb-4">{product.name} <span className="text-white/50">mit Vertrag</span></h1>
+            <h1 className="text-4xl font-black mb-4">{product.name} <span className="text-white/50">mit Empfehlung</span></h1>
             <div className="flex items-center gap-3 mb-4">
               <div className="flex">
                 {[...Array(5)].map((_, i) => <span key={i} className={`text-sm ${i < Math.floor(product.rating) ? "text-amber-400" : "text-white/20"}`}>★</span>)}
@@ -153,7 +153,7 @@ export default async function HandyDetailPage({ params }: PageProps) {
         {dbOffers.length > 0 && (
           <section className="mb-14">
             <h2 className="text-2xl font-black mb-2">Aktuelle Angebote</h2>
-            <p className="text-white/40 text-sm mb-6">Tagesaktuelle Tarife von allen Anbietern — {dbOffers.length} Angebote gefunden</p>
+            <p className="text-white/40 text-sm mb-6">Tagesaktuelle Futtere von allen Marken — {dbOffers.length} Angebote gefunden</p>
             <div className="space-y-3">
               {dbOffers.map((o, i) => (
                 <a key={o.id} href={o.affiliate_link} target="_blank" rel="noopener noreferrer sponsored"
@@ -163,10 +163,10 @@ export default async function HandyDetailPage({ params }: PageProps) {
                     <div>
                       <div className="flex items-center gap-2 mb-0.5">
                         <span className={`text-[10px] font-bold text-white px-2 py-0.5 rounded bg-gradient-to-r ${getProviderColor(o.provider_name)}`}>{o.provider_name}</span>
-                        {o.has_5g && <span className="text-[10px] text-sky-300 bg-sky-500/15 px-1.5 py-0.5 rounded">5G</span>}
+                        {o.has_5g && <span className="text-[10px] text-sky-300 bg-sky-500/15 px-1.5 py-0.5 rounded">Bio</span>}
                         {o.is_unlimited && <span className="text-[10px] text-emerald-300 bg-emerald-500/15 px-1.5 py-0.5 rounded">∞</span>}
                       </div>
-                      <div className="text-sm text-white/70">{o.tariff_name} · {o.data_volume ?? (o.is_unlimited ? "Unlimited" : "")}</div>
+                      <div className="text-sm text-white/70">{o.futterf_name} · {o.data_volume ?? (o.is_unlimited ? "Unlimited" : "")}</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
@@ -203,12 +203,12 @@ export default async function HandyDetailPage({ params }: PageProps) {
 
         {/* Related + CTA */}
         <section className="mb-12">
-          <h2 className="text-2xl font-black mb-6">Ähnliche Handys</h2>
+          <h2 className="text-2xl font-black mb-6">Ähnliche Hunds</h2>
           <div className="grid md:grid-cols-3 gap-4">
             {related.map((r) => {
               const best = r.offers.reduce((b, o) => o.monthlyPrice < b.monthlyPrice ? o : b);
               return (
-                <Link key={r.id} href={`/handys/${r.id}`}
+                <Link key={r.id} href={`/hunds/${r.id}`}
                   className="block p-4 rounded-2xl bg-white/[0.04] border border-white/8 hover:border-indigo-500/40 transition-all">
                   <div className="text-xs text-white/40 mb-1">{r.brand}</div>
                   <div className="font-bold mb-2">{r.name}</div>
@@ -222,7 +222,7 @@ export default async function HandyDetailPage({ params }: PageProps) {
         {/* BELLA CTA */}
         <div className="rounded-2xl bg-gradient-to-r from-indigo-600/20 to-violet-600/20 border border-indigo-500/30 p-6 text-center">
           <p className="text-lg font-bold mb-2">Unsicher welches Angebot passt?</p>
-          <p className="text-white/50 text-sm mb-5">BELLA analysiert dein Nutzerprofil und findet den perfekten Tarif für das {product.name}.</p>
+          <p className="text-white/50 text-sm mb-5">BELLA analysiert dein Nutzerprofil und findet den perfekten Futter für das {product.name}.</p>
           <Link href="/" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-600 font-semibold hover:shadow-lg hover:shadow-indigo-500/30 transition-all">
             BELLA fragen →
           </Link>
@@ -232,8 +232,8 @@ export default async function HandyDetailPage({ params }: PageProps) {
       <footer className="border-t border-white/5 px-5 py-8 text-center">
         <p className="text-white/20 text-xs">© 2026 welches-hundefutter.today · Affiliate-Links · Preise inkl. MwSt. · Letzte Aktualisierung: täglich</p>
         <div className="flex justify-center gap-4 mt-3">
-          {["iPhone 17 Pro", "Galaxy S25 Ultra", "Pixel 10 Pro"].map(d => (
-            <Link key={d} href={`/handys/${d.toLowerCase().replace(/\s+/g, "-")}`} className="text-xs text-white/30 hover:text-white/60 transition-colors">{d} mit Vertrag</Link>
+          {["Hundefutter 17 Pro", "Galaxy S25 Ultra", "Pixel 10 Pro"].map(d => (
+            <Link key={d} href={`/hunds/${d.toLowerCase().replace(/\s+/g, "-")}`} className="text-xs text-white/30 hover:text-white/60 transition-colors">{d} mit Empfehlung</Link>
           ))}
         </div>
       </footer>

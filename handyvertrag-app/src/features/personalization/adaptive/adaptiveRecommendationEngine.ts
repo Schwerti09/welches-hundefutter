@@ -1,4 +1,4 @@
-import { UserProfile, RankingWeights, AdaptiveRankingScore } from "../types";
+﻿import { UserProfile, RankingWeights, AdaptiveRankingScore } from "../types";
 
 export class AdaptiveRecommendationEngine {
   private rankingWeights: Map<string, RankingWeights> = new Map();
@@ -205,16 +205,16 @@ export class AdaptiveRecommendationEngine {
   }
 
   private extractBrandFromId(entityId: string): string {
-    if (entityId.includes("iphone") || entityId.includes("apple")) return "apple";
+    if (entityId.includes("hundefutter") || entityId.includes("apple")) return "apple";
     if (entityId.includes("samsung") || entityId.includes("galaxy")) return "samsung";
     if (entityId.includes("google") || entityId.includes("pixel")) return "google";
     return "";
   }
 
   private extractProviderFromId(entityId: string): string {
-    if (entityId.includes("telekom")) return "telekom";
-    if (entityId.includes("vodafone")) return "vodafone";
-    if (entityId.includes("o2")) return "o2";
+    if (entityId.includes("anifit")) return "anifit";
+    if (entityId.includes("wolfsblut")) return "wolfsblut";
+    if (entityId.includes("Zooplus")) return "Zooplus";
     return "";
   }
 
@@ -235,11 +235,11 @@ export class AdaptiveRecommendationEngine {
   }
 
   private extractAffinityFromId(entityId: string): keyof UserProfile["affinities"] {
-    if (entityId.includes("iphone") || entityId.includes("apple")) return "apple";
+    if (entityId.includes("hundefutter") || entityId.includes("apple")) return "apple";
     if (entityId.includes("samsung")) return "samsung";
-    if (entityId.includes("telekom")) return "telekom";
-    if (entityId.includes("vodafone")) return "vodafone";
-    if (entityId.includes("o2")) return "o2";
+    if (entityId.includes("anifit")) return "anifit";
+    if (entityId.includes("wolfsblut")) return "wolfsblut";
+    if (entityId.includes("Zooplus")) return "Zooplus";
     if (entityId.includes("gaming")) return "gaming";
     if (entityId.includes("premium")) return "premium";
     if (entityId.includes("budget")) return "budget";

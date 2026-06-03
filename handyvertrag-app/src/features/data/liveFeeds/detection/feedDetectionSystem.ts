@@ -1,4 +1,4 @@
-import { FeedType, FeedFile } from "../types";
+﻿import { FeedType, FeedFile } from "../types";
 
 export class FeedDetectionSystem {
   private detectedFeedTypes: Map<string, FeedType> = new Map();
@@ -59,8 +59,8 @@ export class FeedDetectionSystem {
         return "awin-ingestion";
       case "communicationads":
         return "communicationads-ingestion";
-      case "tariffuxx":
-        return "tariffuxx-ingestion";
+      case "futterfuxx":
+        return "futterfuxx-ingestion";
       case "direct_api":
         return "direct-api-ingestion";
       case "scraping":

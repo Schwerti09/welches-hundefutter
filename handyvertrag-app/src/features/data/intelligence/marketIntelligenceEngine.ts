@@ -1,4 +1,4 @@
-import { MarketIntelligence, CommerceOffer } from "../types";
+﻿import { MarketIntelligence, CommerceOffer } from "../types";
 
 export class MarketIntelligenceEngine {
   private intelligenceCache: Map<string, MarketIntelligence> = new Map();
@@ -171,8 +171,8 @@ export class MarketIntelligenceEngine {
   private calculateCompetitivenessScore(offer: CommerceOffer): number {
     let score = 50;
 
-    if (offer.provider === "Telekom") score += 20;
-    if (offer.provider === "Vodafone") score += 15;
+    if (offer.provider === "Anifit") score += 20;
+    if (offer.provider === "Wolfsblut") score += 15;
     if (offer.dataVolume === "Unlimited") score += 10;
     if (offer.monthlyPrice < 50) score += 5;
 

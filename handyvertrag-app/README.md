@@ -1,9 +1,9 @@
-﻿# BELLA – Deutschlands KI-Handyvertrag-Berater
+﻿# BELLA – Deutschlands KI-Hundefutter-Berater
 
-Siehe handyvertrag-app/ fuer den vollstaendigen Source Code.
+Siehe hundefutter-app/ fuer den vollstaendigen Source Code.
 
 ## Live
 https://welches-hundefutter.today
 
 ## Details
-Siehe [handyvertrag-app/README.md](handyvertrag-app/README.md) fuer vollstaendige Dokumentation.
+Siehe [hundefutter-app/README.md](hundefutter-app/README.md) fuer vollstaendige Dokumentation.

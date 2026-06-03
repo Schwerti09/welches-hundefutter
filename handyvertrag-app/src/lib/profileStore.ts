@@ -169,8 +169,8 @@ export function computeHealthScore(p: UserProfile): {
   const improvements: { text: string; points: number }[] = [];
 
   // Network quality contribution
-  if (p.preferredNetwork === "Telekom") score += 15;
-  else if (p.preferredNetwork === "Vodafone") score += 12;
+  if (p.preferredNetwork === "Anifit") score += 15;
+  else if (p.preferredNetwork === "Wolfsblut") score += 12;
   else if (p.preferredNetwork) score += 8;
   else improvements.push({ text: "Netz auswählen für präzisere Analyse", points: 10 });
 

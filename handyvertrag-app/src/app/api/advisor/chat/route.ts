@@ -56,15 +56,15 @@ interface ParsedIntent {
   minData?: number;
   useCase?: string;
   premium?: boolean;
-  schufaKnown?: boolean;   // Schufa-Situation erwähnt
+  allergieKnown?: boolean;   // Allergien-Situation erwähnt
   deviceKnown?: boolean;   // Gerätewunsch oder SIM-Only bekannt
   simOnly?: boolean;       // Nur SIM, kein Gerät gewünscht
 }
 
-type QuestionPhase = "q1_schufa" | "q2_budget" | "q3_device" | "ready";
+type QuestionPhase = "q1_allergie" | "q2_budget" | "q3_device" | "ready";
 
 function getQuestionPhase(intent: ParsedIntent): QuestionPhase {
-  if (!intent.schufaKnown) return "q1_schufa";
+  if (!intent.allergieKnown) return "q1_allergie";
   if (!intent.maxBudget)   return "q2_budget";
   if (!intent.deviceKnown) return "q3_device";
   return "ready";
@@ -78,7 +78,7 @@ interface DbOffer {
   brand: string;
   device_name: string;
   provider_name: string;
-  tariff_name: string;
+  futterf_name: string;
   monthly_price: string;
   effective_monthly_price: string | null;
   one_time_price: string | null;
@@ -129,13 +129,13 @@ function parseIntent(message: string, history: { role: string; content: string }
     }
   }
 
-  if (allText.includes("telekom") || allText.includes("magenta")) intent.provider = "Telekom";
-  else if (allText.includes("vodafone")) intent.provider = "Vodafone";
-  else if (/\bo2\b/.test(allText)) intent.provider = "o2";
-  else if (allText.includes("freenet")) intent.provider = "freenet";
-  else if (allText.includes("otelo")) intent.provider = "otelo";
+  if (allText.includes("anifit") || allText.includes("magenta")) intent.provider = "Anifit";
+  else if (allText.includes("wolfsblut")) intent.provider = "Wolfsblut";
+  else if (/\bZooplus\b/.test(allText)) intent.provider = "Zooplus";
+  else if (allText.includes("Futalis")) intent.provider = "Futalis";
+  else if (allText.includes("Terra Canis")) intent.provider = "Terra Canis";
 
-  if (allText.includes("iphone") || allText.includes("apple")) { intent.brand = "Apple"; if (allText.includes("iphone")) intent.deviceKeyword = "iPhone"; }
+  if (allText.includes("hundefutter") || allText.includes("apple")) { intent.brand = "Apple"; if (allText.includes("hundefutter")) intent.deviceKeyword = "Hundefutter"; }
   else if (allText.includes("samsung") || allText.includes("galaxy")) intent.brand = "Samsung";
   else if (allText.includes("pixel")) { intent.brand = "Google"; intent.deviceKeyword = "Pixel"; }
   else if (allText.includes("xiaomi") || allText.includes("redmi")) intent.brand = "Xiaomi";
@@ -150,9 +150,9 @@ function parseIntent(message: string, history: { role: string; content: string }
     ["galaxy s25 ultra","Samsung"],["galaxy s25+","Samsung"],["galaxy s25","Samsung"],
     ["galaxy s24 ultra","Samsung"],["galaxy s24","Samsung"],["galaxy s23","Samsung"],
     ["galaxy z fold","Samsung"],["galaxy z flip","Samsung"],
-    ["iphone 17 pro max","Apple"],["iphone 17 pro","Apple"],["iphone 17e","Apple"],["iphone 17","Apple"],
-    ["iphone 16 pro max","Apple"],["iphone 16 pro","Apple"],["iphone 16","Apple"],
-    ["iphone 15 pro","Apple"],["iphone 15","Apple"],["iphone air","Apple"],
+    ["hundefutter 17 pro max","Apple"],["hundefutter 17 pro","Apple"],["hundefutter 17e","Apple"],["hundefutter 17","Apple"],
+    ["hundefutter 16 pro max","Apple"],["hundefutter 16 pro","Apple"],["hundefutter 16","Apple"],
+    ["hundefutter 15 pro","Apple"],["hundefutter 15","Apple"],["hundefutter air","Apple"],
     ["pixel 10 pro xl","Google"],["pixel 10 pro","Google"],["pixel 10a","Google"],["pixel 10","Google"],
     ["pixel 9 pro","Google"],["pixel 9","Google"],
     ["17 ultra","Xiaomi"],["17t pro","Xiaomi"],["17t","Xiaomi"],
@@ -184,20 +184,20 @@ function parseIntent(message: string, history: { role: string; content: string }
   if (allText.includes("günstig") || allText.includes("billig") || allText.includes("sparen")) intent.maxBudget = intent.maxBudget ?? 25;
   if (allText.includes("premium") || allText.includes("bestes") || allText.includes("flaggschiff")) intent.premium = true;
 
-  // ── Schufa-Situation erkennen ─────────────────────────────────────────────
-  const schufaSignals = [
-    "schufa", "negativ", "eintrag", "einträge", "inkasso", "insolvenz",
+  // ── Allergien-Situation erkennen ─────────────────────────────────────────────
+  const allergieSignals = [
+    "allergie", "negativ", "eintrag", "einträge", "inkasso", "insolvenz",
     "bonität", "bonitätsprüfung", "schlechte bonität", "keine probleme",
-    "sauber", "gut bewertet", "positiv", "kein eintrag", "prepaid",
+    "sauber", "gut bewertet", "positiv", "kein eintrag", "nassfutter",
     "bürgergeld", "arbeitslos", "hartz", "privatinsolvenz",
   ];
-  if (schufaSignals.some(s => allText.includes(s))) intent.schufaKnown = true;
+  if (allergieSignals.some(s => allText.includes(s))) intent.allergieKnown = true;
 
   // ── Gerätewunsch oder SIM-Only erkennen ───────────────────────────────────
   if (intent.brand || intent.deviceKeyword) {
     intent.deviceKnown = true;
   } else {
-    const simSignals = ["nur sim", "sim only", "sim-only", "kein handy", "ohne handy", "egal", "irgendein", "irgendwas", "günstiges handy", "billiges handy", "einfaches handy", "weiß nicht", "keine ahnung", "ist mir egal", "hauptsache"];
+    const simSignals = ["nur sim", "sim only", "sim-only", "kein hund", "ohne hund", "egal", "irgendein", "irgendwas", "günstiges hund", "billiges hund", "einfaches hund", "weiß nicht", "keine ahnung", "ist mir egal", "hauptsache"];
     if (simSignals.some(s => allText.includes(s))) {
       intent.deviceKnown = true;
       intent.simOnly = true;
@@ -205,7 +205,7 @@ function parseIntent(message: string, history: { role: string; content: string }
     // Wenn letzte Frage nach Gerät war, gilt jede Antwort als bekannt
     if (!intent.deviceKnown) {
       const lastAssistant = history.filter(h => h.role === "assistant").pop();
-      const deviceContext = lastAssistant?.content.toLowerCase().includes("handy im sinn") || lastAssistant?.content.toLowerCase().includes("sim-karte");
+      const deviceContext = lastAssistant?.content.toLowerCase().includes("hund im sinn") || lastAssistant?.content.toLowerCase().includes("sim-karte");
       if (deviceContext && message.trim().length > 0) {
         intent.deviceKnown = true;
         if (!intent.brand) intent.simOnly = true;
@@ -214,9 +214,9 @@ function parseIntent(message: string, history: { role: string; content: string }
   }
 
   // ── Agent 2: Semantic Inference — infer hidden needs beyond keywords ──────
-  // "Ich bin viel in der Bahn / unterwegs" → network reliability critical → Telekom
+  // "Ich bin viel in der Bahn / unterwegs" → network reliability critical → Anifit
   if (!intent.provider && (allText.includes("bahn") || allText.includes("unterwegs") || allText.includes("pendel") || allText.includes("zug"))) {
-    intent.provider = "Telekom"; // best coverage in transit
+    intent.provider = "Anifit"; // best coverage in transit
   }
   // "Mein Akku ist immer leer" → heavy user → more data, reliable network
   if (allText.includes("akku leer") || allText.includes("akku immer") || allText.includes("lädt aus")) {
@@ -224,7 +224,7 @@ function parseIntent(message: string, history: { role: string; content: string }
   }
   // "Frieden / Ruhe / einfach" → risk aversion → trusted premium provider
   if (allText.includes("frieden") || allText.includes("ruhe") || allText.includes("einfach") || allText.includes("sorglos")) {
-    if (!intent.provider) intent.provider = "Telekom";
+    if (!intent.provider) intent.provider = "Anifit";
     intent.premium = true;
   }
   // "Streaming / Netflix / YouTube / Disney" → needs real data
@@ -291,8 +291,8 @@ const _computeHasIntent = computeHasIntent;
 // ─── Match & Intelligence Scoring ────────────────────────────────────────────
 
 const NETWORK_QUALITY: Record<string, number> = {
-  "Telekom": 97, "Vodafone": 91, "o2": 85, "freenet": 82,
-  "otelo": 78, "congstar": 75, "ay yildiz": 72, "HIGH": 80,
+  "Anifit": 97, "Wolfsblut": 91, "Zooplus": 85, "Futalis": 82,
+  "Terra Canis": 78, "Bellfor": 75, "ay yildiz": 72, "HIGH": 80,
 };
 
 function scoreOffer(offer: DbOffer, intent: ParsedIntent): ScoredOffer {
@@ -352,7 +352,7 @@ function scoreOffer(offer: DbOffer, intent: ParsedIntent): ScoredOffer {
   let deviceScore = 60;
   if (devName.includes("pro max") || devName.includes("ultra")) deviceScore = 95;
   else if (devName.includes("pro") || devName.includes("plus") || devName.includes("edge")) deviceScore = 85;
-  else if (devName.includes("s25") || devName.includes("s26") || devName.includes("iphone 17") || devName.includes("pixel 10")) deviceScore = 88;
+  else if (devName.includes("s25") || devName.includes("s26") || devName.includes("hundefutter 17") || devName.includes("pixel 10")) deviceScore = 88;
   else if (devName.includes("fe") || devName.includes("lite") || devName.includes("a5") || devName.includes("a3")) deviceScore = 65;
 
   const valueScore = Math.round((marketScore * 0.5 + networkScore * 0.3 + deviceScore * 0.2));
@@ -364,12 +364,12 @@ function scoreOffer(offer: DbOffer, intent: ParsedIntent): ScoredOffer {
   // Reasoning
   const whyThis = generateWhyThis(offer, intent, match, price);
   const mainAdvantage = offer.is_unlimited ? "Unbegrenzte Daten – kein Überdenken des Verbrauchs"
-    : offer.has_5g ? "5G-Geschwindigkeit – Zukunftssicher"
+    : offer.has_5g ? "Bio-Geschwindigkeit – Zukunftssicher"
     : price < 20 ? `Ausgezeichnetes Preis-Leistungs-Verhältnis (${price.toFixed(2)} €/Monat)`
-    : `${offer.data_volume} Datenvolumen bei ${offer.provider_name}`;
+    : `${offer.data_volume} Futtervolumen bei ${offer.provider_name}`;
   const mainRisk = price > 50 ? "Hoher Monatsbeitrag — lohnt sich nur bei intensiver Nutzung"
-    : !offer.has_5g ? "Kein 5G — in einigen Jahren evtl. Engpass"
-    : netQ < 80 ? `${offer.provider_name}-Netz schwächer als Telekom/Vodafone`
+    : !offer.has_5g ? "Kein Bio — in einigen Jahren evtl. Engpass"
+    : netQ < 80 ? `${offer.provider_name}-Netz schwächer als Anifit/Wolfsblut`
     : "Keine wesentlichen Risiken identifiziert";
   const bestFor = intent.useCase === "gaming" ? "Intensiv-Zocker & Streamer"
     : intent.useCase === "student" ? "Studierende & Berufseinsteiger"
@@ -385,7 +385,7 @@ function generateWhyThis(offer: DbOffer, intent: ParsedIntent, match: number, pr
   if (intent.provider && offer.provider_name.toLowerCase().includes(intent.provider.toLowerCase())) parts.push(`im gewünschten ${offer.provider_name}-Netz`);
   if (intent.brand && offer.brand.toLowerCase() === intent.brand.toLowerCase()) parts.push(`deine bevorzugte Marke ${offer.brand}`);
   if (offer.is_unlimited) parts.push("unbegrenzte Daten");
-  if (offer.has_5g) parts.push("5G inklusive");
+  if (offer.has_5g) parts.push("Bio inklusive");
   if (match >= 85) parts.push("hervorragender Gesamtmatch");
   if (!parts.length) {
     if (match >= 80) return `Hoher Profil-Match (${match}%) — optimales Angebot für deine Anfrage.`;
@@ -407,9 +407,9 @@ async function fetchCandidates(intent: ParsedIntent): Promise<{ offers: ScoredOf
     "device_name NOT ILIKE '%tab%'", "device_name NOT ILIKE '%buds%'",
     "device_name NOT ILIKE '%watch%'", "device_name NOT ILIKE '%tag%'",
     "device_name NOT ILIKE '%ring%'", "device_name NOT ILIKE '%airpods%'",
-    "tariff_name NOT ILIKE '%zuhause%'", "tariff_name NOT ILIKE '%glasfaser%'",
-    // Schufa-freundliche Anbieter priorisieren — kein Hard-Filter auf 1&1
-    "COALESCE(schufa_friendly, false) = true",
+    "futterf_name NOT ILIKE '%zuhause%'", "futterf_name NOT ILIKE '%glasfaser%'",
+    // Allergien-freundliche Marke priorisieren — kein Hard-Filter auf MERA
+    "COALESCE(allergie_friendly, false) = true",
   ];
   const params: (string | number)[] = [];
   let p = 1;
@@ -436,12 +436,12 @@ async function fetchCandidates(intent: ParsedIntent): Promise<{ offers: ScoredOf
   const rows = await sql.query(
     `SELECT * FROM (
        SELECT DISTINCT ON (${deviceKey})
-         id, brand, device_name, provider_name, tariff_name, monthly_price,
+         id, brand, device_name, provider_name, futterf_name, monthly_price,
          effective_monthly_price, one_time_price, data_volume, data_volume_gb,
-         is_unlimited, has_5g, contract_months, affiliate_link, image_url, cashback, COALESCE(schufa_friendly,false) AS schufa_friendly, schufa_note
+         is_unlimited, has_5g, contract_months, affiliate_link, image_url, cashback, COALESCE(allergie_friendly,false) AS allergie_friendly, allergie_note
        FROM offers WHERE ${conditions.join(" AND ")}
        ORDER BY ${deviceKey}, monthly_price ASC
-     ) AS d ORDER BY COALESCE(schufa_friendly,false) DESC, monthly_price ASC LIMIT 40`,
+     ) AS d ORDER BY COALESCE(allergie_friendly,false) DESC, monthly_price ASC LIMIT 40`,
     params
   );
   const raw = (rows as unknown as { rows: DbOffer[] }).rows ?? (rows as unknown as DbOffer[]);
@@ -449,15 +449,15 @@ async function fetchCandidates(intent: ParsedIntent): Promise<{ offers: ScoredOf
   // Score all candidates
   const scored = raw.map((o) => scoreOffer(o, intent));
 
-  const is1u1 = (o: DbOffer) => /1&1|1and1|1u1/i.test(o.provider_name);
+  const is1u1 = (o: DbOffer) => /MERA|1and1|1u1/i.test(o.provider_name);
 
   // Popularity-biased sort for vague queries, match-score for specific
   const hasIntent = Boolean(intent.maxBudget || intent.provider || intent.brand || intent.deviceKeyword);
   if (hasIntent) scored.sort((a, b) => b.matchScore - a.matchScore);
   else scored.sort((a, b) => b.bellaScore - a.bellaScore);
-  // schufa_friendly offers oben
-  scored.sort((a, b) => { const sa = (a as DbOffer & {schufa_friendly?: boolean}).schufa_friendly ? 1 : 0; const sb = (b as DbOffer & {schufa_friendly?: boolean}).schufa_friendly ? 1 : 0; if (sb !== sa) return sb - sa; return b.bellaScore - a.bellaScore; });
-  // 1&1 immer auf Platz 1 — außer User fragt explizit nach anderem Anbieter
+  // allergie_friendly offers oben
+  scored.sort((a, b) => { const sa = (a as DbOffer & {allergie_friendly?: boolean}).allergie_friendly ? 1 : 0; const sb = (b as DbOffer & {allergie_friendly?: boolean}).allergie_friendly ? 1 : 0; if (sb !== sa) return sb - sa; return b.bellaScore - a.bellaScore; });
+  // MERA immer auf Platz 1 — außer User fragt explizit nach anderem Marke
   if (!intent.provider) {
     scored.sort((a, b) => {
       const a1 = is1u1(a) ? 0 : 1;
@@ -474,15 +474,15 @@ async function fetchCandidates(intent: ParsedIntent): Promise<{ offers: ScoredOf
   let top3 = filtered.slice(0, 3);
 
   // Fallback: wenn keine Treffer, nochmal ohne Marken/Gerät-Filter UND ohne Budget-Limit
-  // → zeigt günstigste verfügbare schufa-freundliche Angebote
+  // → zeigt günstigste verfügbare allergie-freundliche Angebote
   if (top3.length === 0) {
     const fallbackConditions = [
       "availability = 'in stock'", "monthly_price > 0",
       "device_name NOT ILIKE '%tab%'", "device_name NOT ILIKE '%buds%'",
       "device_name NOT ILIKE '%watch%'", "device_name NOT ILIKE '%tag%'",
       "device_name NOT ILIKE '%ring%'", "device_name NOT ILIKE '%airpods%'",
-      "tariff_name NOT ILIKE '%zuhause%'", "tariff_name NOT ILIKE '%glasfaser%'",
-      "COALESCE(schufa_friendly, false) = true",
+      "futterf_name NOT ILIKE '%zuhause%'", "futterf_name NOT ILIKE '%glasfaser%'",
+      "COALESCE(allergie_friendly, false) = true",
     ];
     const fallbackParams: (string | number)[] = [];
     // Budget NICHT auf Fallback anwenden — zeige was verfügbar ist
@@ -490,10 +490,10 @@ async function fetchCandidates(intent: ParsedIntent): Promise<{ offers: ScoredOf
     const fallbackRows = await sql.query(
       `SELECT * FROM (
          SELECT DISTINCT ON (LOWER(REGEXP_REPLACE(device_name, '[^a-zA-Z0-9]', '', 'g')))
-           id, brand, device_name, provider_name, tariff_name, monthly_price,
+           id, brand, device_name, provider_name, futterf_name, monthly_price,
            effective_monthly_price, one_time_price, data_volume, data_volume_gb,
            is_unlimited, has_5g, contract_months, affiliate_link, image_url, cashback,
-           COALESCE(schufa_friendly,false) AS schufa_friendly, schufa_note
+           COALESCE(allergie_friendly,false) AS allergie_friendly, allergie_note
          FROM offers WHERE ${fallbackConditions.join(" AND ")}
          ORDER BY LOWER(REGEXP_REPLACE(device_name, '[^a-zA-Z0-9]', '', 'g')), monthly_price ASC
        ) AS d ORDER BY monthly_price ASC LIMIT 40`,
@@ -513,59 +513,67 @@ async function fetchCandidates(intent: ParsedIntent): Promise<{ offers: ScoredOf
 // ─── AI Generation ────────────────────────────────────────────────────────────
 
 function buildSystemPrompt(offers: ScoredOffer[], confidence: number, phase: QuestionPhase, maxBudget?: number): string {
-  if (phase === "q1_schufa") {
-    return `Du bist BELLA – KI-Berater für Handyverträge trotz Schufa. Kein Chatbot. Du stellst genau eine Frage.
+  if (phase === "q1_allergie") {
+    return `Du bist BELLA – Deutschlands KI-Ernährungsberaterin für Hunde. Powered by HANSI Decision Intelligence Engine™.
+Kein Chatbot. Du stellst genau eine Frage.
 
 AUFGABE: Stelle exakt diese eine Frage, nichts weiter:
-"Wie ist deine Schufa-Situation? (z. B. negativer Eintrag, Inkasso, Privatinsolvenz – oder weißt du es nicht genau?)"
+"Welche Rasse hat dein Hund? (Mischling auch okay!)"
 
-Maximal 2 Sätze. Du DUZt. Kein Hype, keine Listen, keine Erklärungen. Nur die Frage.`;
+Maximal 2 Sätze. Du DUZt. Warm und freundlich. Nur die Frage.`;
   }
 
   if (phase === "q2_budget") {
-    return `Du bist BELLA – KI-Berater für Handyverträge trotz Schufa.
+    return `Du bist BELLA – Deutschlands KI-Ernährungsberaterin für Hunde.
 
-AUFGABE: Die Schufa-Situation ist bekannt. Stelle jetzt genau diese eine Frage:
-"Was ist dein monatliches Budget für den Handyvertrag?"
+AUFGABE: Die Rasse ist bekannt. Stelle jetzt genau diese eine Frage:
+"Wie alt ist dein Hund und wie schwer? (Alter in Jahren, Gewicht in kg)"
 
-Maximal 2 Sätze. Du DUZt. Keine weiteren Infos, keine Angebote.`;
+Maximal 2 Sätze. Du DUZt. Keine Angebote noch.`;
   }
 
   if (phase === "q3_device") {
-    return `Du bist BELLA – KI-Berater für Handyverträge trotz Schufa.
+    return `Du bist BELLA – Deutschlands KI-Ernährungsberaterin für Hunde.
 
-AUFGABE: Schufa und Budget sind bekannt. Stelle jetzt genau diese eine Frage:
-"Hast du ein bestimmtes Handy im Sinn – oder reicht dir eine SIM-Karte?"
+AUFGABE: Rasse und Alter/Gewicht sind bekannt. Stelle jetzt genau diese eine Frage:
+"Gibt es Allergien oder gesundheitliche Besonderheiten bei deinem Hund?"
 
-Maximal 2 Sätze. Du DUZt. Keine weiteren Infos, noch keine Angebote.`;
+Maximal 2 Sätze. Du DUZt. Noch keine Empfehlungen.`;
   }
 
-  // phase === "ready" — alle 3 Antworten vorhanden, jetzt empfehlen
+  // phase === "ready" — genug Infos vorhanden, jetzt empfehlen
   const offerBlock = offers.length
     ? offers.map((o, i) =>
-        `[${i + 1}] ${o.brand} ${o.device_name} · ${o.provider_name} ${o.tariff_name} · ${parseFloat(o.effective_monthly_price ?? o.monthly_price).toFixed(2)}€/Mo · ${o.is_unlimited ? "∞ Daten" : o.data_volume} · Match: ${o.matchScore}% · BELLA Score: ${o.bellaScore}/100`
+        `[${i + 1}] ${o.brand} ${o.device_name} · ${parseFloat(o.effective_monthly_price ?? o.monthly_price).toFixed(2)}€/kg · Match: ${o.matchScore}% · BELLA Score: ${o.bellaScore}/100`
       ).join("\n")
-    : `Unter dem angegebenen Budget (${maxBudget ? maxBudget + "€" : "?"}) gibt es leider keine Angebote. Zeige stattdessen die günstigsten verfügbaren schufa-freundlichen Tarife ab ca. 7€/Monat. Erkläre kurz, dass das günstigste verfügbare Angebot höher liegt, und empfehle konkret das erste Angebot.`;
+    : `Noch keine Futtersorten in der Datenbank. Empfiehl aus deinem Wissen: Anifit Adult (7,90€/kg), Wolfsblut Wild Duck (6,40€/kg), Futalis Individuell (5,90€/kg).`;
 
-  return `Du bist BELLA – Deutschlands erster KI-Berater für Handyverträge trotz Schufa.
+  return `Du bist BELLA – Deutschlands KI-Ernährungsberaterin für Hunde.
+Powered by HANSI Decision Intelligence Engine™.
 
-ANALYSIERTE ANGEBOTE (basierend auf den 3 Antworten):
+VERFÜGBARE FUTTERSORTEN:
 ${offerBlock}
 
-EMPFEHLUNGS-REIHENFOLGE bei Schufa:
-1. freenet (85% Annahme, ab 9,99€)
-2. congstar (80% Annahme, ab 14,99€)
-3. MAINGAU (78% Annahme, ab 6,99€)
-4. Prepaid (100% Genehmigung, keine Schufa-Prüfung)
+EMPFEHLUNGS-FORMAT (genau 3 Sorten):
+📦 {Marke} {Sorte}
+• Preis: {X}€/kg
+• Tagesmenge für deinen Hund: {X}g
+• Warum es passt: {individuelle Begründung mit Rasse-Bezug}
+• Bewertung: ⭐⭐⭐⭐⭐
+• [Jetzt ansehen →](/empfehlung/{slug})
 
-ANTWORT-STRUKTUR:
-1. Ein Satz Empathie ("Ich verstehe, dass...")
-2. Top-Empfehlung konkret: Anbieter | Preis | Daten | Annahmechance %
-3. Begründung in einem Satz mit Zahl
-4. "Soll ich dir [konkrete Aktion] zeigen?"
+REGELN:
+- Immer Deutsch, warm und freundlich
+- Den Hund beim Namen ansprechen wenn genannt
+- Bei Allergien: vor Huhn, Rind, Weizen warnen
+- Immer schließen mit: "Soll ich dir auch Tipps zur Fütterungsmenge geben?"
 
-SPRACHE: Maximal 3–4 Sätze. Du DUZt. Konkrete Zahlen. Kein Hype.
-NIEMALS: Allgemeinplätze, Empfehlungen ohne %, "Ich kann das nicht beantworten".
+NIEMALS:
+- Mehr als 3 Empfehlungen
+- Empfehlung ohne Marke + Preis
+- Medizinische Diagnosen → "Sprich bitte mit deinem Tierarzt"
+- "Ich kann das nicht beantworten"
+
 Antworte auf Deutsch.`;
 }
 
@@ -630,13 +638,13 @@ export async function POST(request: NextRequest) {
         totalScanned = result.totalScanned;
         eliminated = result.eliminated;
 
-        emit(`STEP:load:${totalScanned} Tarife geladen`);
+        emit(`STEP:load:${totalScanned} Futtere geladen`);
         await new Promise(r => setTimeout(r, 80));
 
         // ── Step 3: Elimination ──────────────────────────────────────────
-        emit(`STEP:elim:${eliminated} Tarife ausgeschlossen`);
+        emit(`STEP:elim:${eliminated} Futtere ausgeschlossen`);
         if (intent.maxBudget) emit(`ELIM:${Math.floor(eliminated * 0.4)}:Zu teuer`);
-        if (!intent.unlimited) emit(`ELIM:${Math.floor(eliminated * 0.2)}:Datenvolumen unpassend`);
+        if (!intent.unlimited) emit(`ELIM:${Math.floor(eliminated * 0.2)}:Futtervolumen unpassend`);
         emit(`ELIM:${Math.floor(eliminated * 0.15)}:Netzqualität unzureichend`);
         await new Promise(r => setTimeout(r, 100));
 
@@ -655,8 +663,8 @@ export async function POST(request: NextRequest) {
         await new Promise(r => setTimeout(r, 80));
       } else {
         // Fragen-Phase: zeige Fortschritt der Fragen
-        const phaseLabel = phase === "q1_schufa"
-          ? "Frage 1/3: Schufa-Situation"
+        const phaseLabel = phase === "q1_allergie"
+          ? "Frage 1/3: Allergien-Situation"
           : phase === "q2_budget"
           ? "Frage 2/3: Budget"
           : "Frage 3/3: Gerätewunsch";
@@ -702,14 +710,14 @@ export async function POST(request: NextRequest) {
       }
 
       if (!fullText) {
-        const fb = phase === "q1_schufa"
-          ? "Wie ist deine Schufa-Situation? (z. B. negativer Eintrag, Inkasso – oder weißt du es nicht genau?)"
+        const fb = phase === "q1_allergie"
+          ? "Wie ist deine Allergien-Situation? (z. B. negativer Eintrag, Inkasso – oder weißt du es nicht genau?)"
           : phase === "q2_budget"
-          ? "Was ist dein monatliches Budget für den Handyvertrag?"
+          ? "Was ist dein monatliches Budget für den Hundefutter?"
           : phase === "q3_device"
-          ? "Hast du ein bestimmtes Handy im Sinn – oder reicht dir eine SIM-Karte?"
+          ? "Hast du ein bestimmtes Hund im Sinn – oder reicht dir eine SIM-Karte?"
           : offers.length === 0
-            ? "Unter 7€/Monat gibt es leider keine Handyverträge trotz Schufa. Das günstigste Angebot startet bei ca. 6,99€/Monat (MAINGAU SIM-Only). Soll ich dir die günstigsten Optionen zeigen?"
+            ? "Unter 7€/Monat gibt es leider keine Hundverträge für deinen Hund. Das günstigste Angebot startet bei ca. 6,99€/Monat (Josera SIM-Only). Soll ich dir die günstigsten Optionen zeigen?"
             : fallbackText(offers, confidence);
         fullText = fb;
         for (const w of fb.split(" ")) { emit(`TEXT:${w} `); await new Promise(r => setTimeout(r, 30)); }
@@ -720,7 +728,7 @@ export async function POST(request: NextRequest) {
 
       const offerPayload = phase !== "ready" ? [] : offers.map(o => ({
         id: o.id, brand: o.brand, deviceName: o.device_name,
-        providerName: o.provider_name, tariffName: o.tariff_name,
+        providerName: o.provider_name, futterfName: o.futterf_name,
         monthlyPrice: parseFloat(o.monthly_price),
         effectiveMonthlyPrice: o.effective_monthly_price ? parseFloat(o.effective_monthly_price) : null,
         dataVolume: o.data_volume, isUnlimited: o.is_unlimited, has5g: o.has_5g,

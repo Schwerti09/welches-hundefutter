@@ -1,6 +1,6 @@
-export type FeedType = "csv" | "xml" | "json" | "zip";
+﻿export type FeedType = "csv" | "xml" | "json" | "zip";
 
-export type NetworkType = "awin" | "communicationads" | "tariffuxx" | "direct_api" | "scraping";
+export type NetworkType = "awin" | "communicationads" | "futterfuxx" | "direct_api" | "scraping";
 
 export type OfferLifecycleStatus = "new" | "updated" | "removed" | "expired" | "unavailable";
 
@@ -30,10 +30,10 @@ export interface NormalizedOffer {
   rawOfferId: string;
   providerName: string;
   contractName: string;
-  smartphoneName: string;
+  hundefutterName: string;
   storageSize: string;
   color: string;
-  tariffName: string;
+  futterfName: string;
   monthlyPrice: number;
   oneTimePayment: number;
   cashback: number;
@@ -108,10 +108,10 @@ export interface ImportReport {
   normalizationStats: {
     providerNamesNormalized: number;
     contractNamesNormalized: number;
-    smartphoneNamesNormalized: number;
+    hundefutterNamesNormalized: number;
     storageSizesNormalized: number;
     colorsNormalized: number;
-    tariffNamesNormalized: number;
+    futterfNamesNormalized: number;
   };
   providerStats: Map<string, number>;
   ingestionDuration: number;

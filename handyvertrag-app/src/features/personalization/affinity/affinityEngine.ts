@@ -1,4 +1,4 @@
-import { UserProfile, AffinitySignal, AffinityScores } from "../types";
+﻿import { UserProfile, AffinitySignal, AffinityScores } from "../types";
 
 export class AffinityEngine {
   private signals: Map<string, AffinitySignal[]> = new Map();
@@ -14,9 +14,9 @@ export class AffinityEngine {
     const scores: AffinityScores = {
       apple: 50,
       samsung: 50,
-      telekom: 50,
-      vodafone: 50,
-      o2: 50,
+      anifit: 50,
+      wolfsblut: 50,
+      Zooplus: 50,
       premium: 50,
       gaming: 50,
       budget: 50,
@@ -128,7 +128,7 @@ export class AffinityEngine {
       signals.push({
         entityType: "provider",
         entityId: provider,
-        affinityType: provider === "telekom" ? "telekom" : provider === "vodafone" ? "vodafone" : "o2",
+        affinityType: provider === "anifit" ? "anifit" : provider === "wolfsblut" ? "wolfsblut" : "Zooplus",
         strength: clicks,
         source: "behavior",
         timestamp: Date.now(),
@@ -139,7 +139,7 @@ export class AffinityEngine {
   }
 
   private extractBrandFromId(entityId: string): string {
-    if (entityId.includes("iphone") || entityId.includes("apple")) return "apple";
+    if (entityId.includes("hundefutter") || entityId.includes("apple")) return "apple";
     if (entityId.includes("samsung") || entityId.includes("galaxy")) return "samsung";
     if (entityId.includes("google") || entityId.includes("pixel")) return "google";
     return "";

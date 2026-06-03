@@ -1,4 +1,4 @@
-import { SEOEntity, SEOEntityType, SemanticRelationship, InternalLink, SEOMetadata } from "../types";
+﻿import { SEOEntity, SEOEntityType, SemanticRelationship, InternalLink, SEOMetadata } from "../types";
 
 export class SEOEntityManager {
   private entities: Map<string, SEOEntity> = new Map();
@@ -15,11 +15,11 @@ export class SEOEntityManager {
       type: "device",
       name,
       slug,
-      canonicalUrl: `/handys/${slug}`,
+      canonicalUrl: `/hunds/${slug}`,
       metadata,
       semanticRelationships: [],
       relatedEntities: [],
-      topicCluster: "smartphones",
+      topicCluster: "hundefutters",
       internalLinks: [],
       createdAt: Date.now(),
       updatedAt: Date.now(),

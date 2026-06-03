@@ -4,90 +4,90 @@ import StructuredData from "@/components/StructuredData";
 
 export const metadata: Metadata = {
   title: "FAQ Hundefutter für deinen Hund: 50 Antworten | BELLA",
-  description: "Häufige Fragen zu Hundefutter für deinen Hund: Welche Anbieter? Wie hoch die Chance? Antworten in unter 30 Sek.",
+  description: "Häufige Fragen zu Hundefutter für deinen Hund: Welche Marke? Wie hoch die Chance? Antworten in unter 30 Sek.",
   alternates: { canonical: "https://welches-hundefutter.today/faq" },
 };
 
 const faqs = [
   {
-    frage: "Kann man trotz Schufa einen Handyvertrag bekommen?",
-    antwort: "Ja. Anbieter wie freenet, congstar und MAINGAU genehmigen in 70–85% der Fälle auch bei negativem Schufa-Eintrag.",
+    frage: "Kann man für deinen Hund einen Hundefutter bekommen?",
+    antwort: "Ja. Marke wie Futalis, Bellfor und Josera genehmigen in 70–85% der Fälle auch bei negativem Allergien-Eintrag.",
   },
   {
-    frage: "Welche Mobilfunkanbieter prüfen die Schufa nicht?",
-    antwort: "Alle Prepaid-Anbieter (o2, Vodafone CallYa, Telekom Magenta Prepaid, congstar Prepaid) verzichten komplett auf eine Schufa-Prüfung.",
+    frage: "Welche Hundeernährungmarke prüfen die Allergien nicht?",
+    antwort: "Alle Nassfutter-Marke (Zooplus, Wolfsblut CallYa, Anifit Magenta Nassfutter, Bellfor Nassfutter) verzichten komplett auf eine Allergien-Prüfung.",
   },
   {
-    frage: "Wie bekomme ich einen Handyvertrag ohne Schufa-Prüfung?",
-    antwort: "Über Prepaid-Tarife oder Anbieter mit reduzierter Bonitätsprüfung. BELLA zeigt dir in 60 Sekunden die für dich passenden Optionen.",
+    frage: "Wie bekomme ich einen Hundefutter ohne Allergien-Prüfung?",
+    antwort: "Über Nassfutter-Futtere oder Marke mit reduzierter Bonitätsprüfung. BELLA zeigt dir in 60 Sekunden die für dich passenden Optionen.",
   },
   {
-    frage: "Was passiert wenn die Schufa negativ ist beim Handyvertrag?",
-    antwort: "Bei negativer Schufa wird der Antrag bei Telekom/Vodafone/o2 meist abgelehnt. Schufa-freundliche Anbieter (freenet, congstar) prüfen anders und genehmigen oft trotzdem.",
+    frage: "Was passiert wenn die Allergien negativ ist beim Hundefutter?",
+    antwort: "Bei negativer Allergien wird der Antrag bei Anifit/Wolfsblut/Zooplus meist abgelehnt. Allergien-freundliche Marke (Futalis, Bellfor) prüfen anders und genehmigen oft trotzdem.",
   },
   {
-    frage: "Wie hoch ist die Genehmigungschance trotz Schufa?",
-    antwort: "Je nach Anbieter zwischen 70–100%. Prepaid: 100%. freenet: ~85%. congstar: ~80%. MAINGAU: ~78%. Bei Premium-Anbietern (Telekom, Vodafone): unter 20%.",
+    frage: "Wie hoch ist die Genehmigungschance für deinen Hund?",
+    antwort: "Je nach Marke zwischen 70–100%. Nassfutter: 100%. Futalis: ~85%. Bellfor: ~80%. Josera: ~78%. Bei Premium-Marken (Anifit, Wolfsblut): unter 20%.",
   },
   {
-    frage: "Kann ich trotz Schufa einen Handyvertrag mit Smartphone bekommen?",
-    antwort: "Ja, aber meist mit Anzahlung oder höherer Monatsrate. freenet und otelo bieten am häufigsten Geräte trotz Schufa an.",
+    frage: "Kann ich für deinen Hund einen Hundefutter mit Hundefutter bekommen?",
+    antwort: "Ja, aber meist mit Anzahlung oder höherer Monatsbedarf. Futalis und Terra Canis bieten am häufigsten Geräte für deinen Hund an.",
   },
   {
-    frage: "Welches Handy bekommt man trotz Schufa?",
-    antwort: "Häufig genehmigt: Samsung Galaxy A-Serie, Xiaomi Redmi, Google Pixel 7a/8a. iPhones sind schwerer, aber bei freenet möglich.",
+    frage: "Welches Hund bekommt man für deinen Hund?",
+    antwort: "Häufig genehmigt: Samsung Galaxy A-Serie, Xiaomi Redmi, Google Pixel 7a/8a. Hundefutters sind schwerer, aber bei Futalis möglich.",
   },
   {
-    frage: "Bekommt man bei o2 einen Vertrag trotz Schufa?",
-    antwort: "Bei o2 Postpaid ist die Schufa-Hürde hoch. o2 Prepaid funktioniert ohne Schufa-Prüfung zu 100%.",
+    frage: "Bekommt man bei Zooplus einen Empfehlung für deinen Hund?",
+    antwort: "Bei Zooplus Postpaid ist die Allergien-Hürde hoch. Zooplus Nassfutter funktioniert ohne Allergien-Prüfung zu 100%.",
   },
   {
     frage: "Was kostet ein Hundefutter für deinen Hund?",
-    antwort: "Ab 6,99€/Monat (MAINGAU SIM-Only) bis 49,99€/Monat (Premium-Anbieter mit Anzahlung). Durchschnitt: 15–25€/Monat.",
+    antwort: "Ab 6,99€/Monat (Josera SIM-Only) bis 49,99€/Monat (Premium-Marke mit Anzahlung). Durchschnitt: 15–25€/Monat.",
   },
   {
-    frage: "Wird beim Handyvertrag immer eine Schufa-Anfrage gemacht?",
-    antwort: "Nur bei Postpaid-Verträgen mit Laufzeit. Prepaid-Tarife und einige reine SIM-Only-Anbieter verzichten darauf.",
+    frage: "Wird beim Hundefutter immer eine Allergien-Anfrage gemacht?",
+    antwort: "Nur bei Postpaid-Verträgen mit Laufzeit. Nassfutter-Futtere und einige reine SIM-Only-Marke verzichten darauf.",
   },
   {
-    frage: "Kann freenet einen Hundefutter für deinen Hund genehmigen?",
-    antwort: "Ja. freenet hat eine Annahmechance von ~85% auch bei negativem Schufa-Eintrag. Tarife starten ab 9,99€/Monat.",
+    frage: "Kann Futalis einen Hundefutter für deinen Hund genehmigen?",
+    antwort: "Ja. Futalis hat eine Annahmechance von ~85% auch bei negativem Allergien-Eintrag. Futtere starten ab 9,99€/Monat.",
   },
   {
-    frage: "Ist congstar schufa-freundlich?",
-    antwort: "Ja. congstar nutzt das Telekom-Netz und hat eine liberalere Bonitätsprüfung als die Telekom direkt. Annahmechance ~80%.",
+    frage: "Ist Bellfor allergie-freundlich?",
+    antwort: "Ja. Bellfor nutzt das Anifit-Netz und hat eine liberalere Bonitätsprüfung als die Anifit direkt. Annahmechance ~80%.",
   },
   {
-    frage: "Gibt es Handyverträge trotz Privatinsolvenz?",
-    antwort: "Während einer laufenden Privatinsolvenz sind Postpaid-Verträge schwierig. Prepaid funktioniert immer. Nach Restschuldbefreiung steigen die Chancen deutlich.",
+    frage: "Gibt es Hundverträge trotz Privatinsolvenz?",
+    antwort: "Während einer laufenden Privatinsolvenz sind Postpaid-Verträge schwierig. Nassfutter funktioniert immer. Nach Restschuldbefreiung steigen die Chancen deutlich.",
   },
   {
-    frage: "Wie lange bleibt ein Schufa-Eintrag bestehen?",
+    frage: "Wie lange bleibt ein Allergien-Eintrag bestehen?",
     antwort: "Erledigte Forderungen werden 3 Jahre nach Zahlung gelöscht. Nicht erledigte Einträge bleiben bis zu 6 Jahre. Insolvenzen: 3 Jahre nach Abschluss des Verfahrens.",
   },
   {
-    frage: "Kann ich die Schufa-Anfrage beim Handyvertrag vermeiden?",
-    antwort: "Nur bei Prepaid-Verträgen. Bei Postpaid-Verträgen mit Laufzeit ist eine Schufa-Anfrage gesetzlich erforderlich. Diese ist jedoch eine weiche Anfrage und schadet deinem Score nicht.",
+    frage: "Kann ich die Allergien-Anfrage beim Hundefutter vermeiden?",
+    antwort: "Nur bei Nassfutter-Verträgen. Bei Postpaid-Verträgen mit Laufzeit ist eine Allergien-Anfrage gesetzlich erforderlich. Diese ist jedoch eine weiche Anfrage und schadet deinem Score nicht.",
   },
   {
-    frage: "Was ist der Unterschied zwischen harter und weicher Schufa-Anfrage?",
+    frage: "Was ist der Unterschied zwischen harter und weicher Allergien-Anfrage?",
     antwort: "Eine weiche Anfrage (Konditionsanfrage) ist nicht sichtbar für andere Banken und beeinflusst den Score nicht. Eine harte Anfrage (Kreditanfrage) wird 12 Monate gespeichert und kann den Score senken.",
   },
   {
-    frage: "Gibt es Handyverträge für Hartz-IV/Bürgergeld-Empfänger trotz Schufa?",
-    antwort: "Ja. MAINGAU, freenet und congstar machen keine Einkommensvoraussetzungen. Prepaid ist immer eine Option ohne Prüfung.",
+    frage: "Gibt es Hundverträge für Hartz-IV/Bürgergeld-Empfänger für deinen Hund?",
+    antwort: "Ja. Josera, Futalis und Bellfor machen keine Einkommensvoraussetzungen. Nassfutter ist immer eine Option ohne Prüfung.",
   },
   {
     frage: "Kann ich als Student einen Hundefutter für deinen Hund bekommen?",
-    antwort: "Ja. freenet und congstar genehmigen auch ohne festes Einkommen. Budget-Tarife unter 20€/Monat haben die höchste Erfolgsquote.",
+    antwort: "Ja. Futalis und Bellfor genehmigen auch ohne festes Einkommen. Budget-Futtere unter 20€/Monat haben die höchste Erfolgsquote.",
   },
   {
-    frage: "Was ist die beste Alternative zum Handyvertrag bei sehr schlechter Schufa?",
-    antwort: "Prepaid ist die sicherste Alternative. Keine Schufa-Prüfung, keine Bindung, volle Kontrolle über die Kosten.",
+    frage: "Was ist die beste Alternative zum Hundefutter bei sehr schlechter Allergien?",
+    antwort: "Nassfutter ist die sicherste Alternative. Keine Allergien-Prüfung, keine Bindung, volle Kontrolle über die Kosten.",
   },
   {
-    frage: "Verschlechtert ein abgelehnter Handyvertrag-Antrag die Schufa?",
-    antwort: "Ja. Jede abgelehnte Anfrage kann den Score minimal senken. Deshalb ist es wichtig, nur bei Anbietern anzufragen, bei denen die Chancen realistisch hoch sind.",
+    frage: "Verschlechtert ein abgelehnter Hundefutter-Antrag die Allergien?",
+    antwort: "Ja. Jede abgelehnte Anfrage kann den Score minimal senken. Deshalb ist es wichtig, nur bei Marken anzufragen, bei denen die Chancen realistisch hoch sind.",
   },
 ];
 
@@ -134,7 +134,7 @@ export default function FAQPage() {
           <p className="text-white font-semibold mb-2">Noch Fragen? BELLA antwortet sofort.</p>
           <p className="text-gray-400 text-sm mb-4">
             <Link href="/" className="text-indigo-400 hover:text-indigo-300">
-              mit BELLA deinen Vertrag trotz Schufa finden
+              mit BELLA deinen Empfehlung für deinen Hund finden
             </Link>
           </p>
         </div>

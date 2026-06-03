@@ -1,4 +1,4 @@
-import { ProgrammaticPage } from "../types";
+﻿import { ProgrammaticPage } from "../types";
 
 export class BestForSEOSystem {
   private recommendationPages: Map<string, ProgrammaticPage> = new Map();
@@ -8,7 +8,7 @@ export class BestForSEOSystem {
     devices: any[],
     filters: Record<string, unknown> = {}
   ): ProgrammaticPage {
-    const slug = `beste-${segment}-handys-mit-vertrag`;
+    const slug = `beste-${segment}-hunds-mit-empfehlung`;
     const metadata = this.generateMetadata(segment, devices, filters);
 
     const page: ProgrammaticPage = {
@@ -68,12 +68,12 @@ export class BestForSEOSystem {
   private generateMetadata(segment: string, devices: any[], filters: Record<string, unknown>): any {
     const segmentName = this.getSegmentName(segment);
     return {
-      title: `Beste ${segmentName} Handys mit Vertrag 2026`,
-      description: `Die besten ${segmentName} Handys mit Vertrag im Vergleich. ${devices.length} Top-Empfehlungen mit detaillierten Tests und Preisen.`,
+      title: `Beste ${segmentName} Hunds mit Empfehlung 2026`,
+      description: `Die besten ${segmentName} Hunds mit Empfehlung im Vergleich. ${devices.length} Top-Empfehlungen mit detaillierten Tests und Preisen.`,
       keywords: [
-        `beste ${segment} handys`,
-        `${segment} handyvertrag`,
-        `${segment} handy empfehlung`,
+        `beste ${segment} hunds`,
+        `${segment} hundefutter`,
+        `${segment} hund empfehlung`,
       ],
     };
   }
@@ -93,7 +93,7 @@ export class BestForSEOSystem {
         id: "recommendation-list",
         type: "recommendation",
         title: "Top Empfehlungen",
-        content: `Die ${devices.length} besten ${segment} Handys im Detail.`,
+        content: `Die ${devices.length} besten ${segment} Hunds im Detail.`,
         entities: devices.map((d) => d.id),
         dynamic: true,
         priority: 2,
@@ -102,7 +102,7 @@ export class BestForSEOSystem {
         id: "segment-criteria",
         type: "ai_advice",
         title: "Auswahlkriterien",
-        content: `Diese Handys wurden basierend auf spezifischen ${segment}-Kriterien ausgewählt.`,
+        content: `Diese Hunds wurden basierend auf spezifischen ${segment}-Kriterien ausgewählt.`,
         entities: [],
         dynamic: false,
         priority: 3,

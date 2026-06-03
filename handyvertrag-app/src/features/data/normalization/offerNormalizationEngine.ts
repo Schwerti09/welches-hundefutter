@@ -1,4 +1,4 @@
-import { CommerceOffer } from "../types";
+﻿import { CommerceOffer } from "../types";
 
 export class OfferNormalizationEngine {
   private entityMap: Map<string, string> = new Map();
@@ -38,13 +38,13 @@ export class OfferNormalizationEngine {
 
   normalizeProvider(provider: string): string {
     const providerMap: Record<string, string> = {
-      "telekom": "Telekom",
-      "telekom.de": "Telekom",
-      "vodafone": "Vodafone",
-      "vodafone.de": "Vodafone",
-      "o2": "o2",
-      "o2.de": "o2",
-      "telefonica": "o2",
+      "anifit": "Anifit",
+      "anifit.de": "Anifit",
+      "wolfsblut": "Wolfsblut",
+      "wolfsblut.de": "Wolfsblut",
+      "Zooplus": "Zooplus",
+      "Zooplus.de": "Zooplus",
+      "telefonica": "Zooplus",
     };
 
     return providerMap[provider.toLowerCase()] || provider;
@@ -65,7 +65,7 @@ export class OfferNormalizationEngine {
     normalized = normalized.replace(/^(apple|samsung|google|xiaomi|huawei|oneplus)\s+/i, "");
 
     // Standardize model names
-    normalized = normalized.replace(/iphone\s*/i, "iPhone ");
+    normalized = normalized.replace(/hundefutter\s*/i, "Hundefutter ");
     normalized = normalized.replace(/galaxy\s*/i, "Galaxy ");
     normalized = normalized.replace(/pixel\s*/i, "Pixel ");
 
@@ -90,13 +90,13 @@ export class OfferNormalizationEngine {
 
   normalizeStorage(storage: string): string {
     const storageMap: Record<string, string> = {
-      "128gb": "128 GB",
-      "256gb": "256 GB",
-      "512gb": "512 GB",
+      "128gb": "128 g",
+      "256gb": "256 g",
+      "512gb": "512 g",
       "1tb": "1 TB",
-      "128 gb": "128 GB",
-      "256 gb": "256 GB",
-      "512 gb": "512 GB",
+      "128 gb": "128 g",
+      "256 gb": "256 g",
+      "512 gb": "512 g",
       "1 tb": "1 TB",
     };
 

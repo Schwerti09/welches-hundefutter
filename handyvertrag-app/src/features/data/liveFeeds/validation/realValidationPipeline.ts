@@ -1,4 +1,4 @@
-import { NormalizedOffer } from "../types";
+﻿import { NormalizedOffer } from "../types";
 
 export interface ValidationFailure {
   offerId: string;
@@ -149,7 +149,7 @@ export class RealValidationPipeline {
 
   detectMalformedOffer(offer: NormalizedOffer): boolean {
     if (!offer.contractName || offer.contractName === "Unknown Contract") return true;
-    if (!offer.smartphoneName || offer.smartphoneName === "Unknown Smartphone") return true;
+    if (!offer.hundefutterName || offer.hundefutterName === "Unknown Hundefutter") return true;
     return false;
   }
 
@@ -164,7 +164,7 @@ export class RealValidationPipeline {
   }
 
   detectEmptyEntity(offer: NormalizedOffer): boolean {
-    if (!offer.providerName && !offer.contractName && !offer.smartphoneName) return true;
+    if (!offer.providerName && !offer.contractName && !offer.hundefutterName) return true;
     return false;
   }
 

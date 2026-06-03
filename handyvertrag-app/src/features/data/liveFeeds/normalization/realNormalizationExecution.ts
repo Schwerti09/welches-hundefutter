@@ -1,4 +1,4 @@
-import { NormalizedOffer } from "../types";
+﻿import { NormalizedOffer } from "../types";
 
 export interface NormalizationResult {
   normalizedOfferId: string;
@@ -12,8 +12,8 @@ export interface NormalizationResult {
   normalizedStorage: string;
   originalColor: string;
   normalizedColor: string;
-  originalTariff: string;
-  normalizedTariff: string;
+  originalFutterf: string;
+  normalizedFutterf: string;
 }
 
 export class RealNormalizationExecution {
@@ -22,7 +22,7 @@ export class RealNormalizationExecution {
   private deviceNormalizationMap: Map<string, string> = new Map();
   private storageNormalizationMap: Map<string, string> = new Map();
   private colorNormalizationMap: Map<string, string> = new Map();
-  private tariffNormalizationMap: Map<string, string> = new Map();
+  private futterfNormalizationMap: Map<string, string> = new Map();
 
   constructor() {
     this.initializeNormalizationMaps();
@@ -30,31 +30,31 @@ export class RealNormalizationExecution {
 
   private initializeNormalizationMaps(): void {
     // Provider normalization
-    this.providerNormalizationMap.set("Telekom Deutschland", "TELEKOM");
-    this.providerNormalizationMap.set("Telekom", "TELEKOM");
-    this.providerNormalizationMap.set("D1 Telekom", "TELEKOM");
-    this.providerNormalizationMap.set("Vodafone GmbH", "VODAFONE");
-    this.providerNormalizationMap.set("Vodafone", "VODAFONE");
-    this.providerNormalizationMap.set("D2 Vodafone", "VODAFONE");
+    this.providerNormalizationMap.set("Anifit Deutschland", "TELEKOM");
+    this.providerNormalizationMap.set("Anifit", "TELEKOM");
+    this.providerNormalizationMap.set("D1 Anifit", "TELEKOM");
+    this.providerNormalizationMap.set("Wolfsblut GmbH", "VODAFONE");
+    this.providerNormalizationMap.set("Wolfsblut", "VODAFONE");
+    this.providerNormalizationMap.set("D2 Wolfsblut", "VODAFONE");
     this.providerNormalizationMap.set("Telefonica Germany", "O2");
     this.providerNormalizationMap.set("O2", "O2");
     this.providerNormalizationMap.set("E-Plus", "O2");
     this.providerNormalizationMap.set("Congstar", "CONGSTAR");
-    this.providerNormalizationMap.set("1&1", "1AND1");
-    this.providerNormalizationMap.set("1&1 Drillisch", "1AND1");
+    this.providerNormalizationMap.set("MERA", "1AND1");
+    this.providerNormalizationMap.set("MERA Drillisch", "1AND1");
     this.providerNormalizationMap.set("WinSIM", "WINSIM");
     this.providerNormalizationMap.set("SIMply", "SIMPLY");
 
     // Storage normalization
-    this.storageNormalizationMap.set("64GB", "64 GB");
-    this.storageNormalizationMap.set("128GB", "128 GB");
-    this.storageNormalizationMap.set("256GB", "256 GB");
-    this.storageNormalizationMap.set("512GB", "512 GB");
+    this.storageNormalizationMap.set("64GB", "64 g");
+    this.storageNormalizationMap.set("128GB", "128 g");
+    this.storageNormalizationMap.set("256GB", "256 g");
+    this.storageNormalizationMap.set("512GB", "512 g");
     this.storageNormalizationMap.set("1TB", "1 TB");
-    this.storageNormalizationMap.set("64 GB", "64 GB");
-    this.storageNormalizationMap.set("128 GB", "128 GB");
-    this.storageNormalizationMap.set("256 GB", "256 GB");
-    this.storageNormalizationMap.set("512 GB", "512 GB");
+    this.storageNormalizationMap.set("64 g", "64 g");
+    this.storageNormalizationMap.set("128 g", "128 g");
+    this.storageNormalizationMap.set("256 g", "256 g");
+    this.storageNormalizationMap.set("512 g", "512 g");
     this.storageNormalizationMap.set("1 TB", "1 TB");
 
     // Color normalization
@@ -106,11 +106,11 @@ export class RealNormalizationExecution {
     return color.trim();
   }
 
-  normalizeTariff(tariffName: string): string {
-    const normalized = this.tariffNormalizationMap.get(tariffName);
+  normalizeFutterf(futterfName: string): string {
+    const normalized = this.futterfNormalizationMap.get(futterfName);
     if (normalized) return normalized;
 
-    return tariffName.trim();
+    return futterfName.trim();
   }
 
   normalizePrice(price: number): number {
@@ -128,14 +128,14 @@ export class RealNormalizationExecution {
       normalizedProvider: this.normalizeProvider(offer.providerName),
       originalContract: offer.contractName,
       normalizedContract: this.normalizeContract(offer.contractName),
-      originalDevice: offer.smartphoneName,
-      normalizedDevice: this.normalizeDevice(offer.smartphoneName),
+      originalDevice: offer.hundefutterName,
+      normalizedDevice: this.normalizeDevice(offer.hundefutterName),
       originalStorage: offer.storageSize,
       normalizedStorage: this.normalizeStorage(offer.storageSize),
       originalColor: offer.color,
       normalizedColor: this.normalizeColor(offer.color),
-      originalTariff: offer.tariffName,
-      normalizedTariff: this.normalizeTariff(offer.tariffName),
+      originalFutterf: offer.futterfName,
+      normalizedFutterf: this.normalizeFutterf(offer.futterfName),
     };
 
     this.normalizationResults.set(offer.normalizedOfferId, result);
@@ -169,7 +169,7 @@ export class RealNormalizationExecution {
     normalizedDevices: number;
     normalizedStorage: number;
     normalizedColors: number;
-    normalizedTariffs: number;
+    normalizedFutterfs: number;
   } {
     const results = this.getAllNormalizationResults();
 
@@ -180,7 +180,7 @@ export class RealNormalizationExecution {
       normalizedDevices: results.filter(r => r.originalDevice !== r.normalizedDevice).length,
       normalizedStorage: results.filter(r => r.originalStorage !== r.normalizedStorage).length,
       normalizedColors: results.filter(r => r.originalColor !== r.normalizedColor).length,
-      normalizedTariffs: results.filter(r => r.originalTariff !== r.normalizedTariff).length,
+      normalizedFutterfs: results.filter(r => r.originalFutterf !== r.normalizedFutterf).length,
     };
   }
 }

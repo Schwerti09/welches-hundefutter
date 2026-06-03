@@ -4,7 +4,7 @@ import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
   title: "Impressum | welches-hundefutter.today",
-  description: "Impressum und Anbieterkennzeichnung gemäß § 5 TMG für welches-hundefutter.today",
+  description: "Impressum und Markekennzeichnung gemäß § 5 TMG für welches-hundefutter.today",
   robots: { index: false, follow: true },
 };
 
@@ -15,7 +15,7 @@ export default function ImpressumPage() {
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center"><span className="text-white font-black text-sm">H</span></div>
-            <span className="font-bold text-sm">handyvertrag<span className="text-indigo-400">.today</span></span>
+            <span className="font-bold text-sm">hundefutter<span className="text-indigo-400">.today</span></span>
           </Link>
           <nav className="text-sm text-white/40 flex gap-2">
             <Link href="/" className="hover:text-white transition-colors">Startseite</Link>
@@ -31,7 +31,7 @@ export default function ImpressumPage() {
 
         <div className="prose prose-invert prose-sm max-w-none space-y-8">
           <section>
-            <h2 className="text-lg font-bold mb-3 text-white">Anbieter</h2>
+            <h2 className="text-lg font-bold mb-3 text-white">Marke</h2>
             <div className="text-white/70 leading-relaxed">
               <p>R. Schwertfechter</p>
               <p>Karklandsweg 1</p>
@@ -74,7 +74,7 @@ export default function ImpressumPage() {
           <section>
             <h2 className="text-lg font-bold mb-3 text-white">Haftung für Inhalte</h2>
             <p className="text-white/70 leading-relaxed">
-              Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.
+              Als Dienstemarke sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Dienstemarke jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.
             </p>
             <p className="text-white/70 leading-relaxed mt-2">
               Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.
@@ -84,7 +84,7 @@ export default function ImpressumPage() {
           <section>
             <h2 className="text-lg font-bold mb-3 text-white">Haftung für Links</h2>
             <p className="text-white/70 leading-relaxed">
-              Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar.
+              Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Marke oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar.
             </p>
           </section>
 
@@ -98,7 +98,7 @@ export default function ImpressumPage() {
           <section>
             <h2 className="text-lg font-bold mb-3 text-white">Markenhinweise</h2>
             <p className="text-white/70 leading-relaxed">
-              Samsung® und Galaxy® sind eingetragene Marken der Samsung Electronics Co., Ltd. Apple® und iPhone® sind eingetragene Marken der Apple Inc. Google® und Pixel® sind eingetragene Marken der Google LLC. Xiaomi® ist eine eingetragene Marke der Xiaomi Inc. Diese Website steht in keiner offiziellen Verbindung zu den genannten Unternehmen. Produktbilder stammen aus dem AWIN-Händlerfeed der jeweiligen Partner-Shops.
+              Samsung® und Galaxy® sind eingetragene Marken der Samsung Electronics Co., Ltd. Apple® und Hundefutter® sind eingetragene Marken der Apple Inc. Google® und Pixel® sind eingetragene Marken der Google LLC. Xiaomi® ist eine eingetragene Marke der Xiaomi Inc. Diese Website steht in keiner offiziellen Verbindung zu den genannten Unternehmen. Produktbilder stammen aus dem AWIN-Händlerfeed der jeweiligen Partner-Shops.
             </p>
           </section>
         </div>

@@ -1,4 +1,4 @@
-export type BehavioralEventType = 
+﻿export type BehavioralEventType = 
   | "view_product"
   | "click_recommendation"
   | "view_comparison"
@@ -55,9 +55,9 @@ export interface UserPreferences {
 export interface AffinityScores {
   apple: number;
   samsung: number;
-  telekom: number;
-  vodafone: number;
-  o2: number;
+  anifit: number;
+  wolfsblut: number;
+  Zooplus: number;
   premium: number;
   gaming: number;
   budget: number;
@@ -157,7 +157,7 @@ export interface ConversionPrediction {
 export interface AffinitySignal {
   entityType: "brand" | "provider" | "feature";
   entityId: string;
-  affinityType: "apple" | "samsung" | "telekom" | "vodafone" | "o2" | "premium" | "gaming" | "budget" | "camera" | "battery";
+  affinityType: "apple" | "samsung" | "anifit" | "wolfsblut" | "Zooplus" | "premium" | "gaming" | "budget" | "camera" | "battery";
   strength: number;
   source: "behavior" | "interaction" | "preference";
   timestamp: number;

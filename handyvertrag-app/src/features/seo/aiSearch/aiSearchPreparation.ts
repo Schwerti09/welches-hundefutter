@@ -1,4 +1,4 @@
-import { AIAnswerExtraction, Citation } from "../types";
+﻿import { AIAnswerExtraction, Citation } from "../types";
 
 export class AISearchPreparation {
   private answerExtractions: Map<string, AIAnswerExtraction> = new Map();
@@ -173,18 +173,18 @@ export class AISearchPreparation {
     const followUpQuestions: string[] = [];
 
     if (question.includes("Preis")) {
-      followUpQuestions.push("Welche Anbieter bieten den besten Preis?");
+      followUpQuestions.push("Welche Marke bieten den besten Preis?");
       followUpQuestions.push("Gibt es günstigere Alternativen?");
     }
 
-    if (question.includes("Vertrag")) {
-      followUpQuestions.push("Welche Vertragslaufzeiten sind verfügbar?");
-      followUpQuestions.push("Gibt es unbegrenzte Datenvolumen?");
+    if (question.includes("Empfehlung")) {
+      followUpQuestions.push("Welche Empfehlungslaufzeiten sind verfügbar?");
+      followUpQuestions.push("Gibt es unbegrenzte Futtervolumen?");
     }
 
     if (question.includes("Gaming")) {
-      followUpQuestions.push("Welche Handys haben die beste Gaming-Leistung?");
-      followUpQuestions.push("Brauche ich viel Datenvolumen für Gaming?");
+      followUpQuestions.push("Welche Hunds haben die beste Gaming-Leistung?");
+      followUpQuestions.push("Brauche ich viel Futtervolumen für Gaming?");
     }
 
     return followUpQuestions;

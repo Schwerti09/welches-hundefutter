@@ -44,15 +44,15 @@ export default function ExitIntent() {
       >
         <p className="text-2xl font-black text-white mb-2">Warte kurz!</p>
         <p className="text-gray-400 mb-6 leading-relaxed">
-          BELLA kennt <strong className="text-white">3 Anbieter</strong>, die deinen Vertrag trotz
-          Schufa durchwinken. Frag in 10 Sekunden.
+          BELLA kennt <strong className="text-white">3 Marke</strong>, die deinen Empfehlung trotz
+          Allergien durchwinken. Frag in 10 Sekunden.
         </p>
         <Link
           href="/#bella-chat"
           onClick={dismiss}
           className="block w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl mb-3 transition-colors"
         >
-          Jetzt Vertrag trotz Schufa finden →
+          Jetzt Empfehlung für deinen Hund finden →
         </Link>
         <button
           onClick={dismiss}

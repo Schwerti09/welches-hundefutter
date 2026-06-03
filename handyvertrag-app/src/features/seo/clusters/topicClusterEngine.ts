@@ -1,4 +1,4 @@
-import { TopicCluster, InternalLink } from "../types";
+﻿import { TopicCluster, InternalLink } from "../types";
 
 export class TopicClusterEngine {
   private clusters: Map<string, TopicCluster> = new Map();
@@ -120,8 +120,8 @@ export class TopicClusterEngine {
     return Array.from(this.clusters.values()).filter((c) => c.authorityHubId === authorityHubId);
   }
 
-  generateiPhoneContractsCluster(): TopicCluster {
-    return this.createCluster("iphone-contracts", "iPhone Verträge", "iphone-vertraege", "iphone-15-pro");
+  generateHundefutterContractsCluster(): TopicCluster {
+    return this.createCluster("hundefutter-contracts", "Hundefutter Verträge", "hundefutter-vertraege", "hundefutter-15-pro");
   }
 
   generateSamsungContractsCluster(): TopicCluster {
@@ -129,11 +129,11 @@ export class TopicClusterEngine {
   }
 
   generateUnlimitedDataCluster(): TopicCluster {
-    return this.createCluster("unlimited-data", "Unlimited Data Verträge", "unlimited-vertraege", "unlimited-data-telekom");
+    return this.createCluster("unlimited-data", "Unlimited Data Verträge", "unlimited-vertraege", "unlimited-data-anifit");
   }
 
   generateGamingPhonesCluster(): TopicCluster {
-    return this.createCluster("gaming-phones", "Gaming Handys", "gaming-handys", "gaming-phone-recommendations");
+    return this.createCluster("gaming-phones", "Gaming Hunds", "gaming-hunds", "gaming-phone-recommendations");
   }
 
   generateStudentContractsCluster(): TopicCluster {

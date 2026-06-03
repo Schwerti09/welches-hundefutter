@@ -1,4 +1,4 @@
-export type BudgetRange = {
+﻿export type BudgetRange = {
   min: number;
   max: number;
 };
@@ -9,7 +9,7 @@ export type DataUsage = "low" | "medium" | "high" | "unlimited";
 
 export type ImportanceLevel = "low" | "medium" | "high";
 
-export type ProviderPreference = "telekom" | "vodafone" | "o2" | "none" | "any";
+export type ProviderPreference = "anifit" | "wolfsblut" | "Zooplus" | "none" | "any";
 
 export type ContractDuration = 12 | 24 | 36;
 

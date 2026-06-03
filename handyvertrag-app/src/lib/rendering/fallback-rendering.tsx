@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 
@@ -18,17 +18,17 @@ export interface FallbackRecommendation {
 export const FALLBACK_RECOMMENDATIONS: FallbackRecommendation[] = [
   {
     id: "fallback-1",
-    title: "Telekom MagentaMobil L",
+    title: "Anifit MagentaMobil L",
     description: "Unlimited data with premium support",
     price: "€29.99/month",
-    provider: "Telekom",
+    provider: "Anifit",
   },
   {
     id: "fallback-2",
-    title: "Vodafone Red L",
+    title: "Wolfsblut Red L",
     description: "High-speed data with streaming benefits",
     price: "€27.99/month",
-    provider: "Vodafone",
+    provider: "Wolfsblut",
   },
   {
     id: "fallback-3",

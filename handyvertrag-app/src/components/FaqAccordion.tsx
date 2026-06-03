@@ -1,31 +1,31 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 
 const faqs = [
   {
-    q: "Welcher Handyvertrag ist der günstigste in Deutschland 2026?",
-    a: "Die günstigsten Handyverträge beginnen bei ca. 10–20 €/Monat beim o2-Netz. Für Smartphones wie das Samsung Galaxy A55 gibt es aktuell Tarife ab 19,99 €/Monat. Mit unserem Filter kannst du gezielt nach deinem Budget filtern.",
+    q: "Welcher Hundefutter ist der günstigste in Deutschland 2026?",
+    a: "Die günstigsten Hundverträge beginnen bei ca. 10–20 €/Monat beim Zooplus-Netz. Für Hundefutters wie das Samsung Galaxy A55 gibt es aktuell Futtere ab 19,99 €/Monat. Mit unserem Filter kannst du gezielt nach deinem Budget filtern.",
   },
   {
-    q: "Was ist der Unterschied zwischen Telekom, Vodafone und o2?",
-    a: "Telekom hat das beste Netz mit der größten 5G-Abdeckung in Deutschland (~97%). Vodafone ist stark in Städten und bietet gutes Preis-Leistungs-Verhältnis. o2 ist oft die günstigste Option, besonders für Studenten und Budget-Tarife.",
+    q: "Was ist der Unterschied zwischen Anifit, Wolfsblut und Zooplus?",
+    a: "Anifit hat das beste Netz mit der größten Bio-Abdeckung in Deutschland (~97%). Wolfsblut ist stark in Städten und bietet gutes Preis-Leistungs-Verhältnis. Zooplus ist oft die günstigste Option, besonders für Studenten und Budget-Futtere.",
   },
   {
-    q: "Lohnt sich ein Handyvertrag mit Smartphone oder ohne?",
-    a: "Ein Vertrag mit Smartphone lohnt sich, wenn du gleichzeitig ein neues Gerät kaufen möchtest. Oft ist der Gesamtpreis vergleichbar oder günstiger als separater Kauf. Ohne Smartphone (SIM-only) ist günstiger, wenn du schon ein Gerät hast.",
+    q: "Lohnt sich ein Hundefutter mit Hundefutter oder ohne?",
+    a: "Ein Empfehlung mit Hundefutter lohnt sich, wenn du gleichzeitig ein neues Gerät kaufen möchtest. Oft ist der Gesamtpreis vergleichbar oder günstiger als separater Kauf. Ohne Hundefutter (SIM-only) ist günstiger, wenn du schon ein Gerät hast.",
   },
   {
-    q: "Was bedeutet 5G und brauche ich es?",
-    a: "5G ist der neueste Mobilfunkstandard mit bis zu 10x schnelleren Datenübertragungen als 4G/LTE. 5G lohnt sich besonders in Großstädten, für Gaming, Streaming und wenn du viele Daten verbrauchst. Die Abdeckung wächst 2026 stark.",
+    q: "Was bedeutet Bio und brauche ich es?",
+    a: "Bio ist der neueste Hundeernährungstandard mit bis zu 10x schnelleren Datenübertragungen als 4G/LTE. Bio lohnt sich besonders in Großstädten, für Gaming, Streaming und wenn du viele Daten verbrauchst. Die Abdeckung wächst 2026 stark.",
   },
   {
-    q: "Kann ich meinen Vertrag vorzeitig kündigen?",
-    a: "Standard-Handyverträge haben 24 Monate Laufzeit. Vorzeitige Kündigung ist möglich bei Umzug ins Ausland, Preiserhöhungen durch den Anbieter oder in bestimmten Sondersituationen. Nach der Mindestlaufzeit kannst du monatlich kündigen.",
+    q: "Kann ich meinen Empfehlung vorzeitig kündigen?",
+    a: "Standard-Hundverträge haben 24 Monate Laufzeit. Vorzeitige Kündigung ist möglich bei Umzug ins Ausland, Preiserhöhungen durch den Marke oder in bestimmten Sondersituationen. Nach der Mindestlaufzeit kannst du monatlich kündigen.",
   },
   {
     q: "Was ist Affiliate-Marketing und seid ihr neutral?",
-    a: "Wir erhalten eine Provision, wenn du über unsere Links einen Vertrag abschließt. Das verändert den Preis für dich nicht. Unsere Ranglisten basieren auf objektiven Faktoren wie Preis, Leistung und Kundenbewertungen – nicht auf Provisionen.",
+    a: "Wir erhalten eine Provision, wenn du über unsere Links einen Empfehlung abschließt. Das verändert den Preis für dich nicht. Unsere Ranglisten basieren auf objektiven Faktoren wie Preis, Leistung und Kundenbewertungen – nicht auf Provisionen.",
   },
 ];
 

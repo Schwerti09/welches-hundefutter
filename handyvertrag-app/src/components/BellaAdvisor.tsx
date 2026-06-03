@@ -24,7 +24,7 @@ interface OfferCard {
   has5g: boolean;
   affiliateLink: string;
   imageUrl: string | null;
-  tariffName: string;
+  futterfName: string;
   cashback: number | null;
 }
 
@@ -33,15 +33,15 @@ type BellaMood = "idle" | "thinking" | "talking" | "happy" | "waving" | "excited
 const INTRO_MESSAGE: Message = {
   id: "0",
   role: "bella",
-  content: "Hey! Ich bin BELLA, dein persönlicher Handyvertrag-Berater! 🎉\n\nIch finde dir in Sekunden den perfekten Vertrag aus über 20.000 echten Angeboten.\n\nSag mir einfach: Was suchst du?",
+  content: "Hey! Ich bin BELLA, dein persönlicher Hundefutter-Berater! 🎉\n\nIch finde dir in Sekunden den perfekten Empfehlung aus über 20.000 echten Angeboten.\n\nSag mir einfach: Was suchst du?",
 };
 
 const QUICK_OPTIONS = [
-  { label: "🎮 Gaming & viel Daten", msg: "Ich will viel Datenvolumen für Gaming" },
+  { label: "🎮 Gaming & viel Daten", msg: "Ich will viel Futtervolumen für Gaming" },
   { label: "💰 Günstigster Preis", msg: "Was ist das günstigste Angebot?" },
-  { label: "📸 Beste Kamera", msg: "Ich suche ein Handy mit super Kamera" },
-  { label: "📱 iPhone unter 50€", msg: "iPhone Vertrag unter 50 Euro monatlich" },
-  { label: "🏆 Samsung + Telekom", msg: "Samsung mit Telekom Netz" },
+  { label: "📸 Beste Kamera", msg: "Ich suche ein Hund mit super Kamera" },
+  { label: "📱 Hundefutter unter 50€", msg: "Hundefutter Empfehlung unter 50 Euro monatlich" },
+  { label: "🏆 Samsung + Anifit", msg: "Samsung mit Anifit Netz" },
   { label: "🎓 Student & Budget", msg: "Ich bin Student und suche günstiges Angebot" },
 ];
 
@@ -149,7 +149,7 @@ export default function BellaAdvisor() {
             <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse" />
             <div>
               <p className="text-white font-bold">BELLA – Dein persönlicher KI-Berater</p>
-              <p className="text-white/40 text-xs">Findet den perfekten Vertrag aus 20.000+ Angeboten</p>
+              <p className="text-white/40 text-xs">Findet den perfekten Empfehlung aus 20.000+ Angeboten</p>
             </div>
           </div>
 
@@ -194,14 +194,14 @@ export default function BellaAdvisor() {
                                 <span className="text-xs bg-green-500/20 text-green-300 px-2 py-0.5 rounded-full">∞ Unlimited</span>
                               )}
                               {offer.has5g && (
-                                <span className="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full">5G</span>
+                                <span className="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full">Bio</span>
                               )}
                             </div>
                           </div>
                           <div className="flex items-center justify-between">
                             <div>
                               <p className="text-white font-semibold text-sm">{offer.brand} {offer.deviceName}</p>
-                              <p className="text-white/50 text-xs">{offer.tariffName} · {offer.dataVolume || "Daten"}</p>
+                              <p className="text-white/50 text-xs">{offer.futterfName} · {offer.dataVolume || "Daten"}</p>
                             </div>
                             <div className="text-right">
                               <p className="text-2xl font-black text-white">

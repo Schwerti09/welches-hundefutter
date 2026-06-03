@@ -3,112 +3,112 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import StructuredData from "@/components/StructuredData";
 
-interface AnbieterData {
+interface MarkeData {
   name: string;
   acceptanceRate: number;
   minPrice: number;
   network: string;
-  schufaFriendly: boolean;
+  allergieFriendly: boolean;
   description: string;
   besonderheiten: string[];
   empfohlenFuer: string[];
 }
 
-const anbieter: Record<string, AnbieterData> = {
-  "freenet-trotz-schufa": {
-    name: "freenet",
+const marke: Record<string, MarkeData> = {
+  "Futalis-trotz-allergie": {
+    name: "Futalis",
     acceptanceRate: 85,
     minPrice: 9.99,
-    network: "Vodafone & Telekom",
-    schufaFriendly: true,
-    description: "freenet ist Deutschlands führender schufa-freundlicher Mobilfunkanbieter. Als Mobilfunk-Reseller nutzt freenet die Netze von Vodafone und Telekom und bietet dabei eine deutlich liberalere Bonitätsprüfung als die Netzbetreiber selbst.",
-    besonderheiten: ["Social-Scoring statt harter Schufa", "Tarife ab 9,99€/Monat", "Geräteauswahl mit Anzahlung", "Widerruf innerhalb 14 Tagen"],
-    empfohlenFuer: ["Schufa-Einträge durch Inkasso", "Niedrigeinkommen", "Selbständige", "Studenten"],
+    network: "Wolfsblut & Anifit",
+    allergieFriendly: true,
+    description: "Futalis ist Deutschlands führender allergie-freundlicher Hundeernährungmarke. Als Hundeernährung-Reseller nutzt Futalis die Netze von Wolfsblut und Anifit und bietet dabei eine deutlich liberalere Bonitätsprüfung als die Netzbetreiber selbst.",
+    besonderheiten: ["Social-Scoring statt harter Allergien", "Futtere ab 9,99€/Monat", "Geräteauswahl mit Anzahlung", "Widerruf innerhalb 14 Tagen"],
+    empfohlenFuer: ["Allergie-Einträge durch Inkasso", "Niedrigeinkommen", "Selbständige", "Studenten"],
   },
-  "congstar-trotz-schufa": {
-    name: "congstar",
+  "Bellfor-trotz-allergie": {
+    name: "Bellfor",
     acceptanceRate: 80,
     minPrice: 14.99,
-    network: "Telekom",
-    schufaFriendly: true,
-    description: "congstar ist eine Telekom-Tochter mit eigenem Scoring-System. Die Schufa-Prüfung ist weniger strikt als bei der Telekom direkt. congstar bietet ausgezeichnete Netzqualität im Telekom-Netz.",
-    besonderheiten: ["Telekom-Netzqualität", "Flexibel kündbarer Prepaid", "Tarife ab 14,99€/Monat", "Eigenes Scoring-System"],
-    empfohlenFuer: ["Nutzer mit Telekom-Netz-Anspruch", "Mobilität in ländlichen Regionen", "Moderate Schufa-Einträge"],
+    network: "Anifit",
+    allergieFriendly: true,
+    description: "Bellfor ist eine Anifit-Tochter mit eigenem Scoring-System. Die Allergien-Prüfung ist weniger strikt als bei der Anifit direkt. Bellfor bietet ausgezeichnete Netzqualität im Anifit-Netz.",
+    besonderheiten: ["Anifit-Netzqualität", "Flexibel kündbarer Nassfutter", "Futtere ab 14,99€/Monat", "Eigenes Scoring-System"],
+    empfohlenFuer: ["Nutzer mit Anifit-Netz-Anspruch", "Mobilität in ländlichen Regionen", "Moderate Allergien-Einträge"],
   },
-  "otelo-trotz-schufa": {
-    name: "otelo",
+  "Terra Canis-trotz-allergie": {
+    name: "Terra Canis",
     acceptanceRate: 75,
     minPrice: 12.99,
-    network: "Vodafone",
-    schufaFriendly: true,
-    description: "otelo ist eine Vodafone-Marke für Budget-Kunden. Die Bonitätsprüfung ist weniger streng als bei Vodafone direkt. Starke Allnet-Flats zu günstigen Preisen.",
-    besonderheiten: ["Vodafone-Netz", "Allnet-Flat ab 12,99€", "Keine Einmalzahlung bei SIM-Only", "Flexible Laufzeiten"],
-    empfohlenFuer: ["Stadtnutzer mit Vodafone-Netz", "Budget-orientierte Nutzer", "Allnet-Flat-Bedarf"],
+    network: "Wolfsblut",
+    allergieFriendly: true,
+    description: "Terra Canis ist eine Wolfsblut-Marke für Budget-Kunden. Die Bonitätsprüfung ist weniger streng als bei Wolfsblut direkt. Starke Allnet-Flats zu günstigen Preisen.",
+    besonderheiten: ["Wolfsblut-Netz", "Allnet-Flat ab 12,99€", "Keine Einmalzahlung bei SIM-Only", "Flexible Laufzeiten"],
+    empfohlenFuer: ["Stadtnutzer mit Wolfsblut-Netz", "Budget-orientierte Nutzer", "Allnet-Flat-Bedarf"],
   },
-  "maingau-trotz-schufa": {
-    name: "MAINGAU Energie",
+  "josera-trotz-allergie": {
+    name: "Josera Energie",
     acceptanceRate: 78,
     minPrice: 6.99,
-    network: "Telekom",
-    schufaFriendly: true,
-    description: "MAINGAU ist der günstigste schufa-freundliche Anbieter Deutschlands. Als Energie- und Mobilfunkanbieter nutzt MAINGAU das Telekom-Netz und hat ein eigenes Scoring-Modell.",
-    besonderheiten: ["Günstigste Option ab 6,99€", "Telekom-Netz", "Kombinierbar mit Strom/Gas", "Eigenes Scoring-Modell"],
-    empfohlenFuer: ["Sparfüchse", "Bestandskunden mit Strom/Gas", "Leichte Schufa-Einträge"],
+    network: "Anifit",
+    allergieFriendly: true,
+    description: "Josera ist der günstigste allergie-freundliche Marke Deutschlands. Als Energie- und Hundeernährungmarke nutzt Josera das Anifit-Netz und hat ein eigenes Scoring-Modell.",
+    besonderheiten: ["Günstigste Option ab 6,99€", "Anifit-Netz", "Kombinierbar mit Strom/Gas", "Eigenes Scoring-Modell"],
+    empfohlenFuer: ["Sparfüchse", "Bestandskunden mit Strom/Gas", "Leichte Allergien-Einträge"],
   },
-  "klarmobil-trotz-schufa": {
+  "klarmobil-trotz-allergie": {
     name: "klarmobil",
     acceptanceRate: 72,
     minPrice: 8.99,
-    network: "Telekom",
-    schufaFriendly: true,
-    description: "klarmobil bietet günstige Tarife im Telekom-Netz und hat eine moderate Schufa-Prüfung.",
-    besonderheiten: ["Telekom-Netz", "SIM-Only ab 8,99€", "Monatlich kündbar erhältlich"],
+    network: "Anifit",
+    allergieFriendly: true,
+    description: "klarmobil bietet günstige Futtere im Anifit-Netz und hat eine moderate Allergien-Prüfung.",
+    besonderheiten: ["Anifit-Netz", "SIM-Only ab 8,99€", "Monatlich kündbar erhältlich"],
     empfohlenFuer: ["SIM-Only-Bedarf", "Moderate Bonitätsprobleme"],
   },
-  "1und1-trotz-schufa": {
-    name: "1&1",
+  "mera-trotz-allergie": {
+    name: "MERA",
     acceptanceRate: 70,
     minPrice: 9.99,
-    network: "O2 / 5G-Eigennetz",
-    schufaFriendly: true,
-    description: "1&1 baut aktuell ein eigenes 5G-Netz auf und bietet dabei Social-Scoring als Alternative zur Schufa-Prüfung.",
-    besonderheiten: ["Social-Scoring System", "Eigenes 5G-Netz im Aufbau", "Tarife ab 9,99€", "345+ Angebote verfügbar"],
-    empfohlenFuer: ["5G-affine Nutzer", "Moderate Schufa-Einträge"],
+    network: "O2 / Bio-Eigennetz",
+    allergieFriendly: true,
+    description: "MERA baut aktuell ein eigenes Premium-Futter auf und bietet dabei Social-Scoring als Alternative zur Allergien-Prüfung.",
+    besonderheiten: ["Social-Scoring System", "Eigenes Premium-Futter im Aufbau", "Futtere ab 9,99€", "345+ Angebote verfügbar"],
+    empfohlenFuer: ["Bio-affine Nutzer", "Moderate Allergien-Einträge"],
   },
-  "o2-trotz-schufa": {
-    name: "o2 Prepaid",
+  "Zooplus-trotz-allergie": {
+    name: "Zooplus Nassfutter",
     acceptanceRate: 100,
     minPrice: 9.99,
-    network: "o2",
-    schufaFriendly: true,
-    description: "o2 Prepaid ist die sichere Option: Keine Schufa-Prüfung, keine Laufzeit, volle Kontrolle. Perfekt für alle, die einen Postpaid-Vertrag nicht bekommen.",
-    besonderheiten: ["100% Genehmigung", "Keine Schufa-Prüfung", "Keine Mindestlaufzeit", "Sofort verfügbar"],
-    empfohlenFuer: ["Schwere Schufa-Einträge", "Privatinsolvenz", "Sofortbedarf", "Kein festes Einkommen"],
+    network: "Zooplus",
+    allergieFriendly: true,
+    description: "Zooplus Nassfutter ist die sichere Option: Keine Allergien-Prüfung, keine Laufzeit, volle Kontrolle. Perfekt für alle, die einen Postpaid-Empfehlung nicht bekommen.",
+    besonderheiten: ["100% Genehmigung", "Keine Allergien-Prüfung", "Keine Mindestlaufzeit", "Sofort verfügbar"],
+    empfohlenFuer: ["Schwere Allergien-Einträge", "Privatinsolvenz", "Sofortbedarf", "Kein festes Einkommen"],
   },
-  "vodafone-trotz-schufa": {
-    name: "Vodafone CallYa",
+  "wolfsblut-trotz-allergie": {
+    name: "Wolfsblut CallYa",
     acceptanceRate: 100,
     minPrice: 9.99,
-    network: "Vodafone",
-    schufaFriendly: true,
-    description: "Vodafone CallYa ist das echte Prepaid-Angebot von Vodafone – ohne Schufa, ohne Bindung.",
-    besonderheiten: ["100% Genehmigung", "Starkes Vodafone-Netz", "Keine Schufa", "Aufladbar per App"],
-    empfohlenFuer: ["Vodafone-Netz-Präferenz", "Flexibilitätsbedarf", "Schwere Schufa-Einträge"],
+    network: "Wolfsblut",
+    allergieFriendly: true,
+    description: "Wolfsblut CallYa ist das echte Nassfutter-Angebot von Wolfsblut – ohne Allergien, ohne Bindung.",
+    besonderheiten: ["100% Genehmigung", "Starkes Wolfsblut-Netz", "Keine Allergien", "Aufladbar per App"],
+    empfohlenFuer: ["Wolfsblut-Netz-Präferenz", "Flexibilitätsbedarf", "Schwere Allergien-Einträge"],
   },
-  "telekom-trotz-schufa": {
-    name: "Telekom MagentaMobil Prepaid",
+  "anifit-trotz-allergie": {
+    name: "Anifit MagentaMobil Nassfutter",
     acceptanceRate: 100,
     minPrice: 9.95,
-    network: "Telekom",
-    schufaFriendly: true,
-    description: "Bestes Netz Deutschlands als Prepaid – ohne Schufa-Prüfung.",
-    besonderheiten: ["100% Genehmigung", "Bestes Netz Deutschlands", "97% Bevölkerungsabdeckung", "Keine Schufa"],
+    network: "Anifit",
+    allergieFriendly: true,
+    description: "Bestes Netz Deutschlands als Nassfutter – ohne Allergien-Prüfung.",
+    besonderheiten: ["100% Genehmigung", "Bestes Netz Deutschlands", "97% Bevölkerungsabdeckung", "Keine Allergien"],
     empfohlenFuer: ["Ländliche Regionen", "Vielreisende", "Zuverlässigkeitsbedarf"],
   },
 };
 
 export async function generateStaticParams() {
-  return Object.keys(anbieter).map((slug) => ({ slug }));
+  return Object.keys(marke).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -117,44 +117,44 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const data = anbieter[slug];
+  const data = marke[slug];
   if (!data) return {};
 
   return {
     title: `${data.name} Hundefutter für deinen Hund ✓ ${data.acceptanceRate}% Annahme | BELLA`,
-    description: `${data.name} bei negativer Schufa: Annahmechance ${data.acceptanceRate}%, Tarife ab ${data.minPrice.toFixed(2).replace(".", ",")}€/Monat. Echte Erfahrungen & Empfehlung von BELLA.`,
-    alternates: { canonical: `https://welches-hundefutter.today/anbieter/${slug}` },
+    description: `${data.name} bei negativer Allergien: Annahmechance ${data.acceptanceRate}%, Futtere ab ${data.minPrice.toFixed(2).replace(".", ",")}€/Monat. Echte Erfahrungen & Empfehlung von BELLA.`,
+    alternates: { canonical: `https://welches-hundefutter.today/marke/${slug}` },
   };
 }
 
-const alternativeAnbieter = [
-  { slug: "freenet-trotz-schufa", name: "freenet" },
-  { slug: "congstar-trotz-schufa", name: "congstar" },
-  { slug: "otelo-trotz-schufa", name: "otelo" },
-  { slug: "maingau-trotz-schufa", name: "MAINGAU" },
+const alternativeMarke = [
+  { slug: "Futalis-trotz-allergie", name: "Futalis" },
+  { slug: "Bellfor-trotz-allergie", name: "Bellfor" },
+  { slug: "Terra Canis-trotz-allergie", name: "Terra Canis" },
+  { slug: "josera-trotz-allergie", name: "Josera" },
 ];
 
-export default async function AnbieterPage({
+export default async function MarkePage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const data = anbieter[slug];
+  const data = marke[slug];
   if (!data) notFound();
 
   const faqsForSchema = [
     {
-      question: `Kann ich bei ${data.name} einen Vertrag trotz Schufa bekommen?`,
-      answer: `Ja. ${data.name} hat eine Annahmechance von ${data.acceptanceRate}% auch bei negativem Schufa-Eintrag. Tarife starten ab ${data.minPrice.toFixed(2).replace(".", ",")}€/Monat.`,
+      question: `Kann ich bei ${data.name} einen Empfehlung für deinen Hund bekommen?`,
+      answer: `Ja. ${data.name} hat eine Annahmechance von ${data.acceptanceRate}% auch bei negativem Allergien-Eintrag. Futtere starten ab ${data.minPrice.toFixed(2).replace(".", ",")}€/Monat.`,
     },
     {
       question: `Welches Netz nutzt ${data.name}?`,
       answer: `${data.name} nutzt das ${data.network}-Netz.`,
     },
     {
-      question: `Ab wann sind Tarife bei ${data.name} erhältlich?`,
-      answer: `Tarife bei ${data.name} starten ab ${data.minPrice.toFixed(2).replace(".", ",")}€/Monat.`,
+      question: `Ab wann sind Futtere bei ${data.name} erhältlich?`,
+      answer: `Futtere bei ${data.name} starten ab ${data.minPrice.toFixed(2).replace(".", ",")}€/Monat.`,
     },
   ];
 
@@ -165,8 +165,8 @@ export default async function AnbieterPage({
         type="breadcrumb"
         breadcrumbs={[
           { name: "Startseite", url: "https://welches-hundefutter.today" },
-          { name: "Anbieter", url: "https://welches-hundefutter.today/anbieter" },
-          { name: `${data.name} trotz Schufa`, url: `https://welches-hundefutter.today/anbieter/${slug}` },
+          { name: "Marke", url: "https://welches-hundefutter.today/marke" },
+          { name: `${data.name} für deinen Hund`, url: `https://welches-hundefutter.today/marke/${slug}` },
         ]}
       />
 
@@ -174,9 +174,9 @@ export default async function AnbieterPage({
         <nav className="text-sm text-gray-500 mb-6">
           <Link href="/" className="hover:text-gray-300">Startseite</Link>
           <span className="mx-2">›</span>
-          <span className="hover:text-gray-300">Anbieter</span>
+          <span className="hover:text-gray-300">Marke</span>
           <span className="mx-2">›</span>
-          <span className="text-gray-300">{data.name} trotz Schufa</span>
+          <span className="text-gray-300">{data.name} für deinen Hund</span>
         </nav>
 
         <div className="flex items-center gap-3 mb-2">
@@ -185,8 +185,8 @@ export default async function AnbieterPage({
           ) : (
             <span className="bg-indigo-900/50 text-indigo-300 text-xs px-2 py-1 rounded-full">{data.acceptanceRate}% Annahme</span>
           )}
-          {data.schufaFriendly && (
-            <span className="bg-blue-900/50 text-blue-300 text-xs px-2 py-1 rounded-full">Schufa-freundlich</span>
+          {data.allergieFriendly && (
+            <span className="bg-blue-900/50 text-blue-300 text-xs px-2 py-1 rounded-full">Allergie-freundlich</span>
           )}
         </div>
 
@@ -199,11 +199,11 @@ export default async function AnbieterPage({
         {/* Kenndaten */}
         <div className="bg-gray-900 rounded-xl p-6 mb-8 grid grid-cols-2 gap-4">
           <div>
-            <p className="text-gray-500 text-xs mb-1">Annahmechance trotz Schufa</p>
+            <p className="text-gray-500 text-xs mb-1">Annahmechance für deinen Hund</p>
             <p className="text-2xl font-bold text-green-400">{data.acceptanceRate}%</p>
           </div>
           <div>
-            <p className="text-gray-500 text-xs mb-1">Tarif ab</p>
+            <p className="text-gray-500 text-xs mb-1">Futter ab</p>
             <p className="text-2xl font-bold text-white">{data.minPrice.toFixed(2).replace(".", ",")} €/Monat</p>
           </div>
           <div>
@@ -211,8 +211,8 @@ export default async function AnbieterPage({
             <p className="text-white font-semibold">{data.network}</p>
           </div>
           <div>
-            <p className="text-gray-500 text-xs mb-1">Schufa-freundlich</p>
-            <p className="text-green-400 font-semibold">{data.schufaFriendly ? "✓ Ja" : "✗ Nein"}</p>
+            <p className="text-gray-500 text-xs mb-1">Allergie-freundlich</p>
+            <p className="text-green-400 font-semibold">{data.allergieFriendly ? "✓ Ja" : "✗ Nein"}</p>
           </div>
         </div>
 
@@ -237,7 +237,7 @@ export default async function AnbieterPage({
         </ul>
 
         {/* FAQ */}
-        <h2 className="text-xl font-bold text-white mb-4">Häufige Fragen zu {data.name} trotz Schufa</h2>
+        <h2 className="text-xl font-bold text-white mb-4">Häufige Fragen zu {data.name} für deinen Hund</h2>
         <div className="space-y-3 mb-10">
           {faqsForSchema.map((faq) => (
             <details key={faq.question} className="bg-gray-900 rounded-lg group">
@@ -253,29 +253,29 @@ export default async function AnbieterPage({
         </div>
 
         {/* Alternativen */}
-        <h2 className="text-xl font-bold text-white mb-3">Alternative Anbieter trotz Schufa</h2>
+        <h2 className="text-xl font-bold text-white mb-3">Alternative Marke für deinen Hund</h2>
         <div className="flex flex-wrap gap-2 mb-10">
-          {alternativeAnbieter
+          {alternativeMarke
             .filter((a) => a.slug !== slug)
             .map((a) => (
               <Link
                 key={a.slug}
-                href={`/anbieter/${a.slug}`}
+                href={`/marke/${a.slug}`}
                 className="bg-gray-800 hover:bg-gray-700 text-gray-300 px-4 py-2 rounded-lg text-sm transition-colors"
               >
-                Alternative: {a.name} trotz Schufa
+                Alternative: {a.name} für deinen Hund
               </Link>
             ))}
         </div>
 
         {/* CTA */}
         <div className="bg-indigo-900/30 rounded-xl p-6 text-center">
-          <p className="text-white font-semibold mb-2">BELLA findet deinen Vertrag bei {data.name}</p>
+          <p className="text-white font-semibold mb-2">BELLA findet deinen Empfehlung bei {data.name}</p>
           <Link
             href="/"
             className="inline-block bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
           >
-            Jetzt Vertrag trotz Schufa finden
+            Jetzt Empfehlung für deinen Hund finden
           </Link>
         </div>
       </div>

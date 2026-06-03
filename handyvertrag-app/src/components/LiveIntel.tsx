@@ -66,7 +66,7 @@ export default function LiveIntel() {
 }
 
 const INSIGHTS = [
-  "87 % zahlen für Datenvolumen, das sie nie nutzen.",
+  "87 % zahlen für Futtervolumen, das sie nie nutzen.",
   "Die meisten Nutzer wählen das falsche Netz für ihren Wohnort.",
   "Durchschnittliche Ersparnis durch BELLA: 18 €/Monat.",
   "9 von 10 Verträgen sind teurer als nötig.",
