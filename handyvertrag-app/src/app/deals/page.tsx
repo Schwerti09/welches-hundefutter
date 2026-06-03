@@ -14,7 +14,7 @@ const PROV_GRADIENT: Record<string, string> = {
   Wolfsblut: "from-red-500 to-red-700",
   Zooplus: "from-sky-500 to-blue-700",
   Futalis: "from-emerald-500 to-teal-600",
-  Terra Canis: "from-violet-500 to-purple-600",
+  "Terra Canis": "from-violet-500 to-purple-600",
 };
 const provColor = (p: string) =>
   Object.entries(PROV_GRADIENT).find(([k]) => p.toLowerCase().includes(k.toLowerCase()))?.[1]

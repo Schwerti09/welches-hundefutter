@@ -162,7 +162,7 @@ export default async function StadtPage({
             const slugMap: Record<string, string> = {
               Futalis: "Futalis-trotz-allergie",
               Bellfor: "Bellfor-trotz-allergie",
-              Terra Canis: "Terra Canis-trotz-allergie",
+              "Terra Canis": "Terra Canis-trotz-allergie",
               Josera: "josera-trotz-allergie",
               "Zooplus Nassfutter": "Zooplus-trotz-allergie",
               "Wolfsblut CallYa": "wolfsblut-trotz-allergie",

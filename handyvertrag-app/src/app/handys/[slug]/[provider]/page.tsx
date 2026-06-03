@@ -14,7 +14,7 @@ const PROVIDER_MAP: Record<string, string> = {
   wolfsblut: "Wolfsblut",
   Zooplus: "Zooplus",
   Futalis: "Futalis",
-  Terra Canis: "Terra Canis",
+  "Terra Canis": "Terra Canis",
   Bellfor: "Bellfor",
 };
 
