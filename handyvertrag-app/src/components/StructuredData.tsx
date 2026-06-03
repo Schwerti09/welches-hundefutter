@@ -31,7 +31,7 @@ function buildOrganizationSchema() {
       width: 512,
       height: 512,
     },
-    description: "KI-Berater für Handyverträge trotz Schufa-Eintrag in Deutschland.",
+    description: "KI-Ernährungsberaterin für Hunde – powered by HANSI Decision Intelligence Engine™.",
     founder: { "@type": "Person", name: "R. Schwertfechter" },
     contactPoint: {
       "@type": "ContactPoint",
@@ -41,6 +41,11 @@ function buildOrganizationSchema() {
     },
     areaServed: { "@type": "Country", name: "Deutschland" },
     sameAs: ["https://github.com/Schwerti09/welches-hundefutter"],
+    brand: {
+      "@type": "Brand",
+      name: "HANSI Decision Intelligence Engine™",
+      description: "Proprietäres KI-Empfehlungssystem für individuelle Produktberatung.",
+    },
   };
 }
 

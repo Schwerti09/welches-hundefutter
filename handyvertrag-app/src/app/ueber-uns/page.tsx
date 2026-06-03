@@ -135,9 +135,10 @@ export default function UeberUnsPage() {
           <h2 className="text-2xl font-black mb-6">Technologie</h2>
           <div className="space-y-3">
             {[
+              ["Entscheidungs-Engine", "HANSI Decision Intelligence Engine™ – proprietäres Empfehlungssystem"],
               ["KI-Berater", "Google Gemini + Anthropic Claude – Streaming, Echtzeit-Antworten"],
-              ["Datenbank", "PostgreSQL (Neon) – 6.000+ tagesaktuelle Angebote"],
-              ["Affiliate-Netzwerke", "AWIN, CommunicationAds – direkte Feed-Integration"],
+              ["Datenbank", "PostgreSQL (Neon) – 500+ Futtersorten, täglich aktualisiert"],
+              ["Affiliate-Netzwerke", "AWIN – direkte Feed-Integration"],
               ["Hosting", "Netlify Edge Network – globale Verfügbarkeit"],
               ["Framework", "Next.js 16 App Router – schnell, SEO-optimiert"],
             ].map(([k, v]) => (

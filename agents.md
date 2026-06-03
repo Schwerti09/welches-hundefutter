@@ -4,6 +4,7 @@
 > **Target:** welches-hundefutter.today | Next.js 16.2 App Router | Netlify
 > **Primary Keyword:** welches hundefutter für meinen hund (5.400/Monat)
 > **Marken-Persona:** BELLA — Deutschlands KI-Ernährungsberaterin für Hunde
+> **Engine:** HANSI Decision Intelligence Engine™ — proprietäres KI-Empfehlungssystem (Marke, nicht umbenennen!)
 > **Erfolg = Platz 1. Alles andere ist Niederlage.**
 
 ---

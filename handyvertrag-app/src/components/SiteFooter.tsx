@@ -76,6 +76,12 @@ export default function SiteFooter() {
             Affiliate-Links mit <code className="text-gray-500">rel=&quot;sponsored&quot;</code> · Preise inkl. MwSt. · keine Gewähr für Aktualität
           </p>
         </div>
+        <div className="mt-4 flex items-center justify-center gap-1.5">
+          <span className="text-gray-700 text-xs">Powered by</span>
+          <span className="text-xs font-semibold tracking-wide text-gray-500 border border-gray-700 rounded px-2 py-0.5">
+            HANSI Decision Intelligence Engine™
+          </span>
+        </div>
       </div>
     </footer>
   );
