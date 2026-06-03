@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { blogArticles, getArticleBySlug } from "@/data/blogArticles";
@@ -18,10 +18,10 @@ export async function generateMetadata({
   if (!article) return {};
 
   return {
-    title: `${article.title} | HANSI`,
+    title: `${article.title} | BELLA`,
     description: article.description,
-    alternates: { canonical: `https://handytrotzschufa.today/blog/${slug}` },
-    authors: [{ name: "R. Schwertfechter", url: "https://handytrotzschufa.today/ueber-uns" }],
+    alternates: { canonical: `https://welches-hundefutter.today/blog/${slug}` },
+    authors: [{ name: "R. Schwertfechter", url: "https://welches-hundefutter.today/ueber-uns" }],
     openGraph: {
       title: article.title,
       description: article.description,
@@ -50,9 +50,9 @@ export default async function BlogArticlePage({
       <StructuredData
         type="breadcrumb"
         breadcrumbs={[
-          { name: "Startseite", url: "https://handytrotzschufa.today" },
-          { name: "Blog", url: "https://handytrotzschufa.today/blog" },
-          { name: article.title, url: `https://handytrotzschufa.today/blog/${slug}` },
+          { name: "Startseite", url: "https://welches-hundefutter.today" },
+          { name: "Blog", url: "https://welches-hundefutter.today/blog" },
+          { name: article.title, url: `https://welches-hundefutter.today/blog/${slug}` },
         ]}
       />
 
@@ -177,7 +177,7 @@ export default async function BlogArticlePage({
 
         {/* CTA */}
         <div className="mt-10 bg-indigo-900/30 rounded-xl p-6 text-center">
-          <p className="text-white font-semibold mb-2">HANSI findet deinen Vertrag trotz Schufa</p>
+          <p className="text-white font-semibold mb-2">BELLA findet deinen Vertrag trotz Schufa</p>
           <Link
             href="/"
             className="inline-block bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-lg font-semibold transition-colors"

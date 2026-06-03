@@ -1,4 +1,4 @@
-import { StructuredData } from "../types";
+﻿import { StructuredData } from "../types";
 
 export class StructuredDataGenerator {
   generateProductSchema(product: any, offer: any): StructuredData {
@@ -144,8 +144,8 @@ export class StructuredDataGenerator {
       "@context": "https://schema.org",
       "@type": "Organization",
       name: "Handyvertrag.today",
-      url: "https://handytrotzschufa.today",
-      logo: "https://handytrotzschufa.today/logo.png",
+      url: "https://welches-hundefutter.today",
+      logo: "https://welches-hundefutter.today/logo.png",
       description: "Deutschlands intelligente Handyvertrag-Vergleichsplattform mit AI-powered Recommendations",
       sameAs: [
         "https://twitter.com/handyvertrag",
@@ -154,7 +154,7 @@ export class StructuredDataGenerator {
       contactPoint: {
         "@type": "ContactPoint",
         contactType: "customer service",
-        email: "info@handytrotzschufa.today",
+        email: "info@welches-hundefutter.today",
       },
     };
 
@@ -180,7 +180,7 @@ export class StructuredDataGenerator {
         name: "Handyvertrag.today",
         logo: {
           "@type": "ImageObject",
-          url: "https://handytrotzschufa.today/logo.png",
+          url: "https://welches-hundefutter.today/logo.png",
         },
       },
       datePublished: article.publishedAt,

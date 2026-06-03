@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -230,7 +230,7 @@ export default function AnalysisStorm({ active, query, onComplete }: Props) {
         <div className="absolute top-0 left-0 right-0 px-5 py-4 border-b border-white/5 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-[10px] text-white/50 tracking-widest uppercase font-bold">HANSI Decision Intelligence</span>
+            <span className="text-[10px] text-white/50 tracking-widest uppercase font-bold">BELLA Decision Intelligence</span>
           </div>
           <span className="text-[10px] text-white/25 font-mono">{(ms / 1000).toFixed(1)}s</span>
         </div>
@@ -296,7 +296,7 @@ export default function AnalysisStorm({ active, query, onComplete }: Props) {
               />
               <p className="text-[11px] tracking-[0.3em] text-white/30 uppercase font-semibold mb-3">Optimaler Match gefunden</p>
               <h2 className="text-4xl font-black text-white mb-2">Analyse abgeschlossen.</h2>
-              <p className="text-white/45 text-base">HANSI hat die beste Entscheidung für dein Profil berechnet.</p>
+              <p className="text-white/45 text-base">BELLA hat die beste Entscheidung für dein Profil berechnet.</p>
               <div className="mt-5 flex items-center gap-3">
                 <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/15 border border-emerald-500/30">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />

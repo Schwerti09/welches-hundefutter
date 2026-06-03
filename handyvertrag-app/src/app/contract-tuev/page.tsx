@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -74,7 +74,7 @@ export default function ContractTuevPage() {
             Zahlst du zu viel für<br />deinen <span className="text-amber-300">Handyvertrag?</span>
           </h1>
           <p className="text-white/55 text-lg leading-relaxed max-w-xl">
-            HANSI analysiert deinen aktuellen Vertrag gegen den Markt.
+            BELLA analysiert deinen aktuellen Vertrag gegen den Markt.
             Erhältst du eine Vertragsnote und konkrete Ersparnis-Berechnung.
           </p>
         </div>
@@ -176,7 +176,7 @@ export default function ContractTuevPage() {
                 </div>
                 <p className="text-sm text-white/65 leading-relaxed">{result.recommendation}</p>
                 <Link href="/" className="mt-3 block text-center py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-600 text-white font-semibold text-sm hover:shadow-lg hover:shadow-indigo-500/30 transition-all">
-                  HANSI fragen — detaillierte Analyse starten →
+                  BELLA fragen — detaillierte Analyse starten →
                 </Link>
               </div>
             )}

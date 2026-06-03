@@ -1,8 +1,8 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 
 const LINKS = {
   Beratung: [
-    { label: "HANSI – Schufa Berater", href: "/" },
+    { label: "BELLA – Schufa Berater", href: "/" },
     { label: "Vertrag trotz Schufa finden", href: "/guides" },
     { label: "Prepaid ohne Schufa", href: "/anbieter/o2-trotz-schufa" },
     { label: "FAQ Handyvertrag & Schufa", href: "/faq" },
@@ -18,7 +18,7 @@ const LINKS = {
   Unternehmen: [
     { label: "Über uns", href: "/ueber-uns" },
     { label: "Affiliate-Hinweis", href: "/affiliate" },
-    { label: "Kontakt", href: "mailto:support@handytrotzschufa.today" },
+    { label: "Kontakt", href: "mailto:support@welches-hundefutter.today" },
   ],
   Rechtliches: [
     { label: "Impressum", href: "/impressum" },
@@ -41,11 +41,11 @@ export default function SiteFooter() {
               <span className="font-bold text-lg">handytrotzschufa<span className="text-indigo-400">.today</span></span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-              Handyvertrag trotz Schufa – HANSI findet deinen Weg. Neutral, kostenlos, ohne Bewertung.
+              Hundefutter für deinen Hund – BELLA findet deinen Weg. Neutral, kostenlos, ohne Bewertung.
             </p>
             <div className="flex items-center gap-2 mt-4">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-xs text-gray-500">HANSI ist online</span>
+              <span className="text-xs text-gray-500">BELLA ist online</span>
             </div>
             <div className="mt-4 flex flex-wrap gap-2">
               {["1&1", "freenet", "otelo"].map((p) => (
@@ -70,7 +70,7 @@ export default function SiteFooter() {
         </div>
         <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-gray-500 text-xs text-center md:text-left">
-            © 2026 handytrotzschufa.today · HANSI Intelligence System · Deutschland
+            © 2026 welches-hundefutter.today · BELLA Intelligence System · Deutschland
           </p>
           <p className="text-gray-600 text-xs text-center">
             Affiliate-Links mit <code className="text-gray-500">rel=&quot;sponsored&quot;</code> · Preise inkl. MwSt. · keine Gewähr für Aktualität

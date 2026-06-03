@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "Affiliate-Hinweis | handytrotzschufa.today",
+  title: "Affiliate-Hinweis | welches-hundefutter.today",
   description: "Transparenz zu unseren Affiliate-Links: Wie wir Geld verdienen und warum das dich nichts kostet.",
 };
 
@@ -32,14 +32,14 @@ export default function AffiliatePage() {
           <div className="bg-indigo-500/10 border border-indigo-500/30 rounded-2xl p-5">
             <p className="text-indigo-300 font-semibold mb-1">📢 Werbung auf dieser Seite</p>
             <p className="text-white/70 text-sm leading-relaxed">
-              handytrotzschufa.today enthält Affiliate-Links zu Online-Händlern. Diese Links sind mit <code className="text-indigo-300 text-xs bg-indigo-500/20 px-1.5 py-0.5 rounded">rel=&quot;sponsored&quot;</code> gekennzeichnet.
+              welches-hundefutter.today enthält Affiliate-Links zu Online-Händlern. Diese Links sind mit <code className="text-indigo-300 text-xs bg-indigo-500/20 px-1.5 py-0.5 rounded">rel=&quot;sponsored&quot;</code> gekennzeichnet.
             </p>
           </div>
 
           {[
             { icon: "💶", title: "Wie verdienen wir Geld?", body: "Wenn du über einen unserer Links einen Handyvertrag abschließt, erhalten wir eine Provision vom jeweiligen Anbieter (z. B. Sparhandy, DeinHandy, Samsung Shop). Diese Provision ist ein fest vereinbarter Betrag oder Prozentsatz des Kaufpreises." },
             { icon: "🔒", title: "Entstehen dir Mehrkosten?", body: "Nein, für dich entstehen keinerlei Mehrkosten. Der Preis, den du bezahlst, ist identisch mit dem, den du beim direkten Kauf beim Anbieter zahlen würdest. Manchmal bekommst du sogar bessere Konditionen über unsere Partner-Links." },
-            { icon: "🤖", title: "Beeinflusst das HANSIs Empfehlungen?", body: "Nein. HANSI bewertet Angebote nach Preis-Leistungs-Verhältnis, Netzqualität, Datentarif und deinen persönlichen Präferenzen – nicht nach Provisionshöhe. Unsere Empfehlungen sind unabhängig. Vertrauen geht vor kurzfristiger Provision." },
+            { icon: "🤖", title: "Beeinflusst das BELLAs Empfehlungen?", body: "Nein. BELLA bewertet Angebote nach Preis-Leistungs-Verhältnis, Netzqualität, Datentarif und deinen persönlichen Präferenzen – nicht nach Provisionshöhe. Unsere Empfehlungen sind unabhängig. Vertrauen geht vor kurzfristiger Provision." },
             { icon: "🏢", title: "Unsere Affiliate-Partner", body: "Wir arbeiten mit Affiliate-Netzwerken zusammen, darunter AWIN (awin.com) und CommunicationAds. Unsere Händler-Partner sind u. a. Sparhandy, DeinHandy, Samsung Shop Deutschland und weitere zertifizierte Mobilfunk-Händler." },
             { icon: "📊", title: "Transparenz-Verpflichtung", body: "Alle Affiliate-Links auf dieser Website sind klar als Werbung gekennzeichnet. Wir halten uns an die Richtlinien des Deutschen Werberats, die DSGVO und die TMG-Anforderungen zur Kennzeichnung von Werbung." },
           ].map((s) => (

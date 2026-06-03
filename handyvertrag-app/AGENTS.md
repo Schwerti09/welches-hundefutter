@@ -1,6 +1,6 @@
-# AGENTS.md
+﻿# AGENTS.md
 
-# HANSI Commerce OS – Agent Operating System
+# BELLA Commerce OS – Agent Operating System
 
 ## Mission
 
@@ -38,8 +38,8 @@ Alle Optimierungen müssen langfristig diese Kennzahl erhöhen.
 
 # Product Philosophy
 
-HANSI ist keine Vergleichsseite. HANSI ist ein persönlicher Mobilfunkberater.
-Vergleichsseiten zeigen Listen. HANSI trifft Entscheidungen.
+BELLA ist keine Vergleichsseite. BELLA ist ein persönlicher Mobilfunkberater.
+Vergleichsseiten zeigen Listen. BELLA trifft Entscheidungen.
 
 Jeder Feature-Vorschlag muss beantworten:
 "Erleichtert diese Funktion dem Nutzer die Kaufentscheidung?"

@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+﻿import { notFound } from "next/navigation";
 import { products, getProviderColor } from "@/data/products";
 import type { Metadata } from "next";
 import { neon } from "@neondatabase/serverless";
@@ -58,9 +58,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const pName = PROVIDER_MAP[provider];
   if (!product || !pName) return { title: "Nicht gefunden" };
   return {
-    title: `${product.name} mit ${pName} Vertrag | handytrotzschufa.today`,
-    description: `${product.name} mit ${pName} Vertrag vergleichen. Alle aktuellen ${pName} Tarife für das ${product.name} im Überblick. Günstigsten Deal finden mit HANSI.`,
-    alternates: { canonical: `https://handytrotzschufa.today/handys/${slug}/${provider}` },
+    title: `${product.name} mit ${pName} Vertrag | welches-hundefutter.today`,
+    description: `${product.name} mit ${pName} Vertrag vergleichen. Alle aktuellen ${pName} Tarife für das ${product.name} im Überblick. Günstigsten Deal finden mit BELLA.`,
+    alternates: { canonical: `https://welches-hundefutter.today/handys/${slug}/${provider}` },
     openGraph: { title: `${product.name} mit ${pName}`, description: `Alle ${pName} Tarife für das ${product.name}` },
   };
 }
@@ -86,9 +86,9 @@ export default async function DeviceProviderPage({ params }: PageProps) {
     <div className="min-h-screen bg-[#05060f] text-white">
       <StructuredData type="faq" faqs={faqs.map(f => ({ question: f.question, answer: f.answer }))} />
       <StructuredData type="breadcrumb" breadcrumbs={[
-        { name: "Startseite", url: "https://handytrotzschufa.today" },
-        { name: product.name + " Verträge", url: `https://handytrotzschufa.today/handys/${slug}` },
-        { name: pName, url: `https://handytrotzschufa.today/handys/${slug}/${provider}` },
+        { name: "Startseite", url: "https://welches-hundefutter.today" },
+        { name: product.name + " Verträge", url: `https://welches-hundefutter.today/handys/${slug}` },
+        { name: pName, url: `https://welches-hundefutter.today/handys/${slug}/${provider}` },
       ]} />
 
       {/* Top bar */}
@@ -162,7 +162,7 @@ export default async function DeviceProviderPage({ params }: PageProps) {
         ) : (
           <div className="text-center py-12 text-white/40 mb-12">
             <p className="text-lg mb-2">Aktuell keine direkten {pName} Angebote</p>
-            <p className="text-sm">HANSI findet trotzdem den besten Deal für dich.</p>
+            <p className="text-sm">BELLA findet trotzdem den besten Deal für dich.</p>
           </div>
         )}
 
@@ -196,14 +196,14 @@ export default async function DeviceProviderPage({ params }: PageProps) {
           </div>
         </section>
 
-        {/* Device page link + HANSI CTA */}
+        {/* Device page link + BELLA CTA */}
         <div className="grid md:grid-cols-2 gap-4">
           <Link href={`/handys/${slug}`} className="p-4 rounded-2xl bg-white/[0.04] border border-white/8 hover:border-white/20 transition-all">
             <div className="text-sm font-bold mb-1">Alle Anbieter vergleichen</div>
             <div className="text-xs text-white/40">→ {product.name} mit Vertrag – kompletter Vergleich</div>
           </Link>
           <Link href="/" className="p-4 rounded-2xl bg-gradient-to-r from-indigo-600/20 to-violet-600/20 border border-indigo-500/30 hover:border-indigo-500/50 transition-all">
-            <div className="text-sm font-bold mb-1">HANSI persönlich fragen</div>
+            <div className="text-sm font-bold mb-1">BELLA persönlich fragen</div>
             <div className="text-xs text-white/40">→ KI-Berater findet deinen optimalen Tarif</div>
           </Link>
         </div>

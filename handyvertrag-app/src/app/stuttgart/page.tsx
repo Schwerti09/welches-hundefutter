@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+﻿import { Suspense } from "react";
 import dynamic from "next/dynamic";
 
 const CityOfferCard = dynamic(() => import("@/components/CityOfferCard"), {
@@ -72,11 +72,11 @@ const stuttgartOffers = [
 ];
 
 export const metadata = {
-  title: "Stuttgart - Handy mit Vertrag | Top Angebote | handytrotzschufa.today",
+  title: "Stuttgart - Handy mit Vertrag | Top Angebote | welches-hundefutter.today",
   description:
     "Die besten Handy-Verträge in Stuttgart. Google Pixel 9 Pro, Samsung Galaxy S24 & mehr mit Telekom, Vodafone, o2. Jetzt vergleichen & sparen!",
   alternates: {
-    canonical: "https://handytrotzschufa.today/stuttgart",
+    canonical: "https://welches-hundefutter.today/stuttgart",
   },
 };
 
@@ -227,7 +227,7 @@ export default function StuttgartPage() {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>© 2026 handytrotzschufa.today · Alle Preise inkl. MwSt. · Affiliate-Links powered by AWIN.</p>
+            <p>© 2026 welches-hundefutter.today · Alle Preise inkl. MwSt. · Affiliate-Links powered by AWIN.</p>
           </div>
         </div>
       </footer>

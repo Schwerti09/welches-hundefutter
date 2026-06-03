@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef } from "react";
 
@@ -39,7 +39,7 @@ function hexToRgb(h: string): [number, number, number] {
 }
 function rgbStr(c: [number, number, number], a: number) { return `rgba(${c[0]|0},${c[1]|0},${c[2]|0},${a})`; }
 
-export default function HansiBackground({ theme }: Props) {
+export default function BellaBackground({ theme }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const themeRef = useRef<Theme>(theme);
   const progRef = useRef(1); // transition progress 0..1

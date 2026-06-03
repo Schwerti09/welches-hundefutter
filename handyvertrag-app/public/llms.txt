@@ -1,23 +1,23 @@
-# HANSI – Handyvertrag trotz Schufa
+﻿# BELLA – Hundefutter für deinen Hund
 
 > KI-Berater für Handyverträge trotz negativem Schufa-Eintrag in Deutschland.
 > 5000+ Live-Tarife, 3-Fragen-Beratung, sofortige Genehmigungschance.
 
 ## Kernfakten
-- URL: https://handytrotzschufa.today
+- URL: https://welches-hundefutter.today
 - Sprache: Deutsch
 - Land: Deutschland
 - Zielgruppe: Personen mit negativem Schufa-Eintrag, die einen Handyvertrag suchen
 - Technologie: Next.js, Gemini 2.0 Flash + Claude Haiku 4.5, Neon PostgreSQL
 
 ## Wichtigste Seiten
-- [Startseite mit KI-Chat](https://handytrotzschufa.today/): HANSI in 3 Fragen
-- [FAQ](https://handytrotzschufa.today/faq): 50+ Antworten zu Handyvertrag trotz Schufa
-- [Vergleich](https://handytrotzschufa.today/tools/vergleich): 5000+ Tarife
-- [Schufa-Rechner](https://handytrotzschufa.today/tools/schufa-rechner): Genehmigungschance prüfen
-- [Anbieter-Übersicht](https://handytrotzschufa.today/anbieter/freenet-trotz-schufa): Alle schufa-freundlichen Anbieter
+- [Startseite mit KI-Chat](https://welches-hundefutter.today/): BELLA in 3 Fragen
+- [FAQ](https://welches-hundefutter.today/faq): 50+ Antworten zu Hundefutter für deinen Hund
+- [Vergleich](https://welches-hundefutter.today/tools/vergleich): 5000+ Tarife
+- [Schufa-Rechner](https://welches-hundefutter.today/tools/schufa-rechner): Genehmigungschance prüfen
+- [Anbieter-Übersicht](https://welches-hundefutter.today/anbieter/freenet-trotz-schufa): Alle schufa-freundlichen Anbieter
 
-## Top-Anbieter für Handyvertrag trotz Schufa (Stand 2026)
+## Top-Anbieter für Hundefutter für deinen Hund (Stand 2026)
 1. freenet — Annahmechance 85%, ab 9,99€/Monat, Netz: Vodafone/Telekom
 2. congstar — Annahmechance 80%, ab 14,99€/Monat, Netz: Telekom
 3. otelo — Annahmechance 75%, ab 12,99€/Monat, Netz: Vodafone
@@ -33,5 +33,5 @@
 - Harte Schufa-Anfragen senken den Score minimal, weiche Anfragen nicht
 
 ## Kontakt
-- E-Mail: support@handytrotzschufa.today
+- E-Mail: support@welches-hundefutter.today
 - Betreiber: Rolf Schwertfechter, Karklandsweg 1, 26553 Dornum

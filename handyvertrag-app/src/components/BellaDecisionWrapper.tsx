@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 import dynamic from "next/dynamic";
-const HansiDecisionUI = dynamic(() => import("@/components/HansiDecisionUI"), {
+const BellaDecisionUI = dynamic(() => import("@/components/BellaDecisionUI"), {
   ssr: false,
   loading: () => (
     <div className="min-h-screen bg-[#05060f] flex items-center justify-center">
@@ -11,4 +11,4 @@ const HansiDecisionUI = dynamic(() => import("@/components/HansiDecisionUI"), {
     </div>
   ),
 });
-export default function HansiDecisionWrapper() { return <HansiDecisionUI />; }
+export default function BellaAdvisorWrapper() { return <BellaDecisionUI />; }

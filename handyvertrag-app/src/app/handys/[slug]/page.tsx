@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+﻿import { notFound } from "next/navigation";
 import { products, getProviderColor } from "@/data/products";
 import type { Metadata } from "next";
 import StructuredData from "@/components/StructuredData";
@@ -48,12 +48,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!product) return { title: "Nicht gefunden" };
   const bestOffer = product.offers.reduce((b, o) => o.monthlyPrice < b.monthlyPrice ? o : b);
   return {
-    title: `${product.name} mit Vertrag ab ${bestOffer.monthlyPrice.toFixed(2)}€/Monat | handytrotzschufa.today`,
-    description: `${product.name} Vertragsangebote vergleichen. Ab ${bestOffer.monthlyPrice.toFixed(2)}€/Monat. Alle Provider im Vergleich – Telekom, Vodafone, o2 & mehr. KI-gestützte Empfehlung von HANSI.`,
-    alternates: { canonical: `https://handytrotzschufa.today/handys/${product.id}` },
+    title: `${product.name} mit Vertrag ab ${bestOffer.monthlyPrice.toFixed(2)}€/Monat | welches-hundefutter.today`,
+    description: `${product.name} Vertragsangebote vergleichen. Ab ${bestOffer.monthlyPrice.toFixed(2)}€/Monat. Alle Provider im Vergleich – Telekom, Vodafone, o2 & mehr. KI-gestützte Empfehlung von BELLA.`,
+    alternates: { canonical: `https://welches-hundefutter.today/handys/${product.id}` },
     openGraph: {
       title: `${product.name} mit Vertrag`,
-      description: `Ab ${bestOffer.monthlyPrice.toFixed(2)}€/Monat. HANSI findet deinen besten Deal.`,
+      description: `Ab ${bestOffer.monthlyPrice.toFixed(2)}€/Monat. BELLA findet deinen besten Deal.`,
     },
   };
 }
@@ -82,9 +82,9 @@ export default async function HandyDetailPage({ params }: PageProps) {
       <StructuredData type="product" productId={product.id} />
       <StructuredData type="faq" faqs={faqs.map(f => ({ question: f.question, answer: f.answer }))} />
       <StructuredData type="breadcrumb" breadcrumbs={[
-        { name: "Startseite", url: "https://handytrotzschufa.today" },
-        { name: "Handys", url: "https://handytrotzschufa.today/handys" },
-        { name: product.name, url: `https://handytrotzschufa.today/handys/${product.id}` },
+        { name: "Startseite", url: "https://welches-hundefutter.today" },
+        { name: "Handys", url: "https://welches-hundefutter.today/handys" },
+        { name: product.name, url: `https://welches-hundefutter.today/handys/${product.id}` },
       ]} />
 
       {/* Top bar */}
@@ -219,18 +219,18 @@ export default async function HandyDetailPage({ params }: PageProps) {
           </div>
         </section>
 
-        {/* HANSI CTA */}
+        {/* BELLA CTA */}
         <div className="rounded-2xl bg-gradient-to-r from-indigo-600/20 to-violet-600/20 border border-indigo-500/30 p-6 text-center">
           <p className="text-lg font-bold mb-2">Unsicher welches Angebot passt?</p>
-          <p className="text-white/50 text-sm mb-5">HANSI analysiert dein Nutzerprofil und findet den perfekten Tarif für das {product.name}.</p>
+          <p className="text-white/50 text-sm mb-5">BELLA analysiert dein Nutzerprofil und findet den perfekten Tarif für das {product.name}.</p>
           <Link href="/" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-600 font-semibold hover:shadow-lg hover:shadow-indigo-500/30 transition-all">
-            HANSI fragen →
+            BELLA fragen →
           </Link>
         </div>
       </main>
 
       <footer className="border-t border-white/5 px-5 py-8 text-center">
-        <p className="text-white/20 text-xs">© 2026 handytrotzschufa.today · Affiliate-Links · Preise inkl. MwSt. · Letzte Aktualisierung: täglich</p>
+        <p className="text-white/20 text-xs">© 2026 welches-hundefutter.today · Affiliate-Links · Preise inkl. MwSt. · Letzte Aktualisierung: täglich</p>
         <div className="flex justify-center gap-4 mt-3">
           {["iPhone 17 Pro", "Galaxy S25 Ultra", "Pixel 10 Pro"].map(d => (
             <Link key={d} href={`/handys/${d.toLowerCase().replace(/\s+/g, "-")}`} className="text-xs text-white/30 hover:text-white/60 transition-colors">{d} mit Vertrag</Link>

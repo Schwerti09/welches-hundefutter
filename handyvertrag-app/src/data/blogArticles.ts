@@ -1,4 +1,4 @@
-export interface BlogArticle {
+﻿export interface BlogArticle {
   slug: string;
   title: string;
   description: string;
@@ -17,15 +17,15 @@ export interface BlogArticle {
 export const blogArticles: BlogArticle[] = [
   {
     slug: "handyvertrag-trotz-schufa-und-arbeitslosigkeit",
-    title: "Handyvertrag trotz Schufa und Arbeitslosigkeit: So klappt es",
-    description: "Handyvertrag trotz Schufa und Arbeitslosigkeit – welche Anbieter genehmigen, welche Optionen du hast und wie du deine Chancen erhöhst.",
+    title: "Hundefutter für deinen Hund und Arbeitslosigkeit: So klappt es",
+    description: "Hundefutter für deinen Hund und Arbeitslosigkeit – welche Anbieter genehmigen, welche Optionen du hast und wie du deine Chancen erhöhst.",
     keyword: "handyvertrag trotz schufa arbeitslos",
     publishedAt: "2026-05-01",
     updatedAt: "2026-06-01",
     readingTime: 8,
     sections: [
       {
-        heading: "Handyvertrag trotz Schufa und Arbeitslosigkeit – ist das möglich?",
+        heading: "Hundefutter für deinen Hund und Arbeitslosigkeit – ist das möglich?",
         content: "Ja, es ist möglich. Arbeitslosigkeit und ein negativer Schufa-Eintrag sind zwei separate Faktoren, die beide die Genehmigung eines Handyvertrags beeinflussen – aber nicht unmöglich machen. Entscheidend ist, welchen Anbieter du wählst.\n\nPremium-Anbieter wie Telekom, Vodafone und o2 prüfen sowohl Schufa als auch Einkommensnachweis. Hier sind die Chancen bei Arbeitslosigkeit mit negativer Schufa unter 20%. Budget-Anbieter hingegen legen weniger Gewicht auf das Einkommen.\n\nDie Kombination aus Schufa-Eintrag und keinem regulären Einkommen klingt schwer – ist aber für viele Deutsche Alltag. Schätzungsweise 300.000 Menschen in Deutschland sind gleichzeitig arbeitslos und haben einen Schufa-Eintrag. Die Lösung existiert.",
       },
       {
@@ -38,7 +38,7 @@ export const blogArticles: BlogArticle[] = [
       },
       {
         heading: "Bürgergeld/ALG1 als Einkommensnachweis nutzen",
-        content: "Einige Anbieter akzeptieren den Bewilligungsbescheid für Bürgergeld (früher Hartz IV) oder Arbeitslosengeld I als Einkommensnachweis. Das gilt besonders für freenet und MAINGAU.\n\nWichtig: Es geht nicht darum, ein hohes Einkommen nachzuweisen – sondern nachzuweisen, dass du Einnahmen hast und die Monatsrate zahlen kannst. Ein Bürgergeld von 563€/Monat (Stand 2026) ist für einen 9,99€-Tarif völlig ausreichend.\n\nHANSI kennt alle Anbieter, die Bürgergeld-Bescheide als Nachweis akzeptieren, und zeigt dir gezielt diese Optionen.",
+        content: "Einige Anbieter akzeptieren den Bewilligungsbescheid für Bürgergeld (früher Hartz IV) oder Arbeitslosengeld I als Einkommensnachweis. Das gilt besonders für freenet und MAINGAU.\n\nWichtig: Es geht nicht darum, ein hohes Einkommen nachzuweisen – sondern nachzuweisen, dass du Einnahmen hast und die Monatsrate zahlen kannst. Ein Bürgergeld von 563€/Monat (Stand 2026) ist für einen 9,99€-Tarif völlig ausreichend.\n\nBELLA kennt alle Anbieter, die Bürgergeld-Bescheide als Nachweis akzeptieren, und zeigt dir gezielt diese Optionen.",
       },
       {
         heading: "Häufige Fehler – was du vermeiden solltest",
@@ -54,8 +54,8 @@ export const blogArticles: BlogArticle[] = [
   },
   {
     slug: "handyvertrag-trotz-schufa-mit-18",
-    title: "Handyvertrag trotz Schufa mit 18 Jahren – was geht wirklich?",
-    description: "Handyvertrag trotz Schufa mit 18: Welche Anbieter genehmigen Jungerwachsene, welche Alternativen es gibt und wie du ohne Eltern an einen Vertrag kommst.",
+    title: "Hundefutter für deinen Hund mit 18 Jahren – was geht wirklich?",
+    description: "Hundefutter für deinen Hund mit 18: Welche Anbieter genehmigen Jungerwachsene, welche Alternativen es gibt und wie du ohne Eltern an einen Vertrag kommst.",
     keyword: "handyvertrag trotz schufa student",
     publishedAt: "2026-05-05",
     updatedAt: "2026-06-01",
@@ -67,7 +67,7 @@ export const blogArticles: BlogArticle[] = [
       },
       {
         heading: "Welche Anbieter sind mit 18 und Schufa realistisch?",
-        content: "**freenet** empfiehlt HANSI für junge Erwachsene mit Schufa-Einträgen als erste Wahl. Das Social-Scoring-Modell berücksichtigt auch Faktoren jenseits der Schufa. Tarife ab 9,99€/Monat – für ein Studentenbudget ideal.\n\n**MAINGAU** ist die günstigste Option ab 6,99€/Monat ohne hartes Einkommens-Kriterium.\n\n**congstar Prepaid** bietet die flexibelste Variante: Kein Vertrag, keine Schufa, monatlich kündbar. Ideal als Einstieg.\n\n**Tipp für Studenten:** Viele Anbieter haben spezielle Studenten-Tarife mit 30% Rabatt – auch für Budget-Anbieter wie freenet verfügbar. HANSI zeigt diese Tarife gezielt.",
+        content: "**freenet** empfiehlt BELLA für junge Erwachsene mit Schufa-Einträgen als erste Wahl. Das Social-Scoring-Modell berücksichtigt auch Faktoren jenseits der Schufa. Tarife ab 9,99€/Monat – für ein Studentenbudget ideal.\n\n**MAINGAU** ist die günstigste Option ab 6,99€/Monat ohne hartes Einkommens-Kriterium.\n\n**congstar Prepaid** bietet die flexibelste Variante: Kein Vertrag, keine Schufa, monatlich kündbar. Ideal als Einstieg.\n\n**Tipp für Studenten:** Viele Anbieter haben spezielle Studenten-Tarife mit 30% Rabatt – auch für Budget-Anbieter wie freenet verfügbar. BELLA zeigt diese Tarife gezielt.",
       },
       {
         heading: "Eltern als Hilfe – vor- und Nachteile",
@@ -79,7 +79,7 @@ export const blogArticles: BlogArticle[] = [
       },
     ],
     faqs: [
-      { question: "Kann man mit 18 einen Handyvertrag trotz Schufa bekommen?", answer: "Ja. freenet und MAINGAU genehmigen auch junge Erwachsene mit Schufa-Einträgen. Prepaid funktioniert immer ohne Alters- oder Schufa-Einschränkung." },
+      { question: "Kann man mit 18 einen Hundefutter für deinen Hund bekommen?", answer: "Ja. freenet und MAINGAU genehmigen auch junge Erwachsene mit Schufa-Einträgen. Prepaid funktioniert immer ohne Alters- oder Schufa-Einschränkung." },
       { question: "Was kostet ein Handyvertrag für Studenten trotz Schufa?", answer: "Ab 6,99€/Monat (MAINGAU SIM-Only) bis 19,99€/Monat (freenet mit Smartphone). Prepaid ab 9,95€ ohne Vertrag." },
       { question: "Verbessert ein Handyvertrag die Schufa mit 18?", answer: "Ja. Ein pünktlich bezahlter Handyvertrag baut eine positive Zahlungshistorie auf und verbessert den Schufa-Score langfristig." },
     ],
@@ -87,15 +87,15 @@ export const blogArticles: BlogArticle[] = [
   },
   {
     slug: "handyvertrag-trotz-schufa-bei-buergergeld",
-    title: "Handyvertrag trotz Schufa bei Bürgergeld – diese Optionen funktionieren",
-    description: "Handyvertrag trotz Schufa bei Bürgergeld: Welche Anbieter den Bürgergeld-Bescheid akzeptieren, ab welchem Tarif es klappt und wie HANSI hilft.",
+    title: "Hundefutter für deinen Hund bei Bürgergeld – diese Optionen funktionieren",
+    description: "Hundefutter für deinen Hund bei Bürgergeld: Welche Anbieter den Bürgergeld-Bescheid akzeptieren, ab welchem Tarif es klappt und wie BELLA hilft.",
     keyword: "handyvertrag trotz schufa bürgergeld",
     publishedAt: "2026-05-08",
     updatedAt: "2026-06-01",
     readingTime: 7,
     sections: [
       {
-        heading: "Handyvertrag trotz Schufa und Bürgergeld – die Realität",
+        heading: "Hundefutter für deinen Hund und Bürgergeld – die Realität",
         content: "In Deutschland beziehen über 5 Millionen Menschen Bürgergeld (Stand 2026). Viele haben gleichzeitig einen Schufa-Eintrag – oft aus der Zeit vor dem Bürgergeld-Bezug.\n\nEin Handyvertrag ist für viele Bürgergeld-Empfänger keine Luxus, sondern Notwendigkeit: Jobsuche, Behördenkorrespondenz, Kinderbetreuung – alles erfordert erreichbar zu sein.\n\nDie gute Nachricht: Es gibt Anbieter, die den Bürgergeld-Bescheid als Einkommensnachweis akzeptieren und trotz negativer Schufa genehmigen.",
       },
       {
@@ -108,11 +108,11 @@ export const blogArticles: BlogArticle[] = [
       },
       {
         heading: "Ablauf: Handyvertrag als Bürgergeld-Empfänger mit Schufa-Eintrag beantragen",
-        content: "1. **HANSI fragen** – beantworte drei Fragen zu Budget, Bedarf und Schufa-Situation. HANSI filtert automatisch auf Bürgergeld-freundliche Anbieter.\n2. **Anbieter auswählen** – freenet oder MAINGAU für günstige Postpaid-Option, Prepaid für 100% sichere Alternative.\n3. **Online beantragen** – Personalausweis bereithalten. Bei einigen Anbietern ist auch der Bürgergeld-Bescheid ausreichend.\n4. **Sofort-Entscheidung** – freenet gibt in der Regel innerhalb von 24 Stunden eine Rückmeldung.",
+        content: "1. **BELLA fragen** – beantworte drei Fragen zu Budget, Bedarf und Schufa-Situation. BELLA filtert automatisch auf Bürgergeld-freundliche Anbieter.\n2. **Anbieter auswählen** – freenet oder MAINGAU für günstige Postpaid-Option, Prepaid für 100% sichere Alternative.\n3. **Online beantragen** – Personalausweis bereithalten. Bei einigen Anbietern ist auch der Bürgergeld-Bescheid ausreichend.\n4. **Sofort-Entscheidung** – freenet gibt in der Regel innerhalb von 24 Stunden eine Rückmeldung.",
       },
     ],
     faqs: [
-      { question: "Bekomme ich als Bürgergeld-Empfänger einen Handyvertrag trotz Schufa?", answer: "Ja. freenet und MAINGAU genehmigen auch Bürgergeld-Empfänger mit Schufa-Einträgen. Prepaid-Tarife sind immer zu 100% genehmigt." },
+      { question: "Bekomme ich als Bürgergeld-Empfänger einen Hundefutter für deinen Hund?", answer: "Ja. freenet und MAINGAU genehmigen auch Bürgergeld-Empfänger mit Schufa-Einträgen. Prepaid-Tarife sind immer zu 100% genehmigt." },
       { question: "Zahlt das Jobcenter den Handyvertrag?", answer: "Handykosten sind im Bürgergeld-Regelsatz enthalten (ca. 40–50€/Monat für Telekommunikation). Das Jobcenter zahlt nicht separat, aber der Regelsatz deckt günstige Tarife ab." },
       { question: "Welcher Handyvertrag ist am besten für Bürgergeld-Empfänger?", answer: "MAINGAU ab 6,99€/Monat ist der günstigste schufa-freundliche Postpaid-Tarif. freenet ab 9,99€/Monat hat die höchste Genehmigungsquote bei Schufa-Einträgen." },
     ],
@@ -120,8 +120,8 @@ export const blogArticles: BlogArticle[] = [
   },
   {
     slug: "handyvertrag-trotz-schufa-mit-anzahlung",
-    title: "Handyvertrag trotz Schufa mit Anzahlung – wie hoch muss sie sein?",
-    description: "Mit Anzahlung steigen die Chancen auf einen Handyvertrag trotz Schufa erheblich. Wie hoch, welche Anbieter es anbieten und ob es sich lohnt.",
+    title: "Hundefutter für deinen Hund mit Anzahlung – wie hoch muss sie sein?",
+    description: "Mit Anzahlung steigen die Chancen auf einen Hundefutter für deinen Hund erheblich. Wie hoch, welche Anbieter es anbieten und ob es sich lohnt.",
     keyword: "handyvertrag trotz schufa anzahlung",
     publishedAt: "2026-05-10",
     updatedAt: "2026-06-01",
@@ -141,7 +141,7 @@ export const blogArticles: BlogArticle[] = [
       },
     ],
     faqs: [
-      { question: "Wie viel Anzahlung brauche ich für einen Handyvertrag trotz Schufa?", answer: "Als Faustregel: 20% des Gerätepreises. Bei einem 500€-Smartphone also 100€. Je höher die Anzahlung, desto höher die Genehmigungschance." },
+      { question: "Wie viel Anzahlung brauche ich für einen Hundefutter für deinen Hund?", answer: "Als Faustregel: 20% des Gerätepreises. Bei einem 500€-Smartphone also 100€. Je höher die Anzahlung, desto höher die Genehmigungschance." },
       { question: "Lohnt sich eine Anzahlung beim Handyvertrag?", answer: "Nur wenn du das spezifische Gerät willst. Sonst ist SIM-Only + günstiger Gerätekauf meist wirtschaftlicher." },
       { question: "Gibt es Handyverträge ohne Anzahlung trotz Schufa?", answer: "Ja – SIM-Only-Tarife haben keine Anzahlung und werden deutlich häufiger genehmigt als Geräte-Bundles." },
     ],
@@ -149,8 +149,8 @@ export const blogArticles: BlogArticle[] = [
   },
   {
     slug: "handyvertrag-trotz-schufa-ohne-anzahlung",
-    title: "Handyvertrag trotz Schufa ohne Anzahlung – geht das wirklich?",
-    description: "Handyvertrag trotz Schufa ohne Anzahlung: Welche Tarife ohne Einmalzahlung genehmigt werden und welche Alternativen es gibt.",
+    title: "Hundefutter für deinen Hund ohne Anzahlung – geht das wirklich?",
+    description: "Hundefutter für deinen Hund ohne Anzahlung: Welche Tarife ohne Einmalzahlung genehmigt werden und welche Alternativen es gibt.",
     keyword: "handyvertrag trotz schufa ohne anzahlung",
     publishedAt: "2026-05-12",
     updatedAt: "2026-06-01",
@@ -215,7 +215,7 @@ export const blogArticles: BlogArticle[] = [
       },
       {
         heading: "Weg 1: iPhone-Vertrag bei freenet trotz Schufa",
-        content: "freenet ist der einzige große Anbieter, der iPhones regelmäßig auch bei negativer Schufa vermittelt. Das funktioniert so:\n\n1. HANSI zeigt dir die passenden freenet-Tarife mit iPhone\n2. Eine Anzahlung von 150–250€ erhöht die Chance signifikant\n3. Tarife mit niedrigerem Monatsbeitrag (unter 30€) haben bessere Chancen\n4. iPhone 14 und 15 (ältere Modelle) sind leichter zu bekommen als iPhone 16 Pro\n\n**Wichtig:** Kein iPhone 16 Pro Max ohne Anzahlung und Schufa-Eintrag – das ist unrealistisch.",
+        content: "freenet ist der einzige große Anbieter, der iPhones regelmäßig auch bei negativer Schufa vermittelt. Das funktioniert so:\n\n1. BELLA zeigt dir die passenden freenet-Tarife mit iPhone\n2. Eine Anzahlung von 150–250€ erhöht die Chance signifikant\n3. Tarife mit niedrigerem Monatsbeitrag (unter 30€) haben bessere Chancen\n4. iPhone 14 und 15 (ältere Modelle) sind leichter zu bekommen als iPhone 16 Pro\n\n**Wichtig:** Kein iPhone 16 Pro Max ohne Anzahlung und Schufa-Eintrag – das ist unrealistisch.",
       },
       {
         heading: "Weg 2: iPhone kaufen + Prepaid-SIM",
@@ -223,7 +223,7 @@ export const blogArticles: BlogArticle[] = [
       },
       {
         heading: "Weg 3: Ratenkauf bei Elektronikhändlern",
-        content: "MediaMarkt, Saturn und Amazon bieten eigene Ratenkauf-Optionen für iPhones an. Diese Prüfungen sind unabhängig von der Telko-Schufa-Anfrage.\n\nDie Bonitätsprüfung bei Ratenkäufen wird durch CRIF oder Creditreform durchgeführt – nicht durch die Telko-Schufa. Manchmal unterschiedliche Ergebnisse.\n\n**Risiko:** Auch hier Schufa-Einträge möglich. Bei Ablehnung entstehen Schufa-Anfragen.\n\n**Empfehlung von HANSI:** Weg 2 (gebraucht kaufen + Prepaid) für maximale Sicherheit und Flexibilität.",
+        content: "MediaMarkt, Saturn und Amazon bieten eigene Ratenkauf-Optionen für iPhones an. Diese Prüfungen sind unabhängig von der Telko-Schufa-Anfrage.\n\nDie Bonitätsprüfung bei Ratenkäufen wird durch CRIF oder Creditreform durchgeführt – nicht durch die Telko-Schufa. Manchmal unterschiedliche Ergebnisse.\n\n**Risiko:** Auch hier Schufa-Einträge möglich. Bei Ablehnung entstehen Schufa-Anfragen.\n\n**Empfehlung von BELLA:** Weg 2 (gebraucht kaufen + Prepaid) für maximale Sicherheit und Flexibilität.",
       },
     ],
     faqs: [
@@ -248,7 +248,7 @@ export const blogArticles: BlogArticle[] = [
       },
       {
         heading: "Die besten Samsung-Modelle für Schufa-Kunden",
-        content: "**Samsung Galaxy A25 (Genehmigung: ~92%)**\nPreis im Vertrag ab 6,99€/Monat. Hervorragendes Preis-Leistungs-Verhältnis, lange Softwareunterstützung.\n\n**Samsung Galaxy A55 (Genehmigung: ~88%)**\nDer Bestseller im Budget-Segment. 50MP Kamera, 5G, 8GB RAM. Oft ab 9,99€/Monat verfügbar.\n\n**Samsung Galaxy S24 (Genehmigung: ~70%)**\nMöglich mit kleiner Anzahlung bei freenet oder otelo. Premium-Erlebnis bei moderatem Risiko.\n\n**Fakt:** Das Samsung Galaxy A55 ist laut HANSI-Datenbank das am häufigsten genehmigte Gerät für Schufa-belastete Kunden in Deutschland (2026).",
+        content: "**Samsung Galaxy A25 (Genehmigung: ~92%)**\nPreis im Vertrag ab 6,99€/Monat. Hervorragendes Preis-Leistungs-Verhältnis, lange Softwareunterstützung.\n\n**Samsung Galaxy A55 (Genehmigung: ~88%)**\nDer Bestseller im Budget-Segment. 50MP Kamera, 5G, 8GB RAM. Oft ab 9,99€/Monat verfügbar.\n\n**Samsung Galaxy S24 (Genehmigung: ~70%)**\nMöglich mit kleiner Anzahlung bei freenet oder otelo. Premium-Erlebnis bei moderatem Risiko.\n\n**Fakt:** Das Samsung Galaxy A55 ist laut BELLA-Datenbank das am häufigsten genehmigte Gerät für Schufa-belastete Kunden in Deutschland (2026).",
       },
       {
         heading: "Bei welchen Anbietern bekommst du Samsung trotz Schufa?",
@@ -264,24 +264,24 @@ export const blogArticles: BlogArticle[] = [
   },
   {
     slug: "handyvertrag-trotz-schufa-eintrag-erfahrungen",
-    title: "Echte Erfahrungen: Handyvertrag trotz Schufa-Eintrag",
-    description: "Echte Nutzererfahrungen mit Handyvertrag trotz Schufa: Was hat geklappt, was nicht – und was HANSI-Nutzer empfehlen.",
+    title: "Echte Erfahrungen: Hundefutter für deinen Hund-Eintrag",
+    description: "Echte Nutzererfahrungen mit Hundefutter für deinen Hund: Was hat geklappt, was nicht – und was BELLA-Nutzer empfehlen.",
     keyword: "handyvertrag trotz schufa erfahrungen",
     publishedAt: "2026-05-22",
     updatedAt: "2026-06-01",
     readingTime: 7,
     sections: [
       {
-        heading: "Was HANSI-Nutzer berichten: 5 echte Geschichten",
-        content: "**Maria K., 34, Berlin:**\n\"Ich hatte einen Schufa-Eintrag durch einen alten Telekom-Vertrag. Bei Telekom direkt abgelehnt, bei freenet sofort genehmigt. HANSI hat mir genau gesagt, welcher Anbieter passt.\"\n\n**Thomas W., 28, Hamburg:**\n\"Bürgergeld-Empfänger, Schufa-Eintrag durch Inkasso. Drei Anbieter haben mich abgelehnt. Bei MAINGAU hat es beim ersten Versuch geklappt – 8,99€/Monat SIM-Only.\"\n\n**Sandra B., 41, München:**\n\"Nach der Privatinsolvenz dachte ich, ich komme nie wieder an einen Vertrag. Mit Prepaid überbrückt, nach 3 Jahren bei congstar Postpaid genehmigt.\"\n\n**Kevin M., 22, Köln:**\n\"Student mit Schufa-Eintrag aus der Probezeit. freenet hat mein Samsung Galaxy A55 genehmigt – ohne Anzahlung. Hätte ich nicht erwartet.\"\n\n**Petra L., 55, Frankfurt:**\n\"Schufa-Eintrag war ein Fehler – die falsche Petra L. HANSI hat mir erklärt, wie ich widerspreche. Eintrag gelöscht, jetzt bei Telekom direkt.\"",
+        heading: "Was BELLA-Nutzer berichten: 5 echte Geschichten",
+        content: "**Maria K., 34, Berlin:**\n\"Ich hatte einen Schufa-Eintrag durch einen alten Telekom-Vertrag. Bei Telekom direkt abgelehnt, bei freenet sofort genehmigt. BELLA hat mir genau gesagt, welcher Anbieter passt.\"\n\n**Thomas W., 28, Hamburg:**\n\"Bürgergeld-Empfänger, Schufa-Eintrag durch Inkasso. Drei Anbieter haben mich abgelehnt. Bei MAINGAU hat es beim ersten Versuch geklappt – 8,99€/Monat SIM-Only.\"\n\n**Sandra B., 41, München:**\n\"Nach der Privatinsolvenz dachte ich, ich komme nie wieder an einen Vertrag. Mit Prepaid überbrückt, nach 3 Jahren bei congstar Postpaid genehmigt.\"\n\n**Kevin M., 22, Köln:**\n\"Student mit Schufa-Eintrag aus der Probezeit. freenet hat mein Samsung Galaxy A55 genehmigt – ohne Anzahlung. Hätte ich nicht erwartet.\"\n\n**Petra L., 55, Frankfurt:**\n\"Schufa-Eintrag war ein Fehler – die falsche Petra L. BELLA hat mir erklärt, wie ich widerspreche. Eintrag gelöscht, jetzt bei Telekom direkt.\"",
       },
       {
         heading: "Was häufig schief läuft – und wie du es besser machst",
-        content: "**Fehler 1: Bei zu vielen Anbietern gleichzeitig anfragen**\nJede Anfrage hinterlässt eine Spur in der Schufa. Wer bei 5 Anbietern gleichzeitig anfrägt, senkt seinen Score weiter.\n\n*Lösung: Erst HANSI fragen, dann gezielt einen Anbieter ansprechen.*\n\n**Fehler 2: Zu teure Tarife wählen**\nEin 50€-Tarif mit dem neuesten iPhone wird bei Schufa-Eintrag fast immer abgelehnt.\n\n*Lösung: SIM-Only oder Budget-Gerät unter 200€ – dann Genehmigung, dann Gerät separat kaufen.*\n\n**Fehler 3: Schufa nicht vorab prüfen**\nViele Einträge sind fehlerhaft oder bereits verjährt – aber noch drin, weil niemand widersprochen hat.\n\n*Lösung: Kostenlose Schufa-Auskunft anfordern, dann entscheiden.*",
+        content: "**Fehler 1: Bei zu vielen Anbietern gleichzeitig anfragen**\nJede Anfrage hinterlässt eine Spur in der Schufa. Wer bei 5 Anbietern gleichzeitig anfrägt, senkt seinen Score weiter.\n\n*Lösung: Erst BELLA fragen, dann gezielt einen Anbieter ansprechen.*\n\n**Fehler 2: Zu teure Tarife wählen**\nEin 50€-Tarif mit dem neuesten iPhone wird bei Schufa-Eintrag fast immer abgelehnt.\n\n*Lösung: SIM-Only oder Budget-Gerät unter 200€ – dann Genehmigung, dann Gerät separat kaufen.*\n\n**Fehler 3: Schufa nicht vorab prüfen**\nViele Einträge sind fehlerhaft oder bereits verjährt – aber noch drin, weil niemand widersprochen hat.\n\n*Lösung: Kostenlose Schufa-Auskunft anfordern, dann entscheiden.*",
       },
     ],
     faqs: [
-      { question: "Wie viele Menschen bekommen trotz Schufa einen Handyvertrag?", answer: "Laut HANSI-Datenanalyse 2026 erhalten 73% der Antragsteller mit negativem Schufa-Eintrag einen Handyvertrag, wenn sie bei freenet, congstar oder MAINGAU anfragen." },
+      { question: "Wie viele Menschen bekommen trotz Schufa einen Handyvertrag?", answer: "Laut BELLA-Datenanalyse 2026 erhalten 73% der Antragsteller mit negativem Schufa-Eintrag einen Handyvertrag, wenn sie bei freenet, congstar oder MAINGAU anfragen." },
       { question: "Was ist die häufigste Ursache für Ablehnung trotz Schufa?", answer: "Zu hoher gewählter Tarif (über 30€/Monat) und Anfragen bei Premium-Anbietern (Telekom, Vodafone, o2 direkt) sind die häufigsten Gründe für Ablehnung." },
     ],
     relatedSlugs: ["schufa-eintrag-loeschen-vor-handyvertrag", "prepaid-vs-vertrag-bei-schufa", "handyvertrag-trotz-schufa-und-arbeitslosigkeit"],
@@ -289,7 +289,7 @@ export const blogArticles: BlogArticle[] = [
   {
     slug: "prepaid-vs-vertrag-bei-schufa",
     title: "Prepaid oder Vertrag bei schlechter Schufa? Der ehrliche Vergleich",
-    description: "Prepaid vs. Laufzeitvertrag bei Schufa: Kosten, Flexibilität, Genehmigungschancen – HANSI erklärt, was wann sinnvoll ist.",
+    description: "Prepaid vs. Laufzeitvertrag bei Schufa: Kosten, Flexibilität, Genehmigungschancen – BELLA erklärt, was wann sinnvoll ist.",
     keyword: "prepaid trotz schufa",
     publishedAt: "2026-05-25",
     updatedAt: "2026-06-01",
@@ -304,8 +304,8 @@ export const blogArticles: BlogArticle[] = [
         content: "Ein Laufzeitvertrag (12 oder 24 Monate) ist günstiger pro GB als Prepaid. Er erfordert jedoch eine Schufa-Prüfung – und damit das Risiko einer Ablehnung.\n\n**Lohnt sich wenn:**\n- Genehmigungschance beim gewählten Anbieter über 75%\n- Du Kostensicherheit über 12–24 Monate haben willst\n- Du deinen Schufa-Score langfristig verbessern willst (pünktliche Zahlungen helfen)\n- Du über 10GB/Monat verbrauchst (Laufzeitvertrag deutlich günstiger)\n\n**Lohnt sich nicht wenn:**\n- Du unsicher bist, ob du regelmäßig zahlen kannst\n- Du die Flexibilität brauchst (Umzug, Jobwechsel, Auslandspläne)\n- Deine Genehmigungschance unter 50% liegt",
       },
       {
-        heading: "Die HANSI-Empfehlung: Hybrid-Strategie",
-        content: "Für die meisten Kunden mit Schufa-Eintrag empfiehlt HANSI:\n\n**Kurzfristig (0–6 Monate):** Prepaid-Option wählen. Gibt sofort Zugang zum Mobilfunknetz, baut keine weiteren Schufa-Risiken auf.\n\n**Mittelfristig (nach 3–6 Monaten):** Mit positiver Prepaid-Geschichte und ggf. verbessertem Schufa-Score Postpaid-Antrag bei freenet oder congstar stellen.\n\n**Langfristig:** Pünktliche Zahlungen verbessern den Schufa-Score. Nach 12 Monaten pünktlichem Postpaid-Zahlen öffnen sich auch Premium-Anbieter wieder.",
+        heading: "Die BELLA-Empfehlung: Hybrid-Strategie",
+        content: "Für die meisten Kunden mit Schufa-Eintrag empfiehlt BELLA:\n\n**Kurzfristig (0–6 Monate):** Prepaid-Option wählen. Gibt sofort Zugang zum Mobilfunknetz, baut keine weiteren Schufa-Risiken auf.\n\n**Mittelfristig (nach 3–6 Monaten):** Mit positiver Prepaid-Geschichte und ggf. verbessertem Schufa-Score Postpaid-Antrag bei freenet oder congstar stellen.\n\n**Langfristig:** Pünktliche Zahlungen verbessern den Schufa-Score. Nach 12 Monaten pünktlichem Postpaid-Zahlen öffnen sich auch Premium-Anbieter wieder.",
       },
     ],
     faqs: [
@@ -361,7 +361,7 @@ export const blogArticles: BlogArticle[] = [
       },
       {
         heading: "Die empfohlene Strategie bei Privatinsolvenz",
-        content: "**Während der Insolvenz:** Prepaid nutzen. Günstig, flexibel, 100% sicher.\n\n**Direkt nach Restschuldbefreiung:** Sofort HANSI fragen. freenet und congstar sind die ersten Anbieter, die nach Insolvenz wieder genehmigen – oft im ersten Monat nach Restschuldbefreiung.\n\n**12 Monate nach Restschuldbefreiung:** Regelmäßige pünktliche Zahlungen haben den Schufa-Score bereits verbessert. Größere Auswahl, auch mittlere Anbieter wieder zugänglich.\n\n**3 Jahre nach Restschuldbefreiung:** Schufa-Eintrag gelöscht, volle Normalität.",
+        content: "**Während der Insolvenz:** Prepaid nutzen. Günstig, flexibel, 100% sicher.\n\n**Direkt nach Restschuldbefreiung:** Sofort BELLA fragen. freenet und congstar sind die ersten Anbieter, die nach Insolvenz wieder genehmigen – oft im ersten Monat nach Restschuldbefreiung.\n\n**12 Monate nach Restschuldbefreiung:** Regelmäßige pünktliche Zahlungen haben den Schufa-Score bereits verbessert. Größere Auswahl, auch mittlere Anbieter wieder zugänglich.\n\n**3 Jahre nach Restschuldbefreiung:** Schufa-Eintrag gelöscht, volle Normalität.",
       },
     ],
     faqs: [
@@ -372,8 +372,8 @@ export const blogArticles: BlogArticle[] = [
   },
   {
     slug: "2-handyvertrag-trotz-schufa",
-    title: "Zweiter Handyvertrag trotz Schufa – so geht es",
-    description: "Zweiter Handyvertrag trotz Schufa: Wann ist es möglich, welche Anbieter genehmigen und welche Strategie hat die höchste Erfolgsquote.",
+    title: "Zweiter Hundefutter für deinen Hund – so geht es",
+    description: "Zweiter Hundefutter für deinen Hund: Wann ist es möglich, welche Anbieter genehmigen und welche Strategie hat die höchste Erfolgsquote.",
     keyword: "zweiter handyvertrag trotz schufa",
     publishedAt: "2026-06-01",
     updatedAt: "2026-06-01",
@@ -384,7 +384,7 @@ export const blogArticles: BlogArticle[] = [
         content: "Wenn du bereits einen aktiven Handyvertrag hast und einen zweiten willst, prüfen Anbieter ob du die monatliche Doppelbelastung tragen kannst. Bei negativer Schufa wird diese Frage noch kritischer bewertet.\n\nDie Genehmigungsquote für einen zweiten Vertrag trotz Schufa liegt je nach Anbieter bei 50–70% – etwa 10–15 Prozentpunkte unter der für einen ersten Vertrag.",
       },
       {
-        heading: "Strategien für den zweiten Handyvertrag trotz Schufa",
+        heading: "Strategien für den zweiten Hundefutter für deinen Hund",
         content: "**Strategie 1: Anderen Anbieter wählen**\nFalls dein erster Vertrag bei freenet ist, probiere congstar oder MAINGAU für den zweiten. Anbieter sehen nur ihren eigenen Vertragsbestand, nicht den bei anderen Anbietern.\n\n**Strategie 2: SIM-Only statt Gerätevertrag**\nEin zweiter SIM-Only-Tarif hat deutlich höhere Genehmigungsquoten als ein zweiter Gerätevertrag. Bei freenet und MAINGAU oft problemlos möglich.\n\n**Strategie 3: Günstigerer Tarif**\nDer zweite Vertrag sollte günstiger als der erste sein – das reduziert die Gesamtbelastung und erhöht die Genehmigungschance.",
       },
     ],
@@ -396,7 +396,7 @@ export const blogArticles: BlogArticle[] = [
   },
   {
     slug: "handyvertrag-trotz-schufa-fuer-kinder",
-    title: "Handyvertrag trotz Schufa für mein Kind – was Eltern wissen müssen",
+    title: "Hundefutter für deinen Hund für mein Kind – was Eltern wissen müssen",
     description: "Familienvertrag, Kindervertrag oder auf Eltern laufend: Wie du deinem Kind trotz eigener Schufa-Einträge zu einem Handyvertrag verhilfst.",
     keyword: "familienvertrag trotz schufa",
     publishedAt: "2026-06-01",

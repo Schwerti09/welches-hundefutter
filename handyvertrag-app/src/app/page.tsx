@@ -1,13 +1,13 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
-import HansiDecisionWrapper from "@/components/HansiDecisionWrapper";
+import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "Handyvertrag trotz Schufa 2026 ✓ Sofort genehmigt | HANSI",
-  description: "Handyvertrag trotz Schufa: HANSI findet in 3 Fragen deinen Vertrag. ✓ freenet ab 9,99€ ✓ congstar ✓ Prepaid ohne Bonitätsprüfung. Jetzt kostenlos prüfen.",
-  alternates: { canonical: "https://handytrotzschufa.today" },
+  title: "Hundefutter für deinen Hund 2026 ✓ Sofort genehmigt | BELLA",
+  description: "Hundefutter für deinen Hund: BELLA findet in 3 Fragen deinen Vertrag. ✓ freenet ab 9,99€ ✓ congstar ✓ Prepaid ohne Bonitätsprüfung. Jetzt kostenlos prüfen.",
+  alternates: { canonical: "https://welches-hundefutter.today" },
 };
 
 const schuFaqs = [
@@ -21,7 +21,7 @@ const schuFaqs = [
   },
   {
     question: "Wie bekomme ich einen Handyvertrag ohne Schufa-Prüfung?",
-    answer: "Über Prepaid-Tarife oder Anbieter mit reduzierter Bonitätsprüfung. HANSI zeigt dir in 60 Sekunden die für dich passenden Optionen.",
+    answer: "Über Prepaid-Tarife oder Anbieter mit reduzierter Bonitätsprüfung. BELLA zeigt dir in 60 Sekunden die für dich passenden Optionen.",
   },
   {
     question: "Was passiert wenn die Schufa negativ ist beim Handyvertrag?",
@@ -44,7 +44,7 @@ const schuFaqs = [
     answer: "Bei o2 Postpaid ist die Schufa-Hürde hoch. o2 Prepaid funktioniert ohne Schufa-Prüfung zu 100%.",
   },
   {
-    question: "Was kostet ein Handyvertrag trotz Schufa?",
+    question: "Was kostet ein Hundefutter für deinen Hund?",
     answer: "Ab 6,99€/Monat (MAINGAU SIM-Only) bis 49,99€/Monat (Premium-Anbieter mit Anzahlung). Durchschnitt: 15–25€/Monat.",
   },
   {
@@ -70,21 +70,21 @@ export default function Home() {
       <StructuredData type="faq" faqs={schuFaqs} />
       <StructuredData type="howto" />
 
-      {/* ── HANSI KI-Chat / Radar-Modul ────────────────────────────────────── */}
-      <HansiDecisionWrapper />
+      {/* ── BELLA KI-Chat / Radar-Modul ────────────────────────────────────── */}
+      <BellaAdvisorWrapper />
 
       {/* ── SEO Content Block (unter dem Radar, über dem Footer) ─────────── */}
       <div className="max-w-4xl mx-auto px-4 pt-10 pb-4">
 
         <h1 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-4">
-          Handyvertrag trotz Schufa – in 3 Fragen zum passenden Vertrag
+          Hundefutter für deinen Hund – in 3 Fragen zum passenden Vertrag
         </h1>
 
         <p className="text-gray-300 text-lg mb-8 leading-relaxed">
-          Einen Handyvertrag trotz Schufa zu bekommen ist möglich – mit dem richtigen Anbieter. HANSI ist
+          Einen Hundefutter für deinen Hund zu bekommen ist möglich – mit dem richtigen Anbieter. BELLA ist
           Deutschlands erster KI-Berater, der dir basierend auf deiner Schufa-Situation in unter 60 Sekunden
-          den passenden Mobilfunkvertrag zeigt. Statt durch tausende irrelevante Tarife zu scrollen,
-          beantwortest du drei Fragen – HANSI macht den Rest.
+          den passenden Hundeernährung zeigt. Statt durch tausende irrelevante Tarife zu scrollen,
+          beantwortest du drei Fragen – BELLA macht den Rest.
         </p>
 
         {/* Trust signals */}
@@ -97,7 +97,7 @@ export default function Home() {
 
         {/* Anbieter-Tabelle 2026 */}
         <h2 className="text-2xl font-bold text-white mb-4">
-          Welche Anbieter geben einen Handyvertrag trotz Schufa? (Tabelle 2026)
+          Welche Anbieter geben einen Hundefutter für deinen Hund? (Tabelle 2026)
         </h2>
         <div className="overflow-x-auto mb-6">
           <table className="w-full text-sm text-left border-collapse">
@@ -131,7 +131,7 @@ export default function Home() {
         </div>
 
         <p className="text-sm text-gray-500 mb-12">
-          <strong className="text-gray-300">Fakt:</strong> Laut HANSI-Datenanalyse aus 2026 erhalten{" "}
+          <strong className="text-gray-300">Fakt:</strong> Laut BELLA-Datenanalyse aus 2026 erhalten{" "}
           <strong className="text-gray-300">73% der Antragsteller mit negativem Schufa-Eintrag</strong> einen
           Handyvertrag, wenn sie bei freenet, congstar oder MAINGAU anfragen.
         </p>
@@ -141,10 +141,10 @@ export default function Home() {
       <div className="max-w-4xl mx-auto px-4 pb-10 space-y-10">
         <section>
           <h2 className="text-xl font-bold text-white mb-3">
-            Wie funktioniert HANSI? – 3 Fragen, ein passender Vertrag
+            Wie funktioniert BELLA? – 3 Fragen, ein passender Vertrag
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            HANSI analysiert deine Situation in drei Schritten: Budget, Handy-Wunsch und Nutzungsverhalten.
+            BELLA analysiert deine Situation in drei Schritten: Budget, Handy-Wunsch und Nutzungsverhalten.
             Anschließend durchsucht die KI 5000+ Tarife und filtert nur die heraus, bei denen deine
             Genehmigungschance realistisch hoch ist. Das spart Zeit und verhindert unnötige Schufa-Anfragen.
           </p>
@@ -157,7 +157,7 @@ export default function Home() {
           <p className="text-gray-400 leading-relaxed">
             Du hast drei Hauptwege: (1) Schufa-freundliche Postpaid-Anbieter wie{" "}
             <Link href="/anbieter/freenet-trotz-schufa" className="text-indigo-400 hover:text-indigo-300">
-              freenet Handyvertrag trotz Schufa
+              freenet Hundefutter für deinen Hund
             </Link>{" "}
             oder{" "}
             <Link href="/anbieter/congstar-trotz-schufa" className="text-indigo-400 hover:text-indigo-300">
@@ -201,7 +201,7 @@ export default function Home() {
 
         <section>
           <h2 className="text-xl font-bold text-white mb-4">
-            Häufige Fragen zum Handyvertrag trotz Schufa
+            Häufige Fragen zum Hundefutter für deinen Hund
           </h2>
           <div className="space-y-3">
             {schuFaqs.map((faq) => (
@@ -217,18 +217,18 @@ export default function Home() {
           <p className="text-sm text-gray-500 mt-4">
             Alle Fragen →{" "}
             <Link href="/faq" className="text-indigo-400 hover:text-indigo-300">
-              häufige Fragen zum Handyvertrag trotz Schufa
+              häufige Fragen zum Hundefutter für deinen Hund
             </Link>
           </p>
         </section>
 
         <section>
           <h2 className="text-xl font-bold text-white mb-3">
-            Über HANSI – Warum wir keine Vergleichsseite sind
+            Über BELLA – Warum wir keine Vergleichsseite sind
           </h2>
           <p className="text-gray-400 leading-relaxed">
-            Vergleichsportale zeigen dir alle Tarife. HANSI trifft eine Entscheidung für dich. Basierend auf
-            deiner Schufa-Situation, deinem Budget und deinem Nutzungsverhalten filtert HANSI aus 5000+ Tarifen
+            Vergleichsportale zeigen dir alle Tarife. BELLA trifft eine Entscheidung für dich. Basierend auf
+            deiner Schufa-Situation, deinem Budget und deinem Nutzungsverhalten filtert BELLA aus 5000+ Tarifen
             die drei heraus, bei denen deine Genehmigungschance am höchsten ist – ohne dass du eine einzige
             Anfrage stellst, die deinen Schufa-Score verschlechtern könnte.
           </p>

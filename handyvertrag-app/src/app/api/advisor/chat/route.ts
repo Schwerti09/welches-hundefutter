@@ -1,5 +1,5 @@
-/**
- * HANSI Decision Intelligence Engine
+﻿/**
+ * BELLA Decision Intelligence Engine
  * Streams structured intelligence events, not plain text.
  *
  * Stream protocol:
@@ -98,7 +98,7 @@ interface ScoredOffer extends DbOffer {
   networkScore: number;
   deviceScore: number;
   valueScore: number;
-  hansiScore: number;
+  bellaScore: number;
   whyThis: string;
   mainAdvantage: string;
   mainRisk: string;
@@ -356,7 +356,7 @@ function scoreOffer(offer: DbOffer, intent: ParsedIntent): ScoredOffer {
   else if (devName.includes("fe") || devName.includes("lite") || devName.includes("a5") || devName.includes("a3")) deviceScore = 65;
 
   const valueScore = Math.round((marketScore * 0.5 + networkScore * 0.3 + deviceScore * 0.2));
-  const hansiScore = Math.round((match * 0.6 + valueScore * 0.4));
+  const bellaScore = Math.round((match * 0.6 + valueScore * 0.4));
 
   // Satisfaction prediction
   const estimatedSatisfaction = Math.round(match * 0.7 + netQ * 0.2 + 5);
@@ -376,7 +376,7 @@ function scoreOffer(offer: DbOffer, intent: ParsedIntent): ScoredOffer {
     : intent.premium ? "Anspruchsvolle Nutzer, die das Beste wollen"
     : "Nutzer mit klarem Preis-Bewusstsein";
 
-  return { ...offer, matchScore: match, marketScore, networkScore, deviceScore, valueScore, hansiScore, whyThis, mainAdvantage, mainRisk, bestFor, estimatedSatisfaction };
+  return { ...offer, matchScore: match, marketScore, networkScore, deviceScore, valueScore, bellaScore, whyThis, mainAdvantage, mainRisk, bestFor, estimatedSatisfaction };
 }
 
 function generateWhyThis(offer: DbOffer, intent: ParsedIntent, match: number, price: number): string {
@@ -454,9 +454,9 @@ async function fetchCandidates(intent: ParsedIntent): Promise<{ offers: ScoredOf
   // Popularity-biased sort for vague queries, match-score for specific
   const hasIntent = Boolean(intent.maxBudget || intent.provider || intent.brand || intent.deviceKeyword);
   if (hasIntent) scored.sort((a, b) => b.matchScore - a.matchScore);
-  else scored.sort((a, b) => b.hansiScore - a.hansiScore);
+  else scored.sort((a, b) => b.bellaScore - a.bellaScore);
   // schufa_friendly offers oben
-  scored.sort((a, b) => { const sa = (a as DbOffer & {schufa_friendly?: boolean}).schufa_friendly ? 1 : 0; const sb = (b as DbOffer & {schufa_friendly?: boolean}).schufa_friendly ? 1 : 0; if (sb !== sa) return sb - sa; return b.hansiScore - a.hansiScore; });
+  scored.sort((a, b) => { const sa = (a as DbOffer & {schufa_friendly?: boolean}).schufa_friendly ? 1 : 0; const sb = (b as DbOffer & {schufa_friendly?: boolean}).schufa_friendly ? 1 : 0; if (sb !== sa) return sb - sa; return b.bellaScore - a.bellaScore; });
   // 1&1 immer auf Platz 1 — außer User fragt explizit nach anderem Anbieter
   if (!intent.provider) {
     scored.sort((a, b) => {
@@ -502,7 +502,7 @@ async function fetchCandidates(intent: ParsedIntent): Promise<{ offers: ScoredOf
     const fallbackRaw = (fallbackRows as unknown as { rows: DbOffer[] }).rows ?? (fallbackRows as unknown as DbOffer[]);
     const fallbackIntent: ParsedIntent = { maxBudget: intent.maxBudget }; // ohne Marke/Gerät
     const fallbackScored = fallbackRaw.map(o => scoreOffer(o, fallbackIntent));
-    fallbackScored.sort((a, b) => b.hansiScore - a.hansiScore);
+    fallbackScored.sort((a, b) => b.bellaScore - a.bellaScore);
     top3 = fallbackScored.slice(0, 3);
   }
 
@@ -514,7 +514,7 @@ async function fetchCandidates(intent: ParsedIntent): Promise<{ offers: ScoredOf
 
 function buildSystemPrompt(offers: ScoredOffer[], confidence: number, phase: QuestionPhase, maxBudget?: number): string {
   if (phase === "q1_schufa") {
-    return `Du bist HANSI – KI-Berater für Handyverträge trotz Schufa. Kein Chatbot. Du stellst genau eine Frage.
+    return `Du bist BELLA – KI-Berater für Handyverträge trotz Schufa. Kein Chatbot. Du stellst genau eine Frage.
 
 AUFGABE: Stelle exakt diese eine Frage, nichts weiter:
 "Wie ist deine Schufa-Situation? (z. B. negativer Eintrag, Inkasso, Privatinsolvenz – oder weißt du es nicht genau?)"
@@ -523,7 +523,7 @@ Maximal 2 Sätze. Du DUZt. Kein Hype, keine Listen, keine Erklärungen. Nur die 
   }
 
   if (phase === "q2_budget") {
-    return `Du bist HANSI – KI-Berater für Handyverträge trotz Schufa.
+    return `Du bist BELLA – KI-Berater für Handyverträge trotz Schufa.
 
 AUFGABE: Die Schufa-Situation ist bekannt. Stelle jetzt genau diese eine Frage:
 "Was ist dein monatliches Budget für den Handyvertrag?"
@@ -532,7 +532,7 @@ Maximal 2 Sätze. Du DUZt. Keine weiteren Infos, keine Angebote.`;
   }
 
   if (phase === "q3_device") {
-    return `Du bist HANSI – KI-Berater für Handyverträge trotz Schufa.
+    return `Du bist BELLA – KI-Berater für Handyverträge trotz Schufa.
 
 AUFGABE: Schufa und Budget sind bekannt. Stelle jetzt genau diese eine Frage:
 "Hast du ein bestimmtes Handy im Sinn – oder reicht dir eine SIM-Karte?"
@@ -543,11 +543,11 @@ Maximal 2 Sätze. Du DUZt. Keine weiteren Infos, noch keine Angebote.`;
   // phase === "ready" — alle 3 Antworten vorhanden, jetzt empfehlen
   const offerBlock = offers.length
     ? offers.map((o, i) =>
-        `[${i + 1}] ${o.brand} ${o.device_name} · ${o.provider_name} ${o.tariff_name} · ${parseFloat(o.effective_monthly_price ?? o.monthly_price).toFixed(2)}€/Mo · ${o.is_unlimited ? "∞ Daten" : o.data_volume} · Match: ${o.matchScore}% · HANSI Score: ${o.hansiScore}/100`
+        `[${i + 1}] ${o.brand} ${o.device_name} · ${o.provider_name} ${o.tariff_name} · ${parseFloat(o.effective_monthly_price ?? o.monthly_price).toFixed(2)}€/Mo · ${o.is_unlimited ? "∞ Daten" : o.data_volume} · Match: ${o.matchScore}% · BELLA Score: ${o.bellaScore}/100`
       ).join("\n")
     : `Unter dem angegebenen Budget (${maxBudget ? maxBudget + "€" : "?"}) gibt es leider keine Angebote. Zeige stattdessen die günstigsten verfügbaren schufa-freundlichen Tarife ab ca. 7€/Monat. Erkläre kurz, dass das günstigste verfügbare Angebot höher liegt, und empfehle konkret das erste Angebot.`;
 
-  return `Du bist HANSI – Deutschlands erster KI-Berater für Handyverträge trotz Schufa.
+  return `Du bist BELLA – Deutschlands erster KI-Berater für Handyverträge trotz Schufa.
 
 ANALYSIERTE ANGEBOTE (basierend auf den 3 Antworten):
 ${offerBlock}
@@ -579,13 +579,13 @@ function fallbackText(offers: ScoredOffer[], confidence: number): string {
 
 // ─── Logging ─────────────────────────────────────────────────────────────────
 
-async function logChat(entry: { sessionId: string; userMessage: string; hansiReply: string; intent: ParsedIntent; offersShown: number; topDevice: string | null; hadResults: boolean; confidence: number }) {
+async function logChat(entry: { sessionId: string; userMessage: string; bellaReply: string; intent: ParsedIntent; offersShown: number; topDevice: string | null; hadResults: boolean; confidence: number }) {
   const url = process.env.DATABASE_URL;
   if (!url) return;
   try {
     const sql = neon(url);
-    await sql`INSERT INTO chat_logs (session_id,user_message,hansi_reply,intent,offers_shown,top_device,had_results)
-      VALUES (${entry.sessionId},${entry.userMessage},${entry.hansiReply},${JSON.stringify({...entry.intent, confidence: entry.confidence})},${entry.offersShown},${entry.topDevice},${entry.hadResults})`;
+    await sql`INSERT INTO chat_logs (session_id,user_message,bella_reply,intent,offers_shown,top_device,had_results)
+      VALUES (${entry.sessionId},${entry.userMessage},${entry.bellaReply},${JSON.stringify({...entry.intent, confidence: entry.confidence})},${entry.offersShown},${entry.topDevice},${entry.hadResults})`;
   } catch { /* non-blocking */ }
 }
 
@@ -646,7 +646,7 @@ export async function POST(request: NextRequest) {
 
         if (offers.length) {
           const scorePayload = offers.map(o => ({
-            id: o.id, match: o.matchScore, hansi: o.hansiScore,
+            id: o.id, match: o.matchScore, bella: o.bellaScore,
             market: o.marketScore, network: o.networkScore, value: o.valueScore,
             satisfaction: o.estimatedSatisfaction,
           }));
@@ -726,7 +726,7 @@ export async function POST(request: NextRequest) {
         dataVolume: o.data_volume, isUnlimited: o.is_unlimited, has5g: o.has_5g,
         cashback: o.cashback ? parseFloat(o.cashback) : null,
         affiliateLink: o.affiliate_link, imageUrl: o.image_url,
-        matchScore: o.matchScore, hansiScore: o.hansiScore,
+        matchScore: o.matchScore, bellaScore: o.bellaScore,
         marketScore: o.marketScore, networkScore: o.networkScore,
         valueScore: o.valueScore, estimatedSatisfaction: o.estimatedSatisfaction,
         whyThis: o.whyThis, mainAdvantage: o.mainAdvantage,
@@ -738,7 +738,7 @@ export async function POST(request: NextRequest) {
 
       logChat({
         sessionId: parsed.data.sessionId ?? "anon",
-        userMessage: message, hansiReply: fullText.trim().slice(0, 2000),
+        userMessage: message, bellaReply: fullText.trim().slice(0, 2000),
         intent, offersShown: offers.length,
         topDevice: offers[0] ? `${offers[0].brand} ${offers[0].device_name}` : null,
         hadResults: offers.length > 0, confidence,

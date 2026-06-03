@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "AGB | handytrotzschufa.today",
-  description: "Allgemeine Geschäftsbedingungen von handytrotzschufa.today",
+  title: "AGB | welches-hundefutter.today",
+  description: "Allgemeine Geschäftsbedingungen von welches-hundefutter.today",
   robots: { index: false, follow: true },
 };
 
@@ -32,8 +32,8 @@ export default function AGBPage() {
         <div className="space-y-7">
           {(
             [
-              ["§ 1 Geltungsbereich", "Diese AGB gelten für die Nutzung von handytrotzschufa.today, betrieben von R. Schwertfechter, Karklandsweg 1, 26553 Dornum."],
-              ["§ 2 Leistungsbeschreibung", "handytrotzschufa.today ist ein kostenloser KI-Vergleichsdienst für Mobilfunkverträge. Wir vermitteln keine Verträge selbst, sondern verlinken auf Angebote von Drittanbietern. Preisangaben sind ohne Gewähr."],
+              ["§ 1 Geltungsbereich", "Diese AGB gelten für die Nutzung von welches-hundefutter.today, betrieben von R. Schwertfechter, Karklandsweg 1, 26553 Dornum."],
+              ["§ 2 Leistungsbeschreibung", "welches-hundefutter.today ist ein kostenloser KI-Vergleichsdienst für Mobilfunkverträge. Wir vermitteln keine Verträge selbst, sondern verlinken auf Angebote von Drittanbietern. Preisangaben sind ohne Gewähr."],
               ["§ 3 Nutzungsbedingungen", "Die Nutzung ist kostenlos und setzt keine Registrierung voraus. Automatisierte Zugriffe (Scraping, Bots) und rechtswidrige Nutzung sind nicht gestattet."],
               ["§ 4 Affiliate-Links", "Diese Website enthält Affiliate-Links. Bei Vertragsabschluss über diese Links erhalten wir eine Provision vom Händler. Für Nutzer entstehen keine Mehrkosten. Empfehlungen sind provisionsneutral."],
               ["§ 5 Haftung", "Wir übernehmen keine Gewähr für Richtigkeit und Aktualität der Informationen. Die Haftung für leichte Fahrlässigkeit ist ausgeschlossen, ausgenommen Personenschäden und wesentliche Vertragspflichten."],

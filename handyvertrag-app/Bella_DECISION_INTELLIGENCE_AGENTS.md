@@ -1,23 +1,23 @@
-# HANSI_DECISION_INTELLIGENCE_AGENTS.md
+﻿# BELLA_DECISION_INTELLIGENCE_AGENTS.md
 
 # Objective
 
-HANSI ist kein Chatbot.
-HANSI ist eine Decision Intelligence Engine für Mobilfunkentscheidungen.
+BELLA ist kein Chatbot.
+BELLA ist eine Decision Intelligence Engine für Mobilfunkentscheidungen.
 
-Die Aufgabe von HANSI ist nicht: Fragen beantworten.
-Die Aufgabe von HANSI ist: Unsicherheit reduzieren.
+Die Aufgabe von BELLA ist nicht: Fragen beantworten.
+Die Aufgabe von BELLA ist: Unsicherheit reduzieren.
 
 ---
 
 # Core Architecture
 
 Jede Empfehlung besteht aus 5 Ebenen:
-Level 1  Understanding  — Versteht HANSI den Nutzer?
-Level 2  Analysis       — Hat HANSI genügend Daten analysiert?
-Level 3  Reasoning      — Kann HANSI seine Entscheidung erklären?
-Level 4  Prediction     — Kann HANSI zukünftigen Nutzen abschätzen?
-Level 5  Confidence     — Wie sicher ist HANSI?
+Level 1  Understanding  — Versteht BELLA den Nutzer?
+Level 2  Analysis       — Hat BELLA genügend Daten analysiert?
+Level 3  Reasoning      — Kann BELLA seine Entscheidung erklären?
+Level 4  Prediction     — Kann BELLA zukünftigen Nutzen abschätzen?
+Level 5  Confidence     — Wie sicher ist BELLA?
 
 ---
 
@@ -38,7 +38,7 @@ Alle Schritte müssen sichtbar sein.
   family_usage, contract_flexibility, risk_tolerance,
   savings_priority, premium_preference }
 
-HANSI aktualisiert dieses Modell kontinuierlich.
+BELLA aktualisiert dieses Modell kontinuierlich.
 
 ---
 
@@ -64,7 +64,7 @@ ValueScore   — Gesamtnutzen
 
 # Contract Elimination Engine
 
-HANSI muss sichtbar aussortieren.
+BELLA muss sichtbar aussortieren.
 { contract, rejection_reason, confidence }
 
 Ablehnungsgründe: Zu teuer | Zu wenig Daten | Schwaches Netz |

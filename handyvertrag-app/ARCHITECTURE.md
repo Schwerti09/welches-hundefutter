@@ -1,8 +1,8 @@
-# handytrotzschufa.today – Enterprise Architecture
+﻿# welches-hundefutter.today – Enterprise Architecture
 
 ## Overview
 
-handytrotzschufa.today is a Next.js 16.2.6 enterprise commerce platform for German mobile phone contract comparison, powered by AI-assisted recommendations, programmatic SEO, and a multi-layer data intelligence system. Deployed on Netlify at https://handytrotzschufa.today.
+welches-hundefutter.today is a Next.js 16.2.6 enterprise commerce platform for German mobile phone contract comparison, powered by AI-assisted recommendations, programmatic SEO, and a multi-layer data intelligence system. Deployed on Netlify at https://welches-hundefutter.today.
 
 ---
 
@@ -10,7 +10,7 @@ handytrotzschufa.today is a Next.js 16.2.6 enterprise commerce platform for Germ
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                          handytrotzschufa.today                                  │
+│                          welches-hundefutter.today                                  │
 │                     Enterprise Commerce Platform                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 
@@ -114,7 +114,7 @@ handytrotzschufa.today is a Next.js 16.2.6 enterprise commerce platform for Germ
 ## Domain Structure
 
 ```
-handytrotzschufa.today/
+welches-hundefutter.today/
 ├── /                           # Homepage – product comparison, AI advisor
 ├── /hamburg                    # City page – Hamburg offers
 ├── /berlin                     # City page – Berlin offers
@@ -366,7 +366,7 @@ Developer → Git Push → GitHub
 - Feature flags for gradual rollout
 
 ### Environments
-- Production: https://handytrotzschufa.today
+- Production: https://welches-hundefutter.today
 - Preview: Netlify deploy previews per PR
 - Development: `npm run dev` (localhost:3000)
 

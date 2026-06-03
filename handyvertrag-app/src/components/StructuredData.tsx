@@ -1,4 +1,4 @@
-import { products } from "@/data/products";
+﻿import { products } from "@/data/products";
 
 interface BreadcrumbItem {
   name: string;
@@ -21,13 +21,13 @@ function buildOrganizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "@id": "https://handytrotzschufa.today/#organization",
-    name: "HANSI",
-    alternateName: "HANSI Intelligence System",
-    url: "https://handytrotzschufa.today",
+    "@id": "https://welches-hundefutter.today/#organization",
+    name: "BELLA",
+    alternateName: "BELLA Intelligence System",
+    url: "https://welches-hundefutter.today",
     logo: {
       "@type": "ImageObject",
-      url: "https://handytrotzschufa.today/logo.png",
+      url: "https://welches-hundefutter.today/logo.png",
       width: 512,
       height: 512,
     },
@@ -36,11 +36,11 @@ function buildOrganizationSchema() {
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer support",
-      email: "support@handytrotzschufa.today",
+      email: "support@welches-hundefutter.today",
       availableLanguage: ["German", "Deutsch"],
     },
     areaServed: { "@type": "Country", name: "Deutschland" },
-    sameAs: ["https://github.com/Schwerti09/HandyvertragTrotzSchufa"],
+    sameAs: ["https://github.com/Schwerti09/welches-hundefutter"],
   };
 }
 
@@ -48,15 +48,15 @@ function buildWebsiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "@id": "https://handytrotzschufa.today/#website",
-    url: "https://handytrotzschufa.today",
-    name: "HANSI – Handyvertrag trotz Schufa",
-    description: "Handyvertrag trotz Schufa finden mit KI-Beratung",
-    publisher: { "@id": "https://handytrotzschufa.today/#organization" },
+    "@id": "https://welches-hundefutter.today/#website",
+    url: "https://welches-hundefutter.today",
+    name: "BELLA – Hundefutter für deinen Hund",
+    description: "Hundefutter für deinen Hund finden mit KI-Beratung",
+    publisher: { "@id": "https://welches-hundefutter.today/#organization" },
     inLanguage: "de-DE",
     potentialAction: {
       "@type": "SearchAction",
-      target: "https://handytrotzschufa.today/tools/vergleich?q={search_term_string}",
+      target: "https://welches-hundefutter.today/tools/vergleich?q={search_term_string}",
       "query-input": "required name=search_term_string",
     },
   };
@@ -66,7 +66,7 @@ function buildSoftwareSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "HANSI – KI Handyvertrag-Berater",
+    name: "BELLA – KI Handyvertrag-Berater",
     applicationCategory: "FinanceApplication",
     operatingSystem: "Web",
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
@@ -84,13 +84,13 @@ function buildHowToSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "HowTo",
-    name: "Handyvertrag trotz Schufa bekommen",
+    name: "Hundefutter für deinen Hund bekommen",
     description: "Schritt-für-Schritt Anleitung für einen Handyvertrag trotz negativem Schufa-Eintrag.",
     totalTime: "PT10M",
     step: [
       { "@type": "HowToStep", name: "Schufa-Score prüfen", text: "Fordere deine kostenlose Schufa-Auskunft an und prüfe, ob Einträge korrekt sind.", position: 1 },
       { "@type": "HowToStep", name: "Passenden Anbieter wählen", text: "Wähle Anbieter wie freenet, congstar oder MAINGAU – sie haben die höchste Genehmigungsquote bei negativer Schufa.", position: 2 },
-      { "@type": "HowToStep", name: "HANSI fragen", text: "Beantworte 3 Fragen in HANSI – Budget, Handy-Wunsch, Nutzung. HANSI findet den passenden Tarif.", position: 3 },
+      { "@type": "HowToStep", name: "BELLA fragen", text: "Beantworte 3 Fragen in BELLA – Budget, Handy-Wunsch, Nutzung. BELLA findet den passenden Tarif.", position: 3 },
       { "@type": "HowToStep", name: "Vertrag online abschließen", text: "Schließe den Vertrag direkt beim Anbieter ab. In unter 24 Stunden Bestätigung.", position: 4 },
     ],
   };
@@ -229,7 +229,7 @@ export const defaultFAQs: FAQItem[] = [
   {
     question: "Was kostet ein Handyvertrag mit iPhone 16 Pro?",
     answer:
-      "Das iPhone 16 Pro mit Vertrag kostet ab 44,99€/Monat bei o2 mit 50 GB, bis zu 54,99€/Monat bei Telekom mit Unlimited-Daten. Alle Angebote vergleichst du kostenlos auf handytrotzschufa.today.",
+      "Das iPhone 16 Pro mit Vertrag kostet ab 44,99€/Monat bei o2 mit 50 GB, bis zu 54,99€/Monat bei Telekom mit Unlimited-Daten. Alle Angebote vergleichst du kostenlos auf welches-hundefutter.today.",
   },
   {
     question: "Kann ich Handyverträge ohne Einmalzahlung abschließen?",

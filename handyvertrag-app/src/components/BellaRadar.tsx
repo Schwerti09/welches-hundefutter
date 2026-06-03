@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef } from "react";
 
@@ -10,7 +10,7 @@ interface Props {
  * Premium intelligence scanner. Calm, alive, not flashy.
  * A slow radar sweep reveals data nodes; connections form between matches.
  */
-export default function HansiRadar({ size = 360 }: Props) {
+export default function BellaRadar({ size = 360 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {

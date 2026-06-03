@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "Impressum | handytrotzschufa.today",
-  description: "Impressum und Anbieterkennzeichnung gemäß § 5 TMG für handytrotzschufa.today",
+  title: "Impressum | welches-hundefutter.today",
+  description: "Impressum und Anbieterkennzeichnung gemäß § 5 TMG für welches-hundefutter.today",
   robots: { index: false, follow: true },
 };
 
@@ -42,7 +42,7 @@ export default function ImpressumPage() {
 
           <section>
             <h2 className="text-lg font-bold mb-3 text-white">Kontakt</h2>
-            <p className="text-white/70">E-Mail: <a href="mailto:support@handytrotzschufa.today" className="text-indigo-400 hover:text-indigo-300 transition-colors">support@handytrotzschufa.today</a></p>
+            <p className="text-white/70">E-Mail: <a href="mailto:support@welches-hundefutter.today" className="text-indigo-400 hover:text-indigo-300 transition-colors">support@welches-hundefutter.today</a></p>
           </section>
 
           <section>

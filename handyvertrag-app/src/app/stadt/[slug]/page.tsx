@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import StructuredData from "@/components/StructuredData";
@@ -84,9 +84,9 @@ export async function generateMetadata({
   if (!data) return {};
 
   return {
-    title: `Handyvertrag trotz Schufa in ${data.name} 2026 ✓ | HANSI`,
-    description: `Handyvertrag trotz Schufa in ${data.name}: Beste Anbieter, lokale Netzqualität, Genehmigungsquoten. ${data.bestAnbieter.join(", ")} – jetzt prüfen.`,
-    alternates: { canonical: `https://handytrotzschufa.today/stadt/${slug}` },
+    title: `Hundefutter für deinen Hund in ${data.name} 2026 ✓ | BELLA`,
+    description: `Hundefutter für deinen Hund in ${data.name}: Beste Anbieter, lokale Netzqualität, Genehmigungsquoten. ${data.bestAnbieter.join(", ")} – jetzt prüfen.`,
+    alternates: { canonical: `https://welches-hundefutter.today/stadt/${slug}` },
   };
 }
 
@@ -101,8 +101,8 @@ export default async function StadtPage({
 
   const faqsForSchema = [
     {
-      question: `Welchen Handyvertrag trotz Schufa bekomme ich in ${data.name}?`,
-      answer: `In ${data.name} empfiehlt HANSI: ${data.bestAnbieter.join(", ")}. Diese Anbieter haben die höchsten Genehmigungsquoten und gute Netzabdeckung in ${data.name}.`,
+      question: `Welchen Hundefutter für deinen Hund bekomme ich in ${data.name}?`,
+      answer: `In ${data.name} empfiehlt BELLA: ${data.bestAnbieter.join(", ")}. Diese Anbieter haben die höchsten Genehmigungsquoten und gute Netzabdeckung in ${data.name}.`,
     },
     {
       question: `Welches Mobilfunknetz ist in ${data.name} am besten?`,
@@ -116,9 +116,9 @@ export default async function StadtPage({
       <StructuredData
         type="breadcrumb"
         breadcrumbs={[
-          { name: "Startseite", url: "https://handytrotzschufa.today" },
-          { name: "Städte", url: "https://handytrotzschufa.today" },
-          { name: `${data.name} – Handyvertrag trotz Schufa`, url: `https://handytrotzschufa.today/stadt/${slug}` },
+          { name: "Startseite", url: "https://welches-hundefutter.today" },
+          { name: "Städte", url: "https://welches-hundefutter.today" },
+          { name: `${data.name} – Hundefutter für deinen Hund`, url: `https://welches-hundefutter.today/stadt/${slug}` },
         ]}
       />
 
@@ -126,11 +126,11 @@ export default async function StadtPage({
         <nav className="text-sm text-gray-500 mb-6">
           <Link href="/" className="hover:text-gray-300">Startseite</Link>
           <span className="mx-2">›</span>
-          <span className="text-gray-300">{data.name} – Handyvertrag trotz Schufa</span>
+          <span className="text-gray-300">{data.name} – Hundefutter für deinen Hund</span>
         </nav>
 
         <h1 className="text-3xl font-bold text-white mb-4">
-          Handyvertrag trotz Schufa in {data.name} – Beste Anbieter 2026
+          Hundefutter für deinen Hund in {data.name} – Beste Anbieter 2026
         </h1>
 
         <p className="text-gray-400 text-lg mb-8 leading-relaxed">{data.besonderheit}</p>
@@ -155,7 +155,7 @@ export default async function StadtPage({
 
         {/* Top Anbieter */}
         <h2 className="text-xl font-bold text-white mb-4">
-          Top Anbieter für Handyvertrag trotz Schufa in {data.name}
+          Top Anbieter für Hundefutter für deinen Hund in {data.name}
         </h2>
         <div className="space-y-3 mb-8">
           {data.bestAnbieter.map((name, idx) => {
@@ -207,7 +207,7 @@ export default async function StadtPage({
         {/* CTA */}
         <div className="bg-indigo-900/30 rounded-xl p-6 text-center">
           <p className="text-white font-semibold mb-2">
-            HANSI findet deinen Vertrag trotz Schufa in {data.name}
+            BELLA findet deinen Vertrag trotz Schufa in {data.name}
           </p>
           <Link
             href="/"

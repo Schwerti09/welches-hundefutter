@@ -1,13 +1,13 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
 
-const Hansi = dynamic(() => import("@/components/Hansi"), { ssr: false });
+const Bella = dynamic(() => import("@/components/Bella"), { ssr: false });
 
 interface Message {
   id: string;
-  role: "hansi" | "user";
+  role: "bella" | "user";
   content: string;
   offers?: OfferCard[];
 }
@@ -28,12 +28,12 @@ interface OfferCard {
   cashback: number | null;
 }
 
-type HansiMood = "idle" | "thinking" | "talking" | "happy" | "waving" | "excited";
+type BellaMood = "idle" | "thinking" | "talking" | "happy" | "waving" | "excited";
 
 const INTRO_MESSAGE: Message = {
   id: "0",
-  role: "hansi",
-  content: "Hey! Ich bin HANSI, dein persönlicher Handyvertrag-Berater! 🎉\n\nIch finde dir in Sekunden den perfekten Vertrag aus über 20.000 echten Angeboten.\n\nSag mir einfach: Was suchst du?",
+  role: "bella",
+  content: "Hey! Ich bin BELLA, dein persönlicher Handyvertrag-Berater! 🎉\n\nIch finde dir in Sekunden den perfekten Vertrag aus über 20.000 echten Angeboten.\n\nSag mir einfach: Was suchst du?",
 };
 
 const QUICK_OPTIONS = [
@@ -45,10 +45,10 @@ const QUICK_OPTIONS = [
   { label: "🎓 Student & Budget", msg: "Ich bin Student und suche günstiges Angebot" },
 ];
 
-export default function HansiAdvisor() {
+export default function BellaAdvisor() {
   const [messages, setMessages] = useState<Message[]>([INTRO_MESSAGE]);
   const [input, setInput] = useState("");
-  const [mood, setMood] = useState<HansiMood>("waving");
+  const [mood, setMood] = useState<BellaMood>("waving");
   const [loading, setLoading] = useState(false);
   const [sessionId] = useState(() => Math.random().toString(36).slice(2));
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -76,7 +76,7 @@ export default function HansiAdvisor() {
     try {
       const history = messages
         .filter(m => m.id !== "0")
-        .map(m => ({ role: m.role === "hansi" ? "assistant" : "user", content: m.content }));
+        .map(m => ({ role: m.role === "bella" ? "assistant" : "user", content: m.content }));
 
       const res = await fetch("/api/advisor/chat", {
         method: "POST",
@@ -88,18 +88,18 @@ export default function HansiAdvisor() {
       setMood(data.offers?.length > 0 ? "excited" : "happy");
       setTimeout(() => setMood("idle"), 3000);
 
-      const hansiMsg: Message = {
+      const bellaMsg: Message = {
         id: (Date.now() + 1).toString(),
-        role: "hansi",
+        role: "bella",
         content: data.reply ?? "Ich konnte keine passenden Angebote finden. Versuch es mit anderen Kriterien!",
         offers: data.offers,
       };
-      setMessages(prev => [...prev, hansiMsg]);
+      setMessages(prev => [...prev, bellaMsg]);
     } catch {
       setMood("idle");
       setMessages(prev => [...prev, {
         id: Date.now().toString(),
-        role: "hansi",
+        role: "bella",
         content: "Ups, da ist was schiefgelaufen. Versuch es nochmal!",
       }]);
     } finally {
@@ -111,9 +111,9 @@ export default function HansiAdvisor() {
     <div className="relative w-full max-w-5xl mx-auto">
       <div className="grid lg:grid-cols-[280px_1fr] gap-8 items-start">
 
-        {/* ─── HANSI Column ──────────────────────────────── */}
+        {/* ─── BELLA Column ──────────────────────────────── */}
         <div className="flex flex-col items-center gap-4">
-          <Hansi mood={mood} size={220} />
+          <Bella mood={mood} size={220} />
 
           {/* Mood label */}
           <div className="glass rounded-2xl px-4 py-2 text-center border border-white/10">
@@ -122,7 +122,7 @@ export default function HansiAdvisor() {
                mood === "excited" ? "🎉 Perfekte Matches!" :
                mood === "happy" ? "😊 Gerne helfe ich!" :
                mood === "waving" ? "👋 Hallo!" :
-               "💬 HANSI · KI-Berater"}
+               "💬 BELLA · KI-Berater"}
             </p>
           </div>
 
@@ -148,7 +148,7 @@ export default function HansiAdvisor() {
           <div className="p-5 border-b border-white/10 flex items-center gap-3">
             <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse" />
             <div>
-              <p className="text-white font-bold">HANSI – Dein persönlicher KI-Berater</p>
+              <p className="text-white font-bold">BELLA – Dein persönlicher KI-Berater</p>
               <p className="text-white/40 text-xs">Findet den perfekten Vertrag aus 20.000+ Angeboten</p>
             </div>
           </div>
@@ -157,7 +157,7 @@ export default function HansiAdvisor() {
           <div className="flex-1 overflow-y-auto p-5 space-y-5">
             {messages.map((msg) => (
               <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} gap-3`}>
-                {msg.role === "hansi" && (
+                {msg.role === "bella" && (
                   <div className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl flex items-center justify-center flex-shrink-0 mt-1 text-xs font-black text-white shadow-lg">H</div>
                 )}
                 <div className="max-w-[80%] space-y-3">
@@ -268,7 +268,7 @@ export default function HansiAdvisor() {
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => e.key === "Enter" && sendMessage(input)}
-                placeholder="Sag HANSI was du suchst..."
+                placeholder="Sag BELLA was du suchst..."
                 className="flex-1 px-4 py-3 bg-white/10 border border-white/10 rounded-2xl text-white placeholder-white/30 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 disabled={loading}
               />

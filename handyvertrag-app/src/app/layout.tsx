@@ -1,16 +1,16 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import "./globals.css";
 import StructuredData from "@/components/StructuredData";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
 import ExitIntent from "@/components/ExitIntent";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://handytrotzschufa.today"),
+  metadataBase: new URL("https://welches-hundefutter.today"),
   title: {
-    default: "Handyvertrag trotz Schufa 2026 ✓ Sofort genehmigt | HANSI",
-    template: "%s | HANSI – Handyvertrag trotz Schufa",
+    default: "Hundefutter für deinen Hund 2026 ✓ Sofort genehmigt | BELLA",
+    template: "%s | BELLA – Hundefutter für deinen Hund",
   },
-  description: "Handyvertrag trotz Schufa: HANSI findet in 3 Fragen deinen Vertrag. ✓ freenet ab 9,99€ ✓ congstar ✓ Prepaid ohne Bonitätsprüfung. Jetzt kostenlos prüfen.",
+  description: "Hundefutter für deinen Hund: BELLA findet in 3 Fragen deinen Vertrag. ✓ freenet ab 9,99€ ✓ congstar ✓ Prepaid ohne Bonitätsprüfung. Jetzt kostenlos prüfen.",
   keywords: [
     "handyvertrag trotz schufa",
     "handyvertrag ohne schufa",
@@ -21,26 +21,26 @@ export const metadata: Metadata = {
     "handyvertrag schlechte schufa",
     "handyvertrag trotz schufa 2026",
   ],
-  authors: [{ name: "R. Schwertfechter", url: "https://handytrotzschufa.today/ueber-uns" }],
-  creator: "HANSI",
-  publisher: "HANSI Intelligence System",
+  authors: [{ name: "R. Schwertfechter", url: "https://welches-hundefutter.today/ueber-uns" }],
+  creator: "BELLA",
+  publisher: "BELLA Intelligence System",
   formatDetection: { email: false, address: false, telephone: false },
   alternates: {
-    canonical: "https://handytrotzschufa.today",
-    languages: { "de-DE": "https://handytrotzschufa.today" },
+    canonical: "https://welches-hundefutter.today",
+    languages: { "de-DE": "https://welches-hundefutter.today" },
   },
   openGraph: {
     type: "website",
     locale: "de_DE",
-    url: "https://handytrotzschufa.today",
-    siteName: "HANSI – Handyvertrag trotz Schufa",
-    title: "Handyvertrag trotz Schufa 2026 ✓ HANSI findet deinen Vertrag",
+    url: "https://welches-hundefutter.today",
+    siteName: "BELLA – Hundefutter für deinen Hund",
+    title: "Hundefutter für deinen Hund 2026 ✓ BELLA findet deinen Vertrag",
     description: "KI-Berater für Handyverträge trotz Schufa. 3 Fragen, 5000+ Angebote, sofortige Genehmigungschancen.",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "HANSI Handyvertrag trotz Schufa" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "BELLA Hundefutter für deinen Hund" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Handyvertrag trotz Schufa ✓ HANSI KI-Berater",
+    title: "Hundefutter für deinen Hund ✓ BELLA KI-Berater",
     description: "3 Fragen, sofortige Antwort. Handyvertrag trotz negativer Schufa finden.",
     images: ["/twitter-card.png"],
   },
@@ -82,11 +82,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         
         {/* Canonical Link */}
-        <link rel="canonical" href="https://handytrotzschufa.today" />
+        <link rel="canonical" href="https://welches-hundefutter.today" />
         
         {/* Additional SEO Tags */}
         <meta name="author" content="R. Schwertfechter" />
-        <meta name="copyright" content="© 2026 HANSI Intelligence System" />
+        <meta name="copyright" content="© 2026 BELLA Intelligence System" />
         <meta name="language" content="de" />
         <meta name="revisit-after" content="7 days" />
         <meta name="rating" content="general" />

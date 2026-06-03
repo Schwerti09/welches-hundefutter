@@ -1,15 +1,15 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
 
-export type HansiMood = "idle" | "listening" | "thinking" | "excited" | "happy" | "presenting";
+export type BellaMood = "idle" | "listening" | "thinking" | "excited" | "happy" | "presenting";
 
 interface Props {
-  mood?: HansiMood;
+  mood?: BellaMood;
   size?: number;
 }
 
-const MOOD_AURA: Record<HansiMood, string> = {
+const MOOD_AURA: Record<BellaMood, string> = {
   idle: "#6366f1",
   listening: "#22d3ee",
   thinking: "#a855f7",
@@ -18,7 +18,7 @@ const MOOD_AURA: Record<HansiMood, string> = {
   presenting: "#f59e0b",
 };
 
-export default function HansiCharacter({ mood = "idle", size = 260 }: Props) {
+export default function BellaCharacter({ mood = "idle", size = 260 }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const [pupil, setPupil] = useState({ x: 0, y: 0 });
   const [blink, setBlink] = useState(false);

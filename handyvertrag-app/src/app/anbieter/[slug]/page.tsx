@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import StructuredData from "@/components/StructuredData";
@@ -121,9 +121,9 @@ export async function generateMetadata({
   if (!data) return {};
 
   return {
-    title: `${data.name} Handyvertrag trotz Schufa ✓ ${data.acceptanceRate}% Annahme | HANSI`,
-    description: `${data.name} bei negativer Schufa: Annahmechance ${data.acceptanceRate}%, Tarife ab ${data.minPrice.toFixed(2).replace(".", ",")}€/Monat. Echte Erfahrungen & Empfehlung von HANSI.`,
-    alternates: { canonical: `https://handytrotzschufa.today/anbieter/${slug}` },
+    title: `${data.name} Hundefutter für deinen Hund ✓ ${data.acceptanceRate}% Annahme | BELLA`,
+    description: `${data.name} bei negativer Schufa: Annahmechance ${data.acceptanceRate}%, Tarife ab ${data.minPrice.toFixed(2).replace(".", ",")}€/Monat. Echte Erfahrungen & Empfehlung von BELLA.`,
+    alternates: { canonical: `https://welches-hundefutter.today/anbieter/${slug}` },
   };
 }
 
@@ -164,9 +164,9 @@ export default async function AnbieterPage({
       <StructuredData
         type="breadcrumb"
         breadcrumbs={[
-          { name: "Startseite", url: "https://handytrotzschufa.today" },
-          { name: "Anbieter", url: "https://handytrotzschufa.today/anbieter" },
-          { name: `${data.name} trotz Schufa`, url: `https://handytrotzschufa.today/anbieter/${slug}` },
+          { name: "Startseite", url: "https://welches-hundefutter.today" },
+          { name: "Anbieter", url: "https://welches-hundefutter.today/anbieter" },
+          { name: `${data.name} trotz Schufa`, url: `https://welches-hundefutter.today/anbieter/${slug}` },
         ]}
       />
 
@@ -191,7 +191,7 @@ export default async function AnbieterPage({
         </div>
 
         <h1 className="text-3xl font-bold text-white mb-4">
-          {data.name} Handyvertrag trotz Schufa – {data.acceptanceRate}% Genehmigungschance
+          {data.name} Hundefutter für deinen Hund – {data.acceptanceRate}% Genehmigungschance
         </h1>
 
         <p className="text-gray-400 text-lg mb-8 leading-relaxed">{data.description}</p>
@@ -270,7 +270,7 @@ export default async function AnbieterPage({
 
         {/* CTA */}
         <div className="bg-indigo-900/30 rounded-xl p-6 text-center">
-          <p className="text-white font-semibold mb-2">HANSI findet deinen Vertrag bei {data.name}</p>
+          <p className="text-white font-semibold mb-2">BELLA findet deinen Vertrag bei {data.name}</p>
           <Link
             href="/"
             className="inline-block bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-lg font-semibold transition-colors"

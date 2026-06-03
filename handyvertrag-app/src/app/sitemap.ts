@@ -1,8 +1,8 @@
-import { MetadataRoute } from "next";
+﻿import { MetadataRoute } from "next";
 import { products } from "@/data/products";
 import { blogArticles } from "@/data/blogArticles";
 
-const BASE = "https://handytrotzschufa.today";
+const BASE = "https://welches-hundefutter.today";
 
 const ANBIETER_SLUGS = [
   "1und1-trotz-schufa",

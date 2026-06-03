@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+﻿import { Suspense } from "react";
 import dynamic from "next/dynamic";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -6,9 +6,9 @@ import Link from "next/link";
 const CityOfferCard = dynamic(() => import("@/components/CityOfferCard"), { ssr: true });
 
 export const metadata: Metadata = {
-  title: "Handyvertrag Leipzig 2026 | Beste Angebote | handytrotzschufa.today",
+  title: "Handyvertrag Leipzig 2026 | Beste Angebote | welches-hundefutter.today",
   description: "Die besten Handyverträge in Leipzig. iPhone 17, Samsung Galaxy & mehr mit Telekom, Vodafone, o2. Günstigste Deals in Sachsen!",
-  alternates: { canonical: "https://handytrotzschufa.today/leipzig" },
+  alternates: { canonical: "https://welches-hundefutter.today/leipzig" },
 };
 
 const offers = [

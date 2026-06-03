@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 
@@ -32,8 +32,8 @@ export default function MarketWatch({ active, onToggle }: Props) {
             </div>
             <p className="text-[11px] text-white/55 leading-snug">
               {active
-                ? "HANSI beobachtet den Markt für dich. Bei besseren Angeboten meldest du dich zurück."
-                : "HANSI beobachtet den Markt für dich — bei besseren Angeboten wirst du informiert."}
+                ? "BELLA beobachtet den Markt für dich. Bei besseren Angeboten meldest du dich zurück."
+                : "BELLA beobachtet den Markt für dich — bei besseren Angeboten wirst du informiert."}
             </p>
           </div>
           <button

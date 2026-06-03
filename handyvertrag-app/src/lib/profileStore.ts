@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 
 /**
- * HANSI User Intelligence Profile — Phase 1
+ * BELLA User Intelligence Profile — Phase 1
  * Persistent localStorage profile that grows with every interaction.
- * Never resets between sessions. Users feel "HANSI knows me."
+ * Never resets between sessions. Users feel "BELLA knows me."
  */
 
 export interface UserProfile {
@@ -37,7 +37,7 @@ export interface UserProfile {
   satisfiedWithCurrent?: boolean;
 }
 
-const KEY = "hansi_profile_v2";
+const KEY = "bella_profile_v2";
 
 const DEFAULT: UserProfile = {
   confidence: 0,

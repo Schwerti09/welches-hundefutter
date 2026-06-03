@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
@@ -44,11 +44,11 @@ export default function ExitIntent() {
       >
         <p className="text-2xl font-black text-white mb-2">Warte kurz!</p>
         <p className="text-gray-400 mb-6 leading-relaxed">
-          HANSI kennt <strong className="text-white">3 Anbieter</strong>, die deinen Vertrag trotz
+          BELLA kennt <strong className="text-white">3 Anbieter</strong>, die deinen Vertrag trotz
           Schufa durchwinken. Frag in 10 Sekunden.
         </p>
         <Link
-          href="/#hansi-chat"
+          href="/#bella-chat"
           onClick={dismiss}
           className="block w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl mb-3 transition-colors"
         >

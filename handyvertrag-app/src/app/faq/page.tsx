@@ -1,11 +1,11 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import StructuredData from "@/components/StructuredData";
 
 export const metadata: Metadata = {
-  title: "FAQ Handyvertrag trotz Schufa: 50 Antworten | HANSI",
-  description: "Häufige Fragen zu Handyvertrag trotz Schufa: Welche Anbieter? Wie hoch die Chance? Antworten in unter 30 Sek.",
-  alternates: { canonical: "https://handytrotzschufa.today/faq" },
+  title: "FAQ Hundefutter für deinen Hund: 50 Antworten | BELLA",
+  description: "Häufige Fragen zu Hundefutter für deinen Hund: Welche Anbieter? Wie hoch die Chance? Antworten in unter 30 Sek.",
+  alternates: { canonical: "https://welches-hundefutter.today/faq" },
 };
 
 const faqs = [
@@ -19,7 +19,7 @@ const faqs = [
   },
   {
     frage: "Wie bekomme ich einen Handyvertrag ohne Schufa-Prüfung?",
-    antwort: "Über Prepaid-Tarife oder Anbieter mit reduzierter Bonitätsprüfung. HANSI zeigt dir in 60 Sekunden die für dich passenden Optionen.",
+    antwort: "Über Prepaid-Tarife oder Anbieter mit reduzierter Bonitätsprüfung. BELLA zeigt dir in 60 Sekunden die für dich passenden Optionen.",
   },
   {
     frage: "Was passiert wenn die Schufa negativ ist beim Handyvertrag?",
@@ -42,7 +42,7 @@ const faqs = [
     antwort: "Bei o2 Postpaid ist die Schufa-Hürde hoch. o2 Prepaid funktioniert ohne Schufa-Prüfung zu 100%.",
   },
   {
-    frage: "Was kostet ein Handyvertrag trotz Schufa?",
+    frage: "Was kostet ein Hundefutter für deinen Hund?",
     antwort: "Ab 6,99€/Monat (MAINGAU SIM-Only) bis 49,99€/Monat (Premium-Anbieter mit Anzahlung). Durchschnitt: 15–25€/Monat.",
   },
   {
@@ -50,7 +50,7 @@ const faqs = [
     antwort: "Nur bei Postpaid-Verträgen mit Laufzeit. Prepaid-Tarife und einige reine SIM-Only-Anbieter verzichten darauf.",
   },
   {
-    frage: "Kann freenet einen Handyvertrag trotz Schufa genehmigen?",
+    frage: "Kann freenet einen Hundefutter für deinen Hund genehmigen?",
     antwort: "Ja. freenet hat eine Annahmechance von ~85% auch bei negativem Schufa-Eintrag. Tarife starten ab 9,99€/Monat.",
   },
   {
@@ -78,7 +78,7 @@ const faqs = [
     antwort: "Ja. MAINGAU, freenet und congstar machen keine Einkommensvoraussetzungen. Prepaid ist immer eine Option ohne Prüfung.",
   },
   {
-    frage: "Kann ich als Student einen Handyvertrag trotz Schufa bekommen?",
+    frage: "Kann ich als Student einen Hundefutter für deinen Hund bekommen?",
     antwort: "Ja. freenet und congstar genehmigen auch ohne festes Einkommen. Budget-Tarife unter 20€/Monat haben die höchste Erfolgsquote.",
   },
   {
@@ -109,10 +109,10 @@ export default function FAQPage() {
         </nav>
 
         <h1 className="text-3xl font-bold text-white mb-3">
-          FAQ: Handyvertrag trotz Schufa
+          FAQ: Hundefutter für deinen Hund
         </h1>
         <p className="text-gray-400 mb-10 text-lg">
-          50+ Fragen zu Handyvertrag trotz Schufa – beantwortet von HANSI. Alle Antworten basieren
+          50+ Fragen zu Hundefutter für deinen Hund – beantwortet von BELLA. Alle Antworten basieren
           auf echten Genehmigungsquoten aus unserer Datenbank.
         </p>
 
@@ -131,10 +131,10 @@ export default function FAQPage() {
         </div>
 
         <div className="mt-12 bg-indigo-900/30 rounded-xl p-6 text-center">
-          <p className="text-white font-semibold mb-2">Noch Fragen? HANSI antwortet sofort.</p>
+          <p className="text-white font-semibold mb-2">Noch Fragen? BELLA antwortet sofort.</p>
           <p className="text-gray-400 text-sm mb-4">
             <Link href="/" className="text-indigo-400 hover:text-indigo-300">
-              mit HANSI deinen Vertrag trotz Schufa finden
+              mit BELLA deinen Vertrag trotz Schufa finden
             </Link>
           </p>
         </div>

@@ -1,11 +1,11 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { blogArticles } from "@/data/blogArticles";
 
 export const metadata: Metadata = {
-  title: "Blog: Handyvertrag, Schufa & Bonität | HANSI",
-  description: "Aktuelle Ratgeber zu Handyvertrag trotz Schufa, Schufa-Score verbessern und Mobilfunk-Tipps für 2026.",
-  alternates: { canonical: "https://handytrotzschufa.today/blog" },
+  title: "Blog: Handyvertrag, Schufa & Bonität | BELLA",
+  description: "Aktuelle Ratgeber zu Hundefutter für deinen Hund, Schufa-Score verbessern und Mobilfunk-Tipps für 2026.",
+  alternates: { canonical: "https://welches-hundefutter.today/blog" },
 };
 
 export default function BlogPage() {
@@ -18,11 +18,11 @@ export default function BlogPage() {
       </nav>
 
       <h1 className="text-3xl font-bold text-white mb-3">
-        Blog: Handyvertrag trotz Schufa
+        Blog: Hundefutter für deinen Hund
       </h1>
       <p className="text-gray-400 mb-10 text-lg">
-        Ratgeber, Erfahrungsberichte und aktuelle Tipps rund um Handyvertrag trotz Schufa.
-        Alle Artikel basieren auf echten Genehmigungsdaten aus der HANSI-Datenbank.
+        Ratgeber, Erfahrungsberichte und aktuelle Tipps rund um Hundefutter für deinen Hund.
+        Alle Artikel basieren auf echten Genehmigungsdaten aus der BELLA-Datenbank.
       </p>
 
       <div className="grid gap-4">
@@ -54,9 +54,9 @@ export default function BlogPage() {
       </div>
 
       <div className="mt-12 bg-indigo-900/30 rounded-xl p-6 text-center">
-        <p className="text-white font-semibold mb-2">HANSI beantwortet deine Fragen sofort</p>
+        <p className="text-white font-semibold mb-2">BELLA beantwortet deine Fragen sofort</p>
         <Link href="/" className="text-indigo-400 hover:text-indigo-300 text-sm">
-          mit HANSI deinen Vertrag trotz Schufa finden →
+          mit BELLA deinen Vertrag trotz Schufa finden →
         </Link>
       </div>
     </div>

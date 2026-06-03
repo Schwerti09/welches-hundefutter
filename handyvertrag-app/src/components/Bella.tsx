@@ -1,16 +1,16 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 
-type HansiMood = "idle" | "thinking" | "talking" | "happy" | "waving" | "excited";
+type BellaMood = "idle" | "thinking" | "talking" | "happy" | "waving" | "excited";
 
-interface HansiProps {
-  mood?: HansiMood;
+interface BellaProps {
+  mood?: BellaMood;
   size?: number;
   className?: string;
 }
 
-export default function Hansi({ mood = "idle", size = 200, className = "" }: HansiProps) {
+export default function Bella({ mood = "idle", size = 200, className = "" }: BellaProps) {
   const [blink, setBlink] = useState(false);
   const [armAngle, setArmAngle] = useState(0);
 
@@ -57,9 +57,9 @@ export default function Hansi({ mood = "idle", size = 200, className = "" }: Han
         {/* ─── LEFT ARM ─────────────────────────────────────────── */}
         <g transform={`translate(28, 130) rotate(${mood === "waving" ? armAngle + 20 : mood === "thinking" ? -40 : 15})`}
           style={{ transformOrigin: "28px 130px", transition: "transform 0.3s" }}>
-          <rect x="-28" y="0" width="16" height="50" rx="8" fill="url(#hansiGrad)" />
+          <rect x="-28" y="0" width="16" height="50" rx="8" fill="url(#bellaGrad)" />
           {/* Hand */}
-          <circle cx="-20" cy="52" r="10" fill="url(#hansiGrad)" />
+          <circle cx="-20" cy="52" r="10" fill="url(#bellaGrad)" />
           {/* Finger wave when waving */}
           {(mood === "waving" || mood === "excited") && (
             <g transform="translate(-20, 52)">
@@ -73,12 +73,12 @@ export default function Hansi({ mood = "idle", size = 200, className = "" }: Han
         {/* ─── RIGHT ARM ────────────────────────────────────────── */}
         <g transform={`translate(172, 130) rotate(${mood === "thinking" ? 40 : mood === "happy" ? -20 : -15})`}
           style={{ transformOrigin: "172px 130px", transition: "transform 0.3s" }}>
-          <rect x="12" y="0" width="16" height="50" rx="8" fill="url(#hansiGrad)" />
-          <circle cx="20" cy="52" r="10" fill="url(#hansiGrad)" />
+          <rect x="12" y="0" width="16" height="50" rx="8" fill="url(#bellaGrad)" />
+          <circle cx="20" cy="52" r="10" fill="url(#bellaGrad)" />
         </g>
 
         {/* ─── BODY (Phone) ─────────────────────────────────────── */}
-        <rect x="38" y="40" width="124" height="210" rx="22" fill="url(#hansiGrad)" />
+        <rect x="38" y="40" width="124" height="210" rx="22" fill="url(#bellaGrad)" />
         {/* Screen */}
         <rect x="48" y="55" width="104" height="160" rx="14" fill="#1e1b4b" />
         {/* Screen shine */}
@@ -148,21 +148,21 @@ export default function Hansi({ mood = "idle", size = 200, className = "" }: Han
 
         {/* ─── LEGS ─────────────────────────────────────────────── */}
         <rect x="70" y="248" width="22" height="55" rx="11"
-          fill="url(#hansiGrad)"
+          fill="url(#bellaGrad)"
           transform={mood === "waving" || mood === "excited" ? "translate(0,-3)" : ""}
           style={{ transition: "transform 0.3s" }} />
         <rect x="108" y="248" width="22" height="55" rx="11"
-          fill="url(#hansiGrad)"
+          fill="url(#bellaGrad)"
           transform={mood === "waving" || mood === "excited" ? "translate(0,-3)" : ""}
           style={{ transition: "transform 0.3s" }} />
 
         {/* Feet */}
-        <ellipse cx="81" cy="303" rx="18" ry="10" fill="url(#hansiGrad)" />
-        <ellipse cx="119" cy="303" rx="18" ry="10" fill="url(#hansiGrad)" />
+        <ellipse cx="81" cy="303" rx="18" ry="10" fill="url(#bellaGrad)" />
+        <ellipse cx="119" cy="303" rx="18" ry="10" fill="url(#bellaGrad)" />
 
         {/* ─── GRADIENT DEFS ────────────────────────────────────── */}
         <defs>
-          <linearGradient id="hansiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="bellaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#6366f1" />
             <stop offset="100%" stopColor="#8b5cf6" />
           </linearGradient>

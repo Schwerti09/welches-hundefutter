@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { neon } from "@neondatabase/serverless";
 
@@ -127,7 +127,7 @@ export async function POST(req: NextRequest) {
 
   const recommendation = bestAlt
     ? `${bestAlt.device} bei ${bestAlt.provider} (${bestAlt.tariff}) für ${bestAlt.price.toFixed(2)} €/Monat liefert vergleichbares Leistungsprofil bei ${bestAlt.saving.toFixed(2)} €/Monat weniger.`
-    : "Für präzise Alternativen ein vollständiges HANSI-Profil erstellen.";
+    : "Für präzise Alternativen ein vollständiges BELLA-Profil erstellen.";
 
   return NextResponse.json({
     grade, gradeScore: score, monthlyOverpay, yearlyOverpay,

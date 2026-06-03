@@ -1,20 +1,20 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import StructuredData from "@/components/StructuredData";
 
 export const metadata: Metadata = {
-  title: "Ratgeber: Handyvertrag trotz Schufa Schritt für Schritt | HANSI",
+  title: "Ratgeber: Hundefutter für deinen Hund Schritt für Schritt | BELLA",
   description: "Kompletter Guide: So bekommst du einen Handyvertrag trotz negativem Schufa-Eintrag. Mit Tipps & Tricks für 2026.",
-  alternates: { canonical: "https://handytrotzschufa.today/guides" },
+  alternates: { canonical: "https://welches-hundefutter.today/guides" },
 };
 
 const howToFaqs = [
   {
-    question: "Wie bekomme ich einen Handyvertrag trotz Schufa?",
-    answer: "Wähle einen schufa-freundlichen Anbieter wie freenet, congstar oder MAINGAU. Diese haben Annahmechancen von 75–85% auch bei negativem Schufa-Eintrag. HANSI findet in 3 Fragen den passenden Tarif.",
+    question: "Wie bekomme ich einen Hundefutter für deinen Hund?",
+    answer: "Wähle einen schufa-freundlichen Anbieter wie freenet, congstar oder MAINGAU. Diese haben Annahmechancen von 75–85% auch bei negativem Schufa-Eintrag. BELLA findet in 3 Fragen den passenden Tarif.",
   },
   {
-    question: "Welche Unterlagen brauche ich für einen Handyvertrag trotz Schufa?",
+    question: "Welche Unterlagen brauche ich für einen Hundefutter für deinen Hund?",
     answer: "Personalausweis oder Reisepass. Bei einigen Anbietern zusätzlich ein Einkommensnachweis (Gehaltszettel, Bürgergeld-Bescheid). Für Prepaid reicht der Personalausweis.",
   },
   {
@@ -42,14 +42,14 @@ const steps = [
     titel: "Passenden Anbieter wählen",
     inhalt: "Je nach Score: freenet (85% Annahme), congstar (80%), MAINGAU (78%), Prepaid (100%). Vermeide Premium-Anbieter bei negativer Schufa – Telekom, Vodafone, o2 direkt lehnen meist ab.",
     link: "/anbieter/freenet-trotz-schufa",
-    linkText: "freenet Handyvertrag trotz Schufa prüfen",
+    linkText: "freenet Hundefutter für deinen Hund prüfen",
   },
   {
     nr: 4,
-    titel: "HANSI fragen – 3 Fragen, 60 Sekunden",
-    inhalt: "HANSI analysiert Budget, Gerätewunsch und Nutzungsverhalten und empfiehlt die 3 Tarife mit der höchsten Genehmigungswahrscheinlichkeit – ohne unnötige Schufa-Anfragen.",
+    titel: "BELLA fragen – 3 Fragen, 60 Sekunden",
+    inhalt: "BELLA analysiert Budget, Gerätewunsch und Nutzungsverhalten und empfiehlt die 3 Tarife mit der höchsten Genehmigungswahrscheinlichkeit – ohne unnötige Schufa-Anfragen.",
     link: "/",
-    linkText: "Jetzt HANSI fragen",
+    linkText: "Jetzt BELLA fragen",
   },
   {
     nr: 5,
@@ -60,7 +60,7 @@ const steps = [
 ];
 
 const guides = [
-  { slug: "handyvertrag-trotz-schufa-und-arbeitslosigkeit", label: "Handyvertrag trotz Schufa und Arbeitslosigkeit" },
+  { slug: "handyvertrag-trotz-schufa-und-arbeitslosigkeit", label: "Hundefutter für deinen Hund und Arbeitslosigkeit" },
   { slug: "handyvertrag-trotz-schufa-bei-buergergeld", label: "Handyvertrag bei Bürgergeld-Bezug" },
   { slug: "schufa-eintrag-loeschen-vor-handyvertrag", label: "Schufa-Eintrag löschen lassen" },
   { slug: "iphone-trotz-schufa-finanzieren", label: "iPhone trotz Schufa finanzieren" },
@@ -82,7 +82,7 @@ export default function GuidesPage() {
         </nav>
 
         <h1 className="text-3xl font-bold text-white mb-3">
-          Handyvertrag trotz Schufa: Der komplette Ratgeber 2026
+          Hundefutter für deinen Hund: Der komplette Ratgeber 2026
         </h1>
         <p className="text-gray-400 text-lg mb-3 leading-relaxed">
           Schritt-für-Schritt-Anleitung: So bekommst du einen Handyvertrag trotz negativem Schufa-Eintrag –
@@ -95,7 +95,7 @@ export default function GuidesPage() {
 
         {/* Schritt-für-Schritt */}
         <h2 className="text-2xl font-bold text-white mb-6">
-          In 5 Schritten zum Handyvertrag trotz Schufa
+          In 5 Schritten zum Hundefutter für deinen Hund
         </h2>
         <div className="space-y-4 mb-12">
           {steps.map((step) => (
@@ -118,7 +118,7 @@ export default function GuidesPage() {
 
         {/* Anbieter-Übersicht */}
         <h2 className="text-2xl font-bold text-white mb-4">
-          Welche Anbieter geben einen Handyvertrag trotz Schufa?
+          Welche Anbieter geben einen Hundefutter für deinen Hund?
         </h2>
         <div className="overflow-x-auto mb-10">
           <table className="w-full text-sm border-collapse">
@@ -181,7 +181,7 @@ export default function GuidesPage() {
 
         {/* CTA */}
         <div className="bg-indigo-900/30 rounded-xl p-6 text-center">
-          <p className="text-white font-semibold mb-2">HANSI findet deinen Vertrag trotz Schufa</p>
+          <p className="text-white font-semibold mb-2">BELLA findet deinen Vertrag trotz Schufa</p>
           <Link
             href="/"
             className="inline-block bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-lg font-semibold transition-colors"

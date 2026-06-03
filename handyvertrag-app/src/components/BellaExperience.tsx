@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import HansiCharacter, { type HansiMood } from "@/components/HansiCharacter";
-import HansiBackground, { type Theme } from "@/components/HansiBackground";
-import HansiRadar from "@/components/HansiRadar";
+import BellaCharacter, { type BellaMood } from "@/components/BellaCharacter";
+import BellaBackground, { type Theme } from "@/components/BellaBackground";
+import BellaRadar from "@/components/BellaRadar";
 import LiveIntel, { RotatingInsight } from "@/components/LiveIntel";
 
 interface Offer {
@@ -25,7 +25,7 @@ interface Offer {
 
 interface Message {
   id: string;
-  role: "hansi" | "user";
+  role: "bella" | "user";
   content: string;
   offers?: Offer[];
   streaming?: boolean;
@@ -51,10 +51,10 @@ const providerGradient = (p: string) => {
   return "from-indigo-500 to-violet-600";
 };
 
-export default function HansiExperience() {
+export default function BellaExperience() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
-  const [mood, setMood] = useState<HansiMood>("idle");
+  const [mood, setMood] = useState<BellaMood>("idle");
   const [theme, setTheme] = useState<Theme>("idle");
   const [busy, setBusy] = useState(false);
   const [started, setStarted] = useState(false);
@@ -75,10 +75,10 @@ export default function HansiExperience() {
     setMood("thinking");
 
     const userMsg: Message = { id: `u${Date.now()}`, role: "user", content: trimmed };
-    const hansiId = `h${Date.now()}`;
-    const history = messages.map((m) => ({ role: m.role === "hansi" ? "assistant" : "user", content: m.content }));
+    const bellaId = `h${Date.now()}`;
+    const history = messages.map((m) => ({ role: m.role === "bella" ? "assistant" : "user", content: m.content }));
 
-    setMessages((prev) => [...prev, userMsg, { id: hansiId, role: "hansi", content: "", streaming: true }]);
+    setMessages((prev) => [...prev, userMsg, { id: bellaId, role: "bella", content: "", streaming: true }]);
 
     try {
       const res = await fetch("/api/advisor/chat", {
@@ -111,29 +111,29 @@ export default function HansiExperience() {
             respTheme = meta.theme;
           } catch { /* incomplete */ }
         }
-        setMessages((prev) => prev.map((m) => m.id === hansiId ? { ...m, content: display } : m));
+        setMessages((prev) => prev.map((m) => m.id === bellaId ? { ...m, content: display } : m));
       }
 
       if (respTheme) setTheme(respTheme);
-      setMessages((prev) => prev.map((m) => m.id === hansiId ? { ...m, streaming: false, offers } : m));
+      setMessages((prev) => prev.map((m) => m.id === bellaId ? { ...m, streaming: false, offers } : m));
       setMood(offers && offers.length ? "presenting" : "happy");
       setTimeout(() => setMood("idle"), 3500);
     } catch {
-      setMessages((prev) => prev.map((m) => m.id === hansiId ? { ...m, content: "Ups, da hat was geklemmt. Frag mich nochmal! 🙈", streaming: false } : m));
+      setMessages((prev) => prev.map((m) => m.id === bellaId ? { ...m, content: "Ups, da hat was geklemmt. Frag mich nochmal! 🙈", streaming: false } : m));
       setMood("idle");
     } finally {
       setBusy(false);
     }
   }, [busy, messages, started]);
 
-  // "Meine Analyse starten" → HANSI proactively opens the guided conversation.
+  // "Meine Analyse starten" → BELLA proactively opens the guided conversation.
   const startAnalysis = useCallback(() => {
     if (started) return;
     setStarted(true);
     setMood("happy");
     setMessages([{
       id: "intro",
-      role: "hansi",
+      role: "bella",
       content: "Lass uns deinen perfekten Vertrag finden! 🎯 Eine Frage zum Start: Was ist dir am wichtigsten — ein günstiger Preis, viel Datenvolumen, eine top Kamera, oder ein bestimmtes Handy?",
     }]);
     setTimeout(() => setMood("idle"), 2500);
@@ -142,7 +142,7 @@ export default function HansiExperience() {
   return (
     <div className="relative min-h-screen flex flex-col overflow-hidden">
       {/* ── Reactive generative background (morphs per query) ── */}
-      <HansiBackground theme={busy ? "speed" : theme} />
+      <BellaBackground theme={busy ? "speed" : theme} />
 
       {/* ── Top bar ── */}
       <header className="relative z-20 flex items-center justify-between px-5 sm:px-8 py-4">
@@ -174,7 +174,7 @@ export default function HansiExperience() {
           )}
           <div className="flex items-center gap-2 glass rounded-full px-3 py-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-white/70 text-xs font-medium">HANSI ist online</span>
+            <span className="text-white/70 text-xs font-medium">BELLA ist online</span>
           </div>
         </div>
       </header>
@@ -196,7 +196,7 @@ export default function HansiExperience() {
                   initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.5 }}
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-[11px] tracking-[0.2em] text-white/55 font-semibold uppercase">HANSI Intelligence System</span>
+                  <span className="text-[11px] tracking-[0.2em] text-white/55 font-semibold uppercase">BELLA Intelligence System</span>
                 </motion.div>
 
                 <motion.h1
@@ -211,7 +211,7 @@ export default function HansiExperience() {
                   className="mt-5 text-lg sm:text-xl text-white/55 max-w-xl mx-auto lg:mx-0 leading-relaxed"
                   initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.6 }}
                 >
-                  HANSI analysiert tausende aktuelle Tarife und findet heraus,
+                  BELLA analysiert tausende aktuelle Tarife und findet heraus,
                   was <span className="text-white font-semibold">wirklich zu dir passt</span>.
                 </motion.p>
 
@@ -235,7 +235,7 @@ export default function HansiExperience() {
                     <span className="ml-2 inline-block group-hover:translate-x-0.5 transition-transform">→</span>
                   </button>
                   <a href="#how" className="px-6 py-3.5 rounded-2xl glass border border-white/10 text-white/75 font-medium text-base hover:bg-white/10 hover:text-white transition-all">
-                    Wie funktioniert HANSI?
+                    Wie funktioniert BELLA?
                   </a>
                 </motion.div>
 
@@ -261,7 +261,7 @@ export default function HansiExperience() {
                 className="order-1 lg:order-2 flex flex-col items-center gap-5"
                 initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               >
-                <HansiRadar size={340} />
+                <BellaRadar size={340} />
                 <LiveIntel />
               </motion.div>
             </div>
@@ -273,12 +273,12 @@ export default function HansiExperience() {
       {!started && (
         <section id="how" className="relative z-10 px-5 py-20 border-t border-white/5">
           <div className="max-w-5xl mx-auto">
-            <p className="text-center text-[11px] tracking-[0.25em] text-white/40 font-semibold uppercase mb-3">So funktioniert HANSI</p>
+            <p className="text-center text-[11px] tracking-[0.25em] text-white/40 font-semibold uppercase mb-3">So funktioniert BELLA</p>
             <h2 className="text-center text-3xl sm:text-4xl font-black mb-12">In 3 Schritten zum richtigen Vertrag</h2>
             <div className="grid md:grid-cols-3 gap-6">
               {[
-                { n: "01", icon: "💬", t: "Du sagst, was zählt", d: "Budget, Lieblingsmarke, Datenverbrauch oder einfach „was Günstiges“ – HANSI versteht natürliche Sprache." },
-                { n: "02", icon: "🧠", t: "HANSI analysiert", d: "Tausende echte, tagesaktuelle Tarife werden in Echtzeit nach Netzqualität, Preis-Leistung und deinem Bedarf bewertet." },
+                { n: "01", icon: "💬", t: "Du sagst, was zählt", d: "Budget, Lieblingsmarke, Datenverbrauch oder einfach „was Günstiges“ – BELLA versteht natürliche Sprache." },
+                { n: "02", icon: "🧠", t: "BELLA analysiert", d: "Tausende echte, tagesaktuelle Tarife werden in Echtzeit nach Netzqualität, Preis-Leistung und deinem Bedarf bewertet." },
                 { n: "03", icon: "🎯", t: "Du bekommst die Antwort", d: "Keine 300 Listen-Einträge – nur die 3 Verträge, die wirklich zu dir passen. Mit klarer Begründung." },
               ].map((s) => (
                 <div key={s.n} className="glass-strong rounded-2xl p-6 relative overflow-hidden">
@@ -309,7 +309,7 @@ export default function HansiExperience() {
             className="flex flex-col items-center py-3"
             initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }}
           >
-            <HansiCharacter mood={mood} size={140} />
+            <BellaCharacter mood={mood} size={140} />
           </motion.div>
 
           <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-5 py-3 min-h-0">
@@ -324,9 +324,9 @@ export default function HansiExperience() {
                   className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div className={`max-w-[85%] ${m.role === "user" ? "" : "w-full"}`}>
-                    {m.role === "hansi" && (
+                    {m.role === "bella" && (
                       <div className="flex items-center gap-2 mb-1.5 ml-1">
-                        <span className="text-xs font-bold text-indigo-300">HANSI</span>
+                        <span className="text-xs font-bold text-indigo-300">BELLA</span>
                       </div>
                     )}
                     <div
@@ -398,7 +398,7 @@ export default function HansiExperience() {
           <div className="pt-2">
             <InputBar value={input} onChange={setInput} onSend={() => send(input)} busy={busy} />
             <p className="text-center text-white/20 text-[10px] mt-2 flex flex-wrap justify-center gap-x-3 gap-y-1">
-            <span>HANSI ist ein KI-Berater</span>
+            <span>BELLA ist ein KI-Berater</span>
             <a href="/affiliate" className="underline hover:text-white/50">Affiliate-Hinweis</a>
             <a href="/impressum" className="underline hover:text-white/50">Impressum</a>
             <a href="/datenschutz" className="underline hover:text-white/50">Datenschutz</a>
@@ -420,7 +420,7 @@ function InputBar({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), onSend())}
-        placeholder="Schreib HANSI was du suchst…"
+        placeholder="Schreib BELLA was du suchst…"
         disabled={busy}
         className={`flex-1 bg-transparent text-white placeholder-white/30 focus:outline-none ${big ? "px-4 py-3 text-base" : "px-3 py-2.5 text-sm"}`}
       />

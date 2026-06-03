@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import HansiCharacter, { type HansiMood } from "@/components/HansiCharacter";
-import HansiBackground, { type Theme } from "@/components/HansiBackground";
-import HansiRadar from "@/components/HansiRadar";
+import BellaCharacter, { type BellaMood } from "@/components/BellaCharacter";
+import BellaBackground, { type Theme } from "@/components/BellaBackground";
+import BellaRadar from "@/components/BellaRadar";
 import LiveIntel, { RotatingInsight } from "@/components/LiveIntel";
 import VoiceButton from "@/components/VoiceButton";
 import QuickStartCards from "@/components/QuickStartCards";
@@ -21,17 +21,17 @@ interface Offer {
   tariffName: string; monthlyPrice: number; effectiveMonthlyPrice: number | null;
   dataVolume: string | null; isUnlimited: boolean; has5g: boolean;
   cashback: number | null; affiliateLink: string; imageUrl: string | null;
-  matchScore: number; hansiScore: number; marketScore: number;
+  matchScore: number; bellaScore: number; marketScore: number;
   networkScore: number; valueScore: number; estimatedSatisfaction: number;
   whyThis: string; mainAdvantage: string; mainRisk: string; bestFor: string;
 }
 
 interface AnalysisStep { id: string; label: string; done: boolean; }
 interface ElimEvent { count: number; reason: string; }
-interface ScoreEntry { id: number; match: number; hansi: number; satisfaction: number; }
+interface ScoreEntry { id: number; match: number; bella: number; satisfaction: number; }
 
 interface Message {
-  id: string; role: "hansi" | "user"; content: string;
+  id: string; role: "bella" | "user"; content: string;
   offers?: Offer[]; confidence?: number; streaming?: boolean;
   steps?: AnalysisStep[]; elims?: ElimEvent[]; scores?: ScoreEntry[];
 }
@@ -160,7 +160,7 @@ function OfferCard({ offer, rank }: { offer: Offer; rank: number }) {
       {/* Score bar */}
       <div className="px-4 pb-3 flex items-center gap-3">
         <ScoreRing score={offer.matchScore} label="Match" color={matchColor} size={48} />
-        <ScoreRing score={offer.hansiScore} label="HANSI" color="#6366f1" size={48} />
+        <ScoreRing score={offer.bellaScore} label="BELLA" color="#6366f1" size={48} />
         <ScoreRing score={offer.networkScore} label="Netz" color="#22d3ee" size={48} />
         <ScoreRing score={offer.estimatedSatisfaction} label="Satisfaction" color="#34d399" size={48} />
         <div className="flex-1 min-w-0">
@@ -231,10 +231,10 @@ function OfferCard({ offer, rank }: { offer: Offer; rank: number }) {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export default function HansiDecisionUI() {
+export default function BellaDecisionUI() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
-  const [mood, setMood] = useState<HansiMood>("idle");
+  const [mood, setMood] = useState<BellaMood>("idle");
   const [theme, setTheme] = useState<Theme>("idle");
   const [busy, setBusy] = useState(false);
   const [started, setStarted] = useState(false);
@@ -259,7 +259,7 @@ export default function HansiDecisionUI() {
     setMood("idle");
     setGlobalConfidence(0);
     setShowProfile(false);
-    // Profile is preserved intentionally — users feel "HANSI remembers me"
+    // Profile is preserved intentionally — users feel "BELLA remembers me"
   }, []);
 
   const send = useCallback(async (text: string) => {
@@ -273,10 +273,10 @@ export default function HansiDecisionUI() {
     setStormQuery(trimmed);
     setStormActive(true); // activate Analysis Storm
 
-    const history = messages.map(m => ({ role: m.role === "hansi" ? "assistant" : "user", content: m.content }));
+    const history = messages.map(m => ({ role: m.role === "bella" ? "assistant" : "user", content: m.content }));
     const userMsg: Message = { id: `u${Date.now()}`, role: "user", content: trimmed };
-    const hansiId = `h${Date.now()}`;
-    const initMsg: Message = { id: hansiId, role: "hansi", content: "", streaming: true, steps: [], elims: [], confidence: 0 };
+    const bellaId = `h${Date.now()}`;
+    const initMsg: Message = { id: bellaId, role: "bella", content: "", streaming: true, steps: [], elims: [], confidence: 0 };
 
     setMessages(prev => [...prev, userMsg, initMsg]);
 
@@ -314,20 +314,20 @@ export default function HansiDecisionUI() {
           if (line.startsWith("STEP:")) {
             const [, id, ...rest] = line.split(":");
             stepsDone.push({ id, label: rest.join(":"), done: true });
-            setMessages(prev => prev.map(m => m.id === hansiId ? { ...m, steps: [...stepsDone] } : m));
+            setMessages(prev => prev.map(m => m.id === bellaId ? { ...m, steps: [...stepsDone] } : m));
           } else if (line.startsWith("CONF:")) {
             finalConf = parseInt(line.slice(5));
             setGlobalConfidence(finalConf);
-            setMessages(prev => prev.map(m => m.id === hansiId ? { ...m, confidence: finalConf } : m));
+            setMessages(prev => prev.map(m => m.id === bellaId ? { ...m, confidence: finalConf } : m));
           } else if (line.startsWith("ELIM:")) {
             const [, countStr, ...rest] = line.split(":");
             elimsDone.push({ count: parseInt(countStr), reason: rest.join(":") });
-            setMessages(prev => prev.map(m => m.id === hansiId ? { ...m, elims: [...elimsDone] } : m));
+            setMessages(prev => prev.map(m => m.id === bellaId ? { ...m, elims: [...elimsDone] } : m));
           } else if (line.startsWith("SCORE:")) {
             try { scoresMap.push(...JSON.parse(line.slice(6))); } catch { /* */ }
           } else if (line.startsWith("TEXT:")) {
             textBuf += line.slice(5);
-            setMessages(prev => prev.map(m => m.id === hansiId ? { ...m, content: textBuf } : m));
+            setMessages(prev => prev.map(m => m.id === bellaId ? { ...m, content: textBuf } : m));
           } else if (line.startsWith("OFFERS:")) {
             try {
               const meta = JSON.parse(line.slice(7));
@@ -342,7 +342,7 @@ export default function HansiDecisionUI() {
       if (finalTheme) setTheme(finalTheme);
       setGlobalConfidence(finalConf);
 
-      // Learn from this interaction — HANSI continuously builds user profile
+      // Learn from this interaction — BELLA continuously builds user profile
       const intent = (() => {
         const m = trimmed.toLowerCase();
         const under = m.match(/(?:unter|max|bis zu?)\s*(\d+)\s*(?:€|euro)?/i);
@@ -360,14 +360,14 @@ export default function HansiDecisionUI() {
       setUserProfile(updatedProfile);
       saveProfile(updatedProfile);
 
-      setMessages(prev => prev.map(m => m.id === hansiId ? {
+      setMessages(prev => prev.map(m => m.id === bellaId ? {
         ...m, streaming: false, offers: finalOffers, confidence: finalConf,
         steps: stepsDone, elims: elimsDone,
       } : m));
       setMood(finalOffers?.length ? "presenting" : "happy");
       setTimeout(() => setMood("idle"), 3500);
     } catch {
-      setMessages(prev => prev.map(m => m.id === hansiId ? { ...m, content: "Kurzer Aussetzer — frag mich nochmal!", streaming: false } : m));
+      setMessages(prev => prev.map(m => m.id === bellaId ? { ...m, content: "Kurzer Aussetzer — frag mich nochmal!", streaming: false } : m));
       setMood("idle");
     } finally {
       setBusy(false);
@@ -380,7 +380,7 @@ export default function HansiDecisionUI() {
     if (started) return;
     setStarted(true);
     setMood("happy");
-    setMessages([{ id: "intro", role: "hansi", content: "Analyse gestartet. Eine Frage: Was ist dir am wichtigsten — Budget, Marke, Datenvolumen, oder ein bestimmtes Handy?", steps: [{ id: "ready", label: "System bereit", done: true }], confidence: 8 }]);
+    setMessages([{ id: "intro", role: "bella", content: "Analyse gestartet. Eine Frage: Was ist dir am wichtigsten — Budget, Marke, Datenvolumen, oder ein bestimmtes Handy?", steps: [{ id: "ready", label: "System bereit", done: true }], confidence: 8 }]);
     setGlobalConfidence(8);
     setTimeout(() => setMood("idle"), 2500);
   }, [started]);
@@ -388,7 +388,7 @@ export default function HansiDecisionUI() {
   return (
     <div className="relative min-h-screen flex flex-col overflow-hidden">
       <AnalysisStorm active={stormActive} query={stormQuery} onComplete={() => setStormActive(false)} />
-      <HansiBackground theme={busy ? "speed" : theme} />
+      <BellaBackground theme={busy ? "speed" : theme} />
 
       {/* Top bar */}
       <header className="relative z-20 flex items-center justify-between px-5 sm:px-8 py-3.5">
@@ -421,7 +421,7 @@ export default function HansiDecisionUI() {
           )}
           <div className="glass rounded-full px-3 py-1.5 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-white/65 text-[11px] font-medium">HANSI aktiv</span>
+            <span className="text-white/65 text-[11px] font-medium">BELLA aktiv</span>
           </div>
         </div>
       </header>
@@ -441,18 +441,18 @@ export default function HansiDecisionUI() {
                 <motion.h1 className="text-4xl sm:text-5xl lg:text-[3.3rem] font-black tracking-tight leading-[1.05]"
                   initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.7 }}>
                   Handy trotz Schufa?{" "}
-                  <span className="shimmer-text">HANSI findet deinen Vertrag.</span>
+                  <span className="shimmer-text">BELLA findet deinen Vertrag.</span>
                 </motion.h1>
                 <motion.p className="mt-5 text-lg sm:text-xl text-white/50 max-w-xl mx-auto lg:mx-0 leading-relaxed"
                   initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
-                  HANSI analysiert tausende Tarife — sichtbar, nachvollziehbar, präzise.
+                  BELLA analysiert tausende Tarife — sichtbar, nachvollziehbar, präzise.
                   <span className="text-white font-semibold"> transparent, ohne Umwege.</span>
                 </motion.p>
                 <motion.div className="mt-7" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
                   <RotatingInsight />
                 </motion.div>
                 <motion.p className="mt-5 text-sm text-white/35" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
-                  Beantworte 3 Fragen — HANSI zeigt dir live, was analysiert wird.
+                  Beantworte 3 Fragen — BELLA zeigt dir live, was analysiert wird.
                 </motion.p>
                 <motion.div className="mt-6 flex flex-col sm:flex-row items-center lg:items-start gap-3"
                   initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65 }}>
@@ -462,7 +462,7 @@ export default function HansiDecisionUI() {
                     <span className="ml-2 inline-block group-hover:translate-x-0.5 transition-transform">→</span>
                   </button>
                   <a href="#how" className="px-6 py-3.5 rounded-2xl glass border border-white/10 text-white/70 font-medium hover:bg-white/10 hover:text-white transition-all">
-                    Wie funktioniert HANSI?
+                    Wie funktioniert BELLA?
                   </a>
                 </motion.div>
                 <motion.div className="mt-6 flex flex-wrap gap-2 justify-center lg:justify-start"
@@ -478,7 +478,7 @@ export default function HansiDecisionUI() {
               </div>
               <motion.div className="order-1 lg:order-2 flex flex-col items-center gap-5"
                 initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}>
-                <HansiRadar size={340} />
+                <BellaRadar size={340} />
                 <LiveIntel />
               </motion.div>
             </div>
@@ -490,12 +490,12 @@ export default function HansiDecisionUI() {
       {!started && (
         <section id="how" className="relative z-10 px-5 py-16 border-t border-white/5">
           <div className="max-w-5xl mx-auto">
-            <p className="text-center text-[10px] tracking-[0.25em] text-white/35 font-semibold uppercase mb-2">So funktioniert HANSI</p>
+            <p className="text-center text-[10px] tracking-[0.25em] text-white/35 font-semibold uppercase mb-2">So funktioniert BELLA</p>
             <h2 className="text-center text-3xl font-black mb-10">Sichtbare Intelligenz</h2>
             <div className="grid md:grid-cols-3 gap-5">
               {[
-                { n: "01", icon: "🔍", t: "Profil-Analyse", d: "HANSI extrahiert aus deiner Anfrage Budget, Marke, Nutzungsverhalten und Netzpräferenz — vollautomatisch." },
-                { n: "02", icon: "⚡", t: "Sichtbare Elimination", d: "Du siehst live, wie HANSI tausende Tarife aussortiert und warum. Kein Blackbox-Ergebnis." },
+                { n: "01", icon: "🔍", t: "Profil-Analyse", d: "BELLA extrahiert aus deiner Anfrage Budget, Marke, Nutzungsverhalten und Netzpräferenz — vollautomatisch." },
+                { n: "02", icon: "⚡", t: "Sichtbare Elimination", d: "Du siehst live, wie BELLA tausende Tarife aussortiert und warum. Kein Blackbox-Ergebnis." },
                 { n: "03", icon: "🎯", t: "Begründete Entscheidung", d: "Jede Empfehlung kommt mit Match-Score, Vorteil, Risiko und Zufriedenheitsprognose. Volle Transparenz." },
               ].map(s => (
                 <div key={s.n} className="glass-strong rounded-2xl p-6 relative overflow-hidden">
@@ -515,7 +515,7 @@ export default function HansiDecisionUI() {
         <div className="relative z-10 flex-1 flex flex-col max-w-3xl w-full mx-auto px-4 pb-4 min-h-0">
           <motion.div layout className="flex flex-col items-center py-2"
             initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }}>
-            <HansiCharacter mood={mood} size={110} />
+            <BellaCharacter mood={mood} size={110} />
           </motion.div>
 
           {/* Quick-Start Cards — visible only on first message (intro state) */}
@@ -547,7 +547,7 @@ export default function HansiDecisionUI() {
                         />
                       )}
 
-                      {/* HANSI text */}
+                      {/* BELLA text */}
                       {(m.content || m.streaming) && (
                         <div className="glass-strong rounded-2xl rounded-bl-md px-4 py-3 text-[14px] text-white/85 leading-relaxed">
                           {m.content || ""}
@@ -592,7 +592,7 @@ export default function HansiDecisionUI() {
             <div className={`glass-strong glow-border rounded-2xl flex items-center gap-2 p-1.5 transition-all ${voiceListening ? "border-red-500/50 shadow-red-500/20 shadow-lg" : ""}`}>
               <input value={input} onChange={e => setInput(e.target.value)}
                 onKeyDown={e => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), send(input))}
-                placeholder={voiceListening ? "Spreche jetzt…" : "Frag HANSI — Budget, Marke, Nutzung…"}
+                placeholder={voiceListening ? "Spreche jetzt…" : "Frag BELLA — Budget, Marke, Nutzung…"}
                 disabled={busy}
                 className="flex-1 bg-transparent text-white placeholder-white/25 text-sm focus:outline-none px-3 py-2.5" />
               {/* Voice input */}

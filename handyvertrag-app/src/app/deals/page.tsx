@@ -1,12 +1,12 @@
-import { neon } from "@neondatabase/serverless";
+﻿import { neon } from "@neondatabase/serverless";
 import type { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "Top Deals 2026 – Beste Handyvertrag Angebote | handytrotzschufa.today",
+  title: "Top Deals 2026 – Beste Handyvertrag Angebote | welches-hundefutter.today",
   description: "Die besten Handyvertrag Deals 2026: iPhone 17 Pro, Samsung Galaxy S25 Ultra & mehr. Tagesaktuelle Angebote von Telekom, Vodafone und o2. Jetzt bis zu 200 € sparen.",
-  alternates: { canonical: "https://handytrotzschufa.today/deals" },
+  alternates: { canonical: "https://welches-hundefutter.today/deals" },
 };
 
 const PROV_GRADIENT: Record<string, string> = {
@@ -162,12 +162,12 @@ export default async function DealsPage() {
           </div>
         )}
 
-        {/* HANSI CTA */}
+        {/* BELLA CTA */}
         <div className="rounded-2xl bg-gradient-to-r from-indigo-600/20 to-violet-600/20 border border-indigo-500/30 p-8 text-center">
           <p className="text-xl font-black mb-2">Welcher Deal passt wirklich zu dir?</p>
-          <p className="text-white/50 mb-5 max-w-md mx-auto">HANSI analysiert dein Profil und findet deinen persönlichen Optimal-Deal — nicht nur den günstigsten.</p>
+          <p className="text-white/50 mb-5 max-w-md mx-auto">BELLA analysiert dein Profil und findet deinen persönlichen Optimal-Deal — nicht nur den günstigsten.</p>
           <Link href="/" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-500 to-violet-600 font-semibold hover:shadow-lg hover:shadow-indigo-500/30 transition-all">
-            HANSI fragen — persönliche Analyse starten →
+            BELLA fragen — persönliche Analyse starten →
           </Link>
         </div>
 

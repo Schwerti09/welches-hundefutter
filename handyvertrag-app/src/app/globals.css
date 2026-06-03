@@ -1,12 +1,12 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 :root {
   --background: #05060f;
   --foreground: #f8fafc;
-  --hansi-indigo: #6366f1;
-  --hansi-violet: #8b5cf6;
-  --hansi-cyan: #22d3ee;
-  --hansi-pink: #ec4899;
+  --bella-indigo: #6366f1;
+  --bella-violet: #8b5cf6;
+  --bella-cyan: #22d3ee;
+  --bella-pink: #ec4899;
 }
 
 @theme inline {
@@ -148,7 +148,7 @@ html, body {
   content: "▋";
   margin-left: 2px;
   animation: blink-caret 1s step-end infinite;
-  color: var(--hansi-violet);
+  color: var(--bella-violet);
 }
 
 /* Scrollbar */

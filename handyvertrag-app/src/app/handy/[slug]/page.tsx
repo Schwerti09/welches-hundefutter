@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import StructuredData from "@/components/StructuredData";
@@ -102,9 +102,9 @@ export async function generateMetadata({
   if (!data) return {};
 
   return {
-    title: `${data.name} trotz Schufa ✓ ${data.schufaChance}% Genehmigung | HANSI`,
+    title: `${data.name} trotz Schufa ✓ ${data.schufaChance}% Genehmigung | BELLA`,
     description: `${data.name} Vertrag trotz Schufa: ${data.offerCount} Angebote ab ${data.minPrice.toFixed(2).replace(".", ",")}€/Monat. Genehmigungschance ${data.schufaChance}%. Jetzt prüfen.`,
-    alternates: { canonical: `https://handytrotzschufa.today/handy/${slug}` },
+    alternates: { canonical: `https://welches-hundefutter.today/handy/${slug}` },
   };
 }
 
@@ -134,9 +134,9 @@ export default async function HandyPage({
       <StructuredData
         type="breadcrumb"
         breadcrumbs={[
-          { name: "Startseite", url: "https://handytrotzschufa.today" },
-          { name: "Handys", url: "https://handytrotzschufa.today/handys" },
-          { name: `${data.name} trotz Schufa`, url: `https://handytrotzschufa.today/handy/${slug}` },
+          { name: "Startseite", url: "https://welches-hundefutter.today" },
+          { name: "Handys", url: "https://welches-hundefutter.today/handys" },
+          { name: `${data.name} trotz Schufa`, url: `https://welches-hundefutter.today/handy/${slug}` },
         ]}
       />
 
@@ -215,7 +215,7 @@ export default async function HandyPage({
 
         {/* CTA */}
         <div className="bg-indigo-900/30 rounded-xl p-6 text-center">
-          <p className="text-white font-semibold mb-2">HANSI findet den besten Tarif für dein {data.name}</p>
+          <p className="text-white font-semibold mb-2">BELLA findet den besten Tarif für dein {data.name}</p>
           <Link
             href="/"
             className="inline-block bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-lg font-semibold transition-colors"

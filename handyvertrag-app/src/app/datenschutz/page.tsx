@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "Datenschutz | handytrotzschufa.today",
-  description: "Datenschutzerklärung von handytrotzschufa.today gemäß DSGVO",
+  title: "Datenschutz | welches-hundefutter.today",
+  description: "Datenschutzerklärung von welches-hundefutter.today gemäß DSGVO",
   robots: { index: false, follow: true },
 };
 
@@ -33,7 +33,7 @@ export default function DatenschutzPage() {
           {[
             {
               title: "1. Verantwortlicher",
-              body: "R. Schwertfechter, Karklandsweg 1, 26553 Dornum, Deutschland. E-Mail: support@handytrotzschufa.today"
+              body: "R. Schwertfechter, Karklandsweg 1, 26553 Dornum, Deutschland. E-Mail: support@welches-hundefutter.today"
             },
             {
               title: "2. Allgemeines zur Datenverarbeitung",
@@ -44,8 +44,8 @@ export default function DatenschutzPage() {
               body: "Bei jedem Aufruf unserer Website erfasst unser System automatisiert Daten (IP-Adresse, Datum/Uhrzeit, Browser, Betriebssystem, Referrer-URL). Diese Daten werden im Rahmen des Hostings durch Netlify, Inc. (San Francisco, USA) verarbeitet. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO. Speicherdauer: max. 30 Tage."
             },
             {
-              title: "4. KI-Beratungsfunktion (HANSI)",
-              body: "Wenn du HANSI nutzt, werden deine eingegebenen Nachrichten an unsere API-Server übermittelt. Zur Beantwortung werden KI-Dienste genutzt (Google Gemini / Anthropic Claude). Deine Nachrichten werden verschlüsselt übertragen und anonymisiert in unserer Neon-Datenbank gespeichert (keine Klarnamen, keine IP-Adressen). Zweck: Verbesserung der Beratungsqualität. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung) bzw. lit. f DSGVO (berechtigtes Interesse)."
+              title: "4. KI-Beratungsfunktion (BELLA)",
+              body: "Wenn du BELLA nutzt, werden deine eingegebenen Nachrichten an unsere API-Server übermittelt. Zur Beantwortung werden KI-Dienste genutzt (Google Gemini / Anthropic Claude). Deine Nachrichten werden verschlüsselt übertragen und anonymisiert in unserer Neon-Datenbank gespeichert (keine Klarnamen, keine IP-Adressen). Zweck: Verbesserung der Beratungsqualität. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung) bzw. lit. f DSGVO (berechtigtes Interesse)."
             },
             {
               title: "5. Cookies",
@@ -65,7 +65,7 @@ export default function DatenschutzPage() {
             },
             {
               title: "9. Ihre Rechte",
-              body: "Sie haben das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21). Anfragen an: support@handytrotzschufa.today. Sie haben zudem das Recht, sich bei einer Datenschutzbehörde zu beschweren."
+              body: "Sie haben das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21). Anfragen an: support@welches-hundefutter.today. Sie haben zudem das Recht, sich bei einer Datenschutzbehörde zu beschweren."
             },
             {
               title: "10. Änderungen dieser Datenschutzerklärung",

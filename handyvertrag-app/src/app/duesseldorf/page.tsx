@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+﻿import { Suspense } from "react";
 import dynamic from "next/dynamic";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -9,9 +9,9 @@ const CityOfferCard = dynamic(() => import("@/components/CityOfferCard"), {
 });
 
 export const metadata: Metadata = {
-  title: "Handyvertrag Düsseldorf 2026 | Beste Angebote | handytrotzschufa.today",
+  title: "Handyvertrag Düsseldorf 2026 | Beste Angebote | welches-hundefutter.today",
   description: "Die besten Handyverträge in Düsseldorf. Samsung Galaxy S25, iPhone 17 Pro & mehr mit Telekom, Vodafone, o2. Jetzt vergleichen & bis zu 200 € sparen!",
-  alternates: { canonical: "https://handytrotzschufa.today/duesseldorf" },
+  alternates: { canonical: "https://welches-hundefutter.today/duesseldorf" },
 };
 
 const offers = [

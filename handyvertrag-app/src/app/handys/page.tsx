@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { products, getBestOffer, getProviderColor } from "@/data/products";
 import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "Alle Smartphones mit Vertrag 2026 | handytrotzschufa.today",
+  title: "Alle Smartphones mit Vertrag 2026 | welches-hundefutter.today",
   description: "iPhone 17 Pro, Samsung Galaxy S25 Ultra, Google Pixel 10 und mehr — alle Smartphones im Vertragsvergleich. Telekom, Vodafone, o2. Preise ab 9,99 €/Monat.",
-  alternates: { canonical: "https://handytrotzschufa.today/handys" },
+  alternates: { canonical: "https://welches-hundefutter.today/handys" },
 };
 
 const BRANDS = [
@@ -39,7 +39,7 @@ export default function HandysPage() {
         <div className="mb-10">
           <h1 className="text-4xl font-black mb-3">Smartphones mit Vertrag</h1>
           <p className="text-white/50 text-lg max-w-xl leading-relaxed">
-            {products.length} Geräte im Vergleich — jedes mit allen Provider-Angeboten. Oder lass HANSI das Richtige für dich finden.
+            {products.length} Geräte im Vergleich — jedes mit allen Provider-Angeboten. Oder lass BELLA das Richtige für dich finden.
           </p>
         </div>
 
@@ -120,12 +120,12 @@ export default function HandysPage() {
           </section>
         ))}
 
-        {/* HANSI CTA */}
+        {/* BELLA CTA */}
         <div className="rounded-2xl bg-gradient-to-r from-indigo-600/20 to-violet-600/20 border border-indigo-500/30 p-7 text-center mt-4">
           <p className="text-xl font-black mb-2">Nicht sicher welches Handy passt?</p>
-          <p className="text-white/50 mb-5">HANSI analysiert Budget, Nutzung und Netz — und findet dein Optimal-Gerät in Sekunden.</p>
+          <p className="text-white/50 mb-5">BELLA analysiert Budget, Nutzung und Netz — und findet dein Optimal-Gerät in Sekunden.</p>
           <Link href="/" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-500 to-violet-600 font-semibold hover:shadow-lg hover:shadow-indigo-500/30 transition-all">
-            HANSI fragen →
+            BELLA fragen →
           </Link>
         </div>
       </main>

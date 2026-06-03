@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState, useRef } from "react";
 
@@ -68,7 +68,7 @@ export default function LiveIntel() {
 const INSIGHTS = [
   "87 % zahlen für Datenvolumen, das sie nie nutzen.",
   "Die meisten Nutzer wählen das falsche Netz für ihren Wohnort.",
-  "Durchschnittliche Ersparnis durch HANSI: 18 €/Monat.",
+  "Durchschnittliche Ersparnis durch BELLA: 18 €/Monat.",
   "9 von 10 Verträgen sind teurer als nötig.",
   "Cashback-Aktionen machen oft 200 € Unterschied im Jahr.",
 ];

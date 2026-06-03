@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+﻿import { Suspense } from "react";
 import dynamic from "next/dynamic";
 
 const CityOfferCard = dynamic(() => import("@/components/CityOfferCard"), {
@@ -72,11 +72,11 @@ const berlinOffers = [
 ];
 
 export const metadata = {
-  title: "Berlin - Handy mit Vertrag | Top Angebote | handytrotzschufa.today",
+  title: "Berlin - Handy mit Vertrag | Top Angebote | welches-hundefutter.today",
   description:
     "Die besten Handy-Verträge in Berlin. iPhone 16 Pro, Samsung Galaxy S25 Ultra & mehr mit Telekom, Vodafone, o2. Jetzt vergleichen & sparen!",
   alternates: {
-    canonical: "https://handytrotzschufa.today/berlin",
+    canonical: "https://welches-hundefutter.today/berlin",
   },
 };
 
@@ -229,7 +229,7 @@ export default function BerlinPage() {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>© 2026 handytrotzschufa.today · Alle Preise inkl. MwSt. · Affiliate-Links powered by AWIN.</p>
+            <p>© 2026 welches-hundefutter.today · Alle Preise inkl. MwSt. · Affiliate-Links powered by AWIN.</p>
           </div>
         </div>
       </footer>

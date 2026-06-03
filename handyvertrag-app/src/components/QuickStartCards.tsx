@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
 
@@ -6,7 +6,7 @@ const CARDS = [
   {
     icon: "✅",
     label: "Vertrag trotz Schufa",
-    desc: "Welche Anbieter vergeben auch bei negativer Bonität — HANSI zeigt's",
+    desc: "Welche Anbieter vergeben auch bei negativer Bonität — BELLA zeigt's",
     query: "Handyvertrag trotz negativer Schufa welche Anbieter",
     gradient: "from-emerald-500/20 to-teal-500/10",
     border: "border-emerald-500/30",

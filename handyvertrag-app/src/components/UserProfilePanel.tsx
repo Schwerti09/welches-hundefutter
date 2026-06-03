@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { motion, AnimatePresence } from "framer-motion";
 import type { UserProfile } from "@/lib/profileStore";
@@ -97,7 +97,7 @@ export default function UserProfilePanel({ profile, onClear }: Props) {
 
         {!hasData && (
           <p className="text-[11px] text-white/30 py-2 text-center">
-            HANSI lernt dich mit jedem Gespräch besser kennen.
+            BELLA lernt dich mit jedem Gespräch besser kennen.
           </p>
         )}
       </div>

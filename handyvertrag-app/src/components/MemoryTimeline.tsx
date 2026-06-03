@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/lib/profileStore";
@@ -23,7 +23,7 @@ export default function MemoryTimeline({ profile }: Props) {
   return (
     <div className="bg-black/20 rounded-2xl border border-white/8 p-4">
       <div className="flex items-center gap-2 mb-3">
-        <span className="text-[10px] text-white/35 uppercase tracking-widest font-semibold">HANSI erinnert sich</span>
+        <span className="text-[10px] text-white/35 uppercase tracking-widest font-semibold">BELLA erinnert sich</span>
         <div className="flex-1 h-px bg-white/5" />
       </div>
       <div className="relative">
