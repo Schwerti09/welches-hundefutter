@@ -685,7 +685,8 @@ export async function POST(request: NextRequest) {
       if (geminiKey) {
         try {
           const genAI = new GoogleGenerativeAI(geminiKey);
-          const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash", systemInstruction: sysPrompt });
+          // gemini-2.0-flash hat 0 Free-Tier-Quota (429) → 2.5-flash, sonst läuft nie echte KI
+          const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash", systemInstruction: sysPrompt });
           const chat = model.startChat({ history: history.map(h => ({ role: h.role === "assistant" ? "model" : "user", parts: [{ text: h.content }] })), generationConfig: { temperature: 0.8, maxOutputTokens: 280 } });
           const result = await chat.sendMessageStream(message);
           for await (const chunk of result.stream) {
