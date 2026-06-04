@@ -66,7 +66,7 @@ export default function BellaAdvisor() {
   const [mood, setMood] = useState<BellaMood>("waving");
   const [loading, setLoading] = useState(false);
   const [sessionId] = useState(() => Math.random().toString(36).slice(2));
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -74,8 +74,13 @@ export default function BellaAdvisor() {
     return () => clearTimeout(t);
   }, []);
 
+  // Nur INNERHALB des Chat-Containers scrollen (nicht die ganze Seite), und nur
+  // wenn der Nutzer ohnehin nah am Ende ist → ruhiges, edles Mitlaufen ohne Springen.
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    const el = scrollRef.current;
+    if (!el) return;
+    const nearBottom = el.scrollHeight - el.clientHeight - el.scrollTop < 240;
+    if (nearBottom) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
   }, [messages, loading]);
 
   const sendMessage = useCallback(async (text: string) => {
@@ -156,6 +161,16 @@ export default function BellaAdvisor() {
     }
   }, [messages, loading, sessionId]);
 
+  // Rasse aus der Galerie ("Finde deinen Hund") → BELLA startet damit
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const breed = (e as CustomEvent<string>).detail;
+      if (breed) sendMessage(`Welches Futter passt am besten für meinen ${breed}?`);
+    };
+    window.addEventListener("bella:breed", handler);
+    return () => window.removeEventListener("bella:breed", handler);
+  }, [sendMessage]);
+
   return (
     <div className="relative w-full max-w-5xl mx-auto">
       <div className="grid lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 items-start">
@@ -195,7 +210,7 @@ export default function BellaAdvisor() {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-5 space-y-5">
+          <div ref={scrollRef} className="flex-1 overflow-y-auto overscroll-contain p-5 space-y-5">
             {messages.map((msg) => (
               <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} gap-3`}>
                 {msg.role === "bella" && (
@@ -285,7 +300,6 @@ export default function BellaAdvisor() {
                 </div>
               </div>
             )}
-            <div ref={bottomRef} />
           </div>
 
           {/* Quick options (only at start) */}

@@ -1,0 +1,122 @@
+[
+{
+"name": "Labrador Retriever",
+"slug": "labrador-retriever",
+"img": "https://images.dog.ceo/breeds/labrador/n02099712_7049.jpg"
+},
+{
+"name": "Golden Retriever",
+"slug": "golden-retriever",
+"img": "https://images.dog.ceo/breeds/retriever-golden/n02099601_8429.jpg"
+},
+{
+"name": "Deutscher Schäferhund",
+"slug": "deutscher-schaeferhund",
+"img": "https://images.dog.ceo/breeds/german-shepherd/n02106662_2810.jpg"
+},
+{
+"name": "Französische Bulldogge",
+"slug": "franzoesische-bulldogge",
+"img": "https://images.dog.ceo/breeds/bulldog-french/n02108915_1958.jpg"
+},
+{
+"name": "Chihuahua",
+"slug": "chihuahua",
+"img": "https://images.dog.ceo/breeds/chihuahua/n02085620_8637.jpg"
+},
+{
+"name": "Dackel",
+"slug": "dackel",
+"img": "https://images.dog.ceo/breeds/dachshund/dachshund-6.jpg"
+},
+{
+"name": "Mops",
+"slug": "mops",
+"img": "https://images.dog.ceo/breeds/pug/n02110958_15449.jpg"
+},
+{
+"name": "Beagle",
+"slug": "beagle",
+"img": "https://images.dog.ceo/breeds/beagle/n02088364_16508.jpg"
+},
+{
+"name": "Border Collie",
+"slug": "border-collie",
+"img": "https://images.dog.ceo/breeds/collie-border/n02106166_1246.jpg"
+},
+{
+"name": "Australian Shepherd",
+"slug": "australian-shepherd",
+"img": "https://images.dog.ceo/breeds/australian-shepherd/leroy.jpg"
+},
+{
+"name": "Rottweiler",
+"slug": "rottweiler",
+"img": "https://images.dog.ceo/breeds/rottweiler/n02106550_5184.jpg"
+},
+{
+"name": "Boxer",
+"slug": "boxer",
+"img": "https://images.dog.ceo/breeds/boxer/n02108089_625.jpg"
+},
+{
+"name": "Siberian Husky",
+"slug": "husky",
+"img": "https://images.dog.ceo/breeds/husky/n02110185_4694.jpg"
+},
+{
+"name": "Pudel",
+"slug": "pudel",
+"img": "https://images.dog.ceo/breeds/poodle-standard/n02113799_419.jpg"
+},
+{
+"name": "Yorkshire Terrier",
+"slug": "yorkshire-terrier",
+"img": "https://images.dog.ceo/breeds/terrier-yorkshire/n02094433_259.jpg"
+},
+{
+"name": "Berner Sennenhund",
+"slug": "berner-sennenhund",
+"img": "https://images.dog.ceo/breeds/mountain-bernese/n02107683_443.jpg"
+},
+{
+"name": "Cocker Spaniel",
+"slug": "cocker-spaniel",
+"img": "https://images.dog.ceo/breeds/spaniel-cocker/n02102318_1458.jpg"
+},
+{
+"name": "Dobermann",
+"slug": "dobermann",
+"img": "https://images.dog.ceo/breeds/doberman/n02107142_4763.jpg"
+},
+{
+"name": "Malteser",
+"slug": "malteser",
+"img": "https://images.dog.ceo/breeds/maltese/n02085936_1739.jpg"
+},
+{
+"name": "Shih Tzu",
+"slug": "shih-tzu",
+"img": "https://images.dog.ceo/breeds/shihtzu/n02086240_2526.jpg"
+},
+{
+"name": "Englische Bulldogge",
+"slug": "englische-bulldogge",
+"img": "https://images.dog.ceo/breeds/bulldog-english/jager-1.jpg"
+},
+{
+"name": "Corgi",
+"slug": "corgi",
+"img": "https://images.dog.ceo/breeds/corgi-cardigan/n02113186_7159.jpg"
+},
+{
+"name": "Pomeranian",
+"slug": "pomeranian",
+"img": "https://images.dog.ceo/breeds/pomeranian/n02112018_5349.jpg"
+},
+{
+"name": "Mischling",
+"slug": "mischling",
+"img": "https://images.dog.ceo/breeds/mix/xeshaBelka_(26).jpg"
+}
+]

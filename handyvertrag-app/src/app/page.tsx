@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
+import BreedGallery from "@/components/BreedGallery";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -18,17 +19,6 @@ const TOP_FUTTER = [
   { platz: "5", marke: "Josera Festival", eignung: "Wählerische Esser", preis: "4,20 €/kg", stars: 4, slug: "josera-festival" },
   { platz: "6", marke: "Bellfor Allergiker", eignung: "Bei Futtermittelallergien", preis: "6,90 €/kg", stars: 4, slug: "bellfor-allergiker" },
   { platz: "7", marke: "MERA Pure Sensitive", eignung: "Sensibler Magen", preis: "5,20 €/kg", stars: 4, slug: "mera-pure-sensitive" },
-];
-
-const RASSEN_LINKS = [
-  { name: "Labrador Retriever", slug: "labrador-retriever" },
-  { name: "Golden Retriever", slug: "golden-retriever" },
-  { name: "Französische Bulldogge", slug: "franzoesische-bulldogge" },
-  { name: "Deutscher Schäferhund", slug: "deutscher-schaeferhund" },
-  { name: "Beagle", slug: "beagle" },
-  { name: "Mops", slug: "mops" },
-  { name: "Dackel", slug: "dackel" },
-  { name: "Chihuahua", slug: "chihuahua" },
 ];
 
 const SCHEMA_FAQS = [
@@ -73,11 +63,14 @@ export default function HomePage() {
             <span>Ohne Anmeldung</span>
           </div>
 
-          <div className="max-w-3xl mx-auto">
+          <div id="bella-advisor" className="max-w-3xl mx-auto scroll-mt-6">
             <BellaAdvisorWrapper />
           </div>
         </div>
       </section>
+
+      {/* FINDE DEINEN HUND — Rasse-Galerie mit echten Fotos */}
+      <BreedGallery />
 
       {/* TOP 7 TABELLE */}
       <section className="max-w-5xl mx-auto px-5 py-16 w-full">
@@ -122,27 +115,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* RASSEN */}
-      <section className="max-w-5xl mx-auto px-5 pb-16 w-full">
-        <h2 className="text-3xl font-black mb-2">
-          Hundefutter nach Rasse: Was dein Hund wirklich braucht
-        </h2>
-        <p className="text-[var(--muted)] mb-6">Jede Rasse hat eigene Anforderungen. BELLA kennt alle 50.</p>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-          {RASSEN_LINKS.map((r) => (
-            <Link
-              key={r.slug}
-              href={`/rasse/${r.slug}-hundefutter`}
-              className="card card-hover p-4 block text-sm font-medium text-[var(--ink)]"
-            >
-              {r.name}
-            </Link>
-          ))}
-        </div>
-        <Link href="/rassen" className="text-[var(--honey)] hover:text-[#ffcd8a] text-sm font-medium">
-          Alle 50 Rassen ansehen →
-        </Link>
-      </section>
 
       {/* FUTTERTYPEN */}
       <section className="px-5 py-16">
