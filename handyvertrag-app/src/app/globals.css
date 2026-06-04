@@ -1,30 +1,28 @@
 @import "tailwindcss";
 
 /* ════════════════════════════════════════════════════════════
-   BELLA — Premium Light Design System
-   Warmes, edles Pet-Nutrition-Theme. Für jeden Hundehalter 18–109.
+   BELLA — Premium Dark Design System
+   Wie Smarti/Samsi/HANSI: tiefdunkel, Glas, Glow. Warmer Honig-Akzent
+   für die Hunde-Futter-Identität.
 ════════════════════════════════════════════════════════════ */
 
 :root {
-  --bg: #faf6f0;          /* warmes Creme */
-  --surface: #ffffff;
-  --ink: #1b1714;         /* Espresso-Text */
-  --muted: #726558;       /* warmes Grau */
-  --line: #ece2d6;        /* sanfte Linie */
-  --honey: #e0892f;       /* Akzent */
-  --honey-deep: #b5671c;
-  --forest: #2f5d43;      /* natürlich/gesund */
-  --cream: #fbf3e7;
+  --bg: #08080c;            /* fast schwarz, leicht warm */
+  --bg-2: #0d0d14;
+  --surface: rgba(255,255,255,0.04);
+  --ink: #f4f1ea;          /* warmes Off-White */
+  --muted: #9a93a6;        /* gedämpft */
+  --line: rgba(255,255,255,0.09);
+  --honey: #f0a73c;        /* Akzent (Honig/Amber) */
+  --honey-2: #ff8a4c;      /* Akzent 2 (warmes Orange) */
+  --amber-glow: rgba(240,167,60,0.16);
 }
 
 @theme inline {
   --color-background: var(--bg);
   --color-foreground: var(--ink);
   --color-honey: var(--honey);
-  --color-honey-deep: var(--honey-deep);
-  --color-forest: var(--forest);
   --color-ink: var(--ink);
-  --color-cream: var(--cream);
   --color-line: var(--line);
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
@@ -39,79 +37,93 @@ html, body {
 }
 
 /* ── Keyframes ─────────────────────────────────────────────── */
-@keyframes breathe { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-8px) scale(1.012); } }
+@keyframes breathe { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-9px) scale(1.015); } }
 @keyframes message-in { from { opacity: 0; transform: translateY(14px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
 @keyframes pop-in { 0% { opacity: 0; transform: scale(0.9) translateY(16px); } 60% { transform: scale(1.03) translateY(-3px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
 @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-@keyframes aurora-soft { 0%,100% { transform: translate(0,0) scale(1); opacity: 0.6; } 50% { transform: translate(4%,-4%) scale(1.12); opacity: 0.85; } }
+@keyframes aurora-drift { 0%,100% { transform: translate(0,0) scale(1) rotate(0deg); opacity: .5; } 50% { transform: translate(6%,-5%) scale(1.2) rotate(30deg); opacity: .8; } }
+@keyframes glow-pulse { 0%,100% { opacity: .5; transform: scale(1); } 50% { opacity: .9; transform: scale(1.06); } }
 @keyframes sheen { 0% { background-position: -160% center; } 100% { background-position: 160% center; } }
 
 .breathe { animation: breathe 5.5s ease-in-out infinite; will-change: transform; }
 .animate-message-in { animation: message-in 0.45s cubic-bezier(0.22,1,0.36,1) forwards; }
 .animate-pop-in { animation: pop-in 0.55s cubic-bezier(0.34,1.56,0.64,1) forwards; }
-.aurora-soft { animation: aurora-soft 18s ease-in-out infinite; will-change: transform, opacity; }
+.aurora { animation: aurora-drift 20s ease-in-out infinite; will-change: transform, opacity; }
+.glow-pulse { animation: glow-pulse 4s ease-in-out infinite; will-change: opacity, transform; }
 
 /* ── Premium Utilities ─────────────────────────────────────── */
 
-/* Edler Verlaufs-Akzent für Schlüsselwörter in Headlines */
 .text-accent {
-  background: linear-gradient(100deg, var(--honey) 0%, #d2691e 55%, var(--honey-deep) 100%);
+  background: linear-gradient(100deg, var(--honey) 0%, var(--honey-2) 60%, #ffd089 100%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 .text-sheen {
-  background: linear-gradient(100deg, var(--honey) 0%, #f0b264 25%, var(--honey-deep) 50%, #f0b264 75%, var(--honey) 100%);
+  background: linear-gradient(100deg, #ffd089 0%, var(--honey) 25%, var(--honey-2) 50%, var(--honey) 75%, #ffd089 100%);
   background-size: 200% auto;
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: sheen 7s linear infinite;
 }
 
-/* Weiche Karte mit Tiefe */
+/* Glas-Karte (dunkel) */
+.glass {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  border: 1px solid var(--line);
+}
+.glass-strong {
+  background: rgba(13,13,20,0.6);
+  backdrop-filter: blur(30px) saturate(160%);
+  -webkit-backdrop-filter: blur(30px) saturate(160%);
+  border: 1px solid rgba(255,255,255,0.1);
+}
 .card {
-  background: var(--surface);
+  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
   border: 1px solid var(--line);
   border-radius: 1.25rem;
-  box-shadow: 0 1px 2px rgba(27,23,20,0.04), 0 12px 28px -16px rgba(27,23,20,0.12);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 24px 50px -28px rgba(0,0,0,0.7);
 }
 .card-hover { transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s, border-color .25s; }
-.card-hover:hover { transform: translateY(-3px); border-color: rgba(224,137,47,0.4); box-shadow: 0 6px 14px rgba(27,23,20,0.06), 0 26px 50px -22px rgba(224,137,47,0.35); }
-
-/* Helles Glas (für Overlays/Badges) */
-.glass {
-  background: rgba(255,255,255,0.7);
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  border: 1px solid rgba(27,23,20,0.06);
-}
+.card-hover:hover { transform: translateY(-3px); border-color: rgba(240,167,60,0.45); box-shadow: 0 30px 60px -30px rgba(240,167,60,0.28); }
 
 /* Eyebrow-Pill */
 .pill {
   display: inline-flex; align-items: center; gap: 0.5rem;
-  padding: 0.4rem 0.85rem; border-radius: 999px;
-  background: var(--cream); border: 1px solid var(--line);
-  font-size: 0.78rem; font-weight: 500; color: var(--honey-deep);
+  padding: 0.4rem 0.9rem; border-radius: 999px;
+  background: rgba(240,167,60,0.08); border: 1px solid rgba(240,167,60,0.22);
+  font-size: 0.78rem; font-weight: 500; color: #ffcd8a;
 }
 
 /* Primär-Button */
 .btn-primary {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
   padding: 0.8rem 1.4rem; border-radius: 0.9rem; font-weight: 600;
-  color: #fff; background: linear-gradient(180deg, #e8943a, var(--honey-deep));
-  box-shadow: 0 8px 20px -8px rgba(181,103,28,0.6); transition: transform .2s, box-shadow .2s, filter .2s;
+  color: #1a1206; background: linear-gradient(180deg, #ffc164, var(--honey));
+  box-shadow: 0 10px 30px -10px rgba(240,167,60,0.55); transition: transform .2s, box-shadow .2s, filter .2s;
 }
-.btn-primary:hover { transform: translateY(-1px); filter: brightness(1.04); box-shadow: 0 12px 26px -8px rgba(181,103,28,0.7); }
+.btn-primary:hover { transform: translateY(-1px); filter: brightness(1.05); box-shadow: 0 14px 36px -10px rgba(240,167,60,0.7); }
 
-/* Soft radial glow background for hero */
+/* Glow-Border (wie HANSI) */
+.glow-border { position: relative; }
+.glow-border::before {
+  content: ""; position: absolute; inset: -1px; border-radius: inherit; padding: 1px;
+  background: linear-gradient(135deg, rgba(240,167,60,0.6), rgba(255,138,76,0.2), rgba(240,167,60,0.5));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+}
+
+/* Heller Glow-Hintergrund für Hero (dunkel) */
 .hero-glow { background:
-  radial-gradient(60% 60% at 50% 0%, rgba(224,137,47,0.10), transparent 70%),
-  radial-gradient(40% 40% at 85% 30%, rgba(47,93,67,0.07), transparent 70%); }
+  radial-gradient(55% 50% at 50% 0%, var(--amber-glow), transparent 70%),
+  radial-gradient(40% 40% at 82% 25%, rgba(255,138,76,0.10), transparent 70%); }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 9px; height: 9px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(224,137,47,0.35); border-radius: 99px; border: 2px solid var(--bg); }
-::-webkit-scrollbar-thumb:hover { background: rgba(224,137,47,0.55); }
+::-webkit-scrollbar-thumb { background: rgba(240,167,60,0.35); border-radius: 99px; border: 2px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: rgba(240,167,60,0.55); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }

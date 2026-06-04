@@ -40,7 +40,7 @@ const SCHEMA_FAQS = [
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-[#fef6f0] text-gray-900 flex flex-col">
+    <div className="min-h-screen text-[var(--ink)] flex flex-col">
       <StructuredData type="organization" />
       <StructuredData type="website" />
       <StructuredData type="software" />
@@ -84,33 +84,33 @@ export default function HomePage() {
         <h2 className="text-3xl font-black mb-2 text-center">
           Bestes Hundefutter 2026: Die Top-Empfehlungen im Vergleich
         </h2>
-        <p className="text-gray-500 text-center mb-8 text-sm">Von BELLA analysiert · Affiliate-Links mit rel=sponsored</p>
-        <div className="overflow-x-auto rounded-2xl border border-orange-100 shadow-sm">
+        <p className="text-[var(--muted)] text-center mb-8 text-sm">Von BELLA analysiert · Affiliate-Links mit rel=sponsored</p>
+        <div className="overflow-x-auto rounded-2xl border border-white/10">
           <table className="w-full text-sm">
-            <thead className="bg-orange-50">
+            <thead className="bg-white/[0.04]">
               <tr>
-                <th className="text-left px-4 py-3 font-semibold text-gray-700">Platz</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-700">Marke & Sorte</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-700 hidden sm:table-cell">Eignung</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-700">Preis/kg</th>
+                <th className="text-left px-4 py-3 font-semibold text-white/70">Platz</th>
+                <th className="text-left px-4 py-3 font-semibold text-white/70">Marke & Sorte</th>
+                <th className="text-left px-4 py-3 font-semibold text-white/70 hidden sm:table-cell">Eignung</th>
+                <th className="text-left px-4 py-3 font-semibold text-white/70">Preis/kg</th>
                 <th className="px-4 py-3"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-orange-50">
+            <tbody className="divide-y divide-white/10">
               {TOP_FUTTER.map((f) => (
-                <tr key={f.slug} className="bg-white hover:bg-orange-50/50 transition-colors">
+                <tr key={f.slug} className="bg-transparent hover:bg-white/[0.04] transition-colors">
                   <td className="px-4 py-3 text-lg">{f.platz}</td>
                   <td className="px-4 py-3">
-                    <div className="font-semibold text-gray-900">{f.marke}</div>
+                    <div className="font-semibold text-[var(--ink)]">{f.marke}</div>
                     <div className="text-xs text-[var(--honey)]">{"★".repeat(f.stars)}</div>
                   </td>
-                  <td className="px-4 py-3 text-gray-500 hidden sm:table-cell">{f.eignung}</td>
-                  <td className="px-4 py-3 font-semibold text-orange-600">{f.preis}</td>
+                  <td className="px-4 py-3 text-[var(--muted)] hidden sm:table-cell">{f.eignung}</td>
+                  <td className="px-4 py-3 font-semibold text-[var(--honey)]">{f.preis}</td>
                   <td className="px-4 py-3">
                     <Link
                       href={`/empfehlung/${f.slug}`}
                       rel="sponsored"
-                      className="text-xs px-3 py-1.5 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition-colors whitespace-nowrap"
+                      className="text-xs px-3 py-1.5 rounded-lg btn-primary whitespace-nowrap"
                     >
                       Ansehen →
                     </Link>
@@ -127,7 +127,7 @@ export default function HomePage() {
         <h2 className="text-3xl font-black mb-2">
           Hundefutter nach Rasse: Was dein Hund wirklich braucht
         </h2>
-        <p className="text-gray-500 mb-6">Jede Rasse hat eigene Anforderungen. BELLA kennt alle 50.</p>
+        <p className="text-[var(--muted)] mb-6">Jede Rasse hat eigene Anforderungen. BELLA kennt alle 50.</p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
           {RASSEN_LINKS.map((r) => (
             <Link
@@ -139,13 +139,13 @@ export default function HomePage() {
             </Link>
           ))}
         </div>
-        <Link href="/rassen" className="text-orange-500 hover:text-orange-600 text-sm font-medium">
+        <Link href="/rassen" className="text-[var(--honey)] hover:text-[#ffcd8a] text-sm font-medium">
           Alle 50 Rassen ansehen →
         </Link>
       </section>
 
       {/* FUTTERTYPEN */}
-      <section className="bg-white px-5 py-16">
+      <section className="px-5 py-16">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-black mb-8">Trockenfutter, Nassfutter, BARF – was ist besser?</h2>
           <div className="grid sm:grid-cols-3 gap-6">
@@ -166,39 +166,39 @@ export default function HomePage() {
       {/* ALLERGIE */}
       <section className="max-w-5xl mx-auto px-5 py-16 w-full">
         <h2 className="text-3xl font-black mb-4">Hundefutter bei Allergien & sensiblem Magen</h2>
-        <p className="text-gray-600 leading-relaxed mb-6">
+        <p className="text-[var(--muted)] leading-relaxed mb-6">
           Häufigste Allergie-Auslöser: <strong>Huhn, Rind, Weizen</strong>.
           Monoprotein-Futter mit exotischer Quelle (Ente, Wild, Insekten) als Lösung.
           Eliminationsdiät: 8–12 Wochen eine Proteinquelle, dann testen.
         </p>
         <div className="flex gap-3 flex-wrap">
-          <Link href="/allergie" className="px-5 py-2.5 rounded-xl bg-orange-500 text-white text-sm font-semibold hover:bg-orange-600 transition-colors">
+          <Link href="/allergie" className="px-5 py-2.5 rounded-xl btn-primary text-sm">
             Hundefutter bei Allergie →
           </Link>
-          <Link href="/problem/sensibler-magen" className="px-5 py-2.5 rounded-xl border border-orange-200 text-orange-600 text-sm font-semibold hover:bg-orange-50 transition-colors">
+          <Link href="/problem/sensibler-magen" className="px-5 py-2.5 rounded-xl border border-white/15 text-[var(--honey)] text-sm font-semibold hover:bg-white/5 transition-colors">
             Sensibler Magen →
           </Link>
         </div>
       </section>
 
       {/* WELPEN vs SENIOR */}
-      <section className="bg-orange-50 px-5 py-16">
+      <section className="bg-white/[0.02] px-5 py-16">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-black mb-8">Welpenfutter vs. Seniorfutter: Wann umstellen?</h2>
           <div className="grid sm:grid-cols-2 gap-6">
-            <div className="bg-white rounded-2xl p-6 border border-orange-100">
+            <div className="card p-6">
               <h3 className="font-bold text-lg mb-2 tracking-tight">Welpenfutter</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-sm text-[var(--muted)] leading-relaxed">
                 Erhöhter Protein- und Kalziumgehalt für Wachstum. Große Rassen: Junior Large Breed – kontrolliertes Wachstum schützt Gelenke. Umstellen auf Adult: kleine Rassen ab 10 Monate, große ab 18–24 Monate.
               </p>
-              <Link href="/futter/welpen" className="mt-4 inline-block text-sm text-orange-500 font-medium hover:underline">Welpenfutter →</Link>
+              <Link href="/futter/welpen" className="mt-4 inline-block text-sm text-[var(--honey)] font-medium hover:underline">Welpenfutter →</Link>
             </div>
-            <div className="bg-white rounded-2xl p-6 border border-orange-100">
+            <div className="card p-6">
               <h3 className="font-bold text-lg mb-2 tracking-tight">Seniorfutter</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-sm text-[var(--muted)] leading-relaxed">
                 Weniger Kalorien, mehr Gelenkstoffe (Glucosamin, Chondroitin), leicht verdaulich. Umstellen: kleine Rassen ab 9 Jahren, große Rassen ab 7 Jahren.
               </p>
-              <Link href="/futter/senior" className="mt-4 inline-block text-sm text-orange-500 font-medium hover:underline">Seniorfutter →</Link>
+              <Link href="/futter/senior" className="mt-4 inline-block text-sm text-[var(--honey)] font-medium hover:underline">Seniorfutter →</Link>
             </div>
           </div>
         </div>
@@ -209,13 +209,13 @@ export default function HomePage() {
         <h2 className="text-3xl font-black mb-8">Häufige Fragen zur Hundeernährung</h2>
         <div className="space-y-4">
           {SCHEMA_FAQS.map((f) => (
-            <div key={f.question} className="bg-white rounded-xl p-5 border border-gray-100">
+            <div key={f.question} className="card p-5">
               <h3 className="font-bold mb-2">{f.question}</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">{f.answer}</p>
+              <p className="text-sm text-[var(--muted)] leading-relaxed">{f.answer}</p>
             </div>
           ))}
         </div>
-        <Link href="/faq" className="mt-6 inline-block text-orange-500 font-medium hover:underline text-sm">
+        <Link href="/faq" className="mt-6 inline-block text-[var(--honey)] font-medium hover:underline text-sm">
           Alle Fragen ansehen →
         </Link>
       </section>

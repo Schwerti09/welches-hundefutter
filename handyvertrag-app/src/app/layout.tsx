@@ -95,7 +95,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <meta name="rating" content="general" />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
       </head>
-      <body className="min-h-full bg-[#faf6f0] text-[#1b1714]">
+      <body className="min-h-full bg-[#08080c] text-[#f4f1ea]">
         <StructuredData type="organization" />
         <StructuredData type="website" />
         <StructuredData type="software" />

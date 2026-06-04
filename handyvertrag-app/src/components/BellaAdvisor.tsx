@@ -164,33 +164,33 @@ export default function BellaAdvisor() {
         <div className="flex flex-col items-center gap-4">
           <Bella mood={mood} size={220} />
 
-          <div className="rounded-2xl px-4 py-2 text-center bg-white border border-orange-100 shadow-sm">
-            <p className="text-gray-700 text-sm font-medium">{MOOD_LABEL[mood]}</p>
+          <div className="rounded-2xl px-4 py-2 text-center glass">
+            <p className="text-white/70 text-sm font-medium">{MOOD_LABEL[mood]}</p>
           </div>
 
-          <div className="rounded-2xl p-4 w-full bg-white border border-orange-100 shadow-sm space-y-2.5">
+          <div className="rounded-2xl p-4 w-full glass space-y-2.5">
             {[
               { icon: "🥘", label: "Futtersorten", value: "500+" },
               { icon: "🐕", label: "Rassen-Profile", value: "50" },
               { icon: "⚡", label: "Antwortzeit", value: "< 1 Sek." },
             ].map(s => (
               <div key={s.label} className="flex items-center justify-between">
-                <span className="text-gray-500 text-xs">{s.icon} {s.label}</span>
-                <span className="text-gray-900 font-bold text-sm">{s.value}</span>
+                <span className="text-white/40 text-xs">{s.icon} {s.label}</span>
+                <span className="text-white font-bold text-sm">{s.value}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* ─── Chat Column ───────────────────────────────── */}
-        <div className="flex flex-col h-[680px] bg-white rounded-3xl border border-orange-100 shadow-xl shadow-orange-100/40 overflow-hidden">
+        <div className="flex flex-col h-[680px] glass-strong rounded-3xl overflow-hidden">
 
           {/* Header */}
-          <div className="p-5 border-b border-orange-100 flex items-center gap-3 bg-gradient-to-r from-orange-50 to-amber-50">
+          <div className="p-5 border-b border-white/10 flex items-center gap-3 bg-white/[0.03]">
             <span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse" />
             <div>
-              <p className="text-gray-900 font-bold">BELLA – deine KI-Ernährungsberaterin</p>
-              <p className="text-gray-500 text-xs">Findet das perfekte Futter für deinen Hund</p>
+              <p className="text-white font-bold">BELLA – deine KI-Ernährungsberaterin</p>
+              <p className="text-white/40 text-xs">Findet das perfekte Futter für deinen Hund</p>
             </div>
           </div>
 
@@ -206,7 +206,7 @@ export default function BellaAdvisor() {
                     <div className={`px-4 py-3 rounded-2xl text-sm whitespace-pre-wrap leading-relaxed ${
                       msg.role === "user"
                         ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-br-sm shadow-md shadow-orange-200"
-                        : "bg-orange-50 text-gray-800 rounded-bl-sm border border-orange-100"
+                        : "bg-white/[0.06] text-white/90 rounded-bl-sm border border-white/10"
                     }`}>
                       {msg.content}
                     </div>
@@ -226,42 +226,42 @@ export default function BellaAdvisor() {
                             href={url}
                             target="_blank"
                             rel="noopener noreferrer sponsored"
-                            className="block bg-white border border-orange-100 rounded-2xl p-4 hover:border-orange-300 hover:shadow-md hover:shadow-orange-100 transition-all group"
+                            className="block bg-white/[0.04] border border-white/10 rounded-2xl p-4 hover:border-[rgba(240,167,60,0.45)] transition-all group"
                           >
                             <div className="flex items-center gap-2 mb-2 flex-wrap">
                               {i === 0 && (
                                 <span className="text-xs bg-amber-400 text-amber-900 px-2 py-0.5 rounded-full font-bold">🏆 BELLAs Tipp</span>
                               )}
                               {offer.type && (
-                                <span className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full capitalize">{offer.type}</span>
+                                <span className="text-xs bg-[rgba(240,167,60,0.14)] text-[#ffcd8a] px-2 py-0.5 rounded-full capitalize">{offer.type}</span>
                               )}
                               {offer.protein && (
-                                <span className="text-xs bg-rose-50 text-rose-600 px-2 py-0.5 rounded-full">{offer.protein}</span>
+                                <span className="text-xs bg-rose-500/15 text-rose-300 px-2 py-0.5 rounded-full">{offer.protein}</span>
                               )}
                               {(offer.suitableFor ?? []).slice(0, 2).map(s => (
-                                <span key={s} className="text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded-full capitalize">{s}</span>
+                                <span key={s} className="text-xs bg-emerald-500/15 text-emerald-300 px-2 py-0.5 rounded-full capitalize">{s}</span>
                               ))}
                             </div>
                             <div className="flex items-center justify-between gap-3">
                               <div className="min-w-0">
-                                <p className="text-gray-900 font-semibold text-sm truncate">{name}</p>
+                                <p className="text-white font-semibold text-sm truncate">{name}</p>
                                 {offer.brand && offer.name && (
-                                  <p className="text-gray-400 text-xs">{offer.brand}</p>
+                                  <p className="text-white/40 text-xs">{offer.brand}</p>
                                 )}
                               </div>
                               {price != null && (
                                 <div className="text-right flex-shrink-0">
-                                  <p className="text-xl font-black text-gray-900">{Number(price).toFixed(2)} €<span className="text-xs font-medium text-gray-400">{priceUnit}</span></p>
+                                  <p className="text-xl font-black text-white">{Number(price).toFixed(2)} €<span className="text-xs font-medium text-white/40">{priceUnit}</span></p>
                                   {offer.rating != null && <p className="text-amber-500 text-xs">★ {Number(offer.rating).toFixed(1)}</p>}
                                 </div>
                               )}
                             </div>
                             {offer.whyThis && (
-                              <p className="text-gray-600 text-xs mt-2 leading-relaxed">{offer.whyThis}</p>
+                              <p className="text-white/55 text-xs mt-2 leading-relaxed">{offer.whyThis}</p>
                             )}
                             <div className="mt-3 flex items-center justify-between">
-                              <span className="text-[10px] text-gray-300">Affiliate-Link · *Werbung</span>
-                              <span className="text-xs text-orange-600 font-semibold group-hover:text-orange-500">Zum Futter →</span>
+                              <span className="text-[10px] text-white/25">Affiliate-Link · *Werbung</span>
+                              <span className="text-xs text-[var(--honey)] font-semibold group-hover:text-[var(--honey)]">Zum Futter →</span>
                             </div>
                           </a>
                         );
@@ -276,7 +276,7 @@ export default function BellaAdvisor() {
             {loading && (
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center text-xs font-black text-white">B</div>
-                <div className="bg-orange-50 border border-orange-100 rounded-2xl rounded-bl-sm px-4 py-3">
+                <div className="bg-white/5 border border-white/10 rounded-2xl rounded-bl-sm px-4 py-3">
                   <div className="flex gap-1.5">
                     {[0, 1, 2].map(i => (
                       <div key={i} className="w-2 h-2 bg-orange-400 rounded-full animate-bounce" style={{ animationDelay: `${i * 150}ms` }} />
@@ -295,7 +295,7 @@ export default function BellaAdvisor() {
                 <button
                   key={opt.label}
                   onClick={() => sendMessage(opt.msg)}
-                  className="px-3 py-1.5 rounded-full bg-orange-50 text-orange-700 text-xs font-medium border border-orange-200 hover:bg-orange-100 hover:border-orange-300 transition-all"
+                  className="px-3 py-1.5 rounded-full bg-white/5 text-white/70 text-xs font-medium border border-white/10 hover:bg-white/10 hover:border-[rgba(240,167,60,0.4)] transition-all"
                 >
                   {opt.label}
                 </button>
@@ -304,7 +304,7 @@ export default function BellaAdvisor() {
           )}
 
           {/* Input */}
-          <div className="p-4 border-t border-orange-100 bg-white">
+          <div className="p-4 border-t border-white/10 bg-transparent">
             <div className="flex gap-3">
               <input
                 ref={inputRef}
@@ -313,7 +313,7 @@ export default function BellaAdvisor() {
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => e.key === "Enter" && sendMessage(input)}
                 placeholder="Erzähl BELLA von deinem Hund…"
-                className="flex-1 px-4 py-3 bg-orange-50/60 border border-orange-200 rounded-2xl text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+                className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-white/30 text-sm focus:outline-none focus:ring-2 focus:ring-[rgba(240,167,60,0.5)] focus:border-transparent"
                 disabled={loading}
               />
               <button
