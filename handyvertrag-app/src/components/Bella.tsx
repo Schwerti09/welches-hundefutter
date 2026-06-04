@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 
@@ -10,170 +10,129 @@ interface BellaProps {
   className?: string;
 }
 
+/**
+ * BELLA — freundlicher goldener Hund (KI-Ernährungsberaterin).
+ * Stimmungen: idle/thinking/talking/happy/waving/excited.
+ */
 export default function Bella({ mood = "idle", size = 200, className = "" }: BellaProps) {
   const [blink, setBlink] = useState(false);
-  const [armAngle, setArmAngle] = useState(0);
+  const [tail, setTail] = useState(0);
 
-  // Blink every 3-5 seconds
   useEffect(() => {
-    const blinker = setInterval(() => {
-      setBlink(true);
-      setTimeout(() => setBlink(false), 150);
-    }, 3000 + Math.random() * 2000);
-    return () => clearInterval(blinker);
+    const b = setInterval(() => { setBlink(true); setTimeout(() => setBlink(false), 140); }, 3200 + Math.random() * 1800);
+    return () => clearInterval(b);
   }, []);
 
-  // Wave arm when waving/excited
+  // Schwanzwedeln bei freudigen Stimmungen
   useEffect(() => {
-    if (mood === "waving" || mood === "excited") {
-      let angle = 0;
-      let dir = 1;
-      const waver = setInterval(() => {
-        angle += dir * 8;
-        if (angle > 30 || angle < -10) dir *= -1;
-        setArmAngle(angle);
-      }, 60);
-      return () => clearInterval(waver);
-    } else {
-      setArmAngle(0);
-    }
+    const fast = mood === "excited" || mood === "waving" || mood === "happy";
+    let a = 0, dir = 1;
+    const w = setInterval(() => { a += dir * (fast ? 14 : 5); if (a > 22 || a < -22) dir *= -1; setTail(a); }, 55);
+    return () => clearInterval(w);
   }, [mood]);
 
-  const scale = size / 200;
-  const eyeH = blink ? 2 : 22;
-  const eyeY = blink ? 89 : 78;
-
-  const bodyBounce = mood === "excited" ? "animate-bounce" : mood === "happy" ? "animate-pulse" : "";
+  const happy = mood === "happy" || mood === "excited";
+  const eyeRy = blink ? 0.6 : 7;
+  const bounce = mood === "excited" ? "animate-bounce" : "";
 
   return (
-    <div className={`inline-flex flex-col items-center select-none ${className}`} style={{ width: size, height: size * 1.6 }}>
-      <svg
-        viewBox="0 0 200 320"
-        width={size}
-        height={size * 1.6}
-        className={bodyBounce}
-        style={{ filter: "drop-shadow(0 8px 24px rgba(99,102,241,0.35))" }}
-      >
-        {/* ─── LEFT ARM ─────────────────────────────────────────── */}
-        <g transform={`translate(28, 130) rotate(${mood === "waving" ? armAngle + 20 : mood === "thinking" ? -40 : 15})`}
-          style={{ transformOrigin: "28px 130px", transition: "transform 0.3s" }}>
-          <rect x="-28" y="0" width="16" height="50" rx="8" fill="url(#bellaGrad)" />
-          {/* Hand */}
-          <circle cx="-20" cy="52" r="10" fill="url(#bellaGrad)" />
-          {/* Finger wave when waving */}
-          {(mood === "waving" || mood === "excited") && (
-            <g transform="translate(-20, 52)">
-              <rect x="-3" y="-16" width="6" height="12" rx="3" fill="#a5b4fc" transform="rotate(-20)" />
-              <rect x="4" y="-17" width="6" height="14" rx="3" fill="#a5b4fc" transform="rotate(0)" />
-              <rect x="11" y="-14" width="6" height="12" rx="3" fill="#a5b4fc" transform="rotate(15)" />
-            </g>
-          )}
+    <div className={`inline-flex items-center justify-center select-none ${className}`} style={{ width: size, height: size }}>
+      <svg viewBox="0 0 200 200" width={size} height={size} className={bounce}
+        style={{ filter: "drop-shadow(0 10px 26px rgba(193,122,58,0.30))" }}>
+        <defs>
+          <linearGradient id="furGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#F0C078" />
+            <stop offset="100%" stopColor="#D99A4E" />
+          </linearGradient>
+          <linearGradient id="earGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#C9873C" />
+            <stop offset="100%" stopColor="#A66A28" />
+          </linearGradient>
+          <radialGradient id="cheek" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#F7A6A6" stopOpacity="0.55" />
+            <stop offset="100%" stopColor="#F7A6A6" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+
+        {/* ─── Schwanz (wedelt) ─────────────────────────────── */}
+        <g transform={`rotate(${tail} 150 150)`} style={{ transition: "transform 0.05s linear" }}>
+          <path d="M148 150 Q176 140 182 112 Q170 120 158 132 Q150 140 148 150 Z" fill="url(#furGrad)" />
         </g>
 
-        {/* ─── RIGHT ARM ────────────────────────────────────────── */}
-        <g transform={`translate(172, 130) rotate(${mood === "thinking" ? 40 : mood === "happy" ? -20 : -15})`}
-          style={{ transformOrigin: "172px 130px", transition: "transform 0.3s" }}>
-          <rect x="12" y="0" width="16" height="50" rx="8" fill="url(#bellaGrad)" />
-          <circle cx="20" cy="52" r="10" fill="url(#bellaGrad)" />
+        {/* ─── Körper (sitzend) ─────────────────────────────── */}
+        <ellipse cx="100" cy="158" rx="46" ry="34" fill="url(#furGrad)" />
+        <ellipse cx="100" cy="166" rx="30" ry="22" fill="#F6E2C2" />
+        {/* Vorderpfoten */}
+        <ellipse cx="82" cy="184" rx="13" ry="9" fill="url(#furGrad)" />
+        <ellipse cx="118" cy="184" rx="13" ry="9" fill="url(#furGrad)" />
+        <ellipse cx="82" cy="186" rx="8" ry="5" fill="#F6E2C2" />
+        <ellipse cx="118" cy="186" rx="8" ry="5" fill="#F6E2C2" />
+
+        {/* ─── Ohren (heben sich bei excited) ───────────────── */}
+        <g style={{ transition: "transform 0.3s" }} transform={mood === "excited" || mood === "waving" ? "translate(0,-4)" : ""}>
+          <path d="M46 70 Q30 96 44 124 Q60 116 62 88 Z" fill="url(#earGrad)" />
+          <path d="M154 70 Q170 96 156 124 Q140 116 138 88 Z" fill="url(#earGrad)" />
         </g>
 
-        {/* ─── BODY (Phone) ─────────────────────────────────────── */}
-        <rect x="38" y="40" width="124" height="210" rx="22" fill="url(#bellaGrad)" />
-        {/* Screen */}
-        <rect x="48" y="55" width="104" height="160" rx="14" fill="#1e1b4b" />
-        {/* Screen shine */}
-        <rect x="52" y="58" width="30" height="5" rx="2.5" fill="rgba(255,255,255,0.12)" />
+        {/* ─── Kopf ─────────────────────────────────────────── */}
+        <ellipse cx="100" cy="92" rx="52" ry="48" fill="url(#furGrad)" />
+        {/* Schnauze hell */}
+        <ellipse cx="100" cy="108" rx="30" ry="26" fill="#F8E8CC" />
 
-        {/* ─── FACE on screen ───────────────────────────────────── */}
+        {/* Wangen */}
+        <circle cx="64" cy="104" r="12" fill="url(#cheek)" />
+        <circle cx="136" cy="104" r="12" fill="url(#cheek)" />
 
-        {/* Eyes */}
-        <rect x="70" y={eyeY} width="20" height={eyeH} rx="10" fill="white"
-          style={{ transition: "height 0.08s, y 0.08s" }} />
-        <rect x="110" y={eyeY} width="20" height={eyeH} rx="10" fill="white"
-          style={{ transition: "height 0.08s, y 0.08s" }} />
-
-        {/* Pupils */}
-        {!blink && (
+        {/* Augenbrauen bei thinking */}
+        {mood === "thinking" && (
           <>
-            <circle cx={mood === "thinking" ? 83 : 80} cy="91" r="6" fill="#1e1b4b" />
-            <circle cx={mood === "thinking" ? 123 : 120} cy="91" r="6" fill="#1e1b4b" />
-            {/* Highlight */}
-            <circle cx={mood === "thinking" ? 85 : 82} cy="88" r="2.5" fill="white" />
-            <circle cx={mood === "thinking" ? 125 : 122} cy="88" r="2.5" fill="white" />
+            <path d="M70 70 Q80 65 90 70" stroke="#A66A28" strokeWidth="3" fill="none" strokeLinecap="round" />
+            <path d="M110 68 Q120 62 130 67" stroke="#A66A28" strokeWidth="3" fill="none" strokeLinecap="round" />
           </>
         )}
 
-        {/* Mustache 🥸 */}
-        <path
-          d={mood === "happy" || mood === "excited"
-            ? "M 72 112 Q 80 122 100 116 Q 120 122 128 112 Q 120 108 100 112 Q 80 108 72 112 Z"
-            : "M 72 112 Q 80 110 100 114 Q 120 110 128 112 Q 120 118 100 115 Q 80 118 72 112 Z"}
-          fill="white"
-          style={{ transition: "d 0.3s" }}
-        />
-
-        {/* Smile / Expression */}
-        {mood === "happy" || mood === "excited" ? (
-          <path d="M 76 124 Q 100 144 124 124" stroke="white" strokeWidth="3.5"
-            strokeLinecap="round" fill="none" />
-        ) : mood === "thinking" ? (
-          <path d="M 82 130 Q 100 126 118 130" stroke="rgba(255,255,255,0.6)" strokeWidth="2.5"
-            strokeLinecap="round" fill="none" />
-        ) : (
-          <path d="M 78 128 Q 100 140 122 128" stroke="white" strokeWidth="3"
-            strokeLinecap="round" fill="none" />
+        {/* Augen */}
+        <ellipse cx="80" cy="86" rx="7" ry={eyeRy} fill="#3A2417" style={{ transition: "ry 0.08s" }} />
+        <ellipse cx="120" cy="86" rx="7" ry={eyeRy} fill="#3A2417" style={{ transition: "ry 0.08s" }} />
+        {!blink && (
+          <>
+            <circle cx="82" cy="83" r="2.2" fill="white" />
+            <circle cx="122" cy="83" r="2.2" fill="white" />
+          </>
         )}
 
-        {/* Thinking dots */}
+        {/* Nase */}
+        <ellipse cx="100" cy="104" rx="9" ry="7" fill="#3A2417" />
+        <ellipse cx="97" cy="101" rx="2.5" ry="1.8" fill="rgba(255,255,255,0.5)" />
+
+        {/* Mund / Zunge */}
+        {happy ? (
+          <>
+            <path d="M100 110 Q100 120 90 124 M100 110 Q100 120 110 124" stroke="#3A2417" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+            <ellipse cx="100" cy="126" rx="7" ry="9" fill="#F47E7E" />
+          </>
+        ) : mood === "thinking" ? (
+          <path d="M92 118 Q100 114 108 118" stroke="#3A2417" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+        ) : (
+          <path d="M100 110 Q100 119 91 122 M100 110 Q100 119 109 122" stroke="#3A2417" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+        )}
+
+        {/* Denk-Punkte */}
         {mood === "thinking" && (
           <g>
-            <circle cx="80" cy="145" r="4" fill="rgba(255,255,255,0.7)">
-              <animate attributeName="opacity" values="1;0.2;1" dur="0.8s" repeatCount="indefinite" begin="0s" />
-            </circle>
-            <circle cx="100" cy="145" r="4" fill="rgba(255,255,255,0.7)">
-              <animate attributeName="opacity" values="1;0.2;1" dur="0.8s" repeatCount="indefinite" begin="0.27s" />
-            </circle>
-            <circle cx="120" cy="145" r="4" fill="rgba(255,255,255,0.7)">
-              <animate attributeName="opacity" values="1;0.2;1" dur="0.8s" repeatCount="indefinite" begin="0.54s" />
-            </circle>
+            {[0, 0.27, 0.54].map((d, i) => (
+              <circle key={i} cx={150 + i * 12} cy={54 - i * 8} r={3 + i} fill="#C9873C">
+                <animate attributeName="opacity" values="1;0.2;1" dur="0.9s" repeatCount="indefinite" begin={`${d}s`} />
+              </circle>
+            ))}
           </g>
         )}
 
-        {/* Speaker / bottom notch */}
-        <rect x="85" y="228" width="30" height="6" rx="3" fill="rgba(255,255,255,0.25)" />
-        <circle cx="100" cy="237" r="4" fill="rgba(255,255,255,0.15)" />
-
-        {/* Camera bump on top */}
-        <rect x="88" y="44" width="24" height="8" rx="4" fill="rgba(255,255,255,0.2)" />
-
-        {/* ─── LEGS ─────────────────────────────────────────────── */}
-        <rect x="70" y="248" width="22" height="55" rx="11"
-          fill="url(#bellaGrad)"
-          transform={mood === "waving" || mood === "excited" ? "translate(0,-3)" : ""}
-          style={{ transition: "transform 0.3s" }} />
-        <rect x="108" y="248" width="22" height="55" rx="11"
-          fill="url(#bellaGrad)"
-          transform={mood === "waving" || mood === "excited" ? "translate(0,-3)" : ""}
-          style={{ transition: "transform 0.3s" }} />
-
-        {/* Feet */}
-        <ellipse cx="81" cy="303" rx="18" ry="10" fill="url(#bellaGrad)" />
-        <ellipse cx="119" cy="303" rx="18" ry="10" fill="url(#bellaGrad)" />
-
-        {/* ─── GRADIENT DEFS ────────────────────────────────────── */}
-        <defs>
-          <linearGradient id="bellaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#6366f1" />
-            <stop offset="100%" stopColor="#8b5cf6" />
-          </linearGradient>
-        </defs>
-
-        {/* Excited stars */}
+        {/* Freude-Funken */}
         {mood === "excited" && (
           <>
-            <text x="15" y="60" fontSize="16" style={{ animation: "float 1s ease-in-out infinite" }}>⭐</text>
-            <text x="160" y="55" fontSize="14" style={{ animation: "float 1.2s ease-in-out infinite" }}>✨</text>
-            <text x="170" y="100" fontSize="12" style={{ animation: "float 0.8s ease-in-out infinite" }}>🎉</text>
+            <text x="24" y="48" fontSize="16" style={{ animation: "float 1s ease-in-out infinite" }}>✨</text>
+            <text x="160" y="44" fontSize="14" style={{ animation: "float 1.2s ease-in-out infinite" }}>⭐</text>
           </>
         )}
       </svg>
