@@ -1,4 +1,3 @@
-﻿import { products } from "@/data/products";
 
 interface BreadcrumbItem {
   name: string;
@@ -101,60 +100,10 @@ function buildHowToSchema() {
   };
 }
 
-function buildProductSchema(productId: string) {
-  const product = products.find((p) => p.id === productId);
-  if (!product) return null;
-
-  const bestOffer = product.offers.reduce((best, offer) =>
-    offer.monthlyPrice < best.monthlyPrice ? offer : best
-  );
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: product.name,
-    image: product.imageUrl,
-    brand: {
-      "@type": "Brand",
-      name: product.brand,
-    },
-    description: `${product.name} mit Empfehlung. Display: ${product.specs.display}, Kamera: ${product.specs.camera}, Akku: ${product.specs.battery}`,
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: product.rating,
-      reviewCount: product.reviews,
-      bestRating: 5,
-      worstRating: 1,
-    },
-    offers: {
-      "@type": "AggregateOffer",
-      lowPrice: bestOffer.monthlyPrice,
-      highPrice: product.offers.reduce(
-        (max, o) => (o.monthlyPrice > max ? o.monthlyPrice : max),
-        0
-      ),
-      priceCurrency: "EUR",
-      offerCount: product.offers.length,
-      offers: product.offers.map((offer) => ({
-        "@type": "Offer",
-        seller: {
-          "@type": "Organization",
-          name: offer.provider,
-        },
-        price: offer.monthlyPrice,
-        priceCurrency: "EUR",
-        url: offer.affiliateLink,
-        availability: "https://schema.org/InStock",
-        priceValidUntil: new Date(
-          new Date().setFullYear(new Date().getFullYear() + 1)
-        )
-          .toISOString()
-          .split("T")[0],
-      })),
-    },
-  };
+function buildProductSchema(_productId: string) {
+  // Produkt-Schema wird künftig aus der DB (dog_foods) gespeist; aktuell ungenutzt.
+  return null;
 }
-
 function buildFAQSchema(faqs: FAQItem[]) {
   return {
     "@context": "https://schema.org",

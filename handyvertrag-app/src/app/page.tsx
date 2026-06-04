@@ -4,22 +4,15 @@ import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
 import BreedGallery from "@/components/BreedGallery";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
+import { getTopFoods, getFoodCount } from "@/db/queries/foods";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Welches Hundefutter für meinen Hund? ✓ KI-Berater BELLA findet es in 60 Sekunden",
-  description: "Welches Hundefutter passt zu deinem Hund? BELLA fragt 5 Dinge und empfiehlt aus 500+ Sorten das beste für Rasse, Alter & Allergien. Kostenlos.",
+  description: "Welches Hundefutter passt zu deinem Hund? BELLA vergleicht über 8.000 echte Sorten und empfiehlt das passende für Rasse, Alter & Allergien. Kostenlos & unabhängig.",
   alternates: { canonical: "https://welches-hundefutter.today" },
 };
-
-const TOP_FUTTER = [
-  { platz: "🥇", marke: "Anifit Adult", eignung: "Allrounder, 92 % Fleischanteil", preis: "7,90 €/kg", stars: 5, slug: "anifit-adult" },
-  { platz: "🥈", marke: "Wolfsblut Wild Duck", eignung: "Sensible Hunde, Monoprotein", preis: "6,40 €/kg", stars: 5, slug: "wolfsblut-wild-duck" },
-  { platz: "🥉", marke: "Futalis Individuell", eignung: "100 % auf deinen Hund", preis: "5,90 €/kg", stars: 5, slug: "futalis-individuell" },
-  { platz: "4", marke: "Terra Canis Nassfutter", eignung: "Premium-Nassfutter", preis: "9,80 €/kg", stars: 5, slug: "terra-canis" },
-  { platz: "5", marke: "Josera Festival", eignung: "Wählerische Esser", preis: "4,20 €/kg", stars: 4, slug: "josera-festival" },
-  { platz: "6", marke: "Bellfor Allergiker", eignung: "Bei Futtermittelallergien", preis: "6,90 €/kg", stars: 4, slug: "bellfor-allergiker" },
-  { platz: "7", marke: "MERA Pure Sensitive", eignung: "Sensibler Magen", preis: "5,20 €/kg", stars: 4, slug: "mera-pure-sensitive" },
-];
 
 const SCHEMA_FAQS = [
   { question: "Welches Hundefutter ist das beste?", answer: "Das hängt von Rasse, Alter, Aktivität und Gesundheit ab. Premium-Sorten wie Anifit, Wolfsblut oder Futalis sind 2026 Testsieger. BELLA findet in 60 Sekunden das passende Futter speziell für deinen Hund." },
@@ -28,7 +21,9 @@ const SCHEMA_FAQS = [
   { question: "Wie viel sollte mein Hund pro Tag fressen?", answer: "Faustregel Trockenfutter: 1,5–2,5 % des Körpergewichts. Ein 20 kg Hund braucht ca. 300–500 g/Tag. Bei Nassfutter Faktor 3. Aktive Hunde mehr, Senioren weniger." },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [topFoods, foodCount] = await Promise.all([getTopFoods(7), getFoodCount()]);
+  const countLabel = foodCount > 0 ? foodCount.toLocaleString("de-DE") : "8.000+";
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
       <StructuredData type="organization" />
@@ -75,9 +70,11 @@ export default function HomePage() {
       {/* TOP 7 TABELLE */}
       <section className="max-w-5xl mx-auto px-5 py-16 w-full">
         <h2 className="text-3xl font-black mb-2 text-center">
-          Bestes Hundefutter 2026: Die Top-Empfehlungen im Vergleich
+          Hundefutter im Preisvergleich — günstige Top-Sorten
         </h2>
-        <p className="text-[var(--muted)] text-center mb-8 text-sm">Von BELLA analysiert · Affiliate-Links mit rel=sponsored</p>
+        <p className="text-[var(--muted)] text-center mb-8 text-sm">
+          Aus {countLabel} echten Sorten im Live-Katalog · günstigste zuerst · Affiliate-Links (rel=sponsored)
+        </p>
         <div className="overflow-x-auto rounded-2xl border border-white/10">
           <table className="w-full text-sm">
             <thead className="bg-white/[0.04]">
@@ -90,23 +87,30 @@ export default function HomePage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/10">
-              {TOP_FUTTER.map((f) => (
-                <tr key={f.slug} className="bg-transparent hover:bg-white/[0.04] transition-colors">
-                  <td className="px-4 py-3 text-lg">{f.platz}</td>
+              {topFoods.map((f, i) => (
+                <tr key={f.id} className="bg-transparent hover:bg-white/[0.04] transition-colors">
+                  <td className="px-4 py-3 text-lg">{["🥇", "🥈", "🥉"][i] ?? i + 1}</td>
                   <td className="px-4 py-3">
-                    <div className="font-semibold text-[var(--ink)]">{f.marke}</div>
-                    <div className="text-xs text-[var(--honey)]">{"★".repeat(f.stars)}</div>
+                    <div className="font-semibold text-[var(--ink)]">{f.brand}</div>
+                    <div className="text-xs text-[var(--muted)]">{f.name}</div>
                   </td>
-                  <td className="px-4 py-3 text-[var(--muted)] hidden sm:table-cell">{f.eignung}</td>
-                  <td className="px-4 py-3 font-semibold text-[var(--honey)]">{f.preis}</td>
+                  <td className="px-4 py-3 text-[var(--muted)] hidden sm:table-cell">
+                    <span className="capitalize">{f.foodType}</span>
+                    {f.protein ? ` · ${f.protein}` : ""}
+                    {f.grainFree ? " · getreidefrei" : ""}
+                  </td>
+                  <td className="px-4 py-3 font-semibold text-[var(--honey)] whitespace-nowrap">
+                    {f.pricePerKg != null ? `${f.pricePerKg.toFixed(2)} €/kg` : "—"}
+                  </td>
                   <td className="px-4 py-3">
-                    <Link
-                      href={`/empfehlung/${f.slug}`}
-                      rel="sponsored"
+                    <a
+                      href={f.affiliateUrl}
+                      target="_blank"
+                      rel="sponsored nofollow noopener noreferrer"
                       className="text-xs px-3 py-1.5 rounded-lg btn-primary whitespace-nowrap"
                     >
                       Ansehen →
-                    </Link>
+                    </a>
                   </td>
                 </tr>
               ))}
