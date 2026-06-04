@@ -1,31 +1,36 @@
-﻿"use client";
+"use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
 
 const Bella = dynamic(() => import("@/components/Bella"), { ssr: false });
 
+interface FoodCard {
+  id: number | string;
+  name?: string;
+  brand?: string;
+  type?: string;            // 'trocken' | 'nass' | 'barf' | ...
+  protein?: string | null;
+  pricePerKg?: number | null;
+  packageInfo?: string | null;
+  suitableFor?: string[] | null;
+  rating?: number | null;
+  affiliateUrl?: string;
+  imageUrl?: string | null;
+  whyThis?: string | null;
+  // tolerate legacy/handy-shaped payloads during the dog_foods migration
+  deviceName?: string;
+  providerName?: string;
+  monthlyPrice?: number;
+  effectiveMonthlyPrice?: number | null;
+  affiliateLink?: string;
+}
+
 interface Message {
   id: string;
   role: "bella" | "user";
   content: string;
-  offers?: OfferCard[];
-}
-
-interface OfferCard {
-  id: number;
-  deviceName: string;
-  brand: string;
-  providerName: string;
-  monthlyPrice: number;
-  effectiveMonthlyPrice: number | null;
-  dataVolume: string | null;
-  isUnlimited: boolean;
-  has5g: boolean;
-  affiliateLink: string;
-  imageUrl: string | null;
-  futterfName: string;
-  cashback: number | null;
+  offers?: FoodCard[];
 }
 
 type BellaMood = "idle" | "thinking" | "talking" | "happy" | "waving" | "excited";
@@ -33,17 +38,27 @@ type BellaMood = "idle" | "thinking" | "talking" | "happy" | "waving" | "excited
 const INTRO_MESSAGE: Message = {
   id: "0",
   role: "bella",
-  content: "Hey! Ich bin BELLA, dein persönlicher Hundefutter-Berater! 🎉\n\nIch finde dir in Sekunden den perfekten Empfehlung aus über 20.000 echten Angeboten.\n\nSag mir einfach: Was suchst du?",
+  content:
+    "Hallo! Ich bin BELLA 🐕 — deine KI-Ernährungsberaterin für Hunde.\n\nErzähl mir kurz von deinem Hund: Rasse, Alter, und ob es Allergien oder einen empfindlichen Magen gibt. Dann finde ich das perfekte Futter für euch.",
 };
 
 const QUICK_OPTIONS = [
-  { label: "🎮 Gaming & viel Daten", msg: "Ich will viel Futtervolumen für Gaming" },
-  { label: "💰 Günstigster Preis", msg: "Was ist das günstigste Angebot?" },
-  { label: "📸 Beste Kamera", msg: "Ich suche ein Hund mit super Kamera" },
-  { label: "📱 Hundefutter unter 50€", msg: "Hundefutter Empfehlung unter 50 Euro monatlich" },
-  { label: "🏆 Samsung + Anifit", msg: "Samsung mit Anifit Netz" },
-  { label: "🎓 Student & Budget", msg: "Ich bin Student und suche günstiges Angebot" },
+  { label: "🐶 Welpe", msg: "Welches Futter ist das richtige für meinen Welpen?" },
+  { label: "🦴 Allergie / sensibler Magen", msg: "Mein Hund hat Allergien und einen empfindlichen Magen — welches Futter passt?" },
+  { label: "🥩 BARF / Frischfutter", msg: "Ich interessiere mich für BARF bzw. Frischfutter für meinen Hund." },
+  { label: "👴 Senior", msg: "Welches Futter ist gut für meinen älteren Hund (Senior)?" },
+  { label: "💰 Günstig & gut", msg: "Ich suche ein gutes, aber günstiges Hundefutter." },
+  { label: "🐕 Nach Rasse", msg: "Welches Futter passt am besten zu meiner Hunderasse?" },
 ];
+
+const MOOD_LABEL: Record<BellaMood, string> = {
+  thinking: "🤔 Ich schnüffle nach dem besten Futter…",
+  excited: "🎉 Perfekte Treffer gefunden!",
+  happy: "😊 Helfe dir gerne weiter!",
+  waving: "👋 Hallo!",
+  talking: "💬 BELLA · KI-Ernährungsberaterin",
+  idle: "💬 BELLA · KI-Ernährungsberaterin",
+};
 
 export default function BellaAdvisor() {
   const [messages, setMessages] = useState<Message[]>([INTRO_MESSAGE]);
@@ -73,35 +88,69 @@ export default function BellaAdvisor() {
     setLoading(true);
     setMood("thinking");
 
-    try {
-      const history = messages
-        .filter(m => m.id !== "0")
-        .map(m => ({ role: m.role === "bella" ? "assistant" : "user", content: m.content }));
+    const history = messages
+      .filter(m => m.id !== "0")
+      .map(m => ({ role: m.role === "bella" ? "assistant" : "user", content: m.content }));
 
+    // Placeholder BELLA message we stream into
+    const bellaId = (Date.now() + 1).toString();
+    setMessages(prev => [...prev, { id: bellaId, role: "bella", content: "" }]);
+
+    try {
       const res = await fetch("/api/advisor/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: trimmed, sessionId, conversationHistory: history }),
       });
-      const data = await res.json();
 
-      setMood(data.offers?.length > 0 ? "excited" : "happy");
-      setTimeout(() => setMood("idle"), 3000);
+      if (!res.body) throw new Error("no stream");
 
-      const bellaMsg: Message = {
-        id: (Date.now() + 1).toString(),
-        role: "bella",
-        content: data.reply ?? "Ich konnte keine passenden Angebote finden. Versuch es mit anderen Kriterien!",
-        offers: data.offers,
+      // The advisor route streams line-based events:
+      //   TEXT:<chunk>   — reasoning text (append)
+      //   OFFERS:<json>  — final { offers, theme, confidence }
+      // (STEP/CONF/SCORE/ELIM are progress events we ignore here)
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let replyText = "";
+      let offers: FoodCard[] = [];
+
+      const flushLine = (line: string) => {
+        if (line.startsWith("TEXT:")) {
+          replyText += line.slice(5);
+          setMessages(prev => prev.map(m => m.id === bellaId ? { ...m, content: replyText } : m));
+        } else if (line.startsWith("OFFERS:")) {
+          try {
+            const payload = JSON.parse(line.slice(7));
+            if (Array.isArray(payload?.offers)) offers = payload.offers as FoodCard[];
+          } catch { /* ignore partial */ }
+        }
       };
-      setMessages(prev => [...prev, bellaMsg]);
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() ?? "";
+        for (const line of lines) flushLine(line);
+      }
+      if (buffer) flushLine(buffer);
+
+      if (!replyText.trim()) {
+        replyText = "Erzähl mir noch ein bisschen mehr über deinen Hund — Rasse, Alter, Allergien? Dann finde ich das passende Futter.";
+      }
+      setMessages(prev => prev.map(m =>
+        m.id === bellaId ? { ...m, content: replyText, offers: offers.length ? offers : undefined } : m
+      ));
+
+      setMood(offers.length > 0 ? "excited" : "happy");
+      setTimeout(() => setMood("idle"), 3000);
     } catch {
+      setMessages(prev => prev.map(m =>
+        m.id === bellaId ? { ...m, content: "Ups, da ist etwas schiefgelaufen. Versuch es bitte nochmal! 🐾" } : m
+      ));
       setMood("idle");
-      setMessages(prev => [...prev, {
-        id: Date.now().toString(),
-        role: "bella",
-        content: "Ups, da ist was schiefgelaufen. Versuch es nochmal!",
-      }]);
     } finally {
       setLoading(false);
     }
@@ -109,47 +158,39 @@ export default function BellaAdvisor() {
 
   return (
     <div className="relative w-full max-w-5xl mx-auto">
-      <div className="grid lg:grid-cols-[280px_1fr] gap-8 items-start">
+      <div className="grid lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 items-start">
 
         {/* ─── BELLA Column ──────────────────────────────── */}
         <div className="flex flex-col items-center gap-4">
           <Bella mood={mood} size={220} />
 
-          {/* Mood label */}
-          <div className="glass rounded-2xl px-4 py-2 text-center border border-white/10">
-            <p className="text-white/80 text-sm font-medium">
-              {mood === "thinking" ? "🤔 Ich denke nach..." :
-               mood === "excited" ? "🎉 Perfekte Matches!" :
-               mood === "happy" ? "😊 Gerne helfe ich!" :
-               mood === "waving" ? "👋 Hallo!" :
-               "💬 BELLA · KI-Berater"}
-            </p>
+          <div className="rounded-2xl px-4 py-2 text-center bg-white border border-orange-100 shadow-sm">
+            <p className="text-gray-700 text-sm font-medium">{MOOD_LABEL[mood]}</p>
           </div>
 
-          {/* Stats */}
-          <div className="glass rounded-2xl p-4 w-full border border-white/10 space-y-2">
+          <div className="rounded-2xl p-4 w-full bg-white border border-orange-100 shadow-sm space-y-2.5">
             {[
-              { icon: "📦", label: "Angebote", value: "20.000+" },
-              { icon: "🏆", label: "Konversionsrate", value: "95%+" },
+              { icon: "🥘", label: "Futtersorten", value: "500+" },
+              { icon: "🐕", label: "Rassen-Profile", value: "50" },
               { icon: "⚡", label: "Antwortzeit", value: "< 1 Sek." },
             ].map(s => (
               <div key={s.label} className="flex items-center justify-between">
-                <span className="text-white/50 text-xs">{s.icon} {s.label}</span>
-                <span className="text-white font-bold text-sm">{s.value}</span>
+                <span className="text-gray-500 text-xs">{s.icon} {s.label}</span>
+                <span className="text-gray-900 font-bold text-sm">{s.value}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* ─── Chat Column ───────────────────────────────── */}
-        <div className="flex flex-col h-[680px] bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden">
+        <div className="flex flex-col h-[680px] bg-white rounded-3xl border border-orange-100 shadow-xl shadow-orange-100/40 overflow-hidden">
 
           {/* Header */}
-          <div className="p-5 border-b border-white/10 flex items-center gap-3">
-            <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse" />
+          <div className="p-5 border-b border-orange-100 flex items-center gap-3 bg-gradient-to-r from-orange-50 to-amber-50">
+            <span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse" />
             <div>
-              <p className="text-white font-bold">BELLA – Dein persönlicher KI-Berater</p>
-              <p className="text-white/40 text-xs">Findet den perfekten Empfehlung aus 20.000+ Angeboten</p>
+              <p className="text-gray-900 font-bold">BELLA – deine KI-Ernährungsberaterin</p>
+              <p className="text-gray-500 text-xs">Findet das perfekte Futter für deinen Hund</p>
             </div>
           </div>
 
@@ -158,69 +199,73 @@ export default function BellaAdvisor() {
             {messages.map((msg) => (
               <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} gap-3`}>
                 {msg.role === "bella" && (
-                  <div className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl flex items-center justify-center flex-shrink-0 mt-1 text-xs font-black text-white shadow-lg">H</div>
+                  <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center flex-shrink-0 mt-1 text-xs font-black text-white shadow-md shadow-orange-200">B</div>
                 )}
                 <div className="max-w-[80%] space-y-3">
-                  <div className={`px-4 py-3 rounded-2xl text-sm whitespace-pre-wrap leading-relaxed ${
-                    msg.role === "user"
-                      ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-br-sm shadow-lg shadow-indigo-500/20"
-                      : "bg-white/10 text-white rounded-bl-sm border border-white/10"
-                  }`}>
-                    {msg.content}
-                  </div>
+                  {msg.content && (
+                    <div className={`px-4 py-3 rounded-2xl text-sm whitespace-pre-wrap leading-relaxed ${
+                      msg.role === "user"
+                        ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-br-sm shadow-md shadow-orange-200"
+                        : "bg-orange-50 text-gray-800 rounded-bl-sm border border-orange-100"
+                    }`}>
+                      {msg.content}
+                    </div>
+                  )}
 
-                  {/* Offer Cards */}
+                  {/* Food recommendation cards */}
                   {msg.offers && msg.offers.length > 0 && (
                     <div className="space-y-2">
-                      {msg.offers.map((offer, i) => (
-                        <a
-                          key={offer.id}
-                          href={offer.affiliateLink}
-                          target="_blank"
-                          rel="noopener noreferrer sponsored"
-                          className="block bg-white/10 border border-white/15 rounded-2xl p-4 hover:bg-white/20 hover:border-indigo-400/50 transition-all group"
-                        >
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center gap-2">
+                      {msg.offers.map((offer, i) => {
+                        const name = offer.name ?? [offer.brand, offer.deviceName].filter(Boolean).join(" ") ?? "Futter-Empfehlung";
+                        const price = offer.pricePerKg ?? offer.effectiveMonthlyPrice ?? offer.monthlyPrice ?? null;
+                        const priceUnit = offer.pricePerKg != null ? "/kg" : "";
+                        const url = offer.affiliateUrl ?? offer.affiliateLink ?? "#";
+                        return (
+                          <a
+                            key={offer.id ?? i}
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer sponsored"
+                            className="block bg-white border border-orange-100 rounded-2xl p-4 hover:border-orange-300 hover:shadow-md hover:shadow-orange-100 transition-all group"
+                          >
+                            <div className="flex items-center gap-2 mb-2 flex-wrap">
                               {i === 0 && (
-                                <span className="text-xs bg-amber-400 text-amber-900 px-2 py-0.5 rounded-full font-bold">
-                                  🏆 BESTE WAHL
-                                </span>
+                                <span className="text-xs bg-amber-400 text-amber-900 px-2 py-0.5 rounded-full font-bold">🏆 BELLAs Tipp</span>
                               )}
-                              <span className="text-xs bg-white/10 text-white/70 px-2 py-0.5 rounded-full">
-                                {offer.providerName}
-                              </span>
-                              {offer.isUnlimited && (
-                                <span className="text-xs bg-green-500/20 text-green-300 px-2 py-0.5 rounded-full">∞ Unlimited</span>
+                              {offer.type && (
+                                <span className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full capitalize">{offer.type}</span>
                               )}
-                              {offer.has5g && (
-                                <span className="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full">Bio</span>
+                              {offer.protein && (
+                                <span className="text-xs bg-rose-50 text-rose-600 px-2 py-0.5 rounded-full">{offer.protein}</span>
+                              )}
+                              {(offer.suitableFor ?? []).slice(0, 2).map(s => (
+                                <span key={s} className="text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded-full capitalize">{s}</span>
+                              ))}
+                            </div>
+                            <div className="flex items-center justify-between gap-3">
+                              <div className="min-w-0">
+                                <p className="text-gray-900 font-semibold text-sm truncate">{name}</p>
+                                {offer.brand && offer.name && (
+                                  <p className="text-gray-400 text-xs">{offer.brand}</p>
+                                )}
+                              </div>
+                              {price != null && (
+                                <div className="text-right flex-shrink-0">
+                                  <p className="text-xl font-black text-gray-900">{Number(price).toFixed(2)} €<span className="text-xs font-medium text-gray-400">{priceUnit}</span></p>
+                                  {offer.rating != null && <p className="text-amber-500 text-xs">★ {Number(offer.rating).toFixed(1)}</p>}
+                                </div>
                               )}
                             </div>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <p className="text-white font-semibold text-sm">{offer.brand} {offer.deviceName}</p>
-                              <p className="text-white/50 text-xs">{offer.futterfName} · {offer.dataVolume || "Daten"}</p>
+                            {offer.whyThis && (
+                              <p className="text-gray-600 text-xs mt-2 leading-relaxed">{offer.whyThis}</p>
+                            )}
+                            <div className="mt-3 flex items-center justify-between">
+                              <span className="text-[10px] text-gray-300">Affiliate-Link · *Werbung</span>
+                              <span className="text-xs text-orange-600 font-semibold group-hover:text-orange-500">Zum Futter →</span>
                             </div>
-                            <div className="text-right">
-                              <p className="text-2xl font-black text-white">
-                                {parseFloat(String(offer.effectiveMonthlyPrice || offer.monthlyPrice)).toFixed(2)} €
-                              </p>
-                              <p className="text-white/40 text-xs">/Monat</p>
-                            </div>
-                          </div>
-                          {offer.cashback && parseFloat(String(offer.cashback)) > 0 && (
-                            <p className="text-green-400 text-xs mt-2 font-medium">✓ {parseFloat(String(offer.cashback)).toFixed(0)} € Cashback</p>
-                          )}
-                          <div className="mt-3 flex items-center justify-between">
-                            <span className="text-xs text-white/30">AWIN Affiliate · *Pflichtangabe</span>
-                            <span className="text-xs text-indigo-300 font-semibold group-hover:text-indigo-200">
-                              Zum Angebot →
-                            </span>
-                          </div>
-                        </a>
-                      ))}
+                          </a>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
@@ -230,12 +275,11 @@ export default function BellaAdvisor() {
             {/* Typing indicator */}
             {loading && (
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl flex items-center justify-center text-xs font-black text-white">H</div>
-                <div className="bg-white/10 border border-white/10 rounded-2xl rounded-bl-sm px-4 py-3">
+                <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center text-xs font-black text-white">B</div>
+                <div className="bg-orange-50 border border-orange-100 rounded-2xl rounded-bl-sm px-4 py-3">
                   <div className="flex gap-1.5">
                     {[0, 1, 2].map(i => (
-                      <div key={i} className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce"
-                        style={{ animationDelay: `${i * 150}ms` }} />
+                      <div key={i} className="w-2 h-2 bg-orange-400 rounded-full animate-bounce" style={{ animationDelay: `${i * 150}ms` }} />
                     ))}
                   </div>
                 </div>
@@ -251,7 +295,7 @@ export default function BellaAdvisor() {
                 <button
                   key={opt.label}
                   onClick={() => sendMessage(opt.msg)}
-                  className="px-3 py-1.5 rounded-full bg-white/10 text-white/80 text-xs font-medium border border-white/10 hover:bg-white/20 hover:text-white transition-all"
+                  className="px-3 py-1.5 rounded-full bg-orange-50 text-orange-700 text-xs font-medium border border-orange-200 hover:bg-orange-100 hover:border-orange-300 transition-all"
                 >
                   {opt.label}
                 </button>
@@ -260,7 +304,7 @@ export default function BellaAdvisor() {
           )}
 
           {/* Input */}
-          <div className="p-4 border-t border-white/10">
+          <div className="p-4 border-t border-orange-100 bg-white">
             <div className="flex gap-3">
               <input
                 ref={inputRef}
@@ -268,14 +312,14 @@ export default function BellaAdvisor() {
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => e.key === "Enter" && sendMessage(input)}
-                placeholder="Sag BELLA was du suchst..."
-                className="flex-1 px-4 py-3 bg-white/10 border border-white/10 rounded-2xl text-white placeholder-white/30 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                placeholder="Erzähl BELLA von deinem Hund…"
+                className="flex-1 px-4 py-3 bg-orange-50/60 border border-orange-200 rounded-2xl text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
                 disabled={loading}
               />
               <button
                 onClick={() => sendMessage(input)}
                 disabled={loading || !input.trim()}
-                className="px-5 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-2xl font-semibold text-sm hover:shadow-lg hover:shadow-indigo-500/30 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                className="px-5 py-3 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-2xl font-semibold text-sm hover:shadow-lg hover:shadow-orange-200 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 →
               </button>
