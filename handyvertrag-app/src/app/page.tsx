@@ -47,32 +47,33 @@ export default function HomePage() {
       <StructuredData type="faq" faqs={SCHEMA_FAQS} />
 
       {/* HERO */}
-      <section className="bg-gradient-to-b from-orange-50 to-[#fef6f0] px-5 py-16 text-center">
-        <div className="max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-100 border border-orange-200 text-orange-700 text-xs font-medium mb-6">
-            <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-            BELLA ist online – kostenlose KI-Beratung
+      <section className="relative hero-glow px-5 pt-16 pb-20 text-center overflow-hidden">
+        <div className="relative max-w-3xl mx-auto">
+          <div className="pill mb-7">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--honey)] animate-pulse" />
+            KI-Ernährungsberatung · unabhängig & kostenlos
           </div>
 
-          <h1 className="text-4xl sm:text-5xl font-black leading-tight mb-5 text-gray-900">
-            Welches Hundefutter für meinen Hund?{" "}
-            <span className="text-orange-500">BELLA findet es in 60 Sekunden</span>
+          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-[1.06] mb-6">
+            Das richtige Futter für deinen Hund —{" "}
+            <span className="text-accent">in 60 Sekunden gefunden</span>
           </h1>
 
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8 leading-relaxed">
-            Es gibt 500+ Hundefutter-Sorten in Deutschland. BELLA fragt 5 Dinge und empfiehlt
-            dir die 3 besten – abgestimmt auf Rasse, Alter, Aktivität und Allergien. Kostenlos.
+          <p className="text-lg sm:text-xl text-[var(--muted)] max-w-2xl mx-auto mb-9 leading-relaxed">
+            Über 8.000 Futter, analysiert von BELLA. Sag ihr kurz, was deinen Hund ausmacht —
+            Rasse, Alter, Allergien — und erhalte die wirklich passenden Empfehlungen.
+            Keine endlosen Vergleichslisten.
           </p>
 
-          <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-500 mb-10">
-            <span>⭐ 4,9/5 · 312 Bewertungen</span>
-            <span>·</span>
-            <span>✓ 500+ Futtersorten</span>
-            <span>·</span>
-            <span>✓ Kostenlos</span>
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-[var(--muted)] mb-12">
+            <span className="font-semibold text-[var(--ink)]">8.000+ Futter analysiert</span>
+            <span className="w-1 h-1 rounded-full bg-[var(--line)]" />
+            <span>Unabhängig & werbefrei beraten</span>
+            <span className="w-1 h-1 rounded-full bg-[var(--line)]" />
+            <span>Ohne Anmeldung</span>
           </div>
 
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-3xl mx-auto">
             <BellaAdvisorWrapper />
           </div>
         </div>
@@ -101,7 +102,7 @@ export default function HomePage() {
                   <td className="px-4 py-3 text-lg">{f.platz}</td>
                   <td className="px-4 py-3">
                     <div className="font-semibold text-gray-900">{f.marke}</div>
-                    <div className="text-xs text-yellow-500">{"⭐".repeat(f.stars)}</div>
+                    <div className="text-xs text-[var(--honey)]">{"★".repeat(f.stars)}</div>
                   </td>
                   <td className="px-4 py-3 text-gray-500 hidden sm:table-cell">{f.eignung}</td>
                   <td className="px-4 py-3 font-semibold text-orange-600">{f.preis}</td>
@@ -132,9 +133,9 @@ export default function HomePage() {
             <Link
               key={r.slug}
               href={`/rasse/${r.slug}-hundefutter`}
-              className="p-4 rounded-xl bg-white border border-orange-100 hover:border-orange-300 hover:shadow-sm transition-all text-sm font-medium text-gray-800"
+              className="card card-hover p-4 block text-sm font-medium text-[var(--ink)]"
             >
-              🐕 {r.name}
+              {r.name}
             </Link>
           ))}
         </div>
@@ -149,13 +150,13 @@ export default function HomePage() {
           <h2 className="text-3xl font-black mb-8">Trockenfutter, Nassfutter, BARF – was ist besser?</h2>
           <div className="grid sm:grid-cols-3 gap-6">
             {[
-              { typ: "🥣 Trockenfutter", text: "Günstig, lange haltbar, gut für Zähne. Qualität: Fleischanteil über 70 % prüfen.", href: "/futtertyp/trockenfutter" },
-              { typ: "🥫 Nassfutter", text: "Mehr Feuchtigkeit, schmackhafter. Gut für wählerische Hunde oder bei Nierenproblemen.", href: "/futtertyp/nassfutter" },
-              { typ: "🥩 BARF", text: "Rohfütterung. Sehr hochwertig, aber aufwändig und Expertenwissen nötig.", href: "/futtertyp/barf" },
+              { typ: "Trockenfutter", text: "Günstig, lange haltbar, gut für die Zähne. Achte auf einen Fleischanteil über 70 %.", href: "/futtertyp/trockenfutter" },
+              { typ: "Nassfutter", text: "Mehr Feuchtigkeit, schmackhafter. Ideal für wählerische Hunde oder bei Nierenthemen.", href: "/futtertyp/nassfutter" },
+              { typ: "BARF", text: "Rohfütterung. Sehr hochwertig, aber aufwändig und mit Expertenwissen verbunden.", href: "/futtertyp/barf" },
             ].map((t) => (
-              <Link key={t.typ} href={t.href} className="p-6 rounded-2xl border border-gray-100 hover:border-orange-200 hover:shadow-sm transition-all">
-                <div className="text-2xl mb-3">{t.typ}</div>
-                <p className="text-sm text-gray-600 leading-relaxed">{t.text}</p>
+              <Link key={t.typ} href={t.href} className="card card-hover p-6 block">
+                <div className="text-lg font-bold tracking-tight mb-2 text-[var(--ink)]">{t.typ}</div>
+                <p className="text-sm text-[var(--muted)] leading-relaxed">{t.text}</p>
               </Link>
             ))}
           </div>
@@ -186,14 +187,14 @@ export default function HomePage() {
           <h2 className="text-3xl font-black mb-8">Welpenfutter vs. Seniorfutter: Wann umstellen?</h2>
           <div className="grid sm:grid-cols-2 gap-6">
             <div className="bg-white rounded-2xl p-6 border border-orange-100">
-              <h3 className="font-bold text-lg mb-2">🐾 Welpenfutter</h3>
+              <h3 className="font-bold text-lg mb-2 tracking-tight">Welpenfutter</h3>
               <p className="text-sm text-gray-600 leading-relaxed">
                 Erhöhter Protein- und Kalziumgehalt für Wachstum. Große Rassen: Junior Large Breed – kontrolliertes Wachstum schützt Gelenke. Umstellen auf Adult: kleine Rassen ab 10 Monate, große ab 18–24 Monate.
               </p>
               <Link href="/futter/welpen" className="mt-4 inline-block text-sm text-orange-500 font-medium hover:underline">Welpenfutter →</Link>
             </div>
             <div className="bg-white rounded-2xl p-6 border border-orange-100">
-              <h3 className="font-bold text-lg mb-2">🦴 Seniorfutter</h3>
+              <h3 className="font-bold text-lg mb-2 tracking-tight">Seniorfutter</h3>
               <p className="text-sm text-gray-600 leading-relaxed">
                 Weniger Kalorien, mehr Gelenkstoffe (Glucosamin, Chondroitin), leicht verdaulich. Umstellen: kleine Rassen ab 9 Jahren, große Rassen ab 7 Jahren.
               </p>

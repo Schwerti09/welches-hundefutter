@@ -1,8 +1,11 @@
 ﻿import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import StructuredData from "@/components/StructuredData";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
 import ExitIntent from "@/components/ExitIntent";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://welches-hundefutter.today"),
@@ -63,7 +66,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="de" className="h-full antialiased">
+    <html lang="de" className={`h-full antialiased ${inter.variable}`}>
       <head>
         {/* Google Site Verification */}
         <meta name="google-site-verification" content="Apib7-x98H0j5cPqHWwSMm6dNU4GmODRoqxLiDzdx9I" />
@@ -92,7 +95,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <meta name="rating" content="general" />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
       </head>
-      <body className="min-h-full bg-[#05060f] text-white">
+      <body className="min-h-full bg-[#faf6f0] text-[#1b1714]">
         <StructuredData type="organization" />
         <StructuredData type="website" />
         <StructuredData type="software" />
