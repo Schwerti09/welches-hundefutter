@@ -49,7 +49,7 @@ async function getBreedFoods(slug: string, allergyProne: boolean): Promise<FoodR
          SELECT DISTINCT ON (${nameKey}) brand, name, type, protein, price_per_kg,
            is_grain_free, is_hypoallergenic, affiliate_url, image_url
          FROM dog_foods
-         WHERE is_active = true AND affiliate_url <> '' AND name <> '' AND price_per_kg IS NOT NULL AND type <> 'snack'
+         WHERE is_active = true AND affiliate_url <> '' AND name <> '' AND price_per_kg BETWEEN 2 AND 60 AND type <> 'snack'
          ORDER BY ${nameKey}, price_per_kg ASC
        ) d ORDER BY ${bias} price_per_kg ASC LIMIT 6`,
       []

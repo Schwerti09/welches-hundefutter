@@ -15,8 +15,8 @@ export const metadata: Metadata = {
 };
 
 const SCHEMA_FAQS = [
-  { question: "Welches Hundefutter ist das beste?", answer: "Das hängt von Rasse, Alter, Aktivität und Gesundheit ab. Premium-Sorten wie Anifit, Wolfsblut oder Futalis sind 2026 Testsieger. BELLA findet in 60 Sekunden das passende Futter speziell für deinen Hund." },
-  { question: "Welches Hundefutter bei Allergie?", answer: "Hypoallergenes Monoprotein-Futter ohne Huhn, Rind, Weizen. Z.B. Wolfsblut Wild Duck oder Bellfor Hypoallergen. Diese drei sind die häufigsten Allergie-Auslöser bei Hunden." },
+  { question: "Welches Hundefutter ist das beste?", answer: "Das perfekte Futter für alle Hunde gibt es nicht — es hängt von Rasse, Alter, Aktivität und Gesundheit ab. Wichtig sind ein hoher Fleischanteil, eine klare Deklaration der Zutaten und keine unnötigen Füllstoffe. BELLA fragt nach den Bedürfnissen deines Hundes und findet in 60 Sekunden passende Sorten aus dem Live-Katalog." },
+  { question: "Welches Hundefutter bei Allergie?", answer: "Bei Allergien hilft hypoallergenes Monoprotein-Futter mit nur einer, möglichst ungewöhnlichen Fleischquelle (z. B. Ente, Pferd oder Insekt) und ohne Getreide. Häufigste Auslöser sind Huhn, Rind und Weizen. BELLA sortiert dir verträgliche, getreidefreie Sorten heraus." },
   { question: "Trockenfutter oder Nassfutter – was ist besser?", answer: "Beides hat Vor- und Nachteile. Trockenfutter ist günstiger und gut für die Zähne. Nassfutter hat mehr Feuchtigkeit. Optimal: Mischfütterung – Frühstück trocken, Abend nass." },
   { question: "Wie viel sollte mein Hund pro Tag fressen?", answer: "Faustregel Trockenfutter: 1,5–2,5 % des Körpergewichts. Ein 20 kg Hund braucht ca. 300–500 g/Tag. Bei Nassfutter Faktor 3. Aktive Hunde mehr, Senioren weniger." },
 ];

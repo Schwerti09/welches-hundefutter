@@ -55,7 +55,7 @@ export async function getTopFoods(limit = 7): Promise<DogFood[]> {
       `SELECT ${COLS} FROM (
          SELECT DISTINCT ON (${NAME_KEY}) ${COLS}
          FROM dog_foods
-         WHERE ${BASE} AND price_per_kg IS NOT NULL AND type <> 'snack'
+         WHERE ${BASE} AND price_per_kg BETWEEN 2 AND 60 AND type <> 'snack'
          ORDER BY ${NAME_KEY}, price_per_kg ASC
        ) d ORDER BY price_per_kg ASC LIMIT ${Math.max(1, Math.min(20, limit))}`
     );
@@ -71,7 +71,7 @@ export async function getFoodsByType(type: string, limit = 12): Promise<DogFood[
     const r = await sql.query(
       `SELECT ${COLS} FROM (
          SELECT DISTINCT ON (${NAME_KEY}) ${COLS}
-         FROM dog_foods WHERE ${BASE} AND type = $1 AND price_per_kg IS NOT NULL
+         FROM dog_foods WHERE ${BASE} AND type = $1 AND price_per_kg BETWEEN 2 AND 60
          ORDER BY ${NAME_KEY}, price_per_kg ASC
        ) d ORDER BY price_per_kg ASC LIMIT ${Math.max(1, Math.min(30, limit))}`,
       [type]
@@ -89,7 +89,7 @@ export async function getFoodsForBreed(allergyProne: boolean, limit = 6): Promis
     const r = await sql.query(
       `SELECT ${COLS} FROM (
          SELECT DISTINCT ON (${NAME_KEY}) ${COLS}
-         FROM dog_foods WHERE ${BASE} AND price_per_kg IS NOT NULL AND type <> 'snack'
+         FROM dog_foods WHERE ${BASE} AND price_per_kg BETWEEN 2 AND 60 AND type <> 'snack'
          ORDER BY ${NAME_KEY}, price_per_kg ASC
        ) d ORDER BY ${bias} price_per_kg ASC LIMIT ${Math.max(1, Math.min(12, limit))}`
     );
