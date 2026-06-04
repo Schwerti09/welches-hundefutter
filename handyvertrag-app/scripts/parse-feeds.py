@@ -12,7 +12,10 @@ csv.field_size_limit(10**7)
 
 # ── Feed-Quellen (anpassen wenn neue Feeds kommen) ───────────────────────────
 DL = os.path.expanduser("~/Downloads")
-AWIN_FEEDS = [os.path.join(DL, "11703-23513-de_DE-Default.csv.gz")]   # schecker.de
+AWIN_FEEDS = [
+    os.path.join(DL, "11703-23513-de_DE-Default.csv.gz"),    # schecker.de (Hunde-Shop)
+    os.path.join(DL, "56633-107909-de_DE-Default.csv.gz"),   # Bellerei Hundezubehör
+]
 ADCELL_FEEDS = [
     os.path.join(DL, "419197-66376.csv"),
     os.path.join(DL, "521034-66376.csv"),
@@ -21,7 +24,7 @@ ADCELL_FEEDS = [
 PUBLISHER = "615299"  # AWIN publisher id (für Tracking-Konsistenz)
 
 # ── Filter-Heuristiken ───────────────────────────────────────────────────────
-FOOD_RE = re.compile(r"futter|nahrung|men[üu]\b|trockenfutter|nassfutter|kausnack|kauknochen|kaustange|kauartikel|leckerli|trainingssnack|barf|frostfutter|frischfleisch|dose|dosen|nass\b|trocken\b|kroketten|flocken|alleinfutter|erg[äa]nzungsfutter", re.I)
+FOOD_RE = re.compile(r"futter|nahrung|men[üu]\b|trockenfutter|nassfutter|kausnack|kauknochen|kaustange|kauartikel|leckerli|leckerchen|trainingssnack|barf|frostfutter|frischfleisch|dose|dosen|nass\b|trocken\b|kroketten|flocken|alleinfutter|erg[äa]nzungsfutter", re.I)
 ACCESSORY_RE = re.compile(r"beutel|tasche|pocket|napf|leine|halsband|geschirr|spielzeug|\bball\b|decke|k[öo]rbchen|kissen|b[üu]rste|\bkamm\b|shampoo|mantel|jacke|schuhe|pfote(?:n)?schutz|transportbox|\bbox\b|eimer|zaun|gitter|clicker|pfeife|markierungs|kotbeutel|handschuh|h[üu]rde|tunnel|g[üu]rtel|rucksack|tragetasche|buch|dvd", re.I)
 DOG_RE = re.compile(r"hund|dog|welpe|barf|doggy", re.I)
 OTHER_PET_RE = re.compile(r"katz|\bcat\b|nager|kaninchen.?stall|vogel|\bfisch.?tank|aquarium|pferd|reit", re.I)
