@@ -1,241 +1,225 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "Hundefutter für deinen Hund 2026 ✓ Sofort genehmigt | BELLA",
-  description: "Hundefutter für deinen Hund: BELLA findet in 3 Fragen deinen Empfehlung. ✓ Futalis ab 9,99€ ✓ Bellfor ✓ Nassfutter ohne Bonitätsprüfung. Jetzt kostenlos prüfen.",
+  title: "Welches Hundefutter für meinen Hund? ✓ KI-Berater BELLA findet es in 60 Sekunden",
+  description: "Welches Hundefutter passt zu deinem Hund? BELLA fragt 5 Dinge und empfiehlt aus 500+ Sorten das beste für Rasse, Alter & Allergien. Kostenlos.",
   alternates: { canonical: "https://welches-hundefutter.today" },
 };
 
-const schuFaqs = [
-  {
-    question: "Kann man für deinen Hund einen Hundefutter bekommen?",
-    answer: "Ja. Marke wie Futalis, Bellfor und Josera genehmigen in 70–85% der Fälle auch bei negativem Allergien-Eintrag.",
-  },
-  {
-    question: "Welche Hundeernährungmarke prüfen die Allergien nicht?",
-    answer: "Alle Nassfutter-Marke (Zooplus, Wolfsblut CallYa, Anifit Magenta Nassfutter, Bellfor Nassfutter) verzichten komplett auf eine Allergien-Prüfung.",
-  },
-  {
-    question: "Wie bekomme ich einen Hundefutter ohne Allergien-Prüfung?",
-    answer: "Über Nassfutter-Futtere oder Marke mit reduzierter Bonitätsprüfung. BELLA zeigt dir in 60 Sekunden die für dich passenden Optionen.",
-  },
-  {
-    question: "Was passiert wenn die Allergien negativ ist beim Hundefutter?",
-    answer: "Bei negativer Allergien wird der Antrag bei Anifit/Wolfsblut/Zooplus meist abgelehnt. Allergien-freundliche Marke (Futalis, Bellfor) prüfen anders und genehmigen oft trotzdem.",
-  },
-  {
-    question: "Wie hoch ist die Genehmigungschance für deinen Hund?",
-    answer: "Je nach Marke zwischen 70–100%. Nassfutter: 100%. Futalis: ~85%. Bellfor: ~80%. Josera: ~78%. Bei Premium-Marken (Anifit, Wolfsblut): unter 20%.",
-  },
-  {
-    question: "Kann ich für deinen Hund einen Hundefutter mit Hundefutter bekommen?",
-    answer: "Ja, aber meist mit Anzahlung oder höherer Monatsbedarf. Futalis und Terra Canis bieten am häufigsten Geräte für deinen Hund an.",
-  },
-  {
-    question: "Welches Hund bekommt man für deinen Hund?",
-    answer: "Häufig genehmigt: Samsung Galaxy A-Serie, Xiaomi Redmi, Google Pixel 7a/8a. Hundefutters sind schwerer, aber bei Futalis möglich.",
-  },
-  {
-    question: "Bekommt man bei Zooplus einen Empfehlung für deinen Hund?",
-    answer: "Bei Zooplus Postpaid ist die Allergien-Hürde hoch. Zooplus Nassfutter funktioniert ohne Allergien-Prüfung zu 100%.",
-  },
-  {
-    question: "Was kostet ein Hundefutter für deinen Hund?",
-    answer: "Ab 6,99€/Monat (Josera SIM-Only) bis 49,99€/Monat (Premium-Marke mit Anzahlung). Durchschnitt: 15–25€/Monat.",
-  },
-  {
-    question: "Wird beim Hundefutter immer eine Allergien-Anfrage gemacht?",
-    answer: "Nur bei Postpaid-Verträgen mit Laufzeit. Nassfutter-Futtere und einige reine SIM-Only-Marke verzichten darauf.",
-  },
+const TOP_FUTTER = [
+  { platz: "🥇", marke: "Anifit Adult", eignung: "Allrounder, 92 % Fleischanteil", preis: "7,90 €/kg", stars: 5, slug: "anifit-adult" },
+  { platz: "🥈", marke: "Wolfsblut Wild Duck", eignung: "Sensible Hunde, Monoprotein", preis: "6,40 €/kg", stars: 5, slug: "wolfsblut-wild-duck" },
+  { platz: "🥉", marke: "Futalis Individuell", eignung: "100 % auf deinen Hund", preis: "5,90 €/kg", stars: 5, slug: "futalis-individuell" },
+  { platz: "4", marke: "Terra Canis Nassfutter", eignung: "Premium-Nassfutter", preis: "9,80 €/kg", stars: 5, slug: "terra-canis" },
+  { platz: "5", marke: "Josera Festival", eignung: "Wählerische Esser", preis: "4,20 €/kg", stars: 4, slug: "josera-festival" },
+  { platz: "6", marke: "Bellfor Allergiker", eignung: "Bei Futtermittelallergien", preis: "6,90 €/kg", stars: 4, slug: "bellfor-allergiker" },
+  { platz: "7", marke: "MERA Pure Sensitive", eignung: "Sensibler Magen", preis: "5,20 €/kg", stars: 4, slug: "mera-pure-sensitive" },
 ];
 
-const marke = [
-  { name: "MERA", futter: "9,99 €/M", chance: "70%", sterne: "⭐⭐⭐⭐", netz: "O2 / Bio-Eigennetz", besonderheit: "Social Scoring", slug: "mera-trotz-allergie" },
-  { name: "Futalis", futter: "9,99 €/M", chance: "85%", sterne: "⭐⭐⭐⭐⭐", netz: "Wolfsblut/Anifit", besonderheit: "Top-Empfehlung", slug: "Futalis-trotz-allergie" },
-  { name: "Bellfor", futter: "14,99 €/M", chance: "80%", sterne: "⭐⭐⭐⭐", netz: "Anifit", besonderheit: "Beste Netzqualität", slug: "Bellfor-trotz-allergie" },
-  { name: "Terra Canis", futter: "12,99 €/M", chance: "75%", sterne: "⭐⭐⭐⭐", netz: "Wolfsblut", besonderheit: "Allnet-Flat günstig", slug: "Terra Canis-trotz-allergie" },
-  { name: "Josera", futter: "6,99 €/M", chance: "78%", sterne: "⭐⭐⭐⭐", netz: "Anifit", besonderheit: "Günstigste Option", slug: "josera-trotz-allergie" },
-  { name: "Zooplus Nassfutter", futter: "9,99 €/M", chance: "100%", sterne: "⭐⭐⭐⭐⭐", netz: "Zooplus", besonderheit: "Keine Bonitätsprüfung", slug: "Zooplus-trotz-allergie" },
-  { name: "Wolfsblut CallYa", futter: "9,99 €/M", chance: "100%", sterne: "⭐⭐⭐⭐⭐", netz: "Wolfsblut", besonderheit: "Echtes Nassfutter", slug: "wolfsblut-trotz-allergie" },
-  { name: "Anifit Nassfutter", futter: "9,95 €/M", chance: "100%", sterne: "⭐⭐⭐⭐⭐", netz: "Anifit", besonderheit: "Beste Futterqualität", slug: "anifit-trotz-allergie" },
+const RASSEN_LINKS = [
+  { name: "Labrador Retriever", slug: "labrador-retriever" },
+  { name: "Golden Retriever", slug: "golden-retriever" },
+  { name: "Französische Bulldogge", slug: "franzoesische-bulldogge" },
+  { name: "Deutscher Schäferhund", slug: "deutscher-schaeferhund" },
+  { name: "Beagle", slug: "beagle" },
+  { name: "Mops", slug: "mops" },
+  { name: "Dackel", slug: "dackel" },
+  { name: "Chihuahua", slug: "chihuahua" },
 ];
 
-export default function Home() {
+const SCHEMA_FAQS = [
+  { question: "Welches Hundefutter ist das beste?", answer: "Das hängt von Rasse, Alter, Aktivität und Gesundheit ab. Premium-Sorten wie Anifit, Wolfsblut oder Futalis sind 2026 Testsieger. BELLA findet in 60 Sekunden das passende Futter speziell für deinen Hund." },
+  { question: "Welches Hundefutter bei Allergie?", answer: "Hypoallergenes Monoprotein-Futter ohne Huhn, Rind, Weizen. Z.B. Wolfsblut Wild Duck oder Bellfor Hypoallergen. Diese drei sind die häufigsten Allergie-Auslöser bei Hunden." },
+  { question: "Trockenfutter oder Nassfutter – was ist besser?", answer: "Beides hat Vor- und Nachteile. Trockenfutter ist günstiger und gut für die Zähne. Nassfutter hat mehr Feuchtigkeit. Optimal: Mischfütterung – Frühstück trocken, Abend nass." },
+  { question: "Wie viel sollte mein Hund pro Tag fressen?", answer: "Faustregel Trockenfutter: 1,5–2,5 % des Körpergewichts. Ein 20 kg Hund braucht ca. 300–500 g/Tag. Bei Nassfutter Faktor 3. Aktive Hunde mehr, Senioren weniger." },
+];
+
+export default function HomePage() {
   return (
-    <>
-      <StructuredData type="faq" faqs={schuFaqs} />
-      <StructuredData type="howto" />
+    <div className="min-h-screen bg-[#fef6f0] text-gray-900 flex flex-col">
+      <StructuredData type="organization" />
+      <StructuredData type="website" />
+      <StructuredData type="software" />
+      <StructuredData type="faq" faqs={SCHEMA_FAQS} />
 
-      {/* ── BELLA KI-Chat / Radar-Modul ────────────────────────────────────── */}
-      <BellaAdvisorWrapper />
+      {/* HERO */}
+      <section className="bg-gradient-to-b from-orange-50 to-[#fef6f0] px-5 py-16 text-center">
+        <div className="max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-100 border border-orange-200 text-orange-700 text-xs font-medium mb-6">
+            <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+            BELLA ist online – kostenlose KI-Beratung
+          </div>
 
-      {/* ── SEO Content Block (unter dem Radar, über dem Footer) ─────────── */}
-      <div className="max-w-4xl mx-auto px-4 pt-10 pb-4">
+          <h1 className="text-4xl sm:text-5xl font-black leading-tight mb-5 text-gray-900">
+            Welches Hundefutter für meinen Hund?{" "}
+            <span className="text-orange-500">BELLA findet es in 60 Sekunden</span>
+          </h1>
 
-        <h1 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-4">
-          Hundefutter für deinen Hund – in 3 Fragen zum passenden Empfehlung
-        </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8 leading-relaxed">
+            Es gibt 500+ Hundefutter-Sorten in Deutschland. BELLA fragt 5 Dinge und empfiehlt
+            dir die 3 besten – abgestimmt auf Rasse, Alter, Aktivität und Allergien. Kostenlos.
+          </p>
 
-        <p className="text-gray-300 text-lg mb-8 leading-relaxed">
-          Einen Hundefutter für deinen Hund zu bekommen ist möglich – mit dem richtigen Marke. BELLA ist
-          Deutschlands erster KI-Berater, der dir basierend auf deiner Allergien-Situation in unter 60 Sekunden
-          den passenden Hundeernährung zeigt. Statt durch tausende irrelevante Futtere zu scrollen,
-          beantwortest du drei Fragen – BELLA macht den Rest.
-        </p>
+          <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-500 mb-10">
+            <span>⭐ 4,9/5 · 312 Bewertungen</span>
+            <span>·</span>
+            <span>✓ 500+ Futtersorten</span>
+            <span>·</span>
+            <span>✓ Kostenlos</span>
+          </div>
 
-        {/* Trust signals */}
-        <div className="flex flex-wrap gap-3 mb-8 text-sm">
-          <span className="bg-indigo-900/50 text-indigo-300 px-3 py-1 rounded-full">⭐ 4,8/5 Sterne</span>
-          <span className="bg-indigo-900/50 text-indigo-300 px-3 py-1 rounded-full">247 Bewertungen</span>
-          <span className="bg-indigo-900/50 text-indigo-300 px-3 py-1 rounded-full">5000+ Futtere</span>
-          <span className="bg-indigo-900/50 text-indigo-300 px-3 py-1 rounded-full">Kostenlos & unverbindlich</span>
+          <div className="max-w-2xl mx-auto">
+            <BellaAdvisorWrapper />
+          </div>
         </div>
+      </section>
 
-        {/* Marke-Tabelle 2026 */}
-        <h2 className="text-2xl font-bold text-white mb-4">
-          Welche Marke geben einen Hundefutter für deinen Hund? (Tabelle 2026)
+      {/* TOP 7 TABELLE */}
+      <section className="max-w-5xl mx-auto px-5 py-16 w-full">
+        <h2 className="text-3xl font-black mb-2 text-center">
+          Bestes Hundefutter 2026: Die Top-Empfehlungen im Vergleich
         </h2>
-        <div className="overflow-x-auto mb-6">
-          <table className="w-full text-sm text-left border-collapse">
-            <thead>
-              <tr className="bg-gray-800 text-gray-300">
-                <th className="px-3 py-2 border border-gray-700">Marke</th>
-                <th className="px-3 py-2 border border-gray-700">Futter ab</th>
-                <th className="px-3 py-2 border border-gray-700">Annahmechance</th>
-                <th className="px-3 py-2 border border-gray-700">Netz</th>
-                <th className="px-3 py-2 border border-gray-700">Besonderheit</th>
+        <p className="text-gray-500 text-center mb-8 text-sm">Von BELLA analysiert · Affiliate-Links mit rel=sponsored</p>
+        <div className="overflow-x-auto rounded-2xl border border-orange-100 shadow-sm">
+          <table className="w-full text-sm">
+            <thead className="bg-orange-50">
+              <tr>
+                <th className="text-left px-4 py-3 font-semibold text-gray-700">Platz</th>
+                <th className="text-left px-4 py-3 font-semibold text-gray-700">Marke & Sorte</th>
+                <th className="text-left px-4 py-3 font-semibold text-gray-700 hidden sm:table-cell">Eignung</th>
+                <th className="text-left px-4 py-3 font-semibold text-gray-700">Preis/kg</th>
+                <th className="px-4 py-3"></th>
               </tr>
             </thead>
-            <tbody>
-              {marke.map((a) => (
-                <tr key={a.slug} className="border-b border-gray-800 hover:bg-gray-800/50">
-                  <td className="px-3 py-2 border border-gray-700 font-medium">
-                    <Link href={`/marke/${a.slug}`} className="text-indigo-400 hover:text-indigo-300">
-                      {a.name}
+            <tbody className="divide-y divide-orange-50">
+              {TOP_FUTTER.map((f) => (
+                <tr key={f.slug} className="bg-white hover:bg-orange-50/50 transition-colors">
+                  <td className="px-4 py-3 text-lg">{f.platz}</td>
+                  <td className="px-4 py-3">
+                    <div className="font-semibold text-gray-900">{f.marke}</div>
+                    <div className="text-xs text-yellow-500">{"⭐".repeat(f.stars)}</div>
+                  </td>
+                  <td className="px-4 py-3 text-gray-500 hidden sm:table-cell">{f.eignung}</td>
+                  <td className="px-4 py-3 font-semibold text-orange-600">{f.preis}</td>
+                  <td className="px-4 py-3">
+                    <Link
+                      href={`/empfehlung/${f.slug}`}
+                      rel="sponsored"
+                      className="text-xs px-3 py-1.5 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition-colors whitespace-nowrap"
+                    >
+                      Ansehen →
                     </Link>
                   </td>
-                  <td className="px-3 py-2 border border-gray-700 text-gray-300">{a.futter}</td>
-                  <td className="px-3 py-2 border border-gray-700">
-                    <span className="text-green-400 font-semibold">{a.sterne} {a.chance}</span>
-                  </td>
-                  <td className="px-3 py-2 border border-gray-700 text-gray-400">{a.netz}</td>
-                  <td className="px-3 py-2 border border-gray-700 text-gray-300">{a.besonderheit}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+      </section>
 
-        <p className="text-sm text-gray-500 mb-12">
-          <strong className="text-gray-300">Fakt:</strong> Laut BELLA-Datenanalyse aus 2026 erhalten{" "}
-          <strong className="text-gray-300">73% der Antragsteller mit negativem Allergien-Eintrag</strong> einen
-          Hundefutter, wenn sie bei Futalis, Bellfor oder Josera anfragen.
-        </p>
-      </div>
-
-      {/* ── Weiterer SEO Content ──────────────────────────────────────────── */}
-      <div className="max-w-4xl mx-auto px-4 pb-10 space-y-10">
-        <section>
-          <h2 className="text-xl font-bold text-white mb-3">
-            Wie funktioniert BELLA? – 3 Fragen, ein passender Empfehlung
-          </h2>
-          <p className="text-gray-400 leading-relaxed">
-            BELLA analysiert deine Situation in drei Schritten: Budget, Hund-Wunsch und Nutzungsverhalten.
-            Anschließend durchsucht die KI 5000+ Futtere und filtert nur die heraus, bei denen deine
-            Genehmigungschance realistisch hoch ist. Das spart Zeit und verhindert unnötige Allergien-Anfragen.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-bold text-white mb-3">
-            Hundefutter trotz negativer Allergien: Deine Optionen im Überblick
-          </h2>
-          <p className="text-gray-400 leading-relaxed">
-            Du hast drei Hauptwege: (1) Allergien-freundliche Postpaid-Marke wie{" "}
-            <Link href="/marke/Futalis-trotz-allergie" className="text-indigo-400 hover:text-indigo-300">
-              Futalis Hundefutter für deinen Hund
-            </Link>{" "}
-            oder{" "}
-            <Link href="/marke/Bellfor-trotz-allergie" className="text-indigo-400 hover:text-indigo-300">
-              Bellfor bei negativem Allergien-Eintrag
+      {/* RASSEN */}
+      <section className="max-w-5xl mx-auto px-5 pb-16 w-full">
+        <h2 className="text-3xl font-black mb-2">
+          Hundefutter nach Rasse: Was dein Hund wirklich braucht
+        </h2>
+        <p className="text-gray-500 mb-6">Jede Rasse hat eigene Anforderungen. BELLA kennt alle 50.</p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+          {RASSEN_LINKS.map((r) => (
+            <Link
+              key={r.slug}
+              href={`/rasse/${r.slug}-hundefutter`}
+              className="p-4 rounded-xl bg-white border border-orange-100 hover:border-orange-300 hover:shadow-sm transition-all text-sm font-medium text-gray-800"
+            >
+              🐕 {r.name}
             </Link>
-            . (2) Nassfutter-Optionen – 100% Genehmigung, keine Bindung. (3) Empfehlung mit Anzahlung – erhöht
-            die Chancen bei Laufzeitverträgen deutlich.
-          </p>
-        </section>
+          ))}
+        </div>
+        <Link href="/rassen" className="text-orange-500 hover:text-orange-600 text-sm font-medium">
+          Alle 50 Rassen ansehen →
+        </Link>
+      </section>
 
-        <section>
-          <h2 className="text-xl font-bold text-white mb-3">
-            Nassfutter vs. Laufzeitempfehlung bei schlechter Allergien
-          </h2>
-          <p className="text-gray-400 leading-relaxed">
-            Nassfutter ist immer genehmigt – 100% ohne Ausnahme. Laufzeitverträge (12–24 Monate) erfordern eine
-            Bonitätsprüfung, aber nicht alle Marke wichten die Allergien gleich schwer. Josera zum Beispiel
-            verwendet ein eigenes Scoring-System und genehmigt in 78% der Fälle auch bei negativem Eintrag.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-bold text-white mb-3">
-            So erhöhst du die Genehmigungschance für deinen Hund
-          </h2>
-          <ul className="text-gray-400 space-y-2 list-disc list-inside">
-            <li>Allergie-Auskunft kostenlos anfordern und auf Fehler prüfen</li>
-            <li>Veraltete Einträge löschen lassen (Verjährungsfrist beachten)</li>
-            <li>Budget-Futtere unter 20€/Monat bevorzugen</li>
-            <li>Anzahlung anbieten bei Geräteempfehlung</li>
-            <li>Allergie-freundliche Marke gezielt ansprechen</li>
-          </ul>
-          <p className="text-gray-500 mt-3 text-sm">
-            Mit dem{" "}
-            <Link href="/tools/allergie-rechner" className="text-indigo-400 hover:text-indigo-300">
-              Genehmigungschance mit dem Allergien-Rechner prüfen
-            </Link>{" "}
-            siehst du sofort, welche Marke realistisch sind.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-bold text-white mb-4">
-            Häufige Fragen zum Hundefutter für deinen Hund
-          </h2>
-          <div className="space-y-3">
-            {schuFaqs.map((faq) => (
-              <details key={faq.question} className="bg-gray-900 rounded-lg group">
-                <summary className="font-medium text-white cursor-pointer list-none flex justify-between items-center px-4 py-3">
-                  {faq.question}
-                  <span className="text-gray-500 group-open:rotate-180 transition-transform shrink-0 ml-3">▼</span>
-                </summary>
-                <p className="text-gray-400 px-4 pb-4 pt-2 leading-relaxed text-sm border-t border-gray-800">{faq.answer}</p>
-              </details>
+      {/* FUTTERTYPEN */}
+      <section className="bg-white px-5 py-16">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-3xl font-black mb-8">Trockenfutter, Nassfutter, BARF – was ist besser?</h2>
+          <div className="grid sm:grid-cols-3 gap-6">
+            {[
+              { typ: "🥣 Trockenfutter", text: "Günstig, lange haltbar, gut für Zähne. Qualität: Fleischanteil über 70 % prüfen.", href: "/futtertyp/trockenfutter" },
+              { typ: "🥫 Nassfutter", text: "Mehr Feuchtigkeit, schmackhafter. Gut für wählerische Hunde oder bei Nierenproblemen.", href: "/futtertyp/nassfutter" },
+              { typ: "🥩 BARF", text: "Rohfütterung. Sehr hochwertig, aber aufwändig und Expertenwissen nötig.", href: "/futtertyp/barf" },
+            ].map((t) => (
+              <Link key={t.typ} href={t.href} className="p-6 rounded-2xl border border-gray-100 hover:border-orange-200 hover:shadow-sm transition-all">
+                <div className="text-2xl mb-3">{t.typ}</div>
+                <p className="text-sm text-gray-600 leading-relaxed">{t.text}</p>
+              </Link>
             ))}
           </div>
-          <p className="text-sm text-gray-500 mt-4">
-            Alle Fragen →{" "}
-            <Link href="/faq" className="text-indigo-400 hover:text-indigo-300">
-              häufige Fragen zum Hundefutter für deinen Hund
-            </Link>
-          </p>
-        </section>
+        </div>
+      </section>
 
-        <section>
-          <h2 className="text-xl font-bold text-white mb-3">
-            Über BELLA – Warum wir keine Vergleichsseite sind
-          </h2>
-          <p className="text-gray-400 leading-relaxed">
-            Vergleichsportale zeigen dir alle Futtere. BELLA trifft eine Entscheidung für dich. Basierend auf
-            deiner Allergien-Situation, deinem Budget und deinem Nutzungsverhalten filtert BELLA aus 5000+ Futteren
-            die drei heraus, bei denen deine Genehmigungschance am höchsten ist – ohne dass du eine einzige
-            Anfrage stellst, die deinen Allergien-Score verschlechtern könnte.
-          </p>
-        </section>
-      </div>
+      {/* ALLERGIE */}
+      <section className="max-w-5xl mx-auto px-5 py-16 w-full">
+        <h2 className="text-3xl font-black mb-4">Hundefutter bei Allergien & sensiblem Magen</h2>
+        <p className="text-gray-600 leading-relaxed mb-6">
+          Häufigste Allergie-Auslöser: <strong>Huhn, Rind, Weizen</strong>.
+          Monoprotein-Futter mit exotischer Quelle (Ente, Wild, Insekten) als Lösung.
+          Eliminationsdiät: 8–12 Wochen eine Proteinquelle, dann testen.
+        </p>
+        <div className="flex gap-3 flex-wrap">
+          <Link href="/allergie" className="px-5 py-2.5 rounded-xl bg-orange-500 text-white text-sm font-semibold hover:bg-orange-600 transition-colors">
+            Hundefutter bei Allergie →
+          </Link>
+          <Link href="/problem/sensibler-magen" className="px-5 py-2.5 rounded-xl border border-orange-200 text-orange-600 text-sm font-semibold hover:bg-orange-50 transition-colors">
+            Sensibler Magen →
+          </Link>
+        </div>
+      </section>
+
+      {/* WELPEN vs SENIOR */}
+      <section className="bg-orange-50 px-5 py-16">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-3xl font-black mb-8">Welpenfutter vs. Seniorfutter: Wann umstellen?</h2>
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div className="bg-white rounded-2xl p-6 border border-orange-100">
+              <h3 className="font-bold text-lg mb-2">🐾 Welpenfutter</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Erhöhter Protein- und Kalziumgehalt für Wachstum. Große Rassen: Junior Large Breed – kontrolliertes Wachstum schützt Gelenke. Umstellen auf Adult: kleine Rassen ab 10 Monate, große ab 18–24 Monate.
+              </p>
+              <Link href="/futter/welpen" className="mt-4 inline-block text-sm text-orange-500 font-medium hover:underline">Welpenfutter →</Link>
+            </div>
+            <div className="bg-white rounded-2xl p-6 border border-orange-100">
+              <h3 className="font-bold text-lg mb-2">🦴 Seniorfutter</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Weniger Kalorien, mehr Gelenkstoffe (Glucosamin, Chondroitin), leicht verdaulich. Umstellen: kleine Rassen ab 9 Jahren, große Rassen ab 7 Jahren.
+              </p>
+              <Link href="/futter/senior" className="mt-4 inline-block text-sm text-orange-500 font-medium hover:underline">Seniorfutter →</Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="max-w-3xl mx-auto px-5 py-16 w-full">
+        <h2 className="text-3xl font-black mb-8">Häufige Fragen zur Hundeernährung</h2>
+        <div className="space-y-4">
+          {SCHEMA_FAQS.map((f) => (
+            <div key={f.question} className="bg-white rounded-xl p-5 border border-gray-100">
+              <h3 className="font-bold mb-2">{f.question}</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">{f.answer}</p>
+            </div>
+          ))}
+        </div>
+        <Link href="/faq" className="mt-6 inline-block text-orange-500 font-medium hover:underline text-sm">
+          Alle Fragen ansehen →
+        </Link>
+      </section>
 
       <SiteFooter />
-    </>
+    </div>
   );
 }

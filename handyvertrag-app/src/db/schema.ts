@@ -1,4 +1,4 @@
-﻿import { pgTable, text, numeric, integer, boolean, timestamp, uuid, serial, index } from "drizzle-orm/pg-core";
+﻿import { pgTable, text, numeric, integer, boolean, timestamp, uuid, serial, index, jsonb } from "drizzle-orm/pg-core";
 
 // Legacy-Tabelle (für Rückwärtskompatibilität mit alten Imports)
 export const offers = pgTable("offers", {
@@ -63,11 +63,74 @@ export const dogFoods = pgTable("dog_foods", {
 export type DogFood = typeof dogFoods.$inferSelect;
 export type NewDogFood = typeof dogFoods.$inferInsert;
 
+// ─── Rassen-Profile ──────────────────────────────────────────────────────────
+
+export const dogBreeds = pgTable("dog_breeds", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  slug: text("slug").unique().notNull(),
+  name: text("name").notNull(),
+  alternativeNames: text("alternative_names").array(),
+  size: text("size").notNull(), // 'klein' | 'mittel' | 'gross' | 'sehrgross'
+  weightMin: numeric("weight_min"),
+  weightMax: numeric("weight_max"),
+  lifeExpectancy: integer("life_expectancy"),
+  activityLevel: text("activity_level"),
+  commonHealthIssues: text("common_health_issues").array(),
+  recommendedProteinPercentage: integer("recommended_protein_percentage"),
+  recommendedFatPercentage: integer("recommended_fat_percentage"),
+  feedingNotes: text("feeding_notes"),
+  description: text("description"),
+  imageUrl: text("image_url"),
+  recommendedFoodIds: text("recommended_food_ids").array(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type DogBreed = typeof dogBreeds.$inferSelect;
+export type NewDogBreed = typeof dogBreeds.$inferInsert;
+
+// ─── Gesundheitsprobleme ─────────────────────────────────────────────────────
+
+export const healthIssues = pgTable("health_issues", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  slug: text("slug").unique().notNull(),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  symptoms: text("symptoms").array(),
+  feedingApproach: text("feeding_approach"),
+  recommendedFoodTypes: text("recommended_food_types").array(),
+  avoidIngredients: text("avoid_ingredients").array(),
+  recommendedFoodIds: text("recommended_food_ids").array(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type HealthIssue = typeof healthIssues.$inferSelect;
+export type NewHealthIssue = typeof healthIssues.$inferInsert;
+
 // ─── Klick-Tracking ──────────────────────────────────────────────────────────
 
 export const affiliateClicks = pgTable("affiliate_clicks", {
-  id: serial("id").primaryKey(),
-  slug: text("slug").notNull(),
-  referer: text("referer"),
+  id: uuid("id").defaultRandom().primaryKey(),
+  foodId: uuid("food_id"),
+  sourceUrl: text("source_url"),
+  userAgent: text("user_agent"),
+  referrer: text("referrer"),
+  sessionId: text("session_id"),
+  bellaConversation: boolean("bella_conversation").default(false),
   clickedAt: timestamp("clicked_at").defaultNow(),
+});
+
+// ─── BELLA Chat-Sessions ─────────────────────────────────────────────────────
+
+export const advisorSessions = pgTable("advisor_sessions", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  sessionId: text("session_id").unique().notNull(),
+  breedSlug: text("breed_slug"),
+  dogAge: integer("dog_age"),
+  dogWeight: numeric("dog_weight"),
+  activityLevel: text("activity_level"),
+  healthIssuesList: text("health_issues").array(),
+  preferredFoodType: text("preferred_food_type"),
+  recommendedFoodIds: text("recommended_food_ids").array(),
+  completedAt: timestamp("completed_at"),
+  createdAt: timestamp("created_at").defaultNow(),
 });
