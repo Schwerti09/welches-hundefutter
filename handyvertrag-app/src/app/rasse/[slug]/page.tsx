@@ -17,8 +17,9 @@ export function generateStaticParams() {
   return BREEDS.map((b) => ({ slug: b.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const b = BREED_BY_SLUG[params.slug];
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const b = BREED_BY_SLUG[slug];
   if (!b) return {};
   const title = `${b.name} Futter: Das richtige Hundefutter für deinen ${b.name}`;
   const description = `Welches Futter passt zum ${b.name}? Bedarf, typische Gesundheitsthemen und von BELLA empfohlene Sorten — abgestimmt auf Größe, Aktivität & Allergien.`;
@@ -62,8 +63,9 @@ async function getBreedFoods(slug: string, allergyProne: boolean): Promise<FoodR
 const SIZE_LABEL: Record<string, string> = { klein: "Klein", mittel: "Mittel", gross: "Groß", sehrgross: "Sehr groß" };
 const ACT_LABEL: Record<string, string> = { niedrig: "Niedrig", mittel: "Mittel", hoch: "Hoch", sehrhoch: "Sehr hoch" };
 
-export default async function BreedPage({ params }: { params: { slug: string } }) {
-  const breed = BREED_BY_SLUG[params.slug];
+export default async function BreedPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const breed = BREED_BY_SLUG[slug];
   if (!breed) notFound();
 
   const allergyProne = (breed.commonHealthIssues ?? []).some((i) => /allergi|haut|magen|darm|verdau/i.test(i));
