@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import breeds from "@/data/breed-gallery.json";
 
 /**
@@ -11,11 +12,6 @@ import breeds from "@/data/breed-gallery.json";
 export default function BreedGallery() {
   const [q, setQ] = useState("");
   const list = breeds.filter((b) => b.name.toLowerCase().includes(q.toLowerCase().trim()));
-
-  const pick = (name: string) => {
-    window.dispatchEvent(new CustomEvent("bella:breed", { detail: name }));
-    document.getElementById("bella-advisor")?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
 
   return (
     <section className="relative max-w-6xl mx-auto px-5 py-20 w-full">
@@ -41,10 +37,10 @@ export default function BreedGallery() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
         {list.map((b) => (
-          <button
+          <Link
             key={b.slug}
-            onClick={() => pick(b.name)}
-            className="group relative aspect-square rounded-2xl overflow-hidden border border-white/10 hover:border-[rgba(240,167,60,0.5)] transition-all focus:outline-none focus:ring-2 focus:ring-[rgba(240,167,60,0.5)]"
+            href={`/rasse/${b.slug}`}
+            className="group relative aspect-square rounded-2xl overflow-hidden border border-white/10 hover:border-[rgba(240,167,60,0.5)] transition-all block focus:outline-none focus:ring-2 focus:ring-[rgba(240,167,60,0.5)]"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -60,7 +56,7 @@ export default function BreedGallery() {
                 Futter finden →
               </p>
             </div>
-          </button>
+          </Link>
         ))}
       </div>
 
