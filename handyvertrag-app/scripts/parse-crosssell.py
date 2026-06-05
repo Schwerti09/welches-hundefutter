@@ -38,6 +38,21 @@ OTHER_PET_RE = re.compile(r"katz|\bcat\b|nager|\bvogel\b|aquarium|pferd|reitspor
 # Junk, das BELLA nicht querverkauft (Deko/Print/Bücher)
 SKIP_RE = re.compile(r"drucksache|poster|tasse|aufkleber|sticker|postkarte|gru[ßs]karte|kalender|\bbuch\b|\bdvd\b|gem[äa]lde|leinwand|deko\b|figur", re.I)
 
+# KOMPLETT-FUTTER raus aus dem Cross-Sell: BELLA verkauft Futter nicht als Begleiter
+# zu Futter. Knifflig, weil Futter Zutaten wie "Lachsöl" im Namen trägt, die sonst
+# nach Ergänzung aussehen (z. B. "Belcando Junior Huhn mit Karotten und Lachsöl").
+FOOD_RE = re.compile(r"alleinfutter|alleinfuttermittel|trockenfutter|nassfutter|trockennahrung|nassnahrung|kroketten|komplettmen|hauptmahlzeit", re.I)
+# Namensmuster eines Komplett-Futters: Lebensphase + Protein + Gemüse/Getreide-Beilage.
+_FOOD_PHASE = re.compile(r"\b(junior|adult|senior|welpen?|puppy|ageing|aktiv)\b", re.I)
+# Kein schließendes \b: Plural ("Karotten") & Komposita ("Lachsöl","Rindfleisch") sollen treffen.
+_FOOD_PROT = re.compile(r"\b(huhn|h[äa]hnchen|rind|lachs|lamm|ente|pute|truthahn|fisch|wild|kaninchen|pferd|geflügel)", re.I)
+_FOOD_SIDE = re.compile(r"\bmit\b.*\b(karotte|kartoffel|reis|s[üu]sskartoffel|gem[üu]se|erbsen|nudeln|pastinake|k[üu]rbis)", re.I)
+def is_complete_food(title, cat=""):
+    blob = f"{title} {cat}"
+    if FOOD_RE.search(blob):
+        return True
+    return bool(_FOOD_PHASE.search(blob) and _FOOD_PROT.search(blob) and _FOOD_SIDE.search(blob))
+
 # Kategorie-Erkennung (Reihenfolge = Priorität)
 CATS = [
     ("zeckenschutz", re.compile(r"bernstein|amber|kupfer|zecke|floh|\bem-?keramik", re.I)),
@@ -109,6 +124,7 @@ def add(rec):
 def keep(title, cat):
     blob = f"{title} {cat}".lower()
     if SKIP_RE.search(blob): return False
+    if is_complete_food(title, cat): return False   # Komplett-Futter ist kein Begleiter
     if OTHER_PET_RE.search(blob) and not DOG_RE.search(blob): return False
     return DOG_RE.search(blob) is not None
 
