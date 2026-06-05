@@ -1,13 +1,14 @@
 // BELLA Schicht 2 — Abmeldung (in jeder Mail verlinkt, jederzeit möglich).
 import { NextRequest, NextResponse } from "next/server";
 import { neon } from "@neondatabase/serverless";
+import { SITE_URL } from "@/lib/email";
 
 export const runtime = "nodejs";
 
 export async function GET(req: NextRequest) {
   const url = process.env.DATABASE_URL;
   const token = new URL(req.url).searchParams.get("token") || "";
-  const to = (status: string) => NextResponse.redirect(new URL(`/preis-wecker?status=${status}`, req.url));
+  const to = (status: string) => NextResponse.redirect(new URL(`/preis-wecker?status=${status}`, SITE_URL));
   if (!url || !token) return to("error");
 
   try {

@@ -8,7 +8,9 @@ export const runtime = "nodejs";
 export async function GET(req: NextRequest) {
   const url = process.env.DATABASE_URL;
   const token = new URL(req.url).searchParams.get("token") || "";
-  const to = (status: string) => NextResponse.redirect(new URL(`/preis-wecker?status=${status}`, req.url));
+  // Basis = SITE_URL (kanonische Domain), nicht req.url — sonst landet der Nutzer
+  // aus der E-Mail auf der internen netlify.app-Preview-Domain.
+  const to = (status: string) => NextResponse.redirect(new URL(`/preis-wecker?status=${status}`, SITE_URL));
   if (!url || !token) return to("error");
 
   try {
