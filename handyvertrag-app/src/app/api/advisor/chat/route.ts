@@ -15,7 +15,7 @@ import { z } from "zod";
 import { neon } from "@neondatabase/serverless";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import Anthropic from "@anthropic-ai/sdk";
-import { getCompanions } from "@/db/queries/crosssell";
+import { getCompanions, containsAllergen } from "@/db/queries/crosssell";
 
 export const runtime = "nodejs";
 export const maxDuration = 45;
@@ -167,7 +167,8 @@ async function fetchCandidates(intent: DogIntent): Promise<{ offers: ScoredFood[
   const relParts: string[] = [];
   if (intent.sensitive) relParts.push("(CASE WHEN (is_hypoallergenic OR is_grain_free) THEN 30 ELSE 0 END)");
   if (intent.lifePhase) { relParts.push(`(CASE WHEN suitable_for && ARRAY[$${p++}]::text[] THEN 22 ELSE 0 END)`); orderParams.push([intent.lifePhase]); }
-  if (intent.protein) { relParts.push(`(CASE WHEN protein ILIKE $${p++} THEN 16 ELSE 0 END)`); orderParams.push(`%${intent.protein}%`); }
+  // Protein nur als PRÄFERENZ boosten, nicht wenn es das Allergen ist (sensitive)
+  if (intent.protein && !intent.sensitive) { relParts.push(`(CASE WHEN protein ILIKE $${p++} THEN 16 ELSE 0 END)`); orderParams.push(`%${intent.protein}%`); }
   // Bare integer in ORDER BY = Spaltenposition → Relevanz nur anhängen, wenn vorhanden.
   const priceOrder = "(price_per_kg IS NULL) ASC, price_per_kg ASC NULLS LAST";
   const outerOrder = relParts.length ? `(${relParts.join(" + ")}) DESC, ${priceOrder}` : priceOrder;
@@ -186,7 +187,14 @@ async function fetchCandidates(intent: DogIntent): Promise<{ offers: ScoredFood[
   );
   const raw = ((rows as unknown as { rows?: DogFoodRow[] }).rows ?? (rows as unknown as DogFoodRow[])) || [];
 
-  const scored = raw.map(o => scoreFood(o, intent)).sort((a, b) => b.matchScore - a.matchScore);
+  // Bei Allergie das auslösende Protein hart ausschließen — auch namens-basiert
+  // (Huhn → auch Geflügel/Hähnchen). Ein Allergiker darf das NIE empfohlen bekommen.
+  const allergen = intent.sensitive ? (intent.protein ?? null) : null;
+  const safe = allergen
+    ? raw.filter(o => !containsAllergen(`${o.name} ${o.protein ?? ""}`, allergen))
+    : raw;
+
+  const scored = safe.map(o => scoreFood(o, intent)).sort((a, b) => b.matchScore - a.matchScore);
 
   // Provider/Marken-Vielfalt: nicht 3x dieselbe Marke wenn vermeidbar
   const top: ScoredFood[] = [];
@@ -206,7 +214,7 @@ function scoreFood(o: DogFoodRow, intent: DogIntent): ScoredFood {
   if (intent.lifePhase && (o.suitable_for ?? []).includes(intent.lifePhase)) { m += 14; reasons.push(`für ${intent.lifePhase}`); }
   if (intent.sensitive && (o.is_hypoallergenic || o.is_grain_free)) { m += 16; reasons.push(o.is_grain_free ? "getreidefrei" : "hypoallergen"); }
   if (intent.grainFree && o.is_grain_free) m += 6;
-  if (intent.protein && (o.protein ?? "").toLowerCase().includes(intent.protein.toLowerCase())) { m += 12; reasons.push(`${o.protein}`); }
+  if (intent.protein && !intent.sensitive && (o.protein ?? "").toLowerCase().includes(intent.protein.toLowerCase())) { m += 12; reasons.push(`${o.protein}`); }
   if (intent.maxPricePerKg && ppk != null) {
     if (ppk <= intent.maxPricePerKg * 0.85) { m += 12; reasons.push(`günstig (${ppk.toFixed(2)} €/kg)`); }
     else if (ppk <= intent.maxPricePerKg) { m += 6; }

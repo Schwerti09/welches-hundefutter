@@ -29,6 +29,31 @@ const CAT_LABEL: Record<string, string> = {
   zubehoer: "Zubehör", zeckenschutz: "Zeckenschutz", versicherung: "Versicherung",
 };
 
+// Allergen-Ausschluss namens-basiert (protein-Spalte ist oft NULL). Huhn schließt
+// auch Geflügel/Hähnchen/Chicken aus — ein Allergiker darf das NIE empfohlen bekommen.
+export function allergenVariants(allergen: string | null): string[] {
+  if (!allergen) return [];
+  const MAP: Record<string, string[]> = {
+    Huhn: ["huhn", "hühn", "hähnchen", "haehnchen", "geflügel", "gefluegel", "chicken", "poultry"],
+    Rind: ["rind", "beef"],
+    Lachs: ["lachs", "salmon", "fisch", "fish"],
+    Fisch: ["fisch", "fish", "lachs", "thunfisch", "salmon"],
+    Lamm: ["lamm", "lamb"],
+    Ente: ["ente", "duck"],
+    Pute: ["pute", "truthahn", "turkey"],
+    Wild: ["wild", "hirsch", "reh"],
+    Kaninchen: ["kaninchen", "rabbit"],
+    Pferd: ["pferd", "horse"],
+  };
+  return MAP[allergen] ?? [allergen.toLowerCase()];
+}
+export function containsAllergen(text: string, allergen: string | null): boolean {
+  const v = allergenVariants(allergen);
+  if (!v.length) return false;
+  const t = text.toLowerCase();
+  return v.some((x) => t.includes(x));
+}
+
 export async function getCompanions(ctx: CompanionContext, limit = 3): Promise<Companion[]> {
   const url = process.env.DATABASE_URL;
   if (!url) return [];
@@ -52,7 +77,9 @@ export async function getCompanions(ctx: CompanionContext, limit = 3): Promise<C
        LIMIT 120`,
       [issues, lifeStage, allergen]
     );
-    const rows = ((res as unknown as { rows?: Row[] }).rows ?? (res as unknown as Row[])) || [];
+    const rawRows = ((res as unknown as { rows?: Row[] }).rows ?? (res as unknown as Row[])) || [];
+    // Allergen-Ausschluss auch über den Produktnamen (protein-Spalte oft NULL)
+    const rows = rawRows.filter((o) => !containsAllergen(`${o.name} ${o.protein ?? ""}`, ctx.allergen));
 
     const scored = rows.map((o) => {
       const cf = o.companion_for ?? {};
