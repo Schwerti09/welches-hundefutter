@@ -191,6 +191,16 @@ export default function BellaAdvisor() {
     return () => window.removeEventListener("bella:breed", handler);
   }, [sendMessage]);
 
+  // Hero-Einstieg ("Erzähl mir von deinem Hund…") → BELLA übernimmt die Frage
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const q = (e as CustomEvent<string>).detail;
+      if (q && q.trim()) sendMessage(q.trim());
+    };
+    window.addEventListener("bella:ask", handler);
+    return () => window.removeEventListener("bella:ask", handler);
+  }, [sendMessage]);
+
   return (
     <div className="relative w-full max-w-5xl mx-auto">
       <div className="grid lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 items-start">

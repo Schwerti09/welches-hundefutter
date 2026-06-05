@@ -125,6 +125,62 @@ html, body {
 ::-webkit-scrollbar-thumb { background: rgba(240,167,60,0.35); border-radius: 99px; border: 2px solid var(--bg); }
 ::-webkit-scrollbar-thumb:hover { background: rgba(240,167,60,0.55); }
 
+/* ════════════════════════════════════════════════════════════════════════
+   MEISTERWERK-HERO — lebende BELLA · Aurora · Schnüffel-Scan · Bento-Universum
+   Alles GPU-freundlich (transform/opacity), kein Layout-Shift.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* — Aurora-Mesh: langsam driftende warme Blobs hinter dem Hero — */
+.aurora { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.aurora__blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .55; will-change: transform, opacity; }
+.aurora__blob--1 { width: 46vw; height: 46vw; left: -8vw; top: -12vw; background: radial-gradient(circle, rgba(240,167,60,.55), transparent 65%); animation: aurora-drift 17s ease-in-out infinite; }
+.aurora__blob--2 { width: 40vw; height: 40vw; right: -6vw; top: -4vw; background: radial-gradient(circle, rgba(255,138,76,.45), transparent 65%); animation: aurora-drift 21s ease-in-out infinite reverse; }
+.aurora__blob--3 { width: 38vw; height: 38vw; left: 30vw; bottom: -18vw; background: radial-gradient(circle, rgba(255,208,137,.30), transparent 65%); animation: aurora-drift 25s ease-in-out infinite; }
+
+/* — Cursor-Spotlight: BELLAs „Aufmerksamkeit" folgt der Maus (JS setzt --mx/--my) — */
+.spotlight { position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background: radial-gradient(220px 220px at var(--mx, 50%) var(--my, 30%), rgba(240,167,60,.16), transparent 70%);
+  transition: background-position .12s ease-out; }
+
+/* — Pfoten-/Funken-Canvas — */
+.paw-canvas { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+
+/* — Bento-Kachel: Glas, Hover-Glow, optional 3D-Tilt (JS setzt --rx/--ry) — */
+.tile { position: relative; border-radius: 22px; border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+  backdrop-filter: blur(8px); overflow: hidden; transition: border-color .3s, box-shadow .3s, transform .2s cubic-bezier(.22,1,.36,1); }
+.tile:hover { border-color: rgba(240,167,60,.4); box-shadow: 0 30px 70px -34px rgba(240,167,60,.34); }
+.tile--tilt { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transform-style: preserve-3d; }
+.tile__sheen::after { content: ""; position: absolute; inset: 0; background:
+  linear-gradient(115deg, transparent 30%, rgba(255,255,255,.10) 48%, transparent 66%); background-size: 220% 100%;
+  animation: sheen 6s linear infinite; pointer-events: none; }
+
+/* — Schnüffel-Scan: Sweep-Linie + Grid beim Absenden — */
+.scan { position: absolute; inset: 0; z-index: 6; pointer-events: none; border-radius: inherit; overflow: hidden; }
+.scan__grid { position: absolute; inset: 0; opacity: .25;
+  background-image: linear-gradient(rgba(240,167,60,.25) 1px, transparent 1px), linear-gradient(90deg, rgba(240,167,60,.25) 1px, transparent 1px);
+  background-size: 28px 28px; mask-image: radial-gradient(circle at center, #000 30%, transparent 75%); }
+.scan__line { position: absolute; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--honey), #ffd089, var(--honey), transparent);
+  box-shadow: 0 0 22px 4px rgba(240,167,60,.6); animation: scan-sweep 1.25s cubic-bezier(.5,0,.5,1) infinite; }
+@keyframes scan-sweep { 0% { top: 6%; opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } 100% { top: 94%; opacity: 0; } }
+
+/* — Tipp-Cursor + Zahlen-Schimmer — */
+.caret { display: inline-block; width: 2px; height: 1.05em; margin-left: 2px; vertical-align: -2px; background: var(--honey); animation: caret-blink 1s steps(1) infinite; }
+@keyframes caret-blink { 50% { opacity: 0; } }
+.count-shimmer { background: linear-gradient(100deg, #ffd089, var(--honey), var(--honey-2), var(--honey), #ffd089);
+  background-size: 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent; animation: sheen 3.5s linear infinite; }
+
+/* — Live-Puls-Punkt — */
+.live-dot { position: relative; }
+.live-dot::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 1.5px solid var(--honey); animation: glow-pulse 1.8s ease-in-out infinite; }
+
+/* — Reveal beim Scrollen (IntersectionObserver setzt .is-in) — */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1); }
+.reveal.is-in { opacity: 1; transform: none; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .aurora__blob, .scan__line, .tile__sheen::after, .count-shimmer { animation: none !important; }
+  .reveal { opacity: 1 !important; transform: none !important; }
 }

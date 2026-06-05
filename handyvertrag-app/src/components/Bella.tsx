@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type BellaMood = "idle" | "thinking" | "talking" | "happy" | "waving" | "excited";
 
@@ -8,15 +8,41 @@ interface BellaProps {
   mood?: BellaMood;
   size?: number;
   className?: string;
+  track?: boolean;   // Augen + Nase folgen dem Cursor (der „lebende" Effekt)
 }
 
 /**
  * BELLA — freundlicher goldener Hund (KI-Ernährungsberaterin).
  * Stimmungen: idle/thinking/talking/happy/waving/excited.
  */
-export default function Bella({ mood = "idle", size = 200, className = "" }: BellaProps) {
+export default function Bella({ mood = "idle", size = 200, className = "", track = false }: BellaProps) {
   const [blink, setBlink] = useState(false);
   const [tail, setTail] = useState(0);
+  const [gaze, setGaze] = useState({ x: 0, y: 0 });
+  const wrapRef = useRef<HTMLDivElement>(null);
+
+  // Blick folgt dem Cursor — normalisiert auf die Distanz, sanft geclamped, rAF-gedrosselt.
+  useEffect(() => {
+    if (!track) return;
+    if (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    const onMove = (e: MouseEvent) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const el = wrapRef.current;
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        const cx = r.left + r.width / 2, cy = r.top + r.height * 0.42;
+        const clamp = (v: number) => Math.max(-1, Math.min(1, v));
+        setGaze({ x: clamp((e.clientX - cx) / 480), y: clamp((e.clientY - cy) / 480) });
+      });
+    };
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => { window.removeEventListener("mousemove", onMove); cancelAnimationFrame(raf); };
+  }, [track]);
+
+  const ex = gaze.x * 4, ey = gaze.y * 3;       // Augen-Versatz
+  const nx = gaze.x * 2.6, ny = gaze.y * 2;      // Nasen-Versatz
 
   useEffect(() => {
     const b = setInterval(() => { setBlink(true); setTimeout(() => setBlink(false), 140); }, 3200 + Math.random() * 1800);
@@ -36,7 +62,7 @@ export default function Bella({ mood = "idle", size = 200, className = "" }: Bel
   const bounce = mood === "excited" ? "animate-bounce" : "";
 
   return (
-    <div className={`inline-flex items-center justify-center select-none ${className}`} style={{ width: size, height: size }}>
+    <div ref={wrapRef} className={`inline-flex items-center justify-center select-none ${className}`} style={{ width: size, height: size }}>
       <svg viewBox="0 0 200 200" width={size} height={size} className={bounce}
         style={{ filter: "drop-shadow(0 10px 26px rgba(193,122,58,0.30))" }}>
         <defs>
@@ -91,19 +117,23 @@ export default function Bella({ mood = "idle", size = 200, className = "" }: Bel
           </>
         )}
 
-        {/* Augen */}
-        <ellipse cx="80" cy="86" rx="7" ry={eyeRy} fill="#3A2417" style={{ transition: "ry 0.08s" }} />
-        <ellipse cx="120" cy="86" rx="7" ry={eyeRy} fill="#3A2417" style={{ transition: "ry 0.08s" }} />
-        {!blink && (
-          <>
-            <circle cx="82" cy="83" r="2.2" fill="white" />
-            <circle cx="122" cy="83" r="2.2" fill="white" />
-          </>
-        )}
+        {/* Augen (folgen dem Cursor) */}
+        <g transform={`translate(${ex} ${ey})`} style={{ transition: "transform .12s ease-out" }}>
+          <ellipse cx="80" cy="86" rx="7" ry={eyeRy} fill="#3A2417" style={{ transition: "ry 0.08s" }} />
+          <ellipse cx="120" cy="86" rx="7" ry={eyeRy} fill="#3A2417" style={{ transition: "ry 0.08s" }} />
+          {!blink && (
+            <>
+              <circle cx="82" cy="83" r="2.2" fill="white" />
+              <circle cx="122" cy="83" r="2.2" fill="white" />
+            </>
+          )}
+        </g>
 
-        {/* Nase */}
-        <ellipse cx="100" cy="104" rx="9" ry="7" fill="#3A2417" />
-        <ellipse cx="97" cy="101" rx="2.5" ry="1.8" fill="rgba(255,255,255,0.5)" />
+        {/* Nase (folgt dem Cursor) */}
+        <g transform={`translate(${nx} ${ny})`} style={{ transition: "transform .12s ease-out" }}>
+          <ellipse cx="100" cy="104" rx="9" ry="7" fill="#3A2417" />
+          <ellipse cx="97" cy="101" rx="2.5" ry="1.8" fill="rgba(255,255,255,0.5)" />
+        </g>
 
         {/* Mund / Zunge */}
         {happy ? (

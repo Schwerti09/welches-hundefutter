@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
+import HeroLiving from "@/components/HeroLiving";
 import BreedGallery from "@/components/BreedGallery";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 import { getTopFoods, getFoodCount } from "@/db/queries/foods";
+import breedGallery from "@/data/breed-gallery.json";
 
 export const revalidate = 3600;
 
@@ -24,6 +26,10 @@ const SCHEMA_FAQS = [
 export default async function HomePage() {
   const [topFoods, foodCount] = await Promise.all([getTopFoods(7), getFoodCount()]);
   const countLabel = foodCount > 0 ? foodCount.toLocaleString("de-DE") : "8.000+";
+  const cheapest = topFoods[0]
+    ? { brand: topFoods[0].brand, name: topFoods[0].name, pricePerKg: topFoods[0].pricePerKg, affiliateUrl: topFoods[0].affiliateUrl }
+    : null;
+  const heroBreeds = (breedGallery as { name: string; slug: string; img: string }[]).slice(0, 8);
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
       <StructuredData type="organization" />
@@ -31,37 +37,12 @@ export default async function HomePage() {
       <StructuredData type="software" />
       <StructuredData type="faq" faqs={SCHEMA_FAQS} />
 
-      {/* HERO */}
-      <section className="relative hero-glow px-5 pt-16 pb-20 text-center overflow-hidden">
-        <div className="relative max-w-3xl mx-auto">
-          <div className="pill mb-7">
-            <span className="w-1.5 h-1.5 rounded-full bg-[var(--honey)] animate-pulse" />
-            KI-Ernährungsberatung · unabhängig & kostenlos
-          </div>
+      {/* HERO — lebende BELLA · Bento-Universum · Schnüffel-Scan */}
+      <HeroLiving foodCount={foodCount} topFood={cheapest} breeds={heroBreeds} />
 
-          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-[1.06] mb-6">
-            Das richtige Futter für deinen Hund —{" "}
-            <span className="text-accent">in 60 Sekunden gefunden</span>
-          </h1>
-
-          <p className="text-lg sm:text-xl text-[var(--muted)] max-w-2xl mx-auto mb-9 leading-relaxed">
-            Über 8.000 Futter, analysiert von BELLA. Sag ihr kurz, was deinen Hund ausmacht —
-            Rasse, Alter, Allergien — und erhalte die wirklich passenden Empfehlungen.
-            Keine endlosen Vergleichslisten.
-          </p>
-
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-[var(--muted)] mb-12">
-            <span className="font-semibold text-[var(--ink)]">8.000+ Futter analysiert</span>
-            <span className="w-1 h-1 rounded-full bg-[var(--line)]" />
-            <span>Unabhängig & werbefrei beraten</span>
-            <span className="w-1 h-1 rounded-full bg-[var(--line)]" />
-            <span>Ohne Anmeldung</span>
-          </div>
-
-          <div id="bella-advisor" className="max-w-3xl mx-auto scroll-mt-6">
-            <BellaAdvisorWrapper />
-          </div>
-        </div>
+      {/* BELLA-Berater — Ziel des Hero-Einstiegs (Schnüffel-Scan landet hier) */}
+      <section id="bella-advisor" className="px-5 pb-10 scroll-mt-4">
+        <BellaAdvisorWrapper />
       </section>
 
       {/* FINDE DEINEN HUND — Rasse-Galerie mit echten Fotos */}
