@@ -2,6 +2,7 @@
 
 > Diese Datei wird von Claude Code automatisch geladen. Sie ist die **Single Source of Truth**
 > für den Ist-Zustand und die Spielregeln. Agenten in `.claude/agents/` ergänzen sie.
+> **`FUTTERPASS.md`** (Repo-Root) ist die Blaupause für das Futter-Pass-Schwungrad (Stufen 1–5) — muss ebenfalls gelesen werden.
 
 ---
 
@@ -93,9 +94,10 @@ hundefutter-tests.net). Die gewinnen über **EEAT** (echte Tests, transparente S
 | `trust-compliance` | Recht (DSGVO/DDG), EEAT, Affiliate-Offenlegung, Health-Claims | Vor jedem Go-Live |
 | `cross-sell-curator` | Begleit-Empfehlung, `companion_for`, Anti-Müll-Disziplin | Cross-Selling, Versicherung, Zubehör |
 | `retention-growth` | Preis-Alerts, DOI-E-Mail-Audience, Lifecycle-Mails | Wiederkehr, E-Mail, `price_history` nutzen |
+| `lifecycle-architect` | **Futter-Pass-Schwungrad** (Stufen 1–5, `FUTTERPASS.md`): `dog_profiles`, Verbrauchsmathematik, Nachschub-Wecker, Lebensphasen-Trigger, teilbarer Steckbrief | Der Burggraben — wenn Einmal-Klick → wiederkehrender Umsatz |
 
 **Standard-Wachstums-Sequenz:**
-`cross-sell-curator` → `retention-growth` → **parallel**: `content-engineer` + `seo-strategist` → `visual-designer`
+`platform-architect` (Schema-Drift-Blocker zuerst!) → `lifecycle-architect` + `retention-growth` → **parallel**: `content-engineer` + `seo-strategist` → `visual-designer`
 
 ---
 
