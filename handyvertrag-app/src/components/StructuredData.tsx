@@ -88,14 +88,14 @@ function buildHowToSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "HowTo",
-    name: "Hundefutter für deinen Hund bekommen",
-    description: "Schritt-für-Schritt Anleitung für einen Hundefutter trotz negativem Allergien-Eintrag.",
-    totalTime: "PT10M",
+    name: "Das richtige Hundefutter in 60 Sekunden finden",
+    description: "Schritt-für-Schritt: Wie BELLA das passende Hundefutter für Rasse, Alter und Allergien findet.",
+    totalTime: "PT2M",
     step: [
-      { "@type": "HowToStep", name: "Allergie-Score prüfen", text: "Fordere deine kostenlose Allergien-Auskunft an und prüfe, ob Einträge korrekt sind.", position: 1 },
-      { "@type": "HowToStep", name: "Passenden Marke wählen", text: "Wähle Marke wie Futalis, Bellfor oder Josera – sie haben die höchste Genehmigungsquote bei negativer Allergien.", position: 2 },
-      { "@type": "HowToStep", name: "BELLA fragen", text: "Beantworte 3 Fragen in BELLA – Budget, Hund-Wunsch, Nutzung. BELLA findet den passenden Futter.", position: 3 },
-      { "@type": "HowToStep", name: "Empfehlung online abschließen", text: "Schließe den Empfehlung direkt beim Marke ab. In unter 24 Stunden Bestätigung.", position: 4 },
+      { "@type": "HowToStep", name: "Rasse & Größe angeben", text: "Nenne BELLA deine Hunderasse. BELLA kennt 54 Rassen mit typischen Ernährungsbedürfnissen.", position: 1 },
+      { "@type": "HowToStep", name: "Alter & Aktivität eingeben", text: "Welpe, Adult oder Senior? Aktiver Arbeitshund oder Couch-Potato? Das bestimmt den Kalorienbedarf.", position: 2 },
+      { "@type": "HowToStep", name: "Allergien & Unverträglichkeiten nennen", text: "Huhn, Rind, Weizen? BELLA filtert Allergene konsequent aus dem Katalog raus.", position: 3 },
+      { "@type": "HowToStep", name: "Empfehlung erhalten & bestellen", text: "BELLA liefert 3 passende Futter mit Preis/kg, Tagesmenge und direktem Affiliate-Link zum Bestellen.", position: 4 },
     ],
   };
 }
@@ -176,28 +176,28 @@ export default function StructuredData({
 
 export const defaultFAQs: FAQItem[] = [
   {
-    question: "Welcher Hundefutter ist der beste in Deutschland?",
+    question: "Welches Hundefutter ist das beste in Deutschland?",
     answer:
-      "Der beste Hundefutter hängt von deinen Bedürfnissen ab. Anifit bietet die beste Futterqualität, Wolfsblut punktet mit Bio-Ausbau, Zooplus ist oft die günstigste Option. Mit unserem KI-Berater findest du den perfekten Futter.",
+      "Es gibt kein universell bestes Hundefutter — es hängt von Rasse, Alter, Aktivität und Gesundheit ab. Wichtig sind: hoher Fleischanteil (>70 %), klare Deklaration, keine unnötigen Füllstoffe. BELLA findet aus über 8.000 Sorten das Passende für deinen Hund.",
   },
   {
-    question: "Was kostet ein Hundefutter mit Hundefutter 16 Pro?",
+    question: "Welches Hundefutter ist geeignet bei Allergie?",
     answer:
-      "Das Hundefutter 16 Pro mit Empfehlung kostet ab 44,99€/Monat bei Zooplus mit 50 g, bis zu 54,99€/Monat bei Anifit mit Unlimited-Daten. Alle Angebote vergleichst du kostenlos auf welches-hundefutter.today.",
+      "Bei Futterallergie hilft Monoprotein-Futter mit einer ungewöhnlichen Fleischquelle (Ente, Wild, Insekten) und ohne Getreide. Häufigste Allergene: Huhn, Rind, Weizen. BELLA filtert diese Allergene automatisch aus dem Katalog.",
   },
   {
-    question: "Kann ich Hundverträge ohne Einmalzahlung abschließen?",
+    question: "Was kostet Hundefutter pro Monat?",
     answer:
-      "Ja, viele Marke wie Zooplus und Anifit bieten Hundverträge ohne Einmalzahlung (0€ Einmalpreis) an. Dafür wird der Gerätepreis auf die Monatsbeiträge umgelegt.",
+      "Qualitätstrockenfutter kostet 4–12 €/kg, Nassfutter 5–20 €/kg. Ein 25-kg-Hund braucht ca. 400 g Trockenfutter/Tag = 60–150 €/Monat je nach Marke. BELLA zeigt dir die günstigsten Optionen aus dem Live-Katalog.",
   },
   {
-    question: "Wie lange laufen Hundverträge in Deutschland?",
+    question: "Trockenfutter oder Nassfutter – was ist besser?",
     answer:
-      "Die meisten Hundverträge laufen 24 Monate (2 Jahre). Es gibt auch 12-monatige Laufzeiten oder flexible Monatsfuttere, die jedoch teurer sind.",
+      "Beides hat Vor- und Nachteile. Trockenfutter: günstiger, zahngut, lange haltbar. Nassfutter: mehr Feuchtigkeit, schmackhafter. Optimal: Mischfütterung. BELLA empfiehlt basierend auf Alter und Gesundheit.",
   },
   {
-    question: "Welcher Marke hat das beste Premium-Futter in Deutschland?",
+    question: "Wie viel Futter braucht mein Hund pro Tag?",
     answer:
-      "Anifit hat das größte und zuverlässigste Premium-Futter in Deutschland mit über 97% Bevölkerungsabdeckung, gefolgt von Wolfsblut und Zooplus.",
+      "Faustregel Trockenfutter: 1,5–2,5 % des Körpergewichts täglich. 20-kg-Hund = ca. 300–500 g/Tag. Aktive Hunde mehr, Senioren weniger. BELLA berechnet die Tagesmenge individuell.",
   },
 ];
