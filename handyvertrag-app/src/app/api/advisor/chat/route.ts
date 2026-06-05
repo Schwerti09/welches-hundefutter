@@ -77,7 +77,10 @@ const BREEDS = ["labrador", "schäferhund", "chihuahua", "dackel", "golden retri
   "jack russell", "yorkshire", "malteser", "spitz", "dobermann", "berner sennenhund"];
 
 function parseIntent(message: string, history: { role: string; content: string }[]): DogIntent {
-  const all = [...history.map(h => h.content), message].join(" ").toLowerCase()
+  // NFC zuerst: iOS/macOS liefern Umlaute oft zerlegt (u + ◌̈, NFD). Ohne Normalisierung
+  // matcht /ü/ das nicht → "Hühnerallergie" würde nicht als Huhn erkannt → Allergiker
+  // bekäme Huhn empfohlen. Tier-Sicherheit: NIE auf stiller Normalisierung beruhen.
+  const all = [...history.map(h => h.content), message].join(" ").normalize("NFC").toLowerCase()
     .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss");
   const intent: DogIntent = {};
 
