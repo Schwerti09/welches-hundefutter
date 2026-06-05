@@ -1,24 +1,37 @@
 import Link from "next/link";
 
-const LINKS = {
+type FooterLink = {
+  label: string;
+  href: string;
+  external?: boolean;   // http(s) oder mailto → <a> statt <Link>
+  sponsored?: boolean;  // Affiliate → rel="sponsored", nur Klick-Tracking (kein On-Load-Pixel!)
+  hint?: string;        // kleiner Badge, z. B. "Werbung"
+};
+
+// Nur Links, die wirklich existieren (geprüft gegen src/app/**). Keine toten /empfehlung-,
+// /allergie-, /rassen-Routen mehr. Echte Seiten: Tools, FAQ, Guides, Blog, Deals, Rassen.
+const LINKS: Record<string, FooterLink[]> = {
   Beratung: [
-    { label: "BELLA – Hundefutter-Beraterin", href: "/" },
-    { label: "Hundefutter-Finder", href: "/tools/futter-finder" },
-    { label: "Hundefutter bei Allergie", href: "/allergie" },
+    { label: "BELLA – Futter-Beraterin", href: "/" },
+    { label: "Futter-Finder & Tools", href: "/tools" },
     { label: "FAQ Hundeernährung", href: "/faq" },
-    { label: "Hundefutter nach Rasse", href: "/rassen" },
+    { label: "Ratgeber & Guides", href: "/guides" },
+    { label: "Hundefutter-Blog", href: "/blog" },
   ],
-  Futtermarken: [
-    { label: "Anifit Hundefutter", href: "/empfehlung/anifit-adult" },
-    { label: "Wolfsblut Hundefutter", href: "/empfehlung/wolfsblut-wild-duck" },
-    { label: "Futalis Hundefutter", href: "/empfehlung/futalis-individuell" },
-    { label: "Bellfor Hundefutter", href: "/empfehlung/bellfor-allergiker" },
-    { label: "Terra Canis Nassfutter", href: "/empfehlung/terra-canis" },
+  "Beliebte Rassen": [
+    { label: "Labrador Retriever", href: "/rasse/labrador-retriever" },
+    { label: "Golden Retriever", href: "/rasse/golden-retriever" },
+    { label: "Deutscher Schäferhund", href: "/rasse/deutscher-schaeferhund" },
+    { label: "Französische Bulldogge", href: "/rasse/franzoesische-bulldogge" },
+    { label: "Dackel", href: "/rasse/dackel" },
+    { label: "Chihuahua", href: "/rasse/chihuahua" },
   ],
-  Unternehmen: [
+  Entdecken: [
+    { label: "Aktuelle Futter-Deals", href: "/deals" },
     { label: "Über uns", href: "/ueber-uns" },
     { label: "Affiliate-Hinweis", href: "/affiliate" },
-    { label: "Kontakt", href: "mailto:support@welches-hundefutter.today" },
+    { label: "DOCTR Care", href: "https://t.adcell.com/p/click?promoId=478872&slotId=66376", external: true, sponsored: true, hint: "Werbung" },
+    { label: "Kontakt", href: "mailto:support@welches-hundefutter.today", external: true },
   ],
   Rechtliches: [
     { label: "Impressum", href: "/impressum" },
@@ -27,6 +40,34 @@ const LINKS = {
     { label: "Cookie-Einstellungen", href: "/datenschutz#cookies" },
   ],
 };
+
+const ITEM_CLS = "text-sm text-gray-400 hover:text-white transition-colors leading-relaxed inline-flex items-center gap-1.5";
+
+function FooterItem({ l }: { l: FooterLink }) {
+  if (l.external) {
+    const isMail = l.href.startsWith("mailto:");
+    return (
+      <a
+        href={l.href}
+        className={ITEM_CLS}
+        target={isMail ? undefined : "_blank"}
+        rel={l.sponsored ? "sponsored nofollow noopener" : "noopener noreferrer"}
+      >
+        {l.label}
+        {l.hint && (
+          <span className="text-[10px] uppercase tracking-wide text-gray-600 border border-gray-700 rounded px-1 py-px">
+            {l.hint}
+          </span>
+        )}
+      </a>
+    );
+  }
+  return (
+    <Link href={l.href} className={ITEM_CLS}>
+      {l.label}
+    </Link>
+  );
+}
 
 export default function SiteFooter() {
   return (
@@ -41,14 +82,15 @@ export default function SiteFooter() {
               <span className="font-bold text-lg">welches-hundefutter<span className="text-orange-400">.today</span></span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-              BELLA findet das perfekte Hundefutter für deinen Hund. Kostenlos, neutral, in 60 Sekunden.
+              BELLA findet das passende Hundefutter für deinen Hund – aus über 8.000 Produkten mit
+              tagesaktuellen Preisen. Kostenlos, neutral, in 60 Sekunden.
             </p>
             <div className="flex items-center gap-2 mt-4">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span className="text-xs text-gray-500">BELLA ist online</span>
             </div>
             <div className="mt-4 flex flex-wrap gap-2">
-              {["Anifit", "Wolfsblut", "Futalis"].map((p) => (
+              {["Anifit", "Wolfsblut", "Futalis", "Terra Canis"].map((p) => (
                 <span key={p} className="text-xs px-2 py-0.5 rounded-full bg-orange-500/20 text-orange-300">{p}</span>
               ))}
             </div>
@@ -59,28 +101,28 @@ export default function SiteFooter() {
               <ul className="space-y-2">
                 {links.map((l) => (
                   <li key={l.label}>
-                    <Link href={l.href} className="text-sm text-gray-400 hover:text-white transition-colors leading-relaxed">
-                      {l.label}
-                    </Link>
+                    <FooterItem l={l} />
                   </li>
                 ))}
               </ul>
             </div>
           ))}
         </div>
-        <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-gray-500 text-xs text-center md:text-left">
-            © 2026 welches-hundefutter.today · BELLA Intelligence System · Deutschland
-          </p>
-          <p className="text-gray-600 text-xs text-center">
-            Affiliate-Links mit <code className="text-gray-500">rel=&quot;sponsored&quot;</code> · Preise inkl. MwSt. · keine Gewähr für Aktualität
-          </p>
-        </div>
-        <div className="mt-4 flex items-center justify-center gap-1.5">
-          <span className="text-gray-700 text-xs">Powered by</span>
-          <span className="text-xs font-semibold tracking-wide text-gray-500 border border-gray-700 rounded px-2 py-0.5">
-            HANSI Decision Intelligence Engine™
-          </span>
+
+        <div className="border-t border-white/5 pt-8 flex flex-col gap-5">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-gray-500">
+            <span className="inline-flex items-center gap-1.5"><span aria-hidden>🦴</span> 8.000+ Hundefutter im Vergleich</span>
+            <span className="inline-flex items-center gap-1.5"><span aria-hidden>📈</span> Preise täglich aktualisiert</span>
+            <span className="inline-flex items-center gap-1.5"><span aria-hidden>⚖️</span> neutral &amp; kostenlos</span>
+          </div>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-3">
+            <p className="text-gray-500 text-xs text-center md:text-left">
+              © 2026 welches-hundefutter.today · Neutrale Hundefutter-Beratung · Deutschland
+            </p>
+            <p className="text-gray-600 text-xs text-center md:text-right">
+              Affiliate-Links mit <code className="text-gray-500">rel=&quot;sponsored&quot;</code> · Preise inkl. MwSt. · keine Gewähr für Aktualität
+            </p>
+          </div>
         </div>
       </div>
     </footer>
