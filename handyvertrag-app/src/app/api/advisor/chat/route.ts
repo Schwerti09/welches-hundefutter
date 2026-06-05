@@ -15,6 +15,7 @@ import { z } from "zod";
 import { neon } from "@neondatabase/serverless";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import Anthropic from "@anthropic-ai/sdk";
+import { getCompanions } from "@/db/queries/crosssell";
 
 export const runtime = "nodejs";
 export const maxDuration = 45;
@@ -381,6 +382,24 @@ export async function POST(request: NextRequest) {
       }));
 
       emit(`OFFERS:${JSON.stringify({ offers: offerPayload, theme, confidence })}`);
+
+      // ── Schicht 1: kuratierte Begleitprodukte (max. 3, je mit „warum", Allergen-Ausschluss) ──
+      if (!ask && offers.length > 0) {
+        const allText = [...conversationHistory.map(h => h.content), message].join(" ").toLowerCase();
+        const jointBreed = /labrador|retriever|sch[äa]ferhund|berner|rottweiler|dogge|boxer|sennenhund/.test(allText);
+        const issues: string[] = [];
+        if (intent.sensitive) issues.push("haut", "fell", "magen", "verdauung");
+        if (jointBreed || intent.lifePhase === "senior") issues.push("gelenke");
+        try {
+          const companions = await getCompanions({
+            issues,
+            lifeStage: intent.lifePhase ? [intent.lifePhase] : [],
+            allergen: intent.sensitive ? (intent.protein ?? null) : null,
+          }, 3);
+          if (companions.length) emit(`COMPANIONS:${JSON.stringify({ companions })}`);
+        } catch { /* Cross-Sell ist optional, nie blockierend */ }
+      }
+
       controller.close();
 
       logChat({

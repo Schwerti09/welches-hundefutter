@@ -26,11 +26,23 @@ interface FoodCard {
   affiliateLink?: string;
 }
 
+interface Companion {
+  slug: string;
+  brand: string;
+  name: string;
+  category: string;
+  price: number | null;
+  imageUrl: string | null;
+  affiliateUrl: string;
+  reason: string;
+}
+
 interface Message {
   id: string;
   role: "bella" | "user";
   content: string;
   offers?: FoodCard[];
+  companions?: Companion[];
 }
 
 type BellaMood = "idle" | "thinking" | "talking" | "happy" | "waving" | "excited";
@@ -119,6 +131,7 @@ export default function BellaAdvisor() {
       let buffer = "";
       let replyText = "";
       let offers: FoodCard[] = [];
+      let companions: Companion[] = [];
 
       const flushLine = (line: string) => {
         if (line.startsWith("TEXT:")) {
@@ -128,6 +141,11 @@ export default function BellaAdvisor() {
           try {
             const payload = JSON.parse(line.slice(7));
             if (Array.isArray(payload?.offers)) offers = payload.offers as FoodCard[];
+          } catch { /* ignore partial */ }
+        } else if (line.startsWith("COMPANIONS:")) {
+          try {
+            const payload = JSON.parse(line.slice(11));
+            if (Array.isArray(payload?.companions)) companions = payload.companions as Companion[];
           } catch { /* ignore partial */ }
         }
       };
@@ -146,7 +164,7 @@ export default function BellaAdvisor() {
         replyText = "Erzähl mir noch ein bisschen mehr über deinen Hund — Rasse, Alter, Allergien? Dann finde ich das passende Futter.";
       }
       setMessages(prev => prev.map(m =>
-        m.id === bellaId ? { ...m, content: replyText, offers: offers.length ? offers : undefined } : m
+        m.id === bellaId ? { ...m, content: replyText, offers: offers.length ? offers : undefined, companions: companions.length ? companions : undefined } : m
       ));
 
       setMood(offers.length > 0 ? "excited" : "happy");
@@ -281,6 +299,36 @@ export default function BellaAdvisor() {
                           </a>
                         );
                       })}
+                    </div>
+                  )}
+
+                  {/* Begleit-Empfehlung (Cross-Selling, kuratiert) */}
+                  {msg.companions && msg.companions.length > 0 && (
+                    <div className="mt-4">
+                      <p className="text-[11px] font-semibold uppercase tracking-wider text-white/40 mb-2">🐾 Passend dazu für deinen Hund</p>
+                      <div className="space-y-2">
+                        {msg.companions.map((c) => (
+                          <a key={c.slug} href={c.affiliateUrl} target="_blank" rel="sponsored nofollow noopener noreferrer"
+                            className="flex items-center gap-3 bg-white/[0.03] border border-white/10 rounded-xl p-3 hover:border-[rgba(240,167,60,0.4)] transition-all group">
+                            {c.imageUrl ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img src={c.imageUrl} alt={c.name} loading="lazy" className="w-12 h-12 rounded-lg object-cover bg-white/5 flex-shrink-0" />
+                            ) : (
+                              <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0 text-lg">🐾</div>
+                            )}
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center gap-2">
+                                <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-[rgba(240,167,60,0.14)] text-[#ffcd8a] uppercase tracking-wide">{c.category}</span>
+                                {c.price != null && <span className="text-xs text-white/50">{c.price.toFixed(2)} €</span>}
+                              </div>
+                              <p className="text-sm text-white/90 font-medium truncate mt-0.5">{c.name}</p>
+                              <p className="text-[11px] text-[var(--honey)]">{c.reason}</p>
+                            </div>
+                            <span className="text-white/30 group-hover:text-[var(--honey)] flex-shrink-0">→</span>
+                          </a>
+                        ))}
+                      </div>
+                      <p className="text-[9px] text-white/25 mt-2">Werbung · Affiliate-Links (rel=sponsored) · ausgewählt nach Passung, nicht nach Provision</p>
                     </div>
                   )}
                 </div>

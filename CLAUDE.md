@@ -1,5 +1,61 @@
 # CLAUDE.md — welches-hundefutter.today (BELLA)
 
+# CLAUDE.md — STAND-UPDATE (Evolution: Wachstumsphase)
+
+> In `CLAUDE.md` einpflegen. Der Ist-Zustand hat sich grundlegend geändert: aus „Rettung" ist
+> „Wachstum" geworden. Die alten Befunde A/B (toter Code, Frankenstein-Daten) sind **erledigt** —
+> nicht löschen, aber als „✅ behoben" markieren, damit niemand auf veraltetem Ground-Truth arbeitet.
+
+## §2 ersetzen — Neuer Ground Truth (geprüft, live)
+
+**„Außen fertig, innen hohl" ist Geschichte.** Live verifiziert:
+
+- ✅ **Befund A behoben** — ~18k Zeilen Architektur-Theater entfernt.
+- ✅ **Befund B behoben** — `products.ts` (Handy-Frankenstein) abgelöst; Live-Seite rendert aus **Neon**.
+- ✅ **Feeds live & frisch** — **8.442** echte Produkte aus AWIN (`a=615299`, 0 Platzhalter) + AdCell.
+  Täglicher Cron (`.github/workflows/import-feeds.yml`, 05:00 UTC), reuse der verifizierten Scripts
+  (kein TS-Port). `price_history` (Snapshot nur bei Änderung) + Lifecycle (`is_active`, erst nach
+  >2 Tagen Abwesenheit) stehen. Import idempotent, 0 Fehler (vorher 23).
+- ✅ **KI-Berater** auf 8.442 echten Produkten (Allergie→getreidefrei, Welpe+Lachs, BARF…).
+- ✅ **54 Rasse-Seiten** + „Finde deinen Hund"-Galerie mit echten Fotos.
+- ✅ **Dunkles Premium-Theme**, echter Hund-Charakter.
+- ✅ **Hygiene/Recht:** „500+" → „8.000+" überall synchron · Impressum entfrankensteint (TMG→DDG,
+  „Diensteanbieter", Apple/Samsung-Hinweis raus) · Datenschutz inkl. KI-Abschnitt · kein On-Load-
+  Tracking → kein Consent-Banner nötig.
+
+**Offene Phase = Wachstum.** Das Fundament trägt. Jetzt zählt: Monetarisierungs-Tiefe + Audience +
+Long-Tail-Skalierung — alles, was Platz 1 *hält*, nicht nur erreicht.
+
+## §3 ergänzen — Die zwei Evolutions-Schichten
+
+- **Schicht 1 — Begleit-Empfehlung** (`cross-sell-curator`): BELLA verkauft nach der Futter-Empfehlung
+  kuratiert quer (Snacks, NEMs/Öle, Zubehör, **Versicherung** = Top-Provision). Gesetz: max. 2–3, immer
+  mit „warum", Relevanz vor Provision. Datenmodell `category` + `companion_for`.
+- **Schicht 2 — Preis-Alerts & eigene E-Mail-Audience** (`retention-growth`): nutzt die bisher
+  ungenutzte `price_history`. „Soll BELLA Bescheid geben, wenn's günstiger wird?" → Double-Opt-in →
+  Liste, die **nicht** von Google abhängt. Der eigentliche Burggraben.
+- **Parallel-Track — Long-Tail-Scale-out** (`content-engineer` + `seo-strategist`): 14 Problem-Seiten,
+  `/vergleich/[a]-vs-[b]` aus der DB, Futtertyp-Seiten, volle Sitemap. Das Rasse-Muster auf alles ausrollen.
+
+## §5 ergänzen — Zwei neue Agenten in der Delegations-Tabelle
+
+| Agent | Rolle (Auftrag) | Wann rufen |
+|---|---|---|
+| `cross-sell-curator` | Schicht 1: Begleit-Empfehlung, `companion_for`, Anti-Müll-Disziplin | Cross-Selling, Versicherung, Zubehör |
+| `retention-growth` | Schicht 2: Preis-Alerts, DOI-E-Mail-Audience, Lifecycle | Wiederkehr, E-Mail, `price_history` nutzen |
+
+**Neue Wachstums-Sequenz:** `cross-sell-curator` (Set jetzt, Email-Hook als Brücke) →
+`retention-growth` (Alerts direkt dran) → **parallel** `content-engineer` + `seo-strategist` (Scale-out).
+`feed-engineer` erweitert den Katalog um die Cross-Sell-Kategorien, `bella-advisor` integriert beide
+Schichten kontextuell, `trust-compliance` gibt Versicherung + Double-Opt-in frei.
+
+## §4 ergänzen — Eine neue harte Regel
+
+9. **Kuratiert, nicht zugemüllt.** Cross-Sells max. 2–3 mit Begründung; Relevanz vor Provision;
+   E-Mails Wert vor Frequenz; kein Versand ohne Double-Opt-in. Eine Bannerwand killt Trust → Ranking → Platz 1.
+
+---
+
 > Diese Datei wird von Claude Code automatisch geladen. Sie ist die **Single Source of Truth**
 > für den Ist-Zustand und die Spielregeln. Agenten in `.claude/agents/` ergänzen sie.
 
