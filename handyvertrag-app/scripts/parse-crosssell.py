@@ -28,7 +28,10 @@ else:
     AWIN_FEEDS = [os.path.join(DL, "11703-23513-de_DE-Default.csv.gz"),
                   os.path.join(DL, "56633-107909-de_DE-Default.csv.gz")]
     ADCELL_FEEDS = [os.path.join(DL, "419197-66376.csv"), os.path.join(DL, "521034-66376.csv"),
-                    os.path.join(DL, "496158-66376.csv"), os.path.join(DL, "376594-66376.csv")]  # amberdog
+                    os.path.join(DL, "496158-66376.csv"), os.path.join(DL, "376594-66376.csv"),  # amberdog
+                    os.path.join(DL, "402766-66376.csv"),  # Canosept Hunde-Pflege (Augen/Fell/Haut/Zahn/Gelenk/Darmflora)
+                    os.path.join(DL, "356592-66376 (4).csv"),  # SAUERLAND Zwinger/Hütten (überwiegend Equipment → Kurator filtert)
+                    os.path.join(DL, "372775-66376.csv")]  # PAWZLOVE Print-Merch (Apparel → Kurator filtert)
 
 DOG_RE = re.compile(r"hund|dog|welpe|barf|doggy", re.I)
 OTHER_PET_RE = re.compile(r"katz|\bcat\b|nager|\bvogel\b|aquarium|pferd|reitsport", re.I)
@@ -39,7 +42,7 @@ SKIP_RE = re.compile(r"drucksache|poster|tasse|aufkleber|sticker|postkarte|gru[�
 CATS = [
     ("zeckenschutz", re.compile(r"bernstein|amber|kupfer|zecke|floh|\bem-?keramik", re.I)),
     ("versicherung", re.compile(r"versicherung|haftpflicht|krankenversicherung|op-?versicherung", re.I)),
-    ("gesundheit",   re.compile(r"nahrungserg[äa]nz|\bnem\b|vitamin|gelenk|glucosamin|\b[öo]l\b|lachs[öo]l|zahnpflege|fellpflege|wurmkur|pflege", re.I)),
+    ("gesundheit",   re.compile(r"nahrungserg[äa]nz|\bnem\b|vitamin|gelenk|glucosamin|\b[öo]l\b|lachs[öo]l|zahnpflege|zahnpasta|zahncreme|zahnb[üu]rste|fellpflege|wurmkur|pflege|darmflora|probiotik|wundspray|wundgel|wundpflege|silberspray|ohrreiniger", re.I)),
     ("snack",        re.compile(r"kausnack|kauknochen|kaustange|kauartikel|leckerli|leckerchen|trainingssnack|\bsnack|kaurolle|ochsenziemer", re.I)),
     ("zubehoer",     re.compile(r"leine|halsband|geschirr|napf|spielzeug|\bball\b|decke|k[öo]rbchen|kissen|b[üu]rste|tasche|transportbox|schmuck|kette|anh[äa]nger", re.I)),
 ]
