@@ -68,7 +68,11 @@ export default function DatenschutzPage() {
               body: "Sie haben das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21). Anfragen an: support@welches-hundefutter.today. Sie haben zudem das Recht, sich bei einer Datenschutzbehörde zu beschweren."
             },
             {
-              title: "10. Änderungen dieser Datenschutzerklärung",
+              title: "10. Preis-Wecker & E-Mail-Benachrichtigungen",
+              body: "Wenn du einen Preis-Wecker abonnierst, speichern wir deine E-Mail-Adresse sowie – zum gesetzlich erforderlichen Nachweis deiner Einwilligung – Zeitpunkt und IP-Adresse der Anmeldung (Double-Opt-in). Der Versand erfolgt erst, nachdem du die Anmeldung über den Bestätigungslink in der ersten E-Mail bestätigt hast; ohne Bestätigung erfolgt kein Versand. Für den Versand nutzen wir Resend (Resend, Inc., USA) als Auftragsverarbeiter. Über den Abmeldelink in jeder E-Mail kannst du dich jederzeit abmelden; deine Daten werden dann gelöscht bzw. gesperrt. Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung)."
+            },
+            {
+              title: "11. Änderungen dieser Datenschutzerklärung",
               body: "Wir behalten uns vor, diese Datenschutzerklärung anzupassen, um sie aktuellen rechtlichen Anforderungen oder Änderungen unserer Leistungen zu entsprechen. Es gilt stets die zum Zeitpunkt des Besuchs aktuelle Fassung."
             },
           ].map((s) => (

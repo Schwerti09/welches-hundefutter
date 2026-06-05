@@ -1,0 +1,48 @@
+name: Preis-Wecker prüfen
+
+# Schicht 2 — prüft täglich aktive Preis-Wecker bestätigter Abonnenten gegen
+# price_history und mailt NUR bei echter Preissenkung (30-Tage-Tief, Anti-Spam).
+# Läuft NACH dem Feed-Import (05:00), damit die Preise frisch sind.
+#
+# Nötige Repo-Secrets (zusätzlich zu DATABASE_URL):
+#   RESEND_API_KEY  – Resend-API-Key (verifizierte Domain für SPF/DKIM/DMARC)
+#   EMAIL_FROM      – z. B. "BELLA <bella@welches-hundefutter.today>"
+#   SITE_URL        – https://welches-hundefutter.today (für Links in Mails)
+
+on:
+  schedule:
+    - cron: "0 6 * * *"      # täglich 06:00 UTC, nach dem Import
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Nur testen, nicht versenden"
+        type: boolean
+        default: false
+
+concurrency:
+  group: price-alerts
+  cancel-in-progress: false
+
+jobs:
+  alerts:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: handyvertrag-app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Dependency installieren
+        run: npm install --no-save @neondatabase/serverless
+
+      - name: Preis-Wecker prüfen & versenden
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          SITE_URL: ${{ secrets.SITE_URL }}
+        run: node scripts/check-price-alerts.mjs ${{ inputs.dry_run && '--dry-run' || '' }}

@@ -2,11 +2,13 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
+import PriceAlertBox from "@/components/PriceAlertBox";
 
 const Bella = dynamic(() => import("@/components/Bella"), { ssr: false });
 
 interface FoodCard {
   id: number | string;
+  slug?: string;            // für Preis-Wecker (Schicht 2)
   name?: string;
   brand?: string;
   type?: string;            // 'trocken' | 'nass' | 'barf' | ...
@@ -330,6 +332,11 @@ export default function BellaAdvisor() {
                       </div>
                       <p className="text-[9px] text-white/25 mt-2">Werbung · Affiliate-Links (rel=sponsored) · ausgewählt nach Passung, nicht nach Provision</p>
                     </div>
+                  )}
+
+                  {/* Schicht 2: Preis-Wecker nach der Empfehlung */}
+                  {msg.offers && msg.offers.length > 0 && (
+                    <PriceAlertBox food={msg.offers[0]} />
                   )}
                 </div>
               </div>

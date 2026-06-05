@@ -380,6 +380,7 @@ export async function POST(request: NextRequest) {
 
       const offerPayload = ask ? [] : offers.map(o => ({
         id: o.id,
+        slug: o.slug,            // für Preis-Wecker (Schicht 2): keyed auf price_history.food_slug
         name: o.name,
         brand: o.brand,
         type: o.type,
