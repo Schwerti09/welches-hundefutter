@@ -96,10 +96,11 @@ function parseIntent(message: string, history: { role: string; content: string }
   if (/allergi|sensibel|empfindlich|unvertraeglich|juckt|juckreiz|durchfall|blaeh|magen|verdauung|sensitiv/.test(all)) intent.sensitive = true;
   if (/getreidefrei|grain.?free|glutenfrei/.test(all)) { intent.grainFree = true; intent.sensitive = true; }
 
-  // Protein
-  for (const [k, lab] of [["huhn", "Huhn"], ["haehnchen", "Huhn"], ["rind", "Rind"], ["lachs", "Lachs"],
-    ["lamm", "Lamm"], ["ente", "Ente"], ["pute", "Pute"], ["wild", "Wild"], ["fisch", "Fisch"],
-    ["kaninchen", "Kaninchen"], ["pferd", "Pferd"]] as [string, string][]) {
+  // Protein/Allergen — beachte: `all` ist umlaut-normalisiert (ü→ue), daher
+  // "Hühnerallergie" → "huehnerallergie". Varianten "huehn"/"gefluegel" mitfangen.
+  for (const [k, lab] of [["huehn", "Huhn"], ["huhn", "Huhn"], ["haehnchen", "Huhn"], ["gefluegel", "Huhn"],
+    ["rind", "Rind"], ["lachs", "Lachs"], ["lamm", "Lamm"], ["ente", "Ente"], ["pute", "Pute"],
+    ["wild", "Wild"], ["fisch", "Fisch"], ["kaninchen", "Kaninchen"], ["pferd", "Pferd"]] as [string, string][]) {
     if (new RegExp(`\\b${k}`).test(all)) { intent.protein = lab; break; }
   }
 
