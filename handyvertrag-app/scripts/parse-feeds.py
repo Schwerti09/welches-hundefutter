@@ -11,17 +11,35 @@ import csv, gzip, re, io, json, sys, os
 csv.field_size_limit(10**7)
 
 # ── Feed-Quellen (anpassen wenn neue Feeds kommen) ───────────────────────────
-DL = os.path.expanduser("~/Downloads")
-AWIN_FEEDS = [
-    os.path.join(DL, "11703-23513-de_DE-Default.csv.gz"),    # schecker.de (Hunde-Shop)
-    os.path.join(DL, "56633-107909-de_DE-Default.csv.gz"),   # Bellerei Hundezubehör
-]
-ADCELL_FEEDS = [
-    os.path.join(DL, "419197-66376.csv"),
-    os.path.join(DL, "521034-66376.csv"),
-    os.path.join(DL, "496158-66376.csv"),
-]
+import urllib.request, tempfile
+DL = os.environ.get("FEED_DIR", os.path.expanduser("~/Downloads"))
 PUBLISHER = "615299"  # AWIN publisher id (für Tracking-Konsistenz)
+
+def _download(url, dest_dir, i):
+    path = os.path.join(dest_dir, f"feed_{i}.dat")
+    print(f"  ⬇ {url[:70]}…")
+    req = urllib.request.Request(url, headers={"User-Agent": "BELLA-FeedBot/1.0"})
+    with urllib.request.urlopen(req, timeout=120) as r, open(path, "wb") as f:
+        f.write(r.read())
+    return path
+
+# Feeds aus Env-URLs (Cron/GitHub-Action) ODER lokale Dateien (manueller Lauf)
+_awin_urls = [u.strip() for u in os.environ.get("AWIN_FEED_URLS", "").split(",") if u.strip()]
+_adcell_urls = [u.strip() for u in os.environ.get("ADCELL_FEED_URLS", "").split(",") if u.strip()]
+if _awin_urls or _adcell_urls:
+    _tmp = tempfile.mkdtemp(prefix="bella-feeds-")
+    AWIN_FEEDS = [_download(u, _tmp, f"awin{i}") for i, u in enumerate(_awin_urls)]
+    ADCELL_FEEDS = [_download(u, _tmp, f"adcell{i}") for i, u in enumerate(_adcell_urls)]
+else:
+    AWIN_FEEDS = [
+        os.path.join(DL, "11703-23513-de_DE-Default.csv.gz"),    # schecker.de (Hunde-Shop)
+        os.path.join(DL, "56633-107909-de_DE-Default.csv.gz"),   # Bellerei Hundezubehör
+    ]
+    ADCELL_FEEDS = [
+        os.path.join(DL, "419197-66376.csv"),
+        os.path.join(DL, "521034-66376.csv"),
+        os.path.join(DL, "496158-66376.csv"),
+    ]
 
 # ── Filter-Heuristiken ───────────────────────────────────────────────────────
 FOOD_RE = re.compile(r"futter|nahrung|men[üu]\b|trockenfutter|nassfutter|kausnack|kauknochen|kaustange|kauartikel|leckerli|leckerchen|trainingssnack|barf|frostfutter|frischfleisch|dose|dosen|nass\b|trocken\b|kroketten|flocken|alleinfutter|erg[äa]nzungsfutter", re.I)
@@ -86,8 +104,11 @@ def slugify(s):
     return re.sub(r"[^a-z0-9]+", "-", (s or "").lower()).strip("-")[:90]
 
 def smart_open(path):
-    """Decode cp1252 (Latin-1) feeds correctly; fall back to utf-8."""
-    raw = gzip.open(path, "rb").read() if path.endswith(".gz") else open(path, "rb").read()
+    """Gzip per Magic-Bytes erkennen (Download-URLs haben oft keine .gz-Endung);
+    cp1252/Latin-1 korrekt dekodieren, Fallback utf-8."""
+    raw = open(path, "rb").read()
+    if raw[:2] == b"\x1f\x8b":  # gzip magic number
+        raw = gzip.decompress(raw)
     try:
         return io.StringIO(raw.decode("utf-8"))
     except UnicodeDecodeError:

@@ -1,0 +1,50 @@
+name: Hundefutter-Feeds importieren
+
+# Frische zuerst: lädt täglich die AWIN-/AdCell-Feeds, parst sie und schreibt
+# sie nach Neon (Upsert + Lifecycle + Preis-Historie). Reuse der verifizierten
+# Scripts parse-feeds.py + load-dog-foods.mjs — kein TS-Port, kein neues Risiko.
+#
+# Nötige Repo-Secrets (Settings → Secrets and variables → Actions):
+#   DATABASE_URL      – Neon-Connection-String
+#   AWIN_FEED_URLS    – komma-separierte AWIN-Feed-Download-URLs
+#   ADCELL_FEED_URLS  – komma-separierte AdCell-Feed-CSV-URLs
+
+on:
+  schedule:
+    - cron: "0 5 * * *"     # täglich 05:00 UTC (~07:00 DE)
+  workflow_dispatch: {}      # manuell auslösbar (zum Testen)
+
+concurrency:
+  group: import-feeds
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: handyvertrag-app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Loader-Dependency installieren
+        run: npm install --no-save @neondatabase/serverless
+
+      - name: Feeds parsen → dog_foods.json
+        env:
+          AWIN_FEED_URLS: ${{ secrets.AWIN_FEED_URLS }}
+          ADCELL_FEED_URLS: ${{ secrets.ADCELL_FEED_URLS }}
+        run: python scripts/parse-feeds.py
+
+      - name: Nach Neon laden (Lifecycle + Preis-Historie + Diff)
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: node scripts/load-dog-foods.mjs
