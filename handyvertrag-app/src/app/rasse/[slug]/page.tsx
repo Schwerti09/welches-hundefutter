@@ -6,6 +6,7 @@ import { BREEDS, BREED_BY_SLUG } from "@/data/breeds";
 import gallery from "@/data/breed-gallery.json";
 import { issueToProblemSlug } from "@/lib/issue-to-problem";
 import ScoreBadge from "@/components/ScoreBadge";
+import AuthorBox from "@/components/AuthorBox";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -53,7 +54,7 @@ async function getBreedFoods(slug: string, allergyProne: boolean): Promise<FoodR
          FROM dog_foods
          WHERE is_active = true AND affiliate_url <> '' AND name <> '' AND price_per_kg BETWEEN 2 AND 60 AND type <> 'snack'
          ORDER BY ${nameKey}, price_per_kg ASC
-       ) d ORDER BY ${bias} price_per_kg ASC LIMIT 6`,
+       ) d ORDER BY ${bias} score DESC NULLS LAST, price_per_kg ASC LIMIT 6`,
       []
     );
     return ((rows as unknown as { rows?: FoodRow[] }).rows ?? (rows as unknown as FoodRow[])) || [];
@@ -287,6 +288,7 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
         </div>
       </section>
 
+      <AuthorBox />
       <SiteFooter />
     </div>
   );

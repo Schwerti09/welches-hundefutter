@@ -421,9 +421,13 @@ export async function POST(request: NextRequest) {
         try {
           const allConv = [...conversationHistory.map(h => h.content), message].join(" ");
           // Hundename erkennen: "heißt Bello", "mein Hund Bello", "meine Hündin Luna"
-          const nameMatch = allConv.match(/hei[ßs]t\s+([A-ZÄÖÜ][a-zäöüß]{1,14})/u)
-            || allConv.match(/(?:hund|hündin|rüde|hünchen|welpe)\s+([A-ZÄÖÜ][a-zäöüß]{1,14})/ui);
-          const dogName = nameMatch?.[1] ?? (intent.breed ? `${intent.breed.split(" ")[0][0].toUpperCase()}${intent.breed.split(" ")[0].slice(1)}-Hund` : "Bello");
+          const nameMatch = allConv.match(/hei[ßs]t\s+([A-Za-zÀ-ž]{2,14})/u)
+            || allConv.match(/(?:hund|hündin|rüde|welpe)[^A-Za-z]+([A-ZÀ-ž][a-zÀ-ž]{1,13})/ui);
+          const rawName = nameMatch?.[1] || null;
+          const breedName = intent.breed
+            ? intent.breed.split(/[\s-]/)[0].replace(/^./, (c) => c.toUpperCase()) + "-Hund"
+            : null;
+          const dogName = rawName || breedName || "Bello";
           // Gewicht parsen: "15 kg", "15,5 kg", "15.5 kg"
           const allNorm = allConv.toLowerCase().normalize("NFC").replace(/ü/g, "ue").replace(/ä/g, "ae").replace(/ö/g, "oe");
           const wMatch = allNorm.match(/(\d+(?:[.,]\d+)?)\s*(?:kg|kilo)/);
@@ -446,7 +450,7 @@ export async function POST(request: NextRequest) {
               ${offers[0].slug ?? null},
               ${dg ?? null},
               ${shareToken},
-              false
+              true
             ) RETURNING id, share_token`;
           emit(`PROFILE:${JSON.stringify({ id: row.id, shareToken: row.share_token, name: dogName, dailyGrams: dg, currentFood: offers[0].name })}`);
         } catch { /* never block the stream */ }

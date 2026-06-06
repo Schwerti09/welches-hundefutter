@@ -6,6 +6,7 @@ import { PROBLEMS, PROBLEM_BY_SLUG } from "@/data/problems";
 import { FUTTERTYP_BY_SLUG } from "@/data/futtertypen";
 import { PROBLEM_TO_FUTTERTYPEN } from "@/lib/issue-to-problem";
 import ScoreBadge from "@/components/ScoreBadge";
+import AuthorBox from "@/components/AuthorBox";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -53,7 +54,7 @@ async function getFoodsForProblem(grainFree: boolean, hypo: boolean): Promise<Fo
            is_grain_free, is_hypoallergenic, affiliate_url, score
          FROM dog_foods WHERE ${filter}
          ORDER BY ${nameKey}, price_per_kg ASC
-       ) d ORDER BY ${bias} price_per_kg ASC LIMIT 6`,
+       ) d ORDER BY ${bias} score DESC NULLS LAST, price_per_kg ASC LIMIT 6`,
       []
     );
     return ((rows as unknown as { rows?: FoodRow[] }).rows ?? (rows as unknown as FoodRow[])) || [];
@@ -299,6 +300,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
         </div>
       </section>
 
+      <AuthorBox />
       <SiteFooter />
     </div>
   );

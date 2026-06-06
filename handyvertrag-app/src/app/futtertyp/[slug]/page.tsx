@@ -6,6 +6,7 @@ import { FUTTERTYPEN, FUTTERTYP_BY_SLUG } from "@/data/futtertypen";
 import { PROBLEM_BY_SLUG } from "@/data/problems";
 import { FUTTERTYP_TO_PROBLEME } from "@/lib/issue-to-problem";
 import ScoreBadge from "@/components/ScoreBadge";
+import AuthorBox from "@/components/AuthorBox";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -51,7 +52,7 @@ async function getFoodsByType(dbType: string, grainFree: boolean, hypo: boolean)
            is_grain_free, is_hypoallergenic, affiliate_url, score
          FROM dog_foods WHERE ${filters}
          ORDER BY ${nameKey}, price_per_kg ASC
-       ) d ORDER BY price_per_kg ASC LIMIT 6`,
+       ) d ORDER BY score DESC NULLS LAST, price_per_kg ASC LIMIT 6`,
       []
     );
     const data = ((rows as unknown as { rows?: FoodRow[] }).rows ?? (rows as unknown as FoodRow[])) || [];
@@ -60,11 +61,11 @@ async function getFoodsByType(dbType: string, grainFree: boolean, hypo: boolean)
     const fallback = await sql.query(
       `SELECT * FROM (
          SELECT DISTINCT ON (${nameKey}) brand, name, type, protein, price_per_kg,
-           is_grain_free, is_hypoallergenic, affiliate_url
+           is_grain_free, is_hypoallergenic, affiliate_url, score
          FROM dog_foods WHERE is_active = true AND affiliate_url <> '' AND name <> ''
            AND price_per_kg BETWEEN 2 AND 60 AND type <> 'snack'
          ORDER BY ${nameKey}, price_per_kg ASC
-       ) d ORDER BY price_per_kg ASC LIMIT 6`,
+       ) d ORDER BY score DESC NULLS LAST, price_per_kg ASC LIMIT 6`,
       []
     );
     return ((fallback as unknown as { rows?: FoodRow[] }).rows ?? (fallback as unknown as FoodRow[])) || [];
@@ -279,6 +280,7 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
         </div>
       </section>
 
+      <AuthorBox />
       <SiteFooter />
     </div>
   );
