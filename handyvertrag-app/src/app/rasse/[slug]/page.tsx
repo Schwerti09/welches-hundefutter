@@ -7,6 +7,7 @@ import gallery from "@/data/breed-gallery.json";
 import { issueToProblemSlug } from "@/lib/issue-to-problem";
 import ScoreBadge from "@/components/ScoreBadge";
 import AuthorBox from "@/components/AuthorBox";
+import ProductSchemaBlock from "@/components/ProductSchemaBlock";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -238,6 +239,332 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
           </div>
         </section>
       )}
+
+      {/* EEAT: Mops */}
+      {breed.slug === "mops" && (
+        <section className="max-w-5xl mx-auto w-full px-5 py-10">
+          <div className="card p-8">
+            <h2 className="text-xl font-extrabold tracking-tight mb-6">Mops und Futter: Was du wissen solltest</h2>
+            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
+              <p>
+                <strong>Übergewicht ist das größte Risiko beim Mops:</strong> Die kurze Schnauze
+                (Brachyzephalie) macht körperliche Anstrengung bereits bei Normalgewicht anstrengend.
+                Jedes überschüssige Kilo verschlimmert Atemprobleme, Hitzestress und Gelenkbelastung
+                messbar. Mosse mit Übergewicht sind nicht faul — sie sind atemgehandicapt. Die tägliche
+                Futtermenge sollte exakt nach Idealgewicht berechnet werden, nicht nach aktuellem Gewicht.
+                Idealgewicht Mops: 6–8 kg. Tagesmenge hochwertiges Trockenfutter: 120–180 g.
+              </p>
+              <p>
+                <strong>Portionsfrequenz und Tempo:</strong> Möpse neigen zu schnellem Fressen, was bei
+                brachyzephalen Rassen besonders problematisch ist — sie schlucken dabei viel Luft,
+                was zu Blähungen und Magenbeschwerden führt. Empfehlung: Anti-Schling-Napf oder
+                Slow-Feeder, zwei kleinere Mahlzeiten statt einer großen, mindestens 1 Stunde Ruhe
+                nach dem Fressen vor jeder Aktivität.
+              </p>
+              <p>
+                <strong>Hautfalten und Ernährung:</strong> Die Hautfalten des Mopses sind Infektionsrisiko,
+                nicht Ernährungsthema. Futter allein kann Faltenekzeme nicht verhindern. Aber:
+                Omega-3-Fettsäuren (EPA/DHA aus Lachs) wirken entzündungshemmend und können die
+                Hautbarriere stärken — das ist bei faltenreichen Rassen ein sinnvolles Ziel. Futter
+                mit Lachsöl oder ein täglicher Zusatz von 0,5 ml Lachsöl ist eine einfache Maßnahme.
+              </p>
+              <p>
+                <strong>Futterauswahl für Möpse:</strong> Proteingehalt 25–28 % ist ausreichend —
+                Möpse sind keine Hochleistungssportler. Niedriger Fettgehalt (max. 14 %) hilft beim
+                Gewichtsmanagement. Leicht verdauliche Sorten (Lamm, Lachs, Geflügel) sind bevorzugt,
+                da Möpse empfindliche Mägen haben können. Keine Sorten mit hohem Weizen-
+                oder Maisanteil — erhöhte Allergieneigung bei Möpsen gegenüber Getreide belegt.
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* EEAT: Französische Bulldogge */}
+      {breed.slug === "franzoesische-bulldogge" && (
+        <section className="max-w-5xl mx-auto w-full px-5 py-10">
+          <div className="card p-8">
+            <h2 className="text-xl font-extrabold tracking-tight mb-6">Französische Bulldogge und Futter: Was du wissen solltest</h2>
+            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
+              <p>
+                <strong>Allergie-Häufigkeit überdurchschnittlich hoch:</strong> Französische Bulldoggen
+                gehören zu den Rassen mit der höchsten Prävalenz für Futterallergien und atopische
+                Dermatitis in Deutschland. Schätzungsweise 20–30 % aller Frenchies entwickeln
+                im Laufe ihres Lebens eine Überempfindlichkeit gegenüber Futterzutaten — häufigste
+                Auslöser: Huhn, Weizen, Milchprodukte. Wer eine Frenchie hat, sollte von Anfang an
+                auf Monoprotein-Sorten oder wechselnde Proteinquellen setzen, um Sensibilisierung
+                zu verhindern.
+              </p>
+              <p>
+                <strong>Flatulenz und Fressgeschwindigkeit:</strong> Frenchies sind berüchtigt für
+                Blähungen — oft durch zu schnelles Fressen und Luftschlucken. Gleiche Empfehlung
+                wie beim Mops: Anti-Schling-Napf, zwei Mahlzeiten täglich, keine schwer verdaulichen
+                Zutaten (Weizen, Mais, Soja). Probiotika in der Nahrung (Lactobacillus-haltige Sorten)
+                können nachweislich die Darmflora stabilisieren und Flatulenz reduzieren.
+              </p>
+              <p>
+                <strong>Rückenprobleme und Gewicht:</strong> Franzosen haben anatomisch eine erhöhte
+                Anfälligkeit für Wirbelsäulenprobleme (Hemi-Vertebrae, IVDD). Übergewicht ist der
+                wichtigste vermeidbare Belastungsfaktor. Ähnlich wie beim Dackel gilt: Ein Frenchie
+                im Normalgewicht lebt gesünder als einer mit 2 kg zu viel. Tägliche Kalorienzählung
+                inklusive aller Snacks ist bei dieser Rasse keine Übervorsicht.
+              </p>
+              <p>
+                <strong>Futter-Empfehlung Frenchie:</strong> Getreidefrei oder getreideredu­ziert wegen
+                Allergie-Prädisposition. Proteinquelle klar benannt, möglichst Monoprotein.
+                Lachs- oder Fischsorten für Omega-3 und Hautgesundheit. Fettgehalt moderat (12–16 %).
+                Bei bereits sichtbaren Hautsymptomen: 8-wöchige Eliminationsdiät mit Insekten-
+                oder Pferdefleisch vor jeder weiteren Diagnose.
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* EEAT: Deutscher Schäferhund */}
+      {breed.slug === "deutscher-schaeferhund" && (
+        <section className="max-w-5xl mx-auto w-full px-5 py-10">
+          <div className="card p-8">
+            <h2 className="text-xl font-extrabold tracking-tight mb-6">Deutscher Schäferhund und Futter: Was du wissen solltest</h2>
+            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
+              <p>
+                <strong>Exokrine Pankreasinsuffizienz (EPI):</strong> Der Deutsche Schäferhund ist
+                die am stärksten betroffene Rasse für EPI — eine Erkrankung, bei der die Bauchspeicheldrüse
+                keine ausreichenden Verdauungsenzyme mehr produziert. Betroffen sind schätzungsweise
+                1–3 % aller Schäferhunde. Symptome: massiver Gewichtsverlust trotz gutem Appetit,
+                großer, hellgefärbter, übelriechender Kot. EPI ist behandelbar (Enzymsubstitution),
+                aber nur wenn erkannt. Bei entsprechenden Symptomen: sofort Tierarzt, Kot-Elastase-Test.
+              </p>
+              <p>
+                <strong>Magendrehung (MDV/GDV):</strong> Große Hunde mit tiefer Brust wie der
+                Schäferhund haben ein erhöhtes Risiko für Magendilatation-Volvulus — ein medizinischer
+                Notfall. Vorbeugend: keine einzelne große Mahlzeit, sondern 2 Mahlzeiten täglich.
+                Mindestens 1 Stunde Ruhe nach dem Fressen. Kein Fressen direkt vor intensiver
+                Aktivität. Slow-Feeder oder erhöhter Napf werden diskutiert — die Evidenz ist gemischt,
+                schaden tut es aber nicht.
+              </p>
+              <p>
+                <strong>Hoher Energiebedarf bei Arbeits-Schäferhunden:</strong> Ein aktiver Schäferhund
+                in Arbeit (Schutz, Hüten, Sport) hat einen 1,5–2x erhöhten Grundumsatz gegenüber
+                einem ruhigen Haushund. Für diese Hunde: Protein ≥ 28 %, Fett ≥ 16 %, Energiedichte
+                ≥ 3.800 kcal/kg Trockenfutter. Für den wenig aktiven Haushalt-Schäferhund gelten
+                normale Werte (26 % Protein, 14 % Fett).
+              </p>
+              <p>
+                <strong>Hüftdysplasie und Futter:</strong> HD ist beim Schäferhund genetisch — Futter
+                kann es nicht verhindern. Was Futter tun kann: Übergewicht vermeiden
+                (jedes kg belastet HD-Hüften mehr), Omega-3 aus Fisch für entzündungshemmende
+                Wirkung, Glucosamin/Chondroitin als begleitende Maßnahme. Protein qualitativ hochwertig
+                für Muskelerhalt — Muskeln sind die beste Gelenkstabilisierung.
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* EEAT: Beagle */}
+      {breed.slug === "beagle" && (
+        <section className="max-w-5xl mx-auto w-full px-5 py-10">
+          <div className="card p-8">
+            <h2 className="text-xl font-extrabold tracking-tight mb-6">Beagle und Futter: Was du wissen solltest</h2>
+            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
+              <p>
+                <strong>Nahrungsmotivation als Überlebenstrieb:</strong> Beagles wurden als Meutejaghunde
+                gezüchtet — ihr Antrieb, Nahrung zu finden und zu fressen, ist genetisch verankert.
+                Ein Beagle, der bettelnd vor dir steht, ist nicht hungrig — er ist ein Beagle.
+                Das hat praktische Konsequenzen: Beagles überschätzen ihren Hunger chronisch,
+                fressen was da ist und zeigen kein natürliches Sättigungsverhalten. Genaue
+                Portionierung nach Gramm (nicht nach Augenmaß) und konsequentes Nicht-Nachgeben
+                beim Betteln sind bei dieser Rasse keine Option sondern Pflicht.
+              </p>
+              <p>
+                <strong>Übergewicht und Kastration:</strong> Kastrierte Beagles reduzieren ihren
+                Grundumsatz um ca. 20–30 %. Das bedeutet: nach der Kastration die Futtermenge sofort
+                anpassen (nicht erst wenn der Hund sichtbar zunimmt). Ein kastrierter Beagle
+                braucht ca. 25 % weniger als der unkastrierte gleichen Gewichts.
+              </p>
+              <p>
+                <strong>Verstopfungsrisiko durch Knochen und Fremdkörper:</strong> Beagles verschlucken
+                was sie finden — sie sind die Rasse mit der höchsten Rate an Fremdkörperoperationen.
+                Rohe Knochen immer beaufsichtigt geben. Schnelle Fresser brauchen Slow-Feeder um
+                Würgen und Luftschlucken zu reduzieren.
+              </p>
+              <p>
+                <strong>Futter-Empfehlung Beagle:</strong> Energiereduzierte Sorten oder normales
+                hochwertiges Futter in kontrollierten Mengen. Keine kalorienreichen Sorten mit
+                hohem Fettgehalt. Proteingehalt 26–28 % für Muskelerhalt bei normalem Gewicht.
+                Kalorienarme Gemüse-Snacks (Möhren, Gurke) als Beschäftigung und Sättigungsmittel.
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* EEAT: Chihuahua */}
+      {breed.slug === "chihuahua" && (
+        <section className="max-w-5xl mx-auto w-full px-5 py-10">
+          <div className="card p-8">
+            <h2 className="text-xl font-extrabold tracking-tight mb-6">Chihuahua und Futter: Was du wissen solltest</h2>
+            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
+              <p>
+                <strong>Hypoglykämie-Risiko:</strong> Chihuahuas und andere Toy-Rassen haben
+                ein hohes Risiko für Hypoglykämie (Unterzuckerung) — besonders Welpen und
+                Kleinsthunde unter 1,5 kg. Ursache: sehr geringes Körperfettdepot und hoher
+                relativer Energiebedarf. Praxis: Nie länger als 4–6 Stunden fasten lassen,
+                3–4 kleine Mahlzeiten täglich, besonders bei Welpen. Zeichen: Zittern,
+                Schwäche, Desorientierung, in schweren Fällen Krampfanfall. Bei Verdacht:
+                sofort ein Stück Honig auf die Schleimhäute und zum Tierarzt.
+              </p>
+              <p>
+                <strong>Kleine Magenkapazität:</strong> Ein Chihuahua frisst naturgemäß kleine
+                Portionen. Zu große Einzelportionen führen zu Erbrechen oder Würgen.
+                Richtgröße: 2–3 Mahlzeiten täglich, maximal 30–50 g Trockenfutter pro Mahlzeit
+                bei einem 2-kg-Hund. Kleine-Rassen-Kibble (kleinere Stücke) ist bei Chihuahuas
+                nicht nur Bequemlichkeit — es reduziert das Aspirationsrisiko.
+              </p>
+              <p>
+                <strong>Zahngesundheit kritisch:</strong> Chihuahuas haben eine der höchsten
+                Raten an Zahnerkrankungen aller Hunderassen — die kleinen Kiefer sind zu eng
+                für alle Zähne. Parodontitis kann bakteriell innere Organe belasten.
+                Konsequenz: tägliches Zähneputzen ist Pflicht, kein Luxus. Dental-Futter
+                und enzymatische Kausticks als Ergänzung. Futter mit kalziumfördernden Zutaten
+                (kein Zucker!) unterstützt Zahnsubstanz.
+              </p>
+              <p>
+                <strong>Futter-Empfehlung Chihuahua:</strong> Kleine-Rassen-Sorten mit hoher
+                Energiedichte (3.800–4.200 kcal/kg) — so reicht eine kleine Portion.
+                Protein ≥ 28 % für Muskelerhalt beim kleinen Körper. Keine Sorten mit
+                hohem Zuckeranteil. Nassfutter als Mahlzeit-Ergänzung erhöht die Flüssigkeitsaufnahme.
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* EEAT: Dackel */}
+      {breed.slug === "dackel" && (
+        <section className="max-w-5xl mx-auto w-full px-5 py-10">
+          <div className="card p-8">
+            <h2 className="text-xl font-extrabold tracking-tight mb-6">Dackel und Futter: Was du wissen solltest</h2>
+            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
+              <p>
+                <strong>IVDD: Gewicht ist eine medizinische Frage:</strong> Bandscheibenvorfall
+                (Intervertebral Disc Disease, IVDD) betrifft schätzungsweise 25 % aller Dackel
+                im Laufe ihres Lebens. Die Chondrodystrophie — der genetische Grund für die
+                kurzen Beine — betrifft auch die Wirbelsäule. Übergewicht ist der stärkste
+                kontrollierbare Risikofaktor für Schweregrad und Häufigkeit von IVDD-Vorfällen.
+                Jedes überschüssige Kilo beim Dackel ist keine Ästhetikfrage — es kann über
+                eine Lähmung entscheiden.
+              </p>
+              <p>
+                <strong>Gewichtsmanagement beim Dackel:</strong> Idealgewicht Kurzdackel 7–14 kg
+                je nach Typ (Standard/Zwerg/Kaninchen). Die Futtermenge für einen 8-kg-Dackel:
+                ca. 140–160 g hochwertiges Trockenfutter täglich (bei 3.700 kcal/kg).
+                Packungsangaben der Hersteller sind systematisch zu hoch — immer nach
+                RER-Formel berechnen. Konsequente Snack-Kontrolle: Leckerli von der Tagesration
+                abziehen, nie zusätzlich geben.
+              </p>
+              <p>
+                <strong>Omega-3 als entzündungshemmende Unterstützung:</strong> Bei IVDD-gefährdeten
+                Hunden wird Omega-3 aus Fisch (EPA/DHA) für seine entzündungshemmende Wirkung
+                auf nervliches Gewebe diskutiert. Kein Heilmittel, aber eine risikoarme,
+                sinnvolle Ergänzung. Lachsöl (0,5–1 ml täglich für einen 10-kg-Dackel)
+                oder Futter mit Lachs als Erstzutat.
+              </p>
+              <p>
+                <strong>Futter-Empfehlung Dackel:</strong> Energiereduziert oder normale hochwertige
+                Sorte in reduzierter Menge. Kein Hochenergiefutter für aktive Hunde (zu kalorienreich).
+                Proteingehalt 25–28 %. Kein Zucker. Omega-3-reich (Lachs, Hering, Lachsöl).
+                Bei aktiv IVDD-kranken Dackeln: Rücksprache mit Tierarzt ob spezifisches Diätfutter.
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* EEAT: Yorkshire Terrier */}
+      {breed.slug === "yorkshire-terrier" && (
+        <section className="max-w-5xl mx-auto w-full px-5 py-10">
+          <div className="card p-8">
+            <h2 className="text-xl font-extrabold tracking-tight mb-6">Yorkshire Terrier und Futter: Was du wissen solltest</h2>
+            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
+              <p>
+                <strong>Portosystemischer Shunt:</strong> Yorkies haben eine genetisch erhöhte
+                Häufigkeit für portosystemische Lebererkrankungen (PSS — eine Gefäßfehlbildung,
+                die Blut an der Leber vorbeileitet). Bei PSS-Hunden ist eine proteinmodifizierte
+                Diät essenziell — hochverdauliches Protein in reduzierter Menge, um
+                Ammoniakbelastung zu minimieren. Dies ist aber eine tierärztlich zu begleitende
+                Spezialdiät, kein Standard-Ratschlag für gesunde Yorkies.
+              </p>
+              <p>
+                <strong>Zahnerkrankungen extrem häufig:</strong> Yorkshire Terrier haben die
+                höchste Rate an schwerer Parodontitis unter allen Hunderassen. Die Zähne sind
+                zu nah beieinander, Plaque-Akkumulation ist unvermeidlich. Konsequenz:
+                tägliches Zähneputzen ab dem ersten Lebensmonat trainieren.
+                Futter-seitig: keine weichen Sorten als Alleinernährung — der mechanische
+                Kauaufwand von Trockenfutter ist minimal hilfreich.
+              </p>
+              <p>
+                <strong>Seidiges Fell und Fettsäuren:</strong> Das charakteristische, seidenglatte
+                Fell des Yorkies ist fettsäureabhängig. Unzureichende Omega-6-Versorgung
+                (Linolsäure) führt zu stumpfem, brüchigem Fell. Das ist kein Luxusproblem —
+                es zeigt Nährstoffmangel an. Futter mit Sonnenblumen- oder Distelöl als Quelle
+                für Linolsäure sowie Omega-3 für Balance. Fisch als Proteinquelle liefert beides.
+              </p>
+              <p>
+                <strong>Futter-Empfehlung Yorkie:</strong> Kleine-Rassen-Sorten mit hoher
+                Energiedichte. Protein ≥ 28 %, Fett 14–18 % mit gutem Fettsäureprofil.
+                Keine billigen Sorten ohne spezifische Fleischdeklaration — der kleine Körper
+                reagiert empfindlicher auf Minderqualität. 2–3 kleine Mahlzeiten täglich
+                (Hypoglykämie-Prävention bei kleinen Exemplaren).
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* EEAT: Pudel */}
+      {breed.slug === "pudel" && (
+        <section className="max-w-5xl mx-auto w-full px-5 py-10">
+          <div className="card p-8">
+            <h2 className="text-xl font-extrabold tracking-tight mb-6">Pudel und Futter: Was du wissen solltest</h2>
+            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
+              <p>
+                <strong>Vier Größen, vier Fütterungskonzepte:</strong> Groß-, Mittel-, Zwerg- und
+                Toy-Pudel haben grundlegend unterschiedliche Energiebedarfe. Ein Großpudel (45–70 cm)
+                braucht ähnliche Portionen wie ein Labrador. Ein Toy-Pudel (unter 28 cm) folgt den
+                Regeln der Kleinsthunde mit Hypoglykämie-Prävention und kleinen Mahlzeiten.
+                Die Größengruppe bestimmt hier mehr als die Rasse.
+              </p>
+              <p>
+                <strong>Sebaceous Adenitis (SA):</strong> Pudel haben eine genetisch erhöhte
+                Prädisposition für Sebaceous Adenitis — eine entzündliche Erkrankung der
+                Talgdrüsen, die zu Schuppenbildung, Haarausfall und Hautirritationen führt.
+                Ein ungünstiges Omega-6:Omega-3-Verhältnis in der Ernährung wird als
+                Triggerfaktor diskutiert. Empfehlung: Futter mit niedrigem Omega-6:Omega-3-
+                Verhältnis (idealerweise unter 7:1) — d.h. Lachs, Makrele, Hering als Protein
+                oder Lachsöl als Ergänzung.
+              </p>
+              <p>
+                <strong>Intelligenz und Aktivitätslevel:</strong> Pudel sind hochintelligent
+                und aktiv — sie brauchen mentale und körperliche Auslastung. Unterauslastung
+                führt zu Stress und ist ein indirekter Auslöser für Verdauungsprobleme.
+                Für aktive Pudel: Protein ≥ 26 %, Fett 14–16 %, moderate Energiedichte.
+                Für wenig aktive oder ältere Pudel: energiereduziert.
+              </p>
+              <p>
+                <strong>Futter-Empfehlung Pudel:</strong> Fisch als Hauptprotein ist für Pudel
+                besonders geeignet — Omega-3-Profil und vollständige Aminosäurenversorgung
+                in einem. Getreidefrei kann bei Pudeln mit Hautsymptomen sinnvoll sein.
+                Keine Sorten mit hohem Sonnenblumenöl-Anteil (verschiebt Omega-Verhältnis).
+                Größengerechte Kibble-Größe beachten.
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <ProductSchemaBlock foods={foods} listName={`Empfohlenes Hundefutter für ${breed.name}`} />
 
       {/* EMPFOHLENE PRODUKTE */}
       <section className="max-w-5xl mx-auto w-full px-5 py-10">

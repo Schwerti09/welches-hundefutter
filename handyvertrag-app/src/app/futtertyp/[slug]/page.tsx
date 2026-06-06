@@ -7,6 +7,7 @@ import { PROBLEM_BY_SLUG } from "@/data/problems";
 import { FUTTERTYP_TO_PROBLEME } from "@/lib/issue-to-problem";
 import ScoreBadge from "@/components/ScoreBadge";
 import AuthorBox from "@/components/AuthorBox";
+import ProductSchemaBlock from "@/components/ProductSchemaBlock";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -195,6 +196,8 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
           </div>
         </section>
       )}
+
+      <ProductSchemaBlock foods={foods} listName={`${typ.name} Hundefutter im Vergleich`} />
 
       {/* PRODUKTE */}
       <section className="max-w-5xl mx-auto w-full px-5 py-10">
