@@ -3,3 +3,4 @@
 SECRETS_SCAN_ENABLED=false
 Handyvertrag/
 handyvertrag-app/scripts/dog_foods.json
+handyvertrag-app/scripts/cross_sell.json
