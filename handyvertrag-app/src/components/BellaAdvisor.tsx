@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
 import PriceAlertBox from "@/components/PriceAlertBox";
+import VoiceButton from "@/components/VoiceButton";
 
 const Bella = dynamic(() => import("@/components/Bella"), { ssr: false });
 
@@ -89,6 +90,7 @@ export default function BellaAdvisor() {
   const [mood, setMood] = useState<BellaMood>("waving");
   const [loading, setLoading] = useState(false);
   const [sessionId] = useState(() => Math.random().toString(36).slice(2));
+  const [voiceListening, setVoiceListening] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -424,8 +426,13 @@ export default function BellaAdvisor() {
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => e.key === "Enter" && sendMessage(input)}
-                placeholder="Erzähl BELLA von deinem Hund…"
+                placeholder={voiceListening ? "🎙 Ich höre zu…" : "Erzähl BELLA von deinem Hund…"}
                 className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-white placeholder-white/30 text-sm focus:outline-none focus:ring-2 focus:ring-[rgba(240,167,60,0.5)] focus:border-transparent"
+                disabled={loading}
+              />
+              <VoiceButton
+                onResult={(text) => sendMessage(text)}
+                onListening={setVoiceListening}
                 disabled={loading}
               />
               <button
