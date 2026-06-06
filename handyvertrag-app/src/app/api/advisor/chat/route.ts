@@ -11,11 +11,14 @@
  *   OFFERS:<json>          — finale Empfehlung { offers, theme, confidence }
  */
 import { NextRequest } from "next/server";
+import { randomBytes } from "node:crypto";
 import { z } from "zod";
 import { neon } from "@neondatabase/serverless";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import Anthropic from "@anthropic-ai/sdk";
 import { getCompanions, containsAllergen } from "@/db/queries/crosssell";
+import { dailyGrams } from "@/lib/consumption-math";
+import type { ActivityLevel } from "@/lib/consumption-math";
 
 export const runtime = "nodejs";
 export const maxDuration = 45;
@@ -411,6 +414,42 @@ export async function POST(request: NextRequest) {
           }, 3);
           if (companions.length) emit(`COMPANIONS:${JSON.stringify({ companions })}`);
         } catch { /* Cross-Sell ist optional, nie blockierend */ }
+      }
+
+      // ── Futter-Pass: Profil anlegen (non-blocking, 500er nie sichtbar) ──
+      if (!ask && offers.length > 0 && process.env.DATABASE_URL) {
+        try {
+          const allConv = [...conversationHistory.map(h => h.content), message].join(" ");
+          // Hundename erkennen: "heißt Bello", "mein Hund Bello", "meine Hündin Luna"
+          const nameMatch = allConv.match(/hei[ßs]t\s+([A-ZÄÖÜ][a-zäöüß]{1,14})/u)
+            || allConv.match(/(?:hund|hündin|rüde|hünchen|welpe)\s+([A-ZÄÖÜ][a-zäöüß]{1,14})/ui);
+          const dogName = nameMatch?.[1] ?? (intent.breed ? `${intent.breed.split(" ")[0][0].toUpperCase()}${intent.breed.split(" ")[0].slice(1)}-Hund` : "Bello");
+          // Gewicht parsen: "15 kg", "15,5 kg", "15.5 kg"
+          const allNorm = allConv.toLowerCase().normalize("NFC").replace(/ü/g, "ue").replace(/ä/g, "ae").replace(/ö/g, "oe");
+          const wMatch = allNorm.match(/(\d+(?:[.,]\d+)?)\s*(?:kg|kilo)/);
+          const weightKg = wMatch ? parseFloat(wMatch[1].replace(",", ".")) : null;
+          const actLevel: ActivityLevel = intent.lifePhase === "welpen" ? "niedrig" : intent.lifePhase === "senior" ? "niedrig" : "mittel";
+          const dg = weightKg ? dailyGrams(weightKg, actLevel) : null;
+          const shareToken = randomBytes(18).toString("hex");
+          const profileSql = neon(process.env.DATABASE_URL);
+          const [row] = await profileSql`
+            INSERT INTO dog_profiles (
+              name, breed_slug, weight_kg, activity_level, allergies, health_flags,
+              current_food_slug, est_daily_grams, share_token, share_enabled
+            ) VALUES (
+              ${dogName},
+              ${intent.breed ? intent.breed.toLowerCase().replace(/\s+/g, "-") : null},
+              ${weightKg ?? null},
+              ${actLevel},
+              ${intent.sensitive && intent.protein ? [intent.protein] : null},
+              ${intent.lifePhase ? [intent.lifePhase] : null},
+              ${offers[0].slug ?? null},
+              ${dg ?? null},
+              ${shareToken},
+              false
+            ) RETURNING id, share_token`;
+          emit(`PROFILE:${JSON.stringify({ id: row.id, shareToken: row.share_token, name: dogName, dailyGrams: dg, currentFood: offers[0].name })}`);
+        } catch { /* never block the stream */ }
       }
 
       controller.close();

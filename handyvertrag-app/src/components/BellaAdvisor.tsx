@@ -39,12 +39,21 @@ interface Companion {
   reason: string;
 }
 
+interface ProfileData {
+  id: string;
+  shareToken: string;
+  name: string;
+  dailyGrams: number | null;
+  currentFood: string | null;
+}
+
 interface Message {
   id: string;
   role: "bella" | "user";
   content: string;
   offers?: FoodCard[];
   companions?: Companion[];
+  profile?: ProfileData;
 }
 
 type BellaMood = "idle" | "thinking" | "talking" | "happy" | "waving" | "excited";
@@ -134,6 +143,7 @@ export default function BellaAdvisor() {
       let replyText = "";
       let offers: FoodCard[] = [];
       let companions: Companion[] = [];
+      let profile: ProfileData | undefined;
 
       const flushLine = (line: string) => {
         if (line.startsWith("TEXT:")) {
@@ -149,6 +159,8 @@ export default function BellaAdvisor() {
             const payload = JSON.parse(line.slice(11));
             if (Array.isArray(payload?.companions)) companions = payload.companions as Companion[];
           } catch { /* ignore partial */ }
+        } else if (line.startsWith("PROFILE:")) {
+          try { profile = JSON.parse(line.slice(8)) as ProfileData; } catch { /* ignore partial */ }
         }
       };
 
@@ -166,7 +178,7 @@ export default function BellaAdvisor() {
         replyText = "Erzähl mir noch ein bisschen mehr über deinen Hund — Rasse, Alter, Allergien? Dann finde ich das passende Futter.";
       }
       setMessages(prev => prev.map(m =>
-        m.id === bellaId ? { ...m, content: replyText, offers: offers.length ? offers : undefined, companions: companions.length ? companions : undefined } : m
+        m.id === bellaId ? { ...m, content: replyText, offers: offers.length ? offers : undefined, companions: companions.length ? companions : undefined, profile } : m
       ));
 
       setMood(offers.length > 0 ? "excited" : "happy");
@@ -347,6 +359,27 @@ export default function BellaAdvisor() {
                   {/* Schicht 2: Preis-Wecker nach der Empfehlung */}
                   {msg.offers && msg.offers.length > 0 && (
                     <PriceAlertBox food={msg.offers[0]} />
+                  )}
+
+                  {/* Futter-Pass CTA (erscheint sobald Profil angelegt) */}
+                  {msg.profile && (
+                    <div className="mt-3 rounded-2xl bg-gradient-to-r from-orange-600/15 to-amber-600/15 border border-orange-500/25 p-4">
+                      <p className="text-xs font-bold text-orange-300 mb-1">🐕 Futter-Pass für {msg.profile.name} angelegt</p>
+                      {msg.profile.dailyGrams && (
+                        <p className="text-[11px] text-white/60 mb-3">
+                          Tagesbedarf ca. <span className="text-white font-semibold">{msg.profile.dailyGrams} g</span>
+                          {msg.profile.currentFood && <> · empfohlen: <span className="text-white/80">{msg.profile.currentFood}</span></>}
+                        </p>
+                      )}
+                      <a
+                        href={`/hund/${msg.profile.shareToken}`}
+                        target="_blank"
+                        rel="noopener"
+                        className="text-xs px-3 py-1.5 rounded-xl bg-orange-500/20 border border-orange-500/40 text-orange-200 hover:bg-orange-500/30 transition-colors inline-block"
+                      >
+                        Steckbrief ansehen →
+                      </a>
+                    </div>
                   )}
                 </div>
               </div>
