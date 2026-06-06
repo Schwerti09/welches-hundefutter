@@ -5,6 +5,7 @@ import { neon } from "@neondatabase/serverless";
 import { PROBLEMS, PROBLEM_BY_SLUG } from "@/data/problems";
 import { FUTTERTYP_BY_SLUG } from "@/data/futtertypen";
 import { PROBLEM_TO_FUTTERTYPEN } from "@/lib/issue-to-problem";
+import ScoreBadge from "@/components/ScoreBadge";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -28,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 interface FoodRow {
   brand: string; name: string; type: string; protein: string | null;
   price_per_kg: string | null; is_grain_free: boolean; is_hypoallergenic: boolean;
-  affiliate_url: string;
+  affiliate_url: string; score: number | null;
 }
 
 async function getFoodsForProblem(grainFree: boolean, hypo: boolean): Promise<FoodRow[]> {
@@ -49,7 +50,7 @@ async function getFoodsForProblem(grainFree: boolean, hypo: boolean): Promise<Fo
     const rows = await sql.query(
       `SELECT * FROM (
          SELECT DISTINCT ON (${nameKey}) brand, name, type, protein, price_per_kg,
-           is_grain_free, is_hypoallergenic, affiliate_url
+           is_grain_free, is_hypoallergenic, affiliate_url, score
          FROM dog_foods WHERE ${filter}
          ORDER BY ${nameKey}, price_per_kg ASC
        ) d ORDER BY ${bias} price_per_kg ASC LIMIT 6`,
@@ -127,6 +128,90 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
         </div>
       </section>
 
+      {/* EEAT-EXPERTEN-BLOCK: Allergie */}
+      {slug === "allergie" && (
+        <section className="max-w-5xl mx-auto w-full px-5 py-10">
+          <div className="card p-8">
+            <h2 className="text-xl font-extrabold tracking-tight mb-6">Futterallergie beim Hund: Was du wissen solltest</h2>
+            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
+              <p>
+                <strong>Echte Futterallergie vs. Unverträglichkeit:</strong> Nur etwa 10 % aller Hautsymptome beim
+                Hund sind echte IgE-vermittelte Allergien mit einer Immunreaktion. Die meisten Fälle sind
+                Unverträglichkeiten — ohne Immunbeteiligung, oft dosisabhängig und langsamer in der Ausprägung.
+                Der praktische Unterschied: Eine Allergie tritt bereits bei kleinsten Mengen des Auslösers auf,
+                eine Unverträglichkeit kann sich über Wochen aufbauen. Für die Diagnose ist das relevant,
+                weil Eliminationsdiäten bei echten Allergien strenger durchgeführt werden müssen.
+              </p>
+              <p>
+                <strong>Die häufigsten Allergene:</strong> Laut Studienlage sind die häufigsten Futtermittelallergene
+                beim Hund <strong>Huhn (34 %)</strong>, Rind (17 %), Milchprodukte (17 %), Weizen (15 %) und Lamm (14 %).
+                Nicht Getreide als Gruppe steht an erster Stelle — sondern tierische Proteine. Eine Umstellung auf
+                getreidefrei allein löst daher keine Huhn- oder Rindfleisch-Allergie. Wer wegen Allergie-Verdachts
+                das Futter wechselt, muss auch die Proteinquelle wechseln.
+              </p>
+              <p>
+                <strong>Eliminationsdiät — wie sie funktioniert:</strong> Das anerkannte Diagnoseverfahren sind
+                8–12 Wochen mit ausschließlich einer einzigen, bisher unbekannten Proteinquelle (z. B. Insekten,
+                Pferd, Känguru). Alle anderen Futter, Snacks und Tafelfleisch sind in diesem Zeitraum verboten —
+                auch Kaustangen oder aromatisierte Zahnpflegeprodukte. Ohne konsequente Durchführung ist das
+                Ergebnis wertlos. Die Diagnose gilt als bestätigt, wenn nach Rückführung des Verdachts-Proteins
+                die Symptome wiederkehren.
+              </p>
+              <p>
+                <strong>BELLAs Empfehlung für die Erstdiagnose:</strong> <strong>Insektenprotein</strong> (Hermetia
+                illucens, die Schwarze Soldatenfliege) eignet sich besonders gut als Ausgangsprotein bei
+                Allergie-Verdacht — die meisten Hunde hatten noch nie Kontakt damit, daher besteht keine
+                Vorimmunisierung. Nach 8 Wochen Symptomfreiheit folgt die sukzessive Reintroduktion einzelner
+                Proteinquellen, um den tatsächlichen Auslöser zu identifizieren. Dieses Vorgehen sollte
+                begleitend mit einem Tierarzt abgestimmt werden.
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* EEAT-EXPERTEN-BLOCK: Übergewicht */}
+      {slug === "uebergewicht" && (
+        <section className="max-w-5xl mx-auto w-full px-5 py-10">
+          <div className="card p-8">
+            <h2 className="text-xl font-extrabold tracking-tight mb-6">Übergewicht beim Hund: Was du wissen solltest</h2>
+            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
+              <p>
+                Übergewicht beim Hund ist kein Randproblem: Laut einer Auswertung der Veterinärmedizinischen
+                Universität Wien (2022) sind rund <strong>54 % der deutschen Hunde übergewichtig</strong>.
+                Die gesundheitlichen Folgen sind gut belegt — erhöhte Gelenkbelastung, Herzkreislauf-Risiken
+                und eine nachweislich verkürzte Lebenserwartung: Adipöse Hunde leben im Schnitt bis zu
+                2,5 Jahre kürzer als normalgewichtige Tiere der gleichen Rasse.
+              </p>
+              <p>
+                <strong>Body Condition Score (BCS) — die Rippen-Probe:</strong> Der einfachste Test ohne
+                Waage ist der Rippen-Tasttest. Kannst du die Rippen deines Hundes durch das Fell ertasten,
+                ohne dass sie sichtbar vorstehen? Dann liegt der Hund wahrscheinlich im idealen
+                BCS-Bereich (5 von 9). Sind die Rippen nicht zu ertasten, besteht Übergewicht.
+                Die meisten Halter unterschätzen das Gewicht ihres Hundes — das ist keine Ausnahme,
+                sondern der Normalfall. Tiere, die täglich gesehen werden, werden unbewusst als „normal" wahrgenommen.
+              </p>
+              <p>
+                <strong>Kalorienreduktion praktisch umgesetzt:</strong> Eine gesunde Gewichtsabnahme liegt
+                bei 1–2 % des Körpergewichts pro Woche. Das entspricht einer Reduktion des Kalorienbedarfs
+                um 20–25 % gegenüber dem Erhaltungsbedarf. Nassfutter oder mit Wasser aufgequollenes
+                Trockenfutter erhöht die Sättigungszeit bei gleicher oder geringerer Kalorienmenge.
+                Snacks müssen vollständig aus der täglichen Ration abgezogen werden — nicht zusätzlich
+                gegeben werden.
+              </p>
+              <p>
+                <strong>Light-Futter — nötig oder nicht?</strong> Spezielles Light-Futter ist oft teurer,
+                aber nicht grundsätzlich nötig. Es enthält mehr Füllstoffe wie Cellulose, was das Volumen
+                erhöht aber den Nährwert nicht verbessert. Normales hochwertiges Futter, korrekt dosiert
+                und mit dem tatsächlichen Tagesbedarf des Hundes abgeglichen, erzielt gleichwertige
+                Ergebnisse. Der entscheidende Faktor ist die präzise Gramm-Dosierung — nicht das
+                Produktlabel.
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* FUTTER-EMPFEHLUNGEN */}
       <section className="max-w-5xl mx-auto w-full px-5 py-10">
         <h2 className="text-2xl font-extrabold tracking-tight mb-2">
@@ -145,6 +230,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
                   {f.protein && <span className="text-[10px] px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-300">{f.protein}</span>}
                   {f.is_grain_free && <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300">getreidefrei</span>}
                   {f.is_hypoallergenic && <span className="text-[10px] px-2 py-0.5 rounded-full bg-violet-500/15 text-violet-300">hypoallergen</span>}
+                  {f.score != null && <ScoreBadge score={f.score} />}
                 </div>
                 <p className="font-semibold text-sm leading-tight">{f.name}</p>
                 <p className="text-[var(--muted)] text-xs mt-0.5">{f.brand}</p>

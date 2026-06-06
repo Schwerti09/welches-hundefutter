@@ -5,6 +5,7 @@ import { neon } from "@neondatabase/serverless";
 import { FUTTERTYPEN, FUTTERTYP_BY_SLUG } from "@/data/futtertypen";
 import { PROBLEM_BY_SLUG } from "@/data/problems";
 import { FUTTERTYP_TO_PROBLEME } from "@/lib/issue-to-problem";
+import ScoreBadge from "@/components/ScoreBadge";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -28,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 interface FoodRow {
   brand: string; name: string; type: string; protein: string | null;
   price_per_kg: string | null; is_grain_free: boolean; is_hypoallergenic: boolean;
-  affiliate_url: string;
+  affiliate_url: string; score: number | null;
 }
 
 async function getFoodsByType(dbType: string, grainFree: boolean, hypo: boolean): Promise<FoodRow[]> {
@@ -47,7 +48,7 @@ async function getFoodsByType(dbType: string, grainFree: boolean, hypo: boolean)
     const rows = await sql.query(
       `SELECT * FROM (
          SELECT DISTINCT ON (${nameKey}) brand, name, type, protein, price_per_kg,
-           is_grain_free, is_hypoallergenic, affiliate_url
+           is_grain_free, is_hypoallergenic, affiliate_url, score
          FROM dog_foods WHERE ${filters}
          ORDER BY ${nameKey}, price_per_kg ASC
        ) d ORDER BY price_per_kg ASC LIMIT 6`,
@@ -151,6 +152,49 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
         </div>
       </section>
 
+      {/* EEAT-EXPERTEN-BLOCK: Getreidefrei */}
+      {slug === "getreidefrei" && (
+        <section className="max-w-5xl mx-auto w-full px-5 py-10">
+          <div className="card p-8">
+            <h2 className="text-xl font-extrabold tracking-tight mb-6">Getreidefrei: Was du wissen solltest</h2>
+            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
+              <p>
+                <strong>Was „getreidefrei" wirklich bedeutet:</strong> Getreidefrei heißt: kein Weizen, Mais,
+                Gerste, Roggen, Hafer, Reis. Stattdessen werden Kohlenhydrate aus Kartoffel, Erbse,
+                Süßkartoffel oder Linsen verwendet. Das ist kein Low-Carb — der Gesamtkohlenhydratgehalt
+                kann bei getreidefrei-Futter identisch oder sogar höher sein als bei Futter mit Vollkornreis.
+                Wer Low-Carb für seinen Hund möchte, muss explizit auf den Kohlenhydratgehalt achten,
+                nicht nur auf das „getreidefrei"-Label.
+              </p>
+              <p>
+                <strong>Der DCM-Verdacht — aktueller Stand:</strong> 2018 warnte die US-amerikanische FDA
+                vor einem möglichen Zusammenhang zwischen getreidefrei-Futter mit hohem Hülsenfruchtanteil
+                und <strong>dilatativer Kardiomyopathie (DCM)</strong> beim Hund. Stand 2024 ist kein kausaler
+                Zusammenhang wissenschaftlich belegt. Eine Studie der Tufts University (2023) konnte keine
+                statistische Signifikanz nachweisen. Das Thema gilt als nicht abgeschlossen. Für Rassen mit
+                genetischer DCM-Disposition — darunter Dobermann, Boxer und Irischer Wolfshund — ist
+                tierärztliche Rücksprache bei dauerhafter getreidefrei-Ernährung empfehlenswert.
+              </p>
+              <p>
+                <strong>Wann getreidefrei sinnvoll ist:</strong> Bei nachgewiesener Getreide-Unverträglichkeit
+                (durch Eliminationsdiät bestätigt), bei Hunden mit wiederkehrenden Hautsymptomen als
+                Versuchsumstellung sowie als Basis für eine Eliminationsdiät, wenn Getreide als
+                möglicher Auslöser ausgeschlossen werden soll. In diesen Fällen hat die Umstellung
+                eine klare Begründung.
+              </p>
+              <p>
+                <strong>Wann getreidefrei nicht nötig ist:</strong> Bei gesunden Hunden ohne Symptome gibt
+                es keine belastbaren Belege dafür, dass getreidefrei-Futter gesünder ist als qualitativ
+                hochwertiges Futter mit Getreide. <strong>Vollkornreis und Hafer sind gut verdaulich</strong>
+                und liefern Ballaststoffe und Spurenelemente. Die Gleichsetzung „getreidefrei = besser"
+                ist ein Marketingmythos — sie hat keinen wissenschaftlichen Rückhalt für den
+                asymptomatischen Hund.
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* PRODUKTE */}
       <section className="max-w-5xl mx-auto w-full px-5 py-10">
         <h2 className="text-2xl font-extrabold tracking-tight mb-2">
@@ -168,6 +212,7 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-[rgba(240,167,60,0.14)] text-[#ffcd8a] capitalize">{f.type}</span>
                   {f.protein && <span className="text-[10px] px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-300">{f.protein}</span>}
                   {f.is_grain_free && <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300">getreidefrei</span>}
+                  {f.score != null && <ScoreBadge score={f.score} />}
                 </div>
                 <p className="font-semibold text-sm leading-tight">{f.name}</p>
                 <p className="text-[var(--muted)] text-xs mt-0.5">{f.brand}</p>

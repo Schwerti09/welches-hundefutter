@@ -5,6 +5,7 @@ import { neon } from "@neondatabase/serverless";
 import { BREEDS, BREED_BY_SLUG } from "@/data/breeds";
 import gallery from "@/data/breed-gallery.json";
 import { issueToProblemSlug } from "@/lib/issue-to-problem";
+import ScoreBadge from "@/components/ScoreBadge";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -35,7 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 interface FoodRow {
   brand: string; name: string; type: string; protein: string | null;
   price_per_kg: string | null; is_grain_free: boolean; is_hypoallergenic: boolean;
-  affiliate_url: string; image_url: string | null;
+  affiliate_url: string; image_url: string | null; score: number | null;
 }
 
 async function getBreedFoods(slug: string, allergyProne: boolean): Promise<FoodRow[]> {
@@ -48,7 +49,7 @@ async function getBreedFoods(slug: string, allergyProne: boolean): Promise<FoodR
     const rows = await sql.query(
       `SELECT * FROM (
          SELECT DISTINCT ON (${nameKey}) brand, name, type, protein, price_per_kg,
-           is_grain_free, is_hypoallergenic, affiliate_url, image_url
+           is_grain_free, is_hypoallergenic, affiliate_url, image_url, score
          FROM dog_foods
          WHERE is_active = true AND affiliate_url <> '' AND name <> '' AND price_per_kg BETWEEN 2 AND 60 AND type <> 'snack'
          ORDER BY ${nameKey}, price_per_kg ASC
@@ -151,6 +152,92 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
         </div>
       </section>
 
+      {/* EEAT-EXPERTEN-BLOCK: Labrador */}
+      {breed.slug === "labrador-retriever" && (
+        <section className="max-w-5xl mx-auto w-full px-5 py-10">
+          <div className="card p-8">
+            <h2 className="text-xl font-extrabold tracking-tight mb-6">Labrador und Futter: Was du wissen solltest</h2>
+            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
+              <p>
+                Der Labrador ist genetisch für Übergewicht prädisponiert. Das ist keine Übertreibung:
+                Forscher der Universität Cambridge haben 2016 eine Mutation im <strong>POMC-Gen</strong> identifiziert,
+                die bei schätzungsweise 25 % aller Labradors vorkommt und das Sättigungsgefühl direkt beeinträchtigt.
+                Betroffene Hunde sind nicht „gierig" — sie spüren schlicht nicht, wann sie satt sind.
+                Das bedeutet für die Fütterung: exakte Gramm-Dosierung nach Körpergewicht, kein Füttern nach Augenmaß,
+                kein dauerhaft gefüllter Napf.
+              </p>
+              <p>
+                <strong>Gelenkgesundheit und Futter:</strong> Hüftdysplasie (HD) und Ellenbogendysplasie (ED) sind die
+                häufigsten orthopädischen Erkrankungen beim Labrador. Ob ein Hund HD entwickelt, hängt primär von Genetik
+                und Aufzuchtbedingungen ab — nicht vom Futter allein. Aber Übergewicht beschleunigt die Symptomausprägung
+                messbar. Ein Labrador mit 5 kg Übergewicht belastet seine Gelenke pro Schritt mit einem Vielfachen dieser
+                Last. Futter mit angemessenem Proteingehalt (≥ 26 %) und <strong>Omega-3-Fettsäuren</strong> (EPA/DHA aus
+                Meeresquellen) kann Gelenkentzündungen nicht heilen, aber die Entzündungsmarker niedrig halten und
+                die Progression verlangsamen.
+              </p>
+              <p>
+                <strong>Portionsbedarf und Futtertyp:</strong> Ein ausgewachsener Labrador wiegt typisch 25–36 kg.
+                Der tatsächliche Tagesbedarf hängt von Aktivitätslevel, Kastrationsstatus und Alter ab — nicht von der
+                Packungsangabe. Hersteller-Empfehlungen sind generell zu hoch angesetzt, weil mehr Futter mehr Umsatz
+                bedeutet. Ein aktiver, 32 kg schwerer Labrador braucht ca. 370–420 g hochwertiges Trockenfutter mit
+                einer Energiedichte von 3.700 kcal/kg täglich. BELLA berechnet das automatisch über die
+                RER-Formel (70 × kg^0,75 × Aktivitätsfaktor).
+              </p>
+              <p>
+                <strong>Worauf beim Kauf achten:</strong> Für Labradors empfehlen wir erstens ein Futter mit einem
+                spezifisch benannten Fleisch als erster Zutat — kein „Fleisch und tierische Nebenerzeugnisse" ohne
+                Herkunftsangabe. Zweitens einen Rohproteingehalt zwischen 26 und 32 % (höher bei sehr aktiven Hunden).
+                Drittens möglichst keinen zugesetzten Zucker (Rübenzucker, Melasse) — er erhöht die Kaloriendichte
+                ohne Nährwert. Nassfutter als Beimischung kann für gewichtsreduzierte Labradors sinnvoll sein:
+                mehr Sättigung bei weniger kcal durch den hohen Wasseranteil.
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* EEAT-EXPERTEN-BLOCK: Golden Retriever */}
+      {breed.slug === "golden-retriever" && (
+        <section className="max-w-5xl mx-auto w-full px-5 py-10">
+          <div className="card p-8">
+            <h2 className="text-xl font-extrabold tracking-tight mb-6">Golden Retriever und Futter: Was du wissen solltest</h2>
+            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
+              <p>
+                Golden Retriever haben laut der Morris Animal Foundation Lifetime Study eine genetisch erhöhte Krebsrate —
+                schätzungsweise 60 % sterben an einer Krebserkrankung. Antioxidantienreiche Ernährung mit
+                <strong> Omega-3-Fettsäuren</strong> (EPA/DHA) und <strong>Vitamin E</strong> wird in der Fachliteratur
+                diskutiert und kann das Immunsystem unterstützen. Sie ist jedoch kein Schutz vor Krebs und ersetzt
+                keine regelmäßige tierärztliche Vorsorge. Was du tun kannst: eine qualitativ hochwertige Ernährung
+                mit nachweisbarem Fischanteil wählen und Übergewicht konsequent vermeiden — beides gilt als modulierend
+                für systemische Entzündungsprozesse.
+              </p>
+              <p>
+                <strong>Gewicht und Fütterungsdisziplin:</strong> Goldens sind übergewichtsgefährdet, aber weniger
+                extrem als Labradors. Das Hauptproblem: Sie fressen weitgehend was da ist, ohne Protest.
+                Anders als der Labrador fehlt hier eine bekannte genetische Ursache — es ist eher
+                Konditionierung und die hohe Akzeptanz für Leckerlis. Konsequente Portionierung und das
+                Einrechnen aller Snacks in die Tagesration sind entscheidend.
+              </p>
+              <p>
+                <strong>Fell und Fettsäure-Verhältnis:</strong> Das dichte Doppelfell des Golden Retrievers reagiert
+                empfindlich auf ein ungünstiges Omega-6 zu Omega-3-Verhältnis. Ideal ist ein Verhältnis von etwa 5:1.
+                Billigfutter mit hohem Anteil an <strong>Sonnenblumenöl</strong> verschiebt das Verhältnis stark
+                in Richtung Omega-6 — das fördert Entzündungsreaktionen und kann sich in trockenem Fell,
+                Schuppen oder Hautirritationen zeigen. Lachs- oder Leinöl als Ergänzung kann das Gleichgewicht
+                korrigieren, wenn das Grundfutter keine ausreichenden Omega-3-Quellen enthält.
+              </p>
+              <p>
+                <strong>Futterauswahl für Goldens:</strong> Gut geeignet sind Sorten mit <strong>Lachs oder Weißfisch</strong>
+                als Hauptprotein, moderatem Fettgehalt zwischen 14 und 18 % sowie einer klaren Deklaration der
+                Zutaten. Bei Hautsymptomen lohnt ein Versuch mit getreidefrei — nicht weil Getreide per se schlecht
+                ist, sondern weil ein Wechsel der Kohlenhydratquelle manchmal Unverträglichkeiten aufdeckt.
+                Rohproteingehalt zwischen 26 und 30 % ist für durchschnittlich aktive Goldens angemessen.
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* EMPFOHLENE PRODUKTE */}
       <section className="max-w-5xl mx-auto w-full px-5 py-10">
         <h2 className="text-2xl font-extrabold tracking-tight mb-2">
@@ -173,6 +260,7 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-[rgba(240,167,60,0.14)] text-[#ffcd8a] capitalize">{f.type}</span>
                   {f.protein && <span className="text-[10px] px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-300">{f.protein}</span>}
                   {f.is_grain_free && <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300">getreidefrei</span>}
+                  {f.score != null && <ScoreBadge score={f.score} />}
                 </div>
                 <p className="font-semibold text-sm leading-tight">{f.name}</p>
                 <p className="text-[var(--muted)] text-xs mt-0.5">{f.brand}</p>
