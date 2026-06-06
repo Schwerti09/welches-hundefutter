@@ -49,7 +49,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ]
 
   const rassen: MetadataRoute.Sitemap = RASSEN.map(slug => ({
-    url: `${BASE}/rasse/${slug}-hundefutter`,
+    url: `${BASE}/rasse/${slug}`,
     lastModified: now,
     changeFrequency: 'monthly' as const,
     priority: 0.8,

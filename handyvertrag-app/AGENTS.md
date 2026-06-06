@@ -1,74 +1,43 @@
-﻿# AGENTS.md
-
-# BELLA Commerce OS – Agent Operating System
+# AGENTS.md — BELLA Commerce OS
 
 ## Mission
 
-Dieses Repository existiert ausschließlich, um die beste deutschsprachige Plattform für:
-
-* Hundverträge
-* Hundefutters mit Empfehlung
-* Futterberatung
-* Hundeernährung-Vergleiche
-
-aufzubauen.
+Dieses Repository existiert ausschließlich, um die beste deutschsprachige Plattform für
+**Hundefutter-Beratung und -Vergleich** aufzubauen.
 
 Jede Entscheidung muss mindestens eines dieser Ziele verbessern:
 
-1. Organische Rankings
-2. Conversion Rate
-3. Affiliate Revenue
-4. Nutzerzufriedenheit
-5. Proprietäre Datensammlung
-6. Markenautorität
-
-Falls eine Änderung keines dieser Ziele verbessert, sollte sie nicht umgesetzt werden.
+1. Organische Rankings (Platz 1 DACH „welches hundefutter für meinen hund")
+2. Conversion Rate (Seite → Profil → Affiliate-Klick → Wiederkauf)
+3. Affiliate Revenue (Hauptfutter, Cross-Sell, Versicherung)
+4. Nutzerzufriedenheit (BELLA trifft echte Entscheidungen)
+5. Proprietäre Datensammlung (dog_profiles, Nachschub-Wecker, E-Mail-Audience)
+6. Markenautorität (EEAT, Trust, Transparenz)
 
 ---
 
-# North Star Metric
+## North Star Metric
 
-Primäre Metrik: Organic Revenue Per Visitor (ORPV)
-
-ORPV = Affiliate Revenue / Organic Visitors
+**Organic Revenue Per Visitor (ORPV) = Affiliate Revenue / Organic Visitors**
 
 Alle Optimierungen müssen langfristig diese Kennzahl erhöhen.
 
 ---
 
-# Product Philosophy
+## Product Philosophy
 
-BELLA ist keine Vergleichsseite. BELLA ist ein persönlicher Hundeernährungberater.
-Vergleichsseiten zeigen Listen. BELLA trifft Entscheidungen.
+**BELLA ist kein Vergleichsportal. BELLA ist der persönliche Ernährungsmanager fürs ganze Hundeleben.**
+Die Atomeinheit ist nicht das Produkt — sondern der Hund. Das ist der Burggraben,
+den Check24 strukturell nicht betreten kann.
 
 Jeder Feature-Vorschlag muss beantworten:
-"Erleichtert diese Funktion dem Nutzer die Kaufentscheidung?"
-Wenn nicht: Nicht implementieren.
+"Erleichtert diese Funktion dem Halter eine bessere Entscheidung für seinen Hund?"
+Wenn nicht: nicht implementieren.
 
 ---
 
-# SEO First Architecture
+## Agent-Flotte (13 Agenten)
 
-SEO ist Kernbestandteil des Produkts, kein Marketingkanal.
-Vor jeder Änderung prüfen: Suchintention, E-E-A-T, Crawlability,
-interne Verlinkung, CTR, Conversion.
+Vollständige Delegation und Sequenz: siehe `CLAUDE.md`.
 
----
-
-# Decision Framework
-
-Priorität bei mehreren Ansätzen:
-1. Revenue Impact
-2. SEO Impact
-3. User Value
-4. Simplicity
-5. Engineering Elegance
-
----
-
-# Success Definition
-
-Erfolg = mehr Rankings, mehr qualifizierte Besucher, mehr Abschlüsse,
-mehr Umsatz, mehr Vertrauen. Alles andere ist zweitrangig.
-
-(Vollständige Strategie siehe SEO_AGENTS.md)
+(Vollständige Strategie und Schwungrad-Blaupause: `FUTTERPASS.md`)

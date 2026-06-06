@@ -95,6 +95,7 @@ hundefutter-tests.net). Die gewinnen über **EEAT** (echte Tests, transparente S
 | `cross-sell-curator` | Begleit-Empfehlung, `companion_for`, Anti-Müll-Disziplin | Cross-Selling, Versicherung, Zubehör |
 | `retention-growth` | Preis-Alerts, DOI-E-Mail-Audience, Lifecycle-Mails | Wiederkehr, E-Mail, `price_history` nutzen |
 | `lifecycle-architect` | **Futter-Pass-Schwungrad** (Stufen 1–5, `FUTTERPASS.md`): `dog_profiles`, Verbrauchsmathematik, Nachschub-Wecker, Lebensphasen-Trigger, teilbarer Steckbrief | Der Burggraben — wenn Einmal-Klick → wiederkehrender Umsatz |
+| `conversion-analyst` | Funnel instrumentieren (Seite→Profil→Klick→Nachschub), Schleife schließen: Signale zurück in advisor/cross-sell/seo. Anonym, kein PII, kein Fremd-Pixel. | Skalierung: wenn Traffic kommt, Conversion messen + optimieren |
 
 **Standard-Wachstums-Sequenz:**
 `platform-architect` (Schema-Drift-Blocker zuerst!) → `lifecycle-architect` + `retention-growth` → **parallel**: `content-engineer` + `seo-strategist` → `visual-designer`

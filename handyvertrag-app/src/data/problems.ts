@@ -1,0 +1,157 @@
+export interface Problem {
+  slug: string;
+  name: string;
+  tagline: string;
+  description: string;
+  avoidIngredients: string[];
+  recommendedCriteria: string[];
+  keywordsExtra: string[];
+  filterGrainFree?: boolean;
+  filterHypo?: boolean;
+}
+
+export const PROBLEMS: Problem[] = [
+  {
+    slug: "allergie",
+    name: "Futterallergie",
+    tagline: "Hundefutter bei Allergie",
+    description: "Futterallergien entstehen, wenn das Immunsystem auf bestimmte Proteine überreagiert. Die häufigsten Auslöser sind Huhn, Rind und Weizen. Eine Eliminationsdiät mit einer einzigen, neuen Proteinquelle (Monoprotein) hilft, den Auslöser zu identifizieren.",
+    avoidIngredients: ["Huhn", "Rind", "Weizen", "Gluten", "Soja"],
+    recommendedCriteria: ["Monoprotein", "getreidefrei", "hypoallergen", "neue Proteinquelle (Ente, Wild, Insekten)"],
+    keywordsExtra: ["hundefutter bei allergie", "hypoallergenes hundefutter", "monoprotein hundefutter"],
+    filterGrainFree: true,
+    filterHypo: true,
+  },
+  {
+    slug: "futtermittelunvertraeglichkeit",
+    name: "Futtermittelunverträglichkeit",
+    tagline: "Hundefutter bei Unverträglichkeit",
+    description: "Im Gegensatz zur echten Allergie ist eine Unverträglichkeit keine Immunreaktion. Symptome wie Blähungen, weicher Kot oder Juckreiz treten meist kurz nach der Mahlzeit auf. Gut verträgliche, einfach zusammengesetzte Futter mit wenigen Zutaten helfen.",
+    avoidIngredients: ["Getreide", "Milchprodukte", "Konservierungsstoffe", "künstliche Zusätze"],
+    recommendedCriteria: ["wenige Zutaten", "leicht verdaulich", "getreidefrei", "ohne Konservierungsstoffe"],
+    keywordsExtra: ["hundefutter bei unverträglichkeit", "sensitives hundefutter"],
+    filterGrainFree: true,
+  },
+  {
+    slug: "sensibler-magen",
+    name: "Sensibler Magen",
+    tagline: "Hundefutter für sensiblen Magen",
+    description: "Hunde mit sensiblem Magen reagieren auf fettreiches oder schwer verdauliches Futter mit Erbrechen, weichem Kot oder Bauchschmerzen. Leicht verdauliche Proteine und Reis oder Kartoffel als Kohlenhydratquelle sind erste Wahl.",
+    avoidIngredients: ["Fett >15%", "Knochen", "Rohes Fleisch", "Innereien in großen Mengen"],
+    recommendedCriteria: ["leicht verdaulich", "niedriger Fettgehalt", "schonende Zubereitung", "Präbiotika/Probiotika"],
+    keywordsExtra: ["hundefutter sensibler magen", "sensitives hundefutter magen"],
+    filterGrainFree: false,
+  },
+  {
+    slug: "durchfall",
+    name: "Durchfall",
+    tagline: "Hundefutter bei Durchfall",
+    description: "Akuter Durchfall hat oft harmlose Ursachen (Futterumstellung, Stress). Chronischer Durchfall deutet auf Unverträglichkeiten hin. Schonkost mit Hühnchen und Reis, danach schrittweise Umstellung auf gut verträgliches Futter.",
+    avoidIngredients: ["fettreiches Futter", "Rohmilch", "Knochen", "scharfe Gewürze"],
+    recommendedCriteria: ["leicht verdaulich", "Ballaststoffe (Flohsamenschalen)", "Präbiotika", "geringe Fettstufe"],
+    keywordsExtra: ["hundefutter bei durchfall", "schonkost hund"],
+    filterGrainFree: false,
+  },
+  {
+    slug: "uebergewicht",
+    name: "Übergewicht",
+    tagline: "Hundefutter bei Übergewicht",
+    description: "Übergewicht belastet Gelenke, Herz und Lebenserwartung. Light-Futter mit weniger Fett und Kalorien, mehr Ballaststoffen (Sättigungsgefühl) und kontrollierter Portionsgröße sind die Lösung — kombiniert mit mehr Bewegung.",
+    avoidIngredients: ["Zucker", "hoher Getreidanteil", "viel Fett", "Belohnungssnacks ohne Kalkulation"],
+    recommendedCriteria: ["Low-Fat (<10%)", "High-Fiber", "wenig Kalorien (<300 kcal/100g)", "Gewichtskontrolle-Formel"],
+    keywordsExtra: ["hundefutter übergewicht", "light hundefutter", "diätfutter hund"],
+    filterGrainFree: false,
+  },
+  {
+    slug: "untergewicht",
+    name: "Untergewicht",
+    tagline: "Hundefutter bei Untergewicht",
+    description: "Untergewicht kann durch erhöhten Energiebedarf (Wachstum, Arbeitshund), Krankheit oder schlechte Futterqualität entstehen. Energie- und proteinreiche Sorten helfen beim Aufbau — immer in Absprache mit dem Tierarzt.",
+    avoidIngredients: ["Light-Futter", "kalorienarme Diäten"],
+    recommendedCriteria: ["hohe Energiedichte", "Protein >30%", "Fett >15%", "hochwertige Fleischquellen"],
+    keywordsExtra: ["hundefutter untergewicht", "hochkalorisches hundefutter"],
+    filterGrainFree: false,
+  },
+  {
+    slug: "gelenkprobleme",
+    name: "Gelenkprobleme",
+    tagline: "Hundefutter bei Gelenkproblemen",
+    description: "Gelenkprobleme (HD, OCD, Wachstumsstörungen) betreffen besonders große Rassen. Futter mit Glucosamin, Chondroitin und Omega-3-Fettsäuren (EPA/DHA aus Fischöl) unterstützt die Gelenkgesundheit. Übergewicht vermeiden.",
+    avoidIngredients: ["Übergewicht fördernd", "hoher Getreidanteil", "minderwertiges Futter"],
+    recommendedCriteria: ["Glucosamin & Chondroitin", "Omega-3 (EPA/DHA)", "normales Körpergewicht halten", "Large-Breed-Formel"],
+    keywordsExtra: ["hundefutter gelenkprobleme", "hundefutter hd", "hundefutter glucosamin"],
+    filterGrainFree: false,
+  },
+  {
+    slug: "arthrose",
+    name: "Arthrose",
+    tagline: "Hundefutter bei Arthrose",
+    description: "Arthrose ist eine degenerative Gelenkerkrankung älterer Hunde. Entzündungshemmendes Futter mit Omega-3 (EPA/DHA aus Lachs/Hering), Antioxidantien und Glucosamin/Chondroitin kann Schmerzen lindern und die Gelenkfunktion verbessern.",
+    avoidIngredients: ["Omega-6-lastiges Futter", "Übergewicht", "zu viel Kalzium"],
+    recommendedCriteria: ["Omega-3 (>0,5% EPA+DHA)", "Glucosamin", "Chondroitin", "Antioxidantien (Vitamin E/C)", "Senior-Formel"],
+    keywordsExtra: ["hundefutter arthrose", "hundefutter alte hunde gelenke"],
+    filterGrainFree: false,
+  },
+  {
+    slug: "nierenprobleme",
+    name: "Nierenprobleme",
+    tagline: "Hundefutter bei Nierenprobleme",
+    description: "Bei Niereninsuffizienz muss Phosphor drastisch reduziert werden. Spezielles Nierendiätfutter mit reduziertem Protein (hohe Qualität, wenig Quantität), sehr niedrigem Phosphor und erhöhtem Wasseranteil ist Pflicht — immer tierärztlich begleitet.",
+    avoidIngredients: ["hoher Phosphorgehalt", "viel Protein (auch wenn hochwertig)", "Innereien", "Knochen"],
+    recommendedCriteria: ["Nierendiät-Formel (renal)", "Phosphor <0,2%", "hochwertiges Protein (wenig)", "viel Feuchtigkeit (Nassfutter bevorzugt)"],
+    keywordsExtra: ["hundefutter nierenprobleme", "nierendiät hund", "renal hundefutter"],
+    filterGrainFree: false,
+  },
+  {
+    slug: "leberprobleme",
+    name: "Leberprobleme",
+    tagline: "Hundefutter bei Leberproblemen",
+    description: "Die Leber ist das zentrale Entgiftungsorgan. Bei Lebererkrankungen braucht sie Entlastung: reduziertes, aber hochwertiges Protein, wenig Kupfer, viel Zink und Antioxidantien. Immer mit dem Tierarzt absprechen.",
+    avoidIngredients: ["kupferreiches Futter (Leber, Herz)", "viel Protein", "Konservierungsstoffe", "Farbstoffe"],
+    recommendedCriteria: ["kupferarm", "moderates Protein (hochwertig)", "Antioxidantien", "Hepatic-Formel"],
+    keywordsExtra: ["hundefutter leberprobleme", "hundefutter leber", "hepatic hundefutter"],
+    filterGrainFree: false,
+  },
+  {
+    slug: "diabetes",
+    name: "Diabetes",
+    tagline: "Hundefutter bei Diabetes",
+    description: "Beim diabetischen Hund ist ein stabiler Blutzucker entscheidend. Futter mit niedrigem glykämischem Index, viel Ballaststoffen, moderatem Protein und wenig einfachen Kohlenhydraten (kein Zucker, kein weißer Reis) ist ideal.",
+    avoidIngredients: ["Zucker", "weißer Reis", "Mais", "einfache Stärken", "hoher Getreidanteil"],
+    recommendedCriteria: ["hohe Ballaststoffe", "low GI", "kein Zucker", "gleichmäßige Portionen", "Diabetic-Formel"],
+    keywordsExtra: ["hundefutter diabetes", "hundefutter zuckerkrank hund"],
+    filterGrainFree: true,
+  },
+  {
+    slug: "pankreatitis",
+    name: "Bauchspeicheldrüsenentzündung",
+    tagline: "Hundefutter bei Pankreatitis",
+    description: "Pankreatitis erfordert streng fettarmes Futter. Fett ist der Hauptauslöser — auch nach der akuten Phase sollte das Futter <10% Fettgehalt haben. Kleine, häufige Mahlzeiten statt einer großen Portion.",
+    avoidIngredients: ["Fett >10%", "Snacks und Reste", "fettiges Fleisch", "Innereien"],
+    recommendedCriteria: ["Fett <8%", "leicht verdaulich", "kleine Mahlzeiten", "keine Rohkost"],
+    keywordsExtra: ["hundefutter pankreatitis", "hundefutter bauchspeicheldrüse", "fettarmes hundefutter"],
+    filterGrainFree: false,
+  },
+  {
+    slug: "haut-und-fell",
+    name: "Haut & Fell",
+    tagline: "Hundefutter für gesunde Haut und glänzendes Fell",
+    description: "Glanzloses Fell, Schuppen oder Juckreiz können auf Nährstoffmangel oder Allergie hindeuten. Omega-3 und Omega-6 im richtigen Verhältnis (3:1 bis 5:1), Zink, Biotin und Vitamin A nähren Haut und Fell von innen.",
+    avoidIngredients: ["Omega-6-Überschuss (Sonnenblumenöl)", "Konservierungsstoffe", "künstliche Farbstoffe"],
+    recommendedCriteria: ["Omega-3 & Omega-6 ausgewogen", "Zink & Biotin", "Lachsöl", "Vitamin A & E"],
+    keywordsExtra: ["hundefutter haut fell", "hundefutter glänzendes fell", "hundefutter juckreiz"],
+    filterGrainFree: false,
+  },
+  {
+    slug: "zahnsteine",
+    name: "Zahnstein",
+    tagline: "Hundefutter gegen Zahnstein",
+    description: "Zahnstein entsteht, wenn sich Plaque mineralisiert. Trockenfutter mit abrasiver Wirkung, Dentastix oder spezielles Dental-Futter mit enzymatischen Zusätzen helfen. Regelmäßiges Zähneputzen ist entscheidend.",
+    avoidIngredients: ["Zucker", "weiches Nassfutter als alleinige Mahlzeit", "klebrige Snacks"],
+    recommendedCriteria: ["Trockenfutter (abrasiv)", "Dental-Formel", "große Kibble-Größe", "enzymatische Zusätze"],
+    keywordsExtra: ["hundefutter zahnstein", "hundefutter zahnpflege", "dental hundefutter"],
+    filterGrainFree: false,
+  },
+];
+
+export const PROBLEM_BY_SLUG = Object.fromEntries(PROBLEMS.map((p) => [p.slug, p]));
