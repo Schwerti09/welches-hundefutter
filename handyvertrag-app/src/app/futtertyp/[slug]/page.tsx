@@ -8,6 +8,7 @@ import { FUTTERTYP_TO_PROBLEME } from "@/lib/issue-to-problem";
 import ScoreBadge from "@/components/ScoreBadge";
 import AuthorBox from "@/components/AuthorBox";
 import ProductSchemaBlock from "@/components/ProductSchemaBlock";
+import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -199,11 +200,30 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
 
       <ProductSchemaBlock foods={foods} listName={`${typ.name} Hundefutter im Vergleich`} />
 
-      {/* PRODUKTE */}
+      {/* BELLA CHAT — personalisierte Beratung */}
       <section className="max-w-5xl mx-auto w-full px-5 py-10">
         <h2 className="text-2xl font-extrabold tracking-tight mb-2">
-          {typ.name} im Preisvergleich
+          BELLA findet die besten {typ.name}-Sorten für deinen Hund
         </h2>
+        <p className="text-[var(--muted)] text-sm mb-7">
+          Erzähl BELLA von deinem Hund — sie empfiehlt sofort die passenden {typ.name}-Sorten aus 8.000+ Produkten.
+        </p>
+        <BellaAdvisorWrapper
+          introMessage={`Hallo! Ich bin BELLA 🐕 — deine KI-Ernährungsberaterin.\n\nDu interessierst dich für ${typ.name}. Gute Wahl! Damit ich die besten Sorten für euch finde:\n\n• Welche Rasse ist dein Hund?\n• Wie alt und wie schwer?\n• Gibt es Allergien oder Gesundheitsthemen?\n\nDann zeige ich dir sofort die passenden ${typ.name}-Sorten aus 8.000+ Produkten!`}
+          pageQuickOptions={[
+            { label: `🥘 Bestes ${typ.name}`, msg: `Welches ${typ.name} ist das beste für meinen Hund?` },
+            { label: "🐶 Rasse + Alter nennen", msg: `Ich habe einen [Rasse], [Alter] Jahre alt — was empfiehlst du an ${typ.name}?` },
+            { label: "💰 Günstig & gut", msg: `Welches ${typ.name} ist günstig aber trotzdem hochwertig?` },
+            { label: "🩺 Allergie-gerecht", msg: `Ich suche ${typ.name} das auch bei Allergie / empfindlichem Magen verträglich ist.` },
+          ]}
+        />
+      </section>
+
+      {/* PRODUKTE — Schnellübersicht */}
+      <section className="max-w-5xl mx-auto w-full px-5 py-6">
+        <h3 className="text-lg font-bold tracking-tight mb-2">
+          {typ.name} im Preisvergleich — Schnellübersicht
+        </h3>
         <p className="text-[var(--muted)] text-sm mb-7">
           Live-Preise aus 8.000+ Sorten · täglich aktualisiert · Affiliate-Links (rel=sponsored)
         </p>

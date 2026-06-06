@@ -8,6 +8,7 @@ import { issueToProblemSlug } from "@/lib/issue-to-problem";
 import ScoreBadge from "@/components/ScoreBadge";
 import AuthorBox from "@/components/AuthorBox";
 import ProductSchemaBlock from "@/components/ProductSchemaBlock";
+import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -566,11 +567,30 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
 
       <ProductSchemaBlock foods={foods} listName={`Empfohlenes Hundefutter für ${breed.name}`} />
 
-      {/* EMPFOHLENE PRODUKTE */}
+      {/* BELLA CHAT — personalisierte Beratung */}
       <section className="max-w-5xl mx-auto w-full px-5 py-10">
         <h2 className="text-2xl font-extrabold tracking-tight mb-2">
-          Empfohlenes Futter für deinen {breed.name}
+          BELLA findet das perfekte Futter für deinen {breed.name}
         </h2>
+        <p className="text-[var(--muted)] text-sm mb-7">
+          Erzähl BELLA von deinem Hund — Alter, Gewicht, Allergien — und sie empfiehlt sofort die besten Sorten.
+        </p>
+        <BellaAdvisorWrapper
+          introMessage={`Hallo! Ich bin BELLA 🐕 — deine KI-Ernährungsberaterin.\n\nEin ${breed.name}! Super Rasse. Um das perfekte Futter zu finden, brauche ich noch ein paar Details:\n\n• Wie alt ist dein ${breed.name}?\n• Wie schwer ist er/sie?\n• Gibt es Allergien, Gelenkprobleme oder andere Gesundheitsthemen?\n\nDann empfehle ich dir sofort die passenden Sorten aus 8.000+ Produkten!`}
+          pageQuickOptions={[
+            { label: `🐕 Futter für ${breed.name}`, msg: `Ich habe einen ${breed.name} — welches Futter empfiehlst du?` },
+            { label: "🐶 Welpe", msg: `Mein ${breed.name}-Welpe braucht Welpen-Futter — was passt?` },
+            { label: "👴 Senior", msg: `Mein ${breed.name} ist älter — welches Senior-Futter ist das beste?` },
+            { label: "🩺 Allergie / empfindlich", msg: `Mein ${breed.name} hat eine Allergie / empfindlichen Magen — was empfiehlst du?` },
+          ]}
+        />
+      </section>
+
+      {/* EMPFOHLENE PRODUKTE — Schnellübersicht */}
+      <section className="max-w-5xl mx-auto w-full px-5 py-6">
+        <h3 className="text-lg font-bold tracking-tight mb-2">
+          Schnellübersicht: Top-Sorten für {breed.name}
+        </h3>
         <p className="text-[var(--muted)] text-sm mb-7">
           Aus über 8.000 Sorten — {allergyProne ? "verträglich & " : ""}fair im Preis. Affiliate-Links (rel=sponsored).
         </p>

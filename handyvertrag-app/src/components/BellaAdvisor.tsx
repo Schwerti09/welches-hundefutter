@@ -84,8 +84,16 @@ const MOOD_LABEL: Record<BellaMood, string> = {
   idle: "💬 BELLA · KI-Ernährungsberaterin",
 };
 
-export default function BellaAdvisor() {
-  const [messages, setMessages] = useState<Message[]>([INTRO_MESSAGE]);
+interface BellaAdvisorProps {
+  introMessage?: string;
+  pageQuickOptions?: Array<{ label: string; msg: string }>;
+}
+
+export default function BellaAdvisor({ introMessage, pageQuickOptions }: BellaAdvisorProps = {}) {
+  const activeIntro: Message = introMessage
+    ? { id: "0", role: "bella", content: introMessage }
+    : INTRO_MESSAGE;
+  const [messages, setMessages] = useState<Message[]>([activeIntro]);
   const [input, setInput] = useState("");
   const [mood, setMood] = useState<BellaMood>("waving");
   const [loading, setLoading] = useState(false);
@@ -405,7 +413,7 @@ export default function BellaAdvisor() {
           {/* Quick options (only at start) */}
           {messages.length <= 1 && (
             <div className="px-5 pb-3 flex flex-wrap gap-2">
-              {QUICK_OPTIONS.map(opt => (
+              {(pageQuickOptions ?? QUICK_OPTIONS).map(opt => (
                 <button
                   key={opt.label}
                   onClick={() => sendMessage(opt.msg)}
