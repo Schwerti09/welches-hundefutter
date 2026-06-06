@@ -51,19 +51,30 @@ const runStart = new Date().toISOString();
 // ─── Upsert (alle = aktiv, frisch) + Preis-Historie ────────────────────────
 let ok = 0, fail = 0, isNew = 0, changed = 0;
 const BATCH = 50;
+const computeScore = (r, ppk) => Math.max(28, Math.min(98,
+  35
+  + (r.protein ? 18 : 0)
+  + (r.isGrainFree ? 12 : 0)
+  + (r.isHypoallergenic ? 10 : 0)
+  + (ppk >= 15 ? 15 : ppk >= 8 ? 10 : ppk >= 4 ? 5 : 0)
+  + (["barf","kaltgepresst"].includes(r.type) ? 8 : r.type === "nass" ? 4 : 0)
+));
+
 const upsertOne = async (r, attempt = 0) => {
     const ppk = round2(r.pricePerKg);
+    const score = computeScore(r, ppk ?? 0);
     try {
       await sql`INSERT INTO dog_foods
         (slug, brand, name, type, protein, is_grain_free, is_hypoallergenic,
-         price_per_kg, price, suitable_for, image_url, affiliate_network, affiliate_url,
+         price_per_kg, price, score, suitable_for, image_url, affiliate_network, affiliate_url,
          is_active, last_feed_update, updated_at)
         VALUES (${r.slug}, ${r.brand || ""}, ${r.name}, ${r.type || "trocken"},
          ${r.protein || ""}, ${!!r.isGrainFree}, ${!!r.isHypoallergenic},
-         ${ppk}, ${round2(r.price)}, ${r.suitableFor ?? []}, ${r.imageUrl ?? null},
+         ${ppk}, ${round2(r.price)}, ${score}, ${r.suitableFor ?? []}, ${r.imageUrl ?? null},
          ${r.affiliateNetwork ?? null}, ${r.affiliateUrl}, true, now(), now())
         ON CONFLICT (slug) DO UPDATE SET
           price_per_kg = EXCLUDED.price_per_kg, price = EXCLUDED.price,
+          score = EXCLUDED.score,
           affiliate_url = EXCLUDED.affiliate_url, image_url = EXCLUDED.image_url,
           type = EXCLUDED.type, protein = EXCLUDED.protein, suitable_for = EXCLUDED.suitable_for,
           is_grain_free = EXCLUDED.is_grain_free, is_hypoallergenic = EXCLUDED.is_hypoallergenic,

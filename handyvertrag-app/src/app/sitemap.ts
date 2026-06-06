@@ -41,6 +41,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/futter/senior`, lastModified: now, changeFrequency: 'monthly', priority: 0.85 },
     { url: `${BASE}/faq`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE}/blog`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
+    { url: `${BASE}/analyse/preisindex-2026`, lastModified: now, changeFrequency: 'weekly', priority: 0.85 },
+    { url: `${BASE}/analyse/methodik`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${BASE}/ueber-uns`, lastModified: now, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${BASE}/impressum`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
     { url: `${BASE}/datenschutz`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
