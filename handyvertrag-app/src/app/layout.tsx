@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "Apib7-x98H0j5cPqHWwSMm6dNU4GmODRoqxLiDzdx9I",
+    google: ["Apib7-x98H0j5cPqHWwSMm6dNU4GmODRoqxLiDzdx9I", "TCNbNGc8cJA0Hh5w6f2ojLRVGC4FUAeonQpE5GKwxTM"],
     other: { "msvalidate.01": ["03fce00755d90f20151908f4b591a4bc"] },
   },
 };
@@ -70,6 +70,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <head>
         {/* Google Site Verification */}
         <meta name="google-site-verification" content="Apib7-x98H0j5cPqHWwSMm6dNU4GmODRoqxLiDzdx9I" />
+        <meta name="google-site-verification" content="TCNbNGc8cJA0Hh5w6f2ojLRVGC4FUAeonQpE5GKwxTM" />
 
         {/* Favicon */}
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
