@@ -110,20 +110,23 @@ for (const a of priceRows) {
 const REFILL_DAYS_AHEAD = 5;   // Wecker X Tage vor Leerung
 const REFILL_PRICE_DROP = 0.05; // mind. 5% unter 90-Tage-Schnitt (= echter Tiefpreis)
 
-const refillRows = await sql`
-  SELECT a.id, a.food_slug, a.food_name, a.refill_due_at,
-         a.last_notified_at,
-         s.email, s.unsubscribe_token,
-         p.name AS dog_name,
-         d.name AS cur_name, d.price_per_kg::float AS cur_price, d.affiliate_url, d.is_active AS food_active
-  FROM price_alerts a
-  JOIN subscribers s ON s.id = a.subscriber_id
-  LEFT JOIN dog_profiles p ON p.id = a.dog_profile_id
-  LEFT JOIN dog_foods d ON d.slug = a.food_slug
-  WHERE a.is_active = true AND a.mode = 'refill'
-    AND a.refill_due_at IS NOT NULL
-    AND a.refill_due_at <= now() + interval '${REFILL_DAYS_AHEAD} days'
-    AND s.doi_confirmed_at IS NOT NULL AND s.unsubscribed_at IS NULL`;
+const refillRowsRaw = await sql.query(
+  `SELECT a.id, a.food_slug, a.food_name, a.refill_due_at,
+          a.last_notified_at,
+          s.email, s.unsubscribe_token,
+          p.name AS dog_name,
+          d.name AS cur_name, d.price_per_kg::float AS cur_price, d.affiliate_url, d.is_active AS food_active
+   FROM price_alerts a
+   JOIN subscribers s ON s.id = a.subscriber_id
+   LEFT JOIN dog_profiles p ON p.id = a.dog_profile_id
+   LEFT JOIN dog_foods d ON d.slug = a.food_slug
+   WHERE a.is_active = true AND a.mode = 'refill'
+     AND a.refill_due_at IS NOT NULL
+     AND a.refill_due_at <= now() + interval '${REFILL_DAYS_AHEAD} days'
+     AND s.doi_confirmed_at IS NOT NULL AND s.unsubscribed_at IS NULL`,
+  []
+);
+const refillRows = refillRowsRaw.rows ?? refillRowsRaw;
 
 console.log(`📦 Nachschub-Wecker: ${refillRows.length} fällig${DRY ? " (DRY-RUN)" : ""}`);
 
