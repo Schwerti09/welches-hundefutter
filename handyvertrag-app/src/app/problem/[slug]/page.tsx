@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { neon } from "@neondatabase/serverless";
 import { PROBLEMS, PROBLEM_BY_SLUG } from "@/data/problems";
+import { FUTTERTYP_BY_SLUG } from "@/data/futtertypen";
+import { PROBLEM_TO_FUTTERTYPEN } from "@/lib/issue-to-problem";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -178,6 +180,25 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
           </Link>
         </div>
       </section>
+
+      {/* Passende Futtertypen */}
+      {(PROBLEM_TO_FUTTERTYPEN[slug] ?? []).length > 0 && (
+        <section className="max-w-5xl mx-auto w-full px-5 pb-10">
+          <h3 className="text-lg font-bold mb-4">Empfohlene Futtertypen bei {problem.name}</h3>
+          <div className="flex flex-wrap gap-2">
+            {(PROBLEM_TO_FUTTERTYPEN[slug] ?? []).map((ftSlug) => {
+              const ft = FUTTERTYP_BY_SLUG[ftSlug];
+              if (!ft) return null;
+              return (
+                <Link key={ftSlug} href={`/futtertyp/${ftSlug}`}
+                  className="text-sm px-4 py-2 rounded-xl border border-orange-500/30 text-orange-200 bg-orange-500/10 hover:bg-orange-500/20 transition-colors">
+                  {ft.emoji} {ft.name}
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Verwandte Probleme */}
       <section className="max-w-5xl mx-auto w-full px-5 pb-16">

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { neon } from "@neondatabase/serverless";
 import { BREEDS, BREED_BY_SLUG } from "@/data/breeds";
 import gallery from "@/data/breed-gallery.json";
+import { issueToProblemSlug } from "@/lib/issue-to-problem";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -129,9 +130,17 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
           <div className="card p-6">
             <h2 className="text-lg font-bold tracking-tight mb-3">Typische Gesundheitsthemen</h2>
             <div className="flex flex-wrap gap-2">
-              {(breed.commonHealthIssues ?? []).map((i) => (
-                <span key={i} className="text-xs px-3 py-1.5 rounded-xl bg-rose-500/10 border border-rose-400/20 text-rose-200">{i}</span>
-              ))}
+              {(breed.commonHealthIssues ?? []).map((i) => {
+                const problemSlug = issueToProblemSlug(i);
+                return problemSlug ? (
+                  <Link key={i} href={`/problem/${problemSlug}`}
+                    className="text-xs px-3 py-1.5 rounded-xl bg-rose-500/10 border border-rose-400/20 text-rose-200 hover:bg-rose-500/20 hover:border-rose-400/40 transition-colors">
+                    {i} →
+                  </Link>
+                ) : (
+                  <span key={i} className="text-xs px-3 py-1.5 rounded-xl bg-rose-500/10 border border-rose-400/20 text-rose-200">{i}</span>
+                );
+              })}
             </div>
             {allergyProne && (
               <p className="text-sm text-[var(--muted)] leading-relaxed mt-4">

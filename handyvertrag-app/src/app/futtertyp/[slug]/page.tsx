@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { neon } from "@neondatabase/serverless";
 import { FUTTERTYPEN, FUTTERTYP_BY_SLUG } from "@/data/futtertypen";
+import { PROBLEM_BY_SLUG } from "@/data/problems";
+import { FUTTERTYP_TO_PROBLEME } from "@/lib/issue-to-problem";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -199,6 +201,25 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
           <Link href="/#bella-advisor" className="btn-primary">🐕 BELLA fragen — Profil + Empfehlung →</Link>
         </div>
       </section>
+
+      {/* Passende Gesundheitsthemen */}
+      {(FUTTERTYP_TO_PROBLEME[slug] ?? []).length > 0 && (
+        <section className="max-w-5xl mx-auto w-full px-5 pb-10">
+          <h3 className="text-lg font-bold mb-4">{typ.name} hilft bei diesen Gesundheitsthemen</h3>
+          <div className="flex flex-wrap gap-2">
+            {(FUTTERTYP_TO_PROBLEME[slug] ?? []).map((pSlug) => {
+              const prob = PROBLEM_BY_SLUG[pSlug];
+              if (!prob) return null;
+              return (
+                <Link key={pSlug} href={`/problem/${pSlug}`}
+                  className="text-sm px-4 py-2 rounded-xl border border-rose-500/30 text-rose-200 bg-rose-500/10 hover:bg-rose-500/20 transition-colors">
+                  🩺 {prob.name}
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Andere Futtertypen */}
       <section className="max-w-5xl mx-auto w-full px-5 pb-16">
