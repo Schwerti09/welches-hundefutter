@@ -406,6 +406,12 @@ export async function POST(request: NextRequest) {
         const issues: string[] = [];
         if (intent.sensitive) issues.push("haut", "fell", "magen", "verdauung");
         if (jointBreed || intent.lifePhase === "senior") issues.push("gelenke");
+        if (/zahn|zahnstein|mundgeruch|dental/.test(allText)) issues.push("zahn");
+        if (/stress|angst|beruhig|nervös/.test(allText)) issues.push("stress");
+        if (/niere|nierenprobleme|renal/.test(allText)) issues.push("niere");
+        if (/leber|leberprobleme/.test(allText)) issues.push("leber");
+        if (/[üu]bergewicht|zu dick|dicke/.test(allText)) issues.push("uebergewicht");
+        if (intent.lifePhase === "welpen") issues.push("spielen");
         try {
           const companions = await getCompanions({
             issues,

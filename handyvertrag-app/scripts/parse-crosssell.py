@@ -86,14 +86,43 @@ def companion_for(category, title):
     issue, behavior, life = [], [], []
     if category == "zeckenschutz":
         issue += ["zecken", "parasiten"]
-    if re.search(r"lachs[öo]l|fell|haut|omega", t): issue += ["fell", "haut"]
-    if re.search(r"gelenk|glucosamin|chondroitin|gr[üu]nlippmuschel", t): issue += ["gelenke"]; life += ["senior"]
-    if re.search(r"zahn|dental", t): issue += ["zahn"]
-    if re.search(r"magen|darm|verdau|probiotik|darmflora", t): issue += ["magen", "verdauung"]
-    if re.search(r"beruhig|angst|stress|entspann", t): issue += ["stress"]
-    if re.search(r"schlecknapf|anti.?schling|sch?lingnapf", t): behavior += ["schlingt"]
-    if re.search(r"welpen?|junior", t): life += ["welpen"]
-    if re.search(r"senior|\balt\b", t): life += ["senior"]
+    # Haut & Fell
+    if re.search(r"lachs[öo]l|fell|haut|omega|biotin|zink|pfote|keratin|gl[äa]nz|schuppig", t):
+        issue += ["fell", "haut"]
+    # Gelenke (Senior-Flagge mitsetzen)
+    if re.search(r"gelenk|glucosamin|chondroitin|gr[üu]nlippmuschel|beweglich|h[üu]ft|mobil|arthrose|arthr", t):
+        issue += ["gelenke"]; life += ["senior"]
+    # Zahn & Maul
+    if re.search(r"zahn|dental|mundgeruch|zahnfleisch|plaque|mundpflege", t):
+        issue += ["zahn"]
+    # Magen & Darm
+    if re.search(r"magen|darm|verdau|probiotik|darmflora|prebiotik|preb|ibs|sensitiv|ballaststoff|inulin", t):
+        issue += ["magen", "verdauung"]
+    # Niere & Leber
+    if re.search(r"niere|renal|harnweg|blasen", t): issue += ["niere"]
+    if re.search(r"leber|hepat|entgift", t): issue += ["leber"]
+    # Übergewicht / Diät
+    if re.search(r"[üu]bergewicht|diät|light|kalorienarm|abnehm|gewicht", t):
+        issue += ["uebergewicht"]
+    # Stress & Beruhigung
+    if re.search(r"beruhig|angst|stress|entspann|baldrian|melisse|trypt", t):
+        issue += ["stress"]
+    # Wunden / Haut extern
+    if re.search(r"wund|desinf|silber|antisept|spray", t): issue += ["haut"]
+    # Anti-Schling
+    if re.search(r"schlecknapf|anti.?schling|sch?lingnapf|slow.?feed|langsam|schlingnapf", t):
+        behavior += ["schlingt"]
+    # Spielverhalten / Beschäftigung
+    if re.search(r"spielzeug|ball\b|apportier|kaut|beschäftigung|intelligenz|activity|schnüffel", t):
+        behavior += ["spielen"]
+    # Lebensphasen
+    if re.search(r"welpen?|junior|puppy", t): life += ["welpen"]
+    if re.search(r"senior|alt\b|[äa]lter", t): life += ["senior"]
+    # Fallback für Gesundheitsprodukte ohne konkreten Treffer:
+    # Damit 100% der gesundheit-Produkte erreichbar sind, werden ungetaggte
+    # als "allgemein für alle Lebensphasen" eingestuft — besser als unsichtbar.
+    if category == "gesundheit" and not issue and not behavior and not life:
+        life += ["welpen", "adult", "senior"]
     out = {}
     if issue: out["issue"] = sorted(set(issue))
     if behavior: out["behavior"] = sorted(set(behavior))

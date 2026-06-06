@@ -23,6 +23,7 @@ const REASON_BY_ISSUE: Record<string, string> = {
   haut: "für gesunde Haut", fell: "für ein glänzendes Fell", gelenke: "unterstützt die Gelenke",
   magen: "schonend für den Magen", verdauung: "gut für die Verdauung", zahn: "für gesunde Zähne",
   zecken: "natürlicher Zeckenschutz", parasiten: "gegen Zecken & Parasiten", stress: "zum Entspannen",
+  niere: "nierenschonend", leber: "leberschonend", uebergewicht: "für Gewichtskontrolle",
 };
 const CAT_LABEL: Record<string, string> = {
   snack: "Snack", nem_oel: "Ergänzung", gesundheit: "Gesundheit",
@@ -93,6 +94,7 @@ export async function getCompanions(ctx: CompanionContext, limit = 3): Promise<C
       let reason = "";
       if (issueHits.length) reason = REASON_BY_ISSUE[issueHits[0]] ?? "passend zu deinem Hund";
       else if (behaviorHits.includes("schlingt")) reason = "gegen zu schnelles Fressen";
+      else if (behaviorHits.includes("spielen")) reason = "Forderung & Beschäftigung";
       else if (o.category === "zeckenschutz") reason = "natürlicher Zeckenschutz ohne Chemie";
       else if (o.category === "snack") reason = ctx.allergen ? `als Belohnung — ohne ${ctx.allergen}` : "die passende Belohnung";
       else reason = "passend zu deinem Hund";
