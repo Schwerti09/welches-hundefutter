@@ -1,6 +1,9 @@
-﻿import { pgTable, text, numeric, integer, boolean, timestamp, uuid, serial, index, jsonb } from "drizzle-orm/pg-core";
+import {
+  pgTable, text, numeric, integer, boolean, timestamp,
+  uuid, serial, index, jsonb,
+} from "drizzle-orm/pg-core";
 
-// Legacy-Tabelle (für Rückwärtskompatibilität mit alten Imports)
+// ─── Legacy (Rückwärtskompatibilität) ────────────────────────────────────────
 export const offers = pgTable("offers", {
   id: serial("id").primaryKey(),
   brand: text("brand").notNull(),
@@ -28,49 +31,65 @@ export const offers = pgTable("offers", {
 export type Offer = typeof offers.$inferSelect;
 export type NewOffer = typeof offers.$inferInsert;
 
-// ─── Neue Haupttabelle: Hundefutter ─────────────────────────────────────────
-
+// ─── Hundefutter (Hauptkatalog) ───────────────────────────────────────────────
 export const dogFoods = pgTable("dog_foods", {
   id: uuid("id").defaultRandom().primaryKey(),
   slug: text("slug").unique().notNull(),
-  brand: text("brand").notNull(),               // 'Anifit', 'Wolfsblut'
-  name: text("name").notNull(),                 // 'Adult Trockenfutter'
-  type: text("type").notNull(),                 // 'trocken' | 'nass' | 'barf' | 'kaltgepresst'
-  protein: text("protein").notNull(),            // 'Huhn', 'Lachs', 'Wild'
+  brand: text("brand").notNull(),
+  name: text("name").notNull(),
+  type: text("type").notNull(),               // trocken | nass | barf | kaltgepresst | snack | oel | nem
+  protein: text("protein"),
   isMonoprotein: boolean("is_monoprotein").default(false),
   isGrainFree: boolean("is_grain_free").default(false),
   isHypoallergenic: boolean("is_hypoallergenic").default(false),
-  meatPercentage: integer("meat_percentage"),    // 92
+  meatPercentage: integer("meat_percentage"),
   pricePerKg: numeric("price_per_kg", { precision: 8, scale: 2 }),
-  packageSizes: text("package_sizes").array(),  // ['1kg', '5kg', '12kg']
-  suitableFor: text("suitable_for").array(),    // ['welpen', 'adult', 'senior', 'allergie']
-  suitableBreeds: text("suitable_breeds").array(), // ['labrador', 'all']
+  price: numeric("price", { precision: 8, scale: 2 }),
+  packageSizes: text("package_sizes").array(),
+  suitableFor: text("suitable_for").array(),
+  suitableBreeds: text("suitable_breeds").array(),
   imageUrl: text("image_url"),
   rating: numeric("rating", { precision: 3, scale: 1 }),
   reviewCount: integer("review_count"),
-  affiliateNetwork: text("affiliate_network"),  // 'awin' | 'direct'
+  score: integer("score"),                    // BELLA-Score 0-100
+  category: text("category"),                 // hauptfutter | snack | oel | nem | versicherung | zubehoer
+  companionFor: text("companion_for").array(), // slugs für Cross-Sell
+  affiliateNetwork: text("affiliate_network"),
   affiliateUrl: text("affiliate_url").notNull(),
-  commissionRate: numeric("commission_rate", { precision: 5, scale: 4 }),  // 0.08
-  commissionFlat: numeric("commission_flat", { precision: 8, scale: 2 }),  // 30.00
+  commissionRate: numeric("commission_rate", { precision: 5, scale: 4 }),
+  commissionFlat: numeric("commission_flat", { precision: 8, scale: 2 }),
+  isActive: boolean("is_active").default(true),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 }, (table) => ({
   slugIdx: index("dog_foods_slug_idx").on(table.slug),
   brandIdx: index("dog_foods_brand_idx").on(table.brand),
   typeIdx: index("dog_foods_type_idx").on(table.type),
+  categoryIdx: index("dog_foods_category_idx").on(table.category),
 }));
 
 export type DogFood = typeof dogFoods.$inferSelect;
 export type NewDogFood = typeof dogFoods.$inferInsert;
 
-// ─── Rassen-Profile ──────────────────────────────────────────────────────────
+// ─── Preis-Historie ───────────────────────────────────────────────────────────
+export const priceHistory = pgTable("price_history", {
+  id: serial("id").primaryKey(),
+  foodSlug: text("food_slug").notNull(),
+  pricePerKg: numeric("price_per_kg", { precision: 8, scale: 2 }).notNull(),
+  recordedAt: timestamp("recorded_at").defaultNow(),
+}, (table) => ({
+  slugTimeIdx: index("price_history_slug_time_idx").on(table.foodSlug, table.recordedAt),
+}));
 
+export type PriceHistory = typeof priceHistory.$inferSelect;
+
+// ─── Rassen-Profile ───────────────────────────────────────────────────────────
 export const dogBreeds = pgTable("dog_breeds", {
   id: uuid("id").defaultRandom().primaryKey(),
   slug: text("slug").unique().notNull(),
   name: text("name").notNull(),
   alternativeNames: text("alternative_names").array(),
-  size: text("size").notNull(), // 'klein' | 'mittel' | 'gross' | 'sehrgross'
+  size: text("size").notNull(),               // klein | mittel | gross | sehrgross
   weightMin: numeric("weight_min"),
   weightMax: numeric("weight_max"),
   lifeExpectancy: integer("life_expectancy"),
@@ -88,8 +107,7 @@ export const dogBreeds = pgTable("dog_breeds", {
 export type DogBreed = typeof dogBreeds.$inferSelect;
 export type NewDogBreed = typeof dogBreeds.$inferInsert;
 
-// ─── Gesundheitsprobleme ─────────────────────────────────────────────────────
-
+// ─── Gesundheitsprobleme ──────────────────────────────────────────────────────
 export const healthIssues = pgTable("health_issues", {
   id: uuid("id").defaultRandom().primaryKey(),
   slug: text("slug").unique().notNull(),
@@ -106,8 +124,80 @@ export const healthIssues = pgTable("health_issues", {
 export type HealthIssue = typeof healthIssues.$inferSelect;
 export type NewHealthIssue = typeof healthIssues.$inferInsert;
 
-// ─── Klick-Tracking ──────────────────────────────────────────────────────────
+// ─── E-Mail-Audience (Double-Opt-in) ─────────────────────────────────────────
+export const subscribers = pgTable("subscribers", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  email: text("email").unique().notNull(),
+  doiToken: text("doi_token").unique().notNull(),
+  doiConfirmedAt: timestamp("doi_confirmed_at"),
+  consentIp: text("consent_ip"),
+  consentUserAgent: text("consent_user_agent"),
+  unsubscribeToken: text("unsubscribe_token").unique().notNull(),
+  unsubscribedAt: timestamp("unsubscribed_at"),
+  dogProfile: jsonb("dog_profile").default({}),
+  source: text("source").default("advisor"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => ({
+  doiTokenIdx: index("subscribers_doi_token_idx").on(table.doiToken),
+  unsubTokenIdx: index("subscribers_unsub_token_idx").on(table.unsubscribeToken),
+}));
 
+export type Subscriber = typeof subscribers.$inferSelect;
+export type NewSubscriber = typeof subscribers.$inferInsert;
+
+// ─── Preis-Wecker (+ Nachschub-Wecker) ───────────────────────────────────────
+export const priceAlerts = pgTable("price_alerts", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  subscriberId: uuid("subscriber_id").notNull().references(() => subscribers.id, { onDelete: "cascade" }),
+  foodSlug: text("food_slug").notNull(),
+  foodName: text("food_name"),
+  baselinePricePerKg: numeric("baseline_price_per_kg", { precision: 8, scale: 2 }),
+  targetPricePerKg: numeric("target_price_per_kg", { precision: 8, scale: 2 }),
+  mode: text("mode").default("price").notNull(),  // price | refill
+  dogProfileId: uuid("dog_profile_id"),           // FK → dog_profiles (Nachschub-Wecker)
+  refillDueAt: timestamp("refill_due_at"),        // wann wird der Sack leer?
+  lastNotifiedAt: timestamp("last_notified_at"),
+  lastNotifiedPrice: numeric("last_notified_price", { precision: 8, scale: 2 }),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => ({
+  subFoodIdx: index("price_alerts_sub_food_idx").on(table.subscriberId, table.foodSlug),
+  foodIdx: index("price_alerts_food_idx").on(table.foodSlug),
+}));
+
+export type PriceAlert = typeof priceAlerts.$inferSelect;
+export type NewPriceAlert = typeof priceAlerts.$inferInsert;
+
+// ─── Hunde-Profile (Futter-Pass / Schwungrad) ────────────────────────────────
+export const dogProfiles = pgTable("dog_profiles", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  subscriberId: uuid("subscriber_id"),           // optional bis E-Mail-Bestätigung
+  name: text("name").notNull(),                  // "Bello"
+  breedSlug: text("breed_slug"),
+  birthOrAge: text("birth_or_age"),              // "2021-03" oder "3 Jahre"
+  weightKg: numeric("weight_kg", { precision: 5, scale: 1 }),
+  activityLevel: text("activity_level"),         // niedrig | mittel | hoch | sehr_hoch
+  allergies: text("allergies").array(),          // ['huhn', 'rind', 'weizen']
+  healthFlags: text("health_flags").array(),     // ['gelenke', 'nieren', 'uebergewicht']
+  currentFoodSlug: text("current_food_slug"),
+  currentPackageG: integer("current_package_g"),
+  lastPurchaseAt: timestamp("last_purchase_at"),
+  estDailyGrams: integer("est_daily_grams"),     // Verbrauchsmathematik-Ergebnis
+  estBagDays: integer("est_bag_days"),           // wie lange hält der Sack
+  shareToken: text("share_token").unique(),      // für /hund/[token] Steckbrief
+  shareEnabled: boolean("share_enabled").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => ({
+  subscriberIdx: index("dog_profiles_subscriber_idx").on(table.subscriberId),
+  shareTokenIdx: index("dog_profiles_share_token_idx").on(table.shareToken),
+}));
+
+export type DogProfile = typeof dogProfiles.$inferSelect;
+export type NewDogProfile = typeof dogProfiles.$inferInsert;
+
+// ─── Klick-Tracking ───────────────────────────────────────────────────────────
 export const affiliateClicks = pgTable("affiliate_clicks", {
   id: uuid("id").defaultRandom().primaryKey(),
   foodId: uuid("food_id"),
@@ -119,8 +209,7 @@ export const affiliateClicks = pgTable("affiliate_clicks", {
   clickedAt: timestamp("clicked_at").defaultNow(),
 });
 
-// ─── BELLA Chat-Sessions ─────────────────────────────────────────────────────
-
+// ─── BELLA Chat-Sessions ──────────────────────────────────────────────────────
 export const advisorSessions = pgTable("advisor_sessions", {
   id: uuid("id").defaultRandom().primaryKey(),
   sessionId: text("session_id").unique().notNull(),
