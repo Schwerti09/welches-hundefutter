@@ -1,4 +1,6 @@
 import { MetadataRoute } from 'next'
+import { CITIES } from '@/data/cities'
+import { BREEDS } from '@/data/breeds'
 
 const BASE = 'https://welches-hundefutter.today'
 
@@ -86,5 +88,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }))
 
-  return [...statisch, ...rassen, ...probleme, ...phasen, ...typen]
+  const staedte: MetadataRoute.Sitemap = CITIES.map((c) => ({
+    url: `${BASE}/stadt/${c.slug}`,
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: c.population >= 500000 ? 0.85 : c.population >= 100000 ? 0.8 : c.population >= 50000 ? 0.75 : 0.7,
+  }))
+
+  const alleRassen: MetadataRoute.Sitemap = BREEDS.map((b) => ({
+    url: `${BASE}/rasse/${b.slug}`,
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
+  }))
+
+  return [...statisch, ...alleRassen, ...staedte, ...probleme, ...phasen, ...typen]
 }
