@@ -3,16 +3,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { neon } from "@neondatabase/serverless";
 import { BREEDS, BREED_BY_SLUG } from "@/data/breeds";
+import type { Breed } from "@/data/breeds";
 import gallery from "@/data/breed-gallery.json";
 import { issueToProblemSlug } from "@/lib/issue-to-problem";
-import ScoreBadge from "@/components/ScoreBadge";
 import AuthorBox from "@/components/AuthorBox";
 import ProductSchemaBlock from "@/components/ProductSchemaBlock";
 import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 
-export const revalidate = 86400; // täglich aktualisieren
+export const revalidate = 86400;
 
 const PHOTO: Record<string, string> = Object.fromEntries(
   (gallery as { slug: string; img: string }[]).map((g) => [g.slug, g.img])
@@ -26,8 +26,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const b = BREED_BY_SLUG[slug];
   if (!b) return {};
-  const title = `${b.name} Futter: Das richtige Hundefutter für deinen ${b.name}`;
-  const description = `Welches Futter passt zum ${b.name}? Bedarf, typische Gesundheitsthemen und von BELLA empfohlene Sorten — abgestimmt auf Größe, Aktivität & Allergien.`;
+  const title = `${b.name}: Futter, Gesundheit & alles zur Rasse — Lexikon`;
+  const description = `${b.name} Lexikon: Charakter, Herkunft, Gesundheit, optimales Futter & Portionsrechner. Datengetrieben, tierärztlich geprüft.`;
   return {
     title,
     description,
@@ -36,6 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
+// ── DB-Abfrage ────────────────────────────────────────────────────────────────
 interface FoodRow {
   brand: string; name: string; type: string; protein: string | null;
   price_per_kg: string | null; is_grain_free: boolean; is_hypoallergenic: boolean;
@@ -60,14 +61,138 @@ async function getBreedFoods(slug: string, allergyProne: boolean): Promise<FoodR
       []
     );
     return ((rows as unknown as { rows?: FoodRow[] }).rows ?? (rows as unknown as FoodRow[])) || [];
-  } catch {
-    return [];
-  }
+  } catch { return []; }
 }
 
-const SIZE_LABEL: Record<string, string> = { klein: "Klein", mittel: "Mittel", gross: "Groß", sehrgross: "Sehr groß" };
-const ACT_LABEL: Record<string, string> = { niedrig: "Niedrig", mittel: "Mittel", hoch: "Hoch", sehrhoch: "Sehr hoch" };
+// ── Helper: Portionsrechner ───────────────────────────────────────────────────
+type PortionRow = { weight: number; low: number; med: number; high: number };
 
+function computePortions(breed: Breed): PortionRow[] {
+  const wMin = Math.max(1, Number(breed.weightMin ?? 5));
+  const wMax = Math.max(wMin + 1, Number(breed.weightMax ?? 30));
+  const points: number[] = [];
+  if (wMax - wMin <= 4) {
+    points.push(Math.round((wMin + wMax) / 2));
+  } else if (wMax - wMin <= 12) {
+    points.push(wMin, Math.round((wMin + wMax) / 2), wMax);
+  } else {
+    points.push(wMin, Math.round(wMin + (wMax - wMin) * 0.33),
+      Math.round(wMin + (wMax - wMin) * 0.67), wMax);
+  }
+  return points.map((w) => {
+    const rer = 70 * Math.pow(w, 0.75);
+    return { weight: w, low: Math.round(rer * 1.2 / 3.5), med: Math.round(rer * 1.5 / 3.5), high: Math.round(rer * 1.8 / 3.5) };
+  });
+}
+
+// ── Helper: Experttext Ernährung ──────────────────────────────────────────────
+function buildFeedingParagraphs(breed: Breed): string[] {
+  const issues = (breed.commonHealthIssues ?? []).map((s) => s.toLowerCase());
+  const paras: string[] = [];
+
+  const hasWeight = issues.some((i) => /gewicht|fresssucht/.test(i));
+  const hasJoint = issues.some((i) => /gelenk|h[üu]ft|ellenb|dysplasie|arthrose/.test(i));
+  const hasAllergy = issues.some((i) => /allergi|haut|atopi|derma/.test(i));
+  const hasGDV = issues.some((i) => /magendrehung|drehung|gdv|dilation/.test(i));
+  const isBrachy = issues.some((i) => /brachy|atem|nasen/.test(i));
+  const hasHeart = issues.some((i) => /herz|kardio|dcm|klappen|mitral/.test(i));
+  const hasMagen = issues.some((i) => /magen|darm|pankre|epi\b|verdau/.test(i));
+  const hasKidney = issues.some((i) => /niere|renal/.test(i));
+  const hasEpi = issues.some((i) => /epilepsi/.test(i));
+
+  if (breed.feedingNotes) paras.push(breed.feedingNotes);
+
+  if (hasWeight) paras.push(
+    `${breed.name} neigen genetisch zu Übergewicht — strikte Portionskontrolle nach exaktem Körpergewicht ist entscheidend. Alle Snacks und Leckerlis in die Tagesration einrechnen. Niemals frei füttern. Der Tabelle unten kannst du die tagesaktuelle Grammzahl entnehmen.`
+  );
+  if (hasJoint) paras.push(
+    `Gelenkprobleme wie Hüftdysplasie sind bei ${breed.name} häufig. Omega-3-Fettsäuren (EPA/DHA aus Meerestieren) können die Entzündungsmarker niedrig halten und die Progression verlangsamen. Futter mit nachweisbarem Fischanteil oder ergänzend 0,5–1 ml Lachsöl täglich empfehlenswert.`
+  );
+  if (hasAllergy) paras.push(
+    `${breed.name} zeigen eine erhöhte Prävalenz für Futterunverträglichkeiten. Monoprotein-Sorten (eine einzige tierische Proteinquelle, klar benannt) reduzieren das Sensibilisierungsrisiko. Bei bestehenden Hautsymptomen: 8-wöchige Eliminationsdiät mit neuartiger Proteinquelle (Insekten, Pferd, Kaninchen) unter tierärztlicher Aufsicht.`
+  );
+  if (hasGDV) paras.push(
+    `Das Risiko für Magendilatation-Volvulus (MDV) ist bei tiefbrüstigen ${breed.name} erhöht. Vorbeugend: 2 Mahlzeiten täglich statt einer großen. Mindestens 1 Stunde Ruhe nach dem Fressen. Kein intensives Toben direkt nach der Fütterung.`
+  );
+  if (isBrachy) paras.push(
+    `Die verkürzte Schnauze des ${breed.name} fördert schnelles Fressen und Luftschlucken. Empfehlung: Anti-Schling-Napf oder Slow-Feeder, 2 kleinere Mahlzeiten täglich, mindestens 1 Stunde Ruhe danach.`
+  );
+  if (hasHeart) paras.push(
+    `${breed.name} haben ein erhöhtes Herzerkrankungs-Risiko. Taurin- und L-Carnitin-haltiges Futter wird empfohlen (DCM-Studie FDA 2019). Bei diagnostizierter Herzerkrankung: natriumreduziertes Futter nach Rücksprache mit dem Tierarzt.`
+  );
+  if (hasMagen) paras.push(
+    `Magen-Darm-Empfindlichkeit ist bei ${breed.name} bekannt. Leicht verdauliche Sorten mit Single Protein und fermentierbaren Ballaststoffen (Chicorée-Inulin, Flohsamenschale) können die Darmgesundheit unterstützen. Probiotika-haltige Futter als Ergänzung sinnvoll.`
+  );
+  if (hasKidney) paras.push(
+    `Nierenprobleme bei ${breed.name}: phosphorarmes Futter (unter 0,5 % TS) reduziert die Belastung. Hoher Wasseranteil wichtig — Nassfutter oder Rohfutter (BARF) erhöhen die tägliche Flüssigkeitsaufnahme.`
+  );
+  if (hasEpi) paras.push(
+    `Bei epileptischen ${breed.name}: Bromid-sensible Rassen sollten natriumarmes Futter erhalten, da hohe Salzaufnahme die Bromid-Resorption verringert. Konsequente Fütterungszeiten und kein abrupter Futterwechsel empfohlen.`
+  );
+
+  return paras.slice(0, 3);
+}
+
+// ── Helper: Ähnliche Rassen ───────────────────────────────────────────────────
+function getSimilarBreeds(breed: Breed, n = 4): Breed[] {
+  return BREEDS
+    .filter((b) => b.slug !== breed.slug && b.slug !== "mischling" && b.slug !== "husky")
+    .map((b) => ({
+      b,
+      score:
+        (b.size === breed.size ? 3 : 0) +
+        (b.activityLevel === breed.activityLevel ? 2 : 0) +
+        ((breed.isMixedBreed ? b.isMixedBreed : !b.isMixedBreed) ? 1 : 0),
+    }))
+    .sort((a, z) => z.score - a.score)
+    .slice(0, n)
+    .map((x) => x.b);
+}
+
+// ── Helper: FCI-Gruppenname ───────────────────────────────────────────────────
+const FCI_NAMES: Record<number, string> = {
+  1: "Hütehunde und Treibhunde", 2: "Pinscher, Schnauzer, Molossoide",
+  3: "Terrier", 4: "Dachshunde", 5: "Spitze und Hunde vom Urtyp",
+  6: "Laufhunde und Schweißhunde", 7: "Vorstehhunde", 8: "Apportier-, Stöber- und Wasserhunde",
+  9: "Gesellschafts- und Begleithunde", 10: "Windhunde",
+};
+
+const TRAIT_COLOR: Record<string, string> = {
+  intelligent: "bg-blue-500/15 border-blue-400/25 text-blue-200",
+  loyal: "bg-emerald-500/15 border-emerald-400/25 text-emerald-200",
+  freundlich: "bg-teal-500/15 border-teal-400/25 text-teal-200",
+  verspielt: "bg-yellow-500/15 border-yellow-400/25 text-yellow-200",
+  stur: "bg-orange-500/15 border-orange-400/25 text-orange-200",
+  energisch: "bg-red-500/15 border-red-400/25 text-red-200",
+  neugierig: "bg-purple-500/15 border-purple-400/25 text-purple-200",
+  sanftmütig: "bg-pink-500/15 border-pink-400/25 text-pink-200",
+  wachsam: "bg-amber-500/15 border-amber-400/25 text-amber-200",
+  gesellig: "bg-cyan-500/15 border-cyan-400/25 text-cyan-200",
+  mutig: "bg-rose-500/15 border-rose-400/25 text-rose-200",
+  ruhig: "bg-slate-500/15 border-slate-400/25 text-slate-200",
+  anhänglich: "bg-violet-500/15 border-violet-400/25 text-violet-200",
+  vorsichtig: "bg-lime-500/15 border-lime-400/25 text-lime-200",
+  unabhängig: "bg-indigo-500/15 border-indigo-400/25 text-indigo-200",
+};
+const TRAIT_DEFAULT = "bg-white/5 border-white/10 text-white/70";
+
+function Stars({ n, total = 5 }: { n: number; total?: number }) {
+  return (
+    <div className="flex gap-0.5">
+      {Array.from({ length: total }).map((_, i) => (
+        <div key={i} className={`w-3 h-3 rounded-sm ${i < n ? "bg-[var(--honey)]" : "bg-white/10"}`} />
+      ))}
+    </div>
+  );
+}
+
+const SIZE_LABEL: Record<string, string> = { klein: "Klein (bis 10 kg)", mittel: "Mittel (10–25 kg)", gross: "Groß (25–40 kg)", sehrgross: "Sehr groß (40+ kg)" };
+const ACT_LABEL: Record<string, string> = { niedrig: "Gering", mittel: "Moderat", hoch: "Hoch", sehrhoch: "Sehr hoch" };
+const COAT_LABEL: Record<string, string> = { kurz: "Kurzhaar", mittellang: "Mittellang", lang: "Langhaar", drahthaar: "Drahthaar", lockig: "Lockig/Gelockt", glatthaar: "Glatthaar" };
+const SHED_LABEL: Record<string, string> = { wenig: "Wenig", mittel: "Mittel", stark: "Stark" };
+const DIFF_LABEL: Record<string, string> = { leicht: "Anfängergeeignet", mittel: "Erfahrung hilfreich", schwer: "Erfahrener Halter" };
+
+// ── HAUPTSEITE ────────────────────────────────────────────────────────────────
 export default async function BreedPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const breed = BREED_BY_SLUG[slug];
@@ -75,567 +200,504 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
 
   const allergyProne = (breed.commonHealthIssues ?? []).some((i) => /allergi|haut|magen|darm|verdau/i.test(i));
   const foods = await getBreedFoods(breed.slug, allergyProne);
-  const photo = PHOTO[breed.slug];
+  const photo = PHOTO[breed.slug] ?? breed.imageUrl;
 
-  const facts = [
-    { k: "Größe", v: SIZE_LABEL[breed.size] ?? breed.size },
-    breed.weightMin && breed.weightMax ? { k: "Gewicht", v: `${breed.weightMin}–${breed.weightMax} kg` } : null,
-    breed.activityLevel ? { k: "Aktivität", v: ACT_LABEL[breed.activityLevel] ?? breed.activityLevel } : null,
-    breed.lifeExpectancy ? { k: "Lebenserwartung", v: `${breed.lifeExpectancy} Jahre` } : null,
-    breed.recommendedProteinPercentage ? { k: "Protein empf.", v: `~${breed.recommendedProteinPercentage} %` } : null,
-  ].filter(Boolean) as { k: string; v: string }[];
+  const portions = computePortions(breed);
+  const feedingParas = buildFeedingParagraphs(breed);
+  const similar = getSimilarBreeds(breed);
+
+  // Suitability: use explicit values or compute from existing data
+  const suitFamily = breed.suitabilityFamily ?? (breed.activityLevel === "niedrig" ? 4 : breed.size === "sehrgross" ? 3 : 4);
+  const suitApartment = breed.suitabilityApartment ?? (breed.size === "klein" ? 4 : breed.size === "mittel" ? 3 : breed.activityLevel === "niedrig" ? 3 : 2);
+  const suitBeginner = breed.suitabilityBeginner ?? (breed.trainingDifficulty === "leicht" ? 4 : breed.trainingDifficulty === "schwer" ? 2 : 3);
+  const suitChildren = breed.suitabilityChildren ?? (breed.size === "sehrgross" ? 3 : 4);
+  const suitDogs = breed.suitabilityDogs ?? 3;
+
+  const midWeight = Math.round((Number(breed.weightMin ?? 5) + Number(breed.weightMax ?? 30)) / 2);
+  const midPortion = portions[Math.floor(portions.length / 2)];
+
+  // BELLA-Intro personalisiert
+  const bellaIntro = `Ein ${breed.name}! ${breed.isMixedBreed ? "Mischlinge sind oft besonders robust." : "Tolle Wahl."} Ich bin BELLA und helfe dir, aus 8.000+ Produkten das optimale Futter zu finden. Kurz erzählen: Wie alt ist dein ${breed.name} und was ist das aktuelle Hauptproblem?`;
+
+  // FAQ-Daten
+  const faqs = [
+    {
+      q: `Wie viel Futter braucht ein ${breed.name} täglich?`,
+      a: `Ein ${breed.name} mit ca. ${midWeight} kg Körpergewicht und mittlerer Aktivität braucht etwa ${midPortion?.med ?? 200}–${midPortion?.high ?? 250} g Trockenfutter täglich, aufgeteilt auf 2 Mahlzeiten. Die genaue Menge hängt von Alter, Kastrationsstatus und Aktivität ab.`,
+    },
+    {
+      q: `Welche Gesundheitsprobleme hat der ${breed.name}?`,
+      a: `Häufige Gesundheitsthemen beim ${breed.name}: ${(breed.commonHealthIssues ?? []).slice(0, 4).join(", ")}. Regelmäßige Vorsorgeuntersuchungen beim Tierarzt sind wichtig.`,
+    },
+    {
+      q: `Ist der ${breed.name} ein Familienhund?`,
+      a: suitFamily >= 4 ? `Ja — ${breed.name} sind ausgezeichnete Familienhunde und kinderfreundlich.` : `${breed.name} können in Familien gut gehalten werden, wenn Kinder den Umgang mit Hunden gewohnt sind.`,
+    },
+    {
+      q: `Welches Futter ist am besten für einen ${breed.name}?`,
+      a: `Für ${breed.name} eignet sich hochwertiges Trockenfutter mit mindestens ${breed.recommendedProteinPercentage ?? 25} % Rohprotein aus benannten Fleischquellen als erste Zutat. ${allergyProne ? "Wegen der Allergieneigung empfehlen wir Monoprotein- oder getreidfreie Sorten." : "Futter ohne übermäßige Füllstoffe ist empfehlenswert."}`,
+    },
+    {
+      q: `Wie viel Bewegung braucht ein ${breed.name}?`,
+      a: `${breed.name} brauchen täglich ca. ${breed.dailyExerciseMinutes ?? (breed.activityLevel === "sehrhoch" ? 120 : breed.activityLevel === "hoch" ? 90 : breed.activityLevel === "mittel" ? 60 : 30)} Minuten Bewegung. ${breed.activityLevel === "sehrhoch" || breed.activityLevel === "hoch" ? "Diese Rasse braucht zusätzlich geistige Auslastung." : ""}`,
+    },
+  ];
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
 
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
       <StructuredData type="organization" />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
-      {/* Breadcrumb */}
-      <nav className="max-w-5xl mx-auto w-full px-5 pt-8 text-sm text-[var(--muted)]">
+      {/* ── BREADCRUMB ─────────────────────────────────────────────────── */}
+      <nav className="max-w-5xl mx-auto w-full px-5 pt-8 text-sm text-[var(--muted)] flex gap-2 flex-wrap">
         <Link href="/" className="hover:text-[var(--honey)]">Start</Link>
-        <span className="mx-2">·</span>
+        <span>·</span>
+        <Link href="/rasse" className="hover:text-[var(--honey)]">Alle Rassen</Link>
+        <span>·</span>
         <span className="text-[var(--ink)]">{breed.name}</span>
       </nav>
 
-      {/* HERO */}
-      <section className="relative hero-glow max-w-5xl mx-auto w-full px-5 pt-8 pb-14">
-        <div className="grid md:grid-cols-[1fr_1.1fr] gap-8 items-center">
-          {photo ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={photo} alt={breed.name} className="w-full aspect-[4/3] object-cover rounded-3xl border border-white/10" />
-          ) : (
-            <div className="w-full aspect-[4/3] rounded-3xl border border-white/10 bg-white/5 flex items-center justify-center text-6xl">🐕</div>
-          )}
+      {/* ── SEKTION 1: HERO ────────────────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto w-full px-5 pt-6 pb-10">
+        <div className="grid md:grid-cols-[1.1fr_1fr] gap-8 items-start">
+          {/* Foto */}
+          <div className="relative">
+            {photo ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={photo} alt={`${breed.name} Foto`}
+                className="w-full aspect-[4/3] object-cover rounded-3xl border border-white/10 shadow-2xl" />
+            ) : (
+              <div className="w-full aspect-[4/3] rounded-3xl border border-white/10 bg-gradient-to-br from-amber-500/10 to-orange-500/5 flex flex-col items-center justify-center gap-3">
+                <span className="text-7xl">🐕</span>
+                <span className="text-sm text-[var(--muted)]">{breed.name}</span>
+              </div>
+            )}
+            {breed.fciGroup && (
+              <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-sm text-xs px-2.5 py-1 rounded-lg text-white/80 font-medium">
+                FCI Gruppe {breed.fciGroup}
+              </div>
+            )}
+            {breed.isMixedBreed && (
+              <div className="absolute top-3 left-3 bg-purple-500/80 backdrop-blur-sm text-xs px-2.5 py-1 rounded-lg text-white font-medium">
+                Mischling
+              </div>
+            )}
+          </div>
+
+          {/* Info */}
           <div>
-            <span className="pill mb-4">🐾 Rasse-Ratgeber</span>
-            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4">
-              Das richtige Futter für deinen <span className="text-accent">{breed.name}</span>
+            <div className="flex flex-wrap gap-2 mb-3">
+              <span className="pill text-xs">🐾 Rasse-Lexikon</span>
+              {breed.origin && <span className="pill text-xs">{breed.origin}</span>}
+            </div>
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2">
+              {breed.name}
             </h1>
-            <p className="text-[var(--muted)] leading-relaxed mb-6">{breed.description}</p>
-            <div className="flex flex-wrap gap-2">
-              {facts.map((f) => (
-                <span key={f.k} className="text-xs px-3 py-1.5 rounded-xl bg-white/5 border border-white/10">
-                  <span className="text-[var(--muted)]">{f.k}: </span>
-                  <span className="font-semibold">{f.v}</span>
-                </span>
+            {(breed.alternativeNames ?? []).length > 0 && (
+              <p className="text-sm text-[var(--muted)] mb-3">
+                Auch bekannt als: {(breed.alternativeNames ?? []).join(", ")}
+              </p>
+            )}
+            <p className="text-[var(--muted)] leading-relaxed mb-5 text-sm">{breed.description}</p>
+
+            {/* Key Facts Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-6">
+              {[
+                { icon: "⚖️", label: "Gewicht", val: breed.weightMin && breed.weightMax ? `${breed.weightMin}–${breed.weightMax} kg` : null },
+                { icon: "📏", label: "Höhe", val: breed.heightMin && breed.heightMax ? `${breed.heightMin}–${breed.heightMax} cm` : null },
+                { icon: "🎂", label: "Lebenserwartung", val: breed.lifeExpectancy ? `${breed.lifeExpectancy} Jahre` : null },
+                { icon: "⚡", label: "Aktivität", val: ACT_LABEL[breed.activityLevel ?? ""] ?? null },
+                { icon: "🏠", label: "Größe", val: SIZE_LABEL[breed.size] ?? null },
+                { icon: "🌍", label: "Herkunft", val: breed.origin ?? null },
+              ].filter((f) => f.val).map((f) => (
+                <div key={f.label} className="card p-3 text-center">
+                  <div className="text-lg mb-0.5">{f.icon}</div>
+                  <div className="text-[10px] text-[var(--muted)] mb-0.5">{f.label}</div>
+                  <div className="text-xs font-semibold">{f.val}</div>
+                </div>
               ))}
             </div>
-            <Link href="/#bella-advisor" className="btn-primary mt-7 text-sm">Frag BELLA zu deinem {breed.name} →</Link>
+
+            <Link href={`/#bella-advisor`} className="btn-primary text-sm">
+              Futter für meinen {breed.name} finden →
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* FÜTTERUNG */}
-      <section className="max-w-5xl mx-auto w-full px-5 py-10">
-        <div className="grid md:grid-cols-2 gap-5">
-          <div className="card p-6">
-            <h2 className="text-lg font-bold tracking-tight mb-3">Worauf es beim {breed.name}-Futter ankommt</h2>
-            <p className="text-sm text-[var(--muted)] leading-relaxed">{breed.feedingNotes}</p>
+      {/* ── SEKTION 2: STECKBRIEF ─────────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto w-full px-5 py-6">
+        <div className="card p-6">
+          <h2 className="text-xl font-extrabold tracking-tight mb-5">Steckbrief: {breed.name}</h2>
+          <div className="grid sm:grid-cols-2 gap-x-10 gap-y-2 text-sm">
+            {[
+              ["Rasse", breed.name],
+              breed.fciGroup ? ["FCI-Gruppe", `${breed.fciGroup} — ${FCI_NAMES[breed.fciGroup] ?? ""}`] : null,
+              breed.origin ? ["Herkunftsland", breed.origin] : null,
+              breed.weightMin && breed.weightMax ? ["Gewicht", `${breed.weightMin}–${breed.weightMax} kg`] : null,
+              breed.heightMin && breed.heightMax ? ["Schulterhöhe", `${breed.heightMin}–${breed.heightMax} cm`] : null,
+              breed.lifeExpectancy ? ["Lebenserwartung", `${breed.lifeExpectancy} Jahre`] : null,
+              breed.activityLevel ? ["Aktivitätslevel", ACT_LABEL[breed.activityLevel]] : null,
+              breed.dailyExerciseMinutes ? ["Tägliche Bewegung", `mind. ${breed.dailyExerciseMinutes} Min.`] : null,
+              breed.coatType ? ["Felltyp", COAT_LABEL[breed.coatType] ?? breed.coatType] : null,
+              breed.shedding ? ["Haarausfall", SHED_LABEL[breed.shedding] ?? breed.shedding] : null,
+              breed.groomingFrequency ? ["Pflegeaufwand", breed.groomingFrequency] : null,
+              breed.trainingDifficulty ? ["Erziehung", DIFF_LABEL[breed.trainingDifficulty] ?? breed.trainingDifficulty] : null,
+              breed.recommendedProteinPercentage ? ["Protein-Bedarf", `mind. ${breed.recommendedProteinPercentage} %`] : null,
+              breed.recommendedFatPercentage ? ["Fett-Bedarf", `ca. ${breed.recommendedFatPercentage} %`] : null,
+            ].filter(Boolean).map((row) => {
+              const [k, v] = row as [string, string];
+              return (
+                <div key={k} className="flex items-baseline gap-2 py-1.5 border-b border-white/5">
+                  <span className="text-[var(--muted)] min-w-[130px] flex-shrink-0">{k}</span>
+                  <span className="font-medium">{v}</span>
+                </div>
+              );
+            })}
           </div>
+        </div>
+      </section>
+
+      {/* ── SEKTION 3: CHARAKTER & WESEN ──────────────────────────────── */}
+      {((breed.characterTraits ?? []).length > 0 || breed.temperament) && (
+        <section className="max-w-5xl mx-auto w-full px-5 py-6">
           <div className="card p-6">
-            <h2 className="text-lg font-bold tracking-tight mb-3">Typische Gesundheitsthemen</h2>
-            <div className="flex flex-wrap gap-2">
-              {(breed.commonHealthIssues ?? []).map((i) => {
-                const problemSlug = issueToProblemSlug(i);
+            <h2 className="text-xl font-extrabold tracking-tight mb-4">Charakter & Wesen</h2>
+            {(breed.characterTraits ?? []).length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-4">
+                {(breed.characterTraits ?? []).map((t) => (
+                  <span key={t}
+                    className={`text-sm px-3 py-1.5 rounded-xl border font-medium ${TRAIT_COLOR[t.toLowerCase()] ?? TRAIT_DEFAULT}`}>
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
+            {breed.temperament && (
+              <p className="text-sm text-[var(--muted)] leading-relaxed">{breed.temperament}</p>
+            )}
+            {breed.trainingDifficulty && (
+              <div className="mt-4 pt-4 border-t border-white/5 flex items-center gap-3">
+                <span className="text-sm text-[var(--muted)]">Erziehbarkeit:</span>
+                <span className={`text-xs px-2.5 py-1 rounded-lg font-medium ${
+                  breed.trainingDifficulty === "leicht" ? "bg-emerald-500/15 text-emerald-300" :
+                  breed.trainingDifficulty === "schwer" ? "bg-rose-500/15 text-rose-300" :
+                  "bg-amber-500/15 text-amber-300"}`}>
+                  {DIFF_LABEL[breed.trainingDifficulty]}
+                </span>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* ── SEKTION 4: HERKUNFT & GESCHICHTE ─────────────────────────── */}
+      {(breed.history || breed.origin) && (
+        <section className="max-w-5xl mx-auto w-full px-5 py-6">
+          <div className="card p-6">
+            <h2 className="text-xl font-extrabold tracking-tight mb-4">Herkunft & Geschichte</h2>
+            <div className="flex items-start gap-4">
+              {breed.origin && (
+                <div className="flex-shrink-0 bg-white/5 rounded-xl px-4 py-3 text-center min-w-[90px]">
+                  <div className="text-2xl mb-1">🌍</div>
+                  <div className="text-xs text-[var(--muted)]">{breed.origin}</div>
+                </div>
+              )}
+              <p className="text-sm text-[var(--muted)] leading-relaxed">
+                {breed.history ?? `Der ${breed.name} stammt ursprünglich aus ${breed.origin ?? "Europa"} und gehört ${breed.fciGroup ? `zur FCI-Gruppe ${breed.fciGroup} (${FCI_NAMES[breed.fciGroup] ?? ""})` : "zu den beliebten Haushunden"}. Die Rasse wurde über Generationen auf ${(breed.characterTraits ?? ["Freundlichkeit", "Loyalität"]).slice(0, 2).join(" und ")} gezüchtet.`}
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── SEKTION 5: HALTUNG & EIGNUNG ──────────────────────────────── */}
+      <section className="max-w-5xl mx-auto w-full px-5 py-6">
+        <div className="card p-6">
+          <h2 className="text-xl font-extrabold tracking-tight mb-5">Haltung & Eignung</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              { label: "Familienhund", n: suitFamily, icon: "👨‍👩‍👧" },
+              { label: "Für Anfänger", n: suitBeginner, icon: "🐾" },
+              { label: "Wohnungshaltung", n: suitApartment, icon: "🏠" },
+              { label: "Kinderfreundlich", n: suitChildren, icon: "👶" },
+              { label: "Mit anderen Hunden", n: suitDogs, icon: "🐶" },
+              { label: "Aktivitätsbedarf", n: breed.activityLevel === "sehrhoch" ? 5 : breed.activityLevel === "hoch" ? 4 : breed.activityLevel === "mittel" ? 3 : 2, icon: "⚡" },
+            ].map(({ label, n, icon }) => (
+              <div key={label} className="flex items-center gap-3 p-3 bg-white/3 rounded-xl">
+                <span className="text-xl flex-shrink-0">{icon}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-xs text-[var(--muted)] mb-1">{label}</div>
+                  <Stars n={n} />
+                </div>
+              </div>
+            ))}
+          </div>
+          {breed.trainingNotes && (
+            <p className="mt-4 pt-4 border-t border-white/5 text-sm text-[var(--muted)] leading-relaxed">{breed.trainingNotes}</p>
+          )}
+        </div>
+      </section>
+
+      {/* ── SEKTION 6: GESUNDHEIT & ERKRANKUNGEN ──────────────────────── */}
+      {(breed.commonHealthIssues ?? []).length > 0 && (
+        <section className="max-w-5xl mx-auto w-full px-5 py-6">
+          <div className="card p-6">
+            <h2 className="text-xl font-extrabold tracking-tight mb-2">Typische Gesundheitsthemen</h2>
+            <p className="text-sm text-[var(--muted)] mb-5">
+              Diese Erkrankungen treten beim {breed.name} überdurchschnittlich häufig auf. Das Futter
+              kann zwar nicht heilen, aber die richtige Zusammensetzung kann die Progression verlangsamen.
+            </p>
+            <div className="flex flex-wrap gap-2 mb-5">
+              {(breed.commonHealthIssues ?? []).map((issue) => {
+                const problemSlug = issueToProblemSlug(issue);
                 return problemSlug ? (
-                  <Link key={i} href={`/problem/${problemSlug}`}
-                    className="text-xs px-3 py-1.5 rounded-xl bg-rose-500/10 border border-rose-400/20 text-rose-200 hover:bg-rose-500/20 hover:border-rose-400/40 transition-colors">
-                    {i} →
+                  <Link key={issue} href={`/problem/${problemSlug}`}
+                    className="text-sm px-3 py-1.5 rounded-xl bg-rose-500/10 border border-rose-400/20 text-rose-200 hover:bg-rose-500/20 transition-colors flex items-center gap-1">
+                    {issue}
+                    <span className="text-xs opacity-60">→</span>
                   </Link>
                 ) : (
-                  <span key={i} className="text-xs px-3 py-1.5 rounded-xl bg-rose-500/10 border border-rose-400/20 text-rose-200">{i}</span>
+                  <span key={issue}
+                    className="text-sm px-3 py-1.5 rounded-xl bg-rose-500/10 border border-rose-400/20 text-rose-200">
+                    {issue}
+                  </span>
                 );
               })}
             </div>
             {allergyProne && (
-              <p className="text-sm text-[var(--muted)] leading-relaxed mt-4">
-                Diese Rasse neigt zu Allergien/Sensibilitäten — BELLA bevorzugt unten getreidefreie bzw. hypoallergene Sorten.
-              </p>
+              <div className="bg-amber-500/8 border border-amber-400/15 rounded-xl p-4">
+                <p className="text-sm text-amber-200 leading-relaxed">
+                  <strong>Allergie-Hinweis:</strong> {breed.name} neigen zu Futterunverträglichkeiten.
+                  BELLA bevorzugt in der Empfehlung unten hypoallergene und getreidfreie Sorten.
+                </p>
+              </div>
             )}
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* EEAT-EXPERTEN-BLOCK: Labrador */}
-      {breed.slug === "labrador-retriever" && (
-        <section className="max-w-5xl mx-auto w-full px-5 py-10">
-          <div className="card p-8">
-            <h2 className="text-xl font-extrabold tracking-tight mb-6">Labrador und Futter: Was du wissen solltest</h2>
-            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
-              <p>
-                Der Labrador ist genetisch für Übergewicht prädisponiert. Das ist keine Übertreibung:
-                Forscher der Universität Cambridge haben 2016 eine Mutation im <strong>POMC-Gen</strong> identifiziert,
-                die bei schätzungsweise 25 % aller Labradors vorkommt und das Sättigungsgefühl direkt beeinträchtigt.
-                Betroffene Hunde sind nicht „gierig" — sie spüren schlicht nicht, wann sie satt sind.
-                Das bedeutet für die Fütterung: exakte Gramm-Dosierung nach Körpergewicht, kein Füttern nach Augenmaß,
-                kein dauerhaft gefüllter Napf.
-              </p>
-              <p>
-                <strong>Gelenkgesundheit und Futter:</strong> Hüftdysplasie (HD) und Ellenbogendysplasie (ED) sind die
-                häufigsten orthopädischen Erkrankungen beim Labrador. Ob ein Hund HD entwickelt, hängt primär von Genetik
-                und Aufzuchtbedingungen ab — nicht vom Futter allein. Aber Übergewicht beschleunigt die Symptomausprägung
-                messbar. Ein Labrador mit 5 kg Übergewicht belastet seine Gelenke pro Schritt mit einem Vielfachen dieser
-                Last. Futter mit angemessenem Proteingehalt (≥ 26 %) und <strong>Omega-3-Fettsäuren</strong> (EPA/DHA aus
-                Meeresquellen) kann Gelenkentzündungen nicht heilen, aber die Entzündungsmarker niedrig halten und
-                die Progression verlangsamen.
-              </p>
-              <p>
-                <strong>Portionsbedarf und Futtertyp:</strong> Ein ausgewachsener Labrador wiegt typisch 25–36 kg.
-                Der tatsächliche Tagesbedarf hängt von Aktivitätslevel, Kastrationsstatus und Alter ab — nicht von der
-                Packungsangabe. Hersteller-Empfehlungen sind generell zu hoch angesetzt, weil mehr Futter mehr Umsatz
-                bedeutet. Ein aktiver, 32 kg schwerer Labrador braucht ca. 370–420 g hochwertiges Trockenfutter mit
-                einer Energiedichte von 3.700 kcal/kg täglich. BELLA berechnet das automatisch über die
-                RER-Formel (70 × kg^0,75 × Aktivitätsfaktor).
-              </p>
-              <p>
-                <strong>Worauf beim Kauf achten:</strong> Für Labradors empfehlen wir erstens ein Futter mit einem
-                spezifisch benannten Fleisch als erster Zutat — kein „Fleisch und tierische Nebenerzeugnisse" ohne
-                Herkunftsangabe. Zweitens einen Rohproteingehalt zwischen 26 und 32 % (höher bei sehr aktiven Hunden).
-                Drittens möglichst keinen zugesetzten Zucker (Rübenzucker, Melasse) — er erhöht die Kaloriendichte
-                ohne Nährwert. Nassfutter als Beimischung kann für gewichtsreduzierte Labradors sinnvoll sein:
-                mehr Sättigung bei weniger kcal durch den hohen Wasseranteil.
-              </p>
-            </div>
+      {/* ── SEKTION 7: PFLEGE & ERZIEHUNG ─────────────────────────────── */}
+      {(breed.groomingNotes || breed.coatType || breed.trainingNotes) && (
+        <section className="max-w-5xl mx-auto w-full px-5 py-6">
+          <div className="grid sm:grid-cols-2 gap-5">
+            {(breed.coatType || breed.groomingNotes) && (
+              <div className="card p-6">
+                <h2 className="text-lg font-extrabold tracking-tight mb-3">✂️ Pflege & Fell</h2>
+                <div className="space-y-2 text-sm text-[var(--muted)]">
+                  {breed.coatType && <p><strong>Felltyp:</strong> {COAT_LABEL[breed.coatType] ?? breed.coatType}</p>}
+                  {breed.shedding && <p><strong>Haarausfall:</strong> {SHED_LABEL[breed.shedding]}</p>}
+                  {breed.groomingFrequency && <p><strong>Pflege:</strong> {breed.groomingFrequency}</p>}
+                  {breed.groomingNotes && <p className="mt-3 leading-relaxed">{breed.groomingNotes}</p>}
+                </div>
+              </div>
+            )}
+            {breed.trainingNotes && (
+              <div className="card p-6">
+                <h2 className="text-lg font-extrabold tracking-tight mb-3">🎓 Erziehung & Auslastung</h2>
+                <div className="text-sm text-[var(--muted)] leading-relaxed">
+                  {breed.trainingDifficulty && (
+                    <div className="mb-3">
+                      <span className={`text-xs px-2.5 py-1 rounded-lg font-medium ${
+                        breed.trainingDifficulty === "leicht" ? "bg-emerald-500/15 text-emerald-300" :
+                        breed.trainingDifficulty === "schwer" ? "bg-rose-500/15 text-rose-300" :
+                        "bg-amber-500/15 text-amber-300"}`}>
+                        {DIFF_LABEL[breed.trainingDifficulty]}
+                      </span>
+                    </div>
+                  )}
+                  <p>{breed.trainingNotes}</p>
+                </div>
+              </div>
+            )}
           </div>
         </section>
       )}
 
-      {/* EEAT-EXPERTEN-BLOCK: Golden Retriever */}
-      {breed.slug === "golden-retriever" && (
-        <section className="max-w-5xl mx-auto w-full px-5 py-10">
-          <div className="card p-8">
-            <h2 className="text-xl font-extrabold tracking-tight mb-6">Golden Retriever und Futter: Was du wissen solltest</h2>
-            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
-              <p>
-                Golden Retriever haben laut der Morris Animal Foundation Lifetime Study eine genetisch erhöhte Krebsrate —
-                schätzungsweise 60 % sterben an einer Krebserkrankung. Antioxidantienreiche Ernährung mit
-                <strong> Omega-3-Fettsäuren</strong> (EPA/DHA) und <strong>Vitamin E</strong> wird in der Fachliteratur
-                diskutiert und kann das Immunsystem unterstützen. Sie ist jedoch kein Schutz vor Krebs und ersetzt
-                keine regelmäßige tierärztliche Vorsorge. Was du tun kannst: eine qualitativ hochwertige Ernährung
-                mit nachweisbarem Fischanteil wählen und Übergewicht konsequent vermeiden — beides gilt als modulierend
-                für systemische Entzündungsprozesse.
-              </p>
-              <p>
-                <strong>Gewicht und Fütterungsdisziplin:</strong> Goldens sind übergewichtsgefährdet, aber weniger
-                extrem als Labradors. Das Hauptproblem: Sie fressen weitgehend was da ist, ohne Protest.
-                Anders als der Labrador fehlt hier eine bekannte genetische Ursache — es ist eher
-                Konditionierung und die hohe Akzeptanz für Leckerlis. Konsequente Portionierung und das
-                Einrechnen aller Snacks in die Tagesration sind entscheidend.
-              </p>
-              <p>
-                <strong>Fell und Fettsäure-Verhältnis:</strong> Das dichte Doppelfell des Golden Retrievers reagiert
-                empfindlich auf ein ungünstiges Omega-6 zu Omega-3-Verhältnis. Ideal ist ein Verhältnis von etwa 5:1.
-                Billigfutter mit hohem Anteil an <strong>Sonnenblumenöl</strong> verschiebt das Verhältnis stark
-                in Richtung Omega-6 — das fördert Entzündungsreaktionen und kann sich in trockenem Fell,
-                Schuppen oder Hautirritationen zeigen. Lachs- oder Leinöl als Ergänzung kann das Gleichgewicht
-                korrigieren, wenn das Grundfutter keine ausreichenden Omega-3-Quellen enthält.
-              </p>
-              <p>
-                <strong>Futterauswahl für Goldens:</strong> Gut geeignet sind Sorten mit <strong>Lachs oder Weißfisch</strong>
-                als Hauptprotein, moderatem Fettgehalt zwischen 14 und 18 % sowie einer klaren Deklaration der
-                Zutaten. Bei Hautsymptomen lohnt ein Versuch mit getreidefrei — nicht weil Getreide per se schlecht
-                ist, sondern weil ein Wechsel der Kohlenhydratquelle manchmal Unverträglichkeiten aufdeckt.
-                Rohproteingehalt zwischen 26 und 30 % ist für durchschnittlich aktive Goldens angemessen.
-              </p>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* EEAT: Mops */}
-      {breed.slug === "mops" && (
-        <section className="max-w-5xl mx-auto w-full px-5 py-10">
-          <div className="card p-8">
-            <h2 className="text-xl font-extrabold tracking-tight mb-6">Mops und Futter: Was du wissen solltest</h2>
-            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
-              <p>
-                <strong>Übergewicht ist das größte Risiko beim Mops:</strong> Die kurze Schnauze
-                (Brachyzephalie) macht körperliche Anstrengung bereits bei Normalgewicht anstrengend.
-                Jedes überschüssige Kilo verschlimmert Atemprobleme, Hitzestress und Gelenkbelastung
-                messbar. Mosse mit Übergewicht sind nicht faul — sie sind atemgehandicapt. Die tägliche
-                Futtermenge sollte exakt nach Idealgewicht berechnet werden, nicht nach aktuellem Gewicht.
-                Idealgewicht Mops: 6–8 kg. Tagesmenge hochwertiges Trockenfutter: 120–180 g.
-              </p>
-              <p>
-                <strong>Portionsfrequenz und Tempo:</strong> Möpse neigen zu schnellem Fressen, was bei
-                brachyzephalen Rassen besonders problematisch ist — sie schlucken dabei viel Luft,
-                was zu Blähungen und Magenbeschwerden führt. Empfehlung: Anti-Schling-Napf oder
-                Slow-Feeder, zwei kleinere Mahlzeiten statt einer großen, mindestens 1 Stunde Ruhe
-                nach dem Fressen vor jeder Aktivität.
-              </p>
-              <p>
-                <strong>Hautfalten und Ernährung:</strong> Die Hautfalten des Mopses sind Infektionsrisiko,
-                nicht Ernährungsthema. Futter allein kann Faltenekzeme nicht verhindern. Aber:
-                Omega-3-Fettsäuren (EPA/DHA aus Lachs) wirken entzündungshemmend und können die
-                Hautbarriere stärken — das ist bei faltenreichen Rassen ein sinnvolles Ziel. Futter
-                mit Lachsöl oder ein täglicher Zusatz von 0,5 ml Lachsöl ist eine einfache Maßnahme.
-              </p>
-              <p>
-                <strong>Futterauswahl für Möpse:</strong> Proteingehalt 25–28 % ist ausreichend —
-                Möpse sind keine Hochleistungssportler. Niedriger Fettgehalt (max. 14 %) hilft beim
-                Gewichtsmanagement. Leicht verdauliche Sorten (Lamm, Lachs, Geflügel) sind bevorzugt,
-                da Möpse empfindliche Mägen haben können. Keine Sorten mit hohem Weizen-
-                oder Maisanteil — erhöhte Allergieneigung bei Möpsen gegenüber Getreide belegt.
-              </p>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* EEAT: Französische Bulldogge */}
-      {breed.slug === "franzoesische-bulldogge" && (
-        <section className="max-w-5xl mx-auto w-full px-5 py-10">
-          <div className="card p-8">
-            <h2 className="text-xl font-extrabold tracking-tight mb-6">Französische Bulldogge und Futter: Was du wissen solltest</h2>
-            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
-              <p>
-                <strong>Allergie-Häufigkeit überdurchschnittlich hoch:</strong> Französische Bulldoggen
-                gehören zu den Rassen mit der höchsten Prävalenz für Futterallergien und atopische
-                Dermatitis in Deutschland. Schätzungsweise 20–30 % aller Frenchies entwickeln
-                im Laufe ihres Lebens eine Überempfindlichkeit gegenüber Futterzutaten — häufigste
-                Auslöser: Huhn, Weizen, Milchprodukte. Wer eine Frenchie hat, sollte von Anfang an
-                auf Monoprotein-Sorten oder wechselnde Proteinquellen setzen, um Sensibilisierung
-                zu verhindern.
-              </p>
-              <p>
-                <strong>Flatulenz und Fressgeschwindigkeit:</strong> Frenchies sind berüchtigt für
-                Blähungen — oft durch zu schnelles Fressen und Luftschlucken. Gleiche Empfehlung
-                wie beim Mops: Anti-Schling-Napf, zwei Mahlzeiten täglich, keine schwer verdaulichen
-                Zutaten (Weizen, Mais, Soja). Probiotika in der Nahrung (Lactobacillus-haltige Sorten)
-                können nachweislich die Darmflora stabilisieren und Flatulenz reduzieren.
-              </p>
-              <p>
-                <strong>Rückenprobleme und Gewicht:</strong> Franzosen haben anatomisch eine erhöhte
-                Anfälligkeit für Wirbelsäulenprobleme (Hemi-Vertebrae, IVDD). Übergewicht ist der
-                wichtigste vermeidbare Belastungsfaktor. Ähnlich wie beim Dackel gilt: Ein Frenchie
-                im Normalgewicht lebt gesünder als einer mit 2 kg zu viel. Tägliche Kalorienzählung
-                inklusive aller Snacks ist bei dieser Rasse keine Übervorsicht.
-              </p>
-              <p>
-                <strong>Futter-Empfehlung Frenchie:</strong> Getreidefrei oder getreideredu­ziert wegen
-                Allergie-Prädisposition. Proteinquelle klar benannt, möglichst Monoprotein.
-                Lachs- oder Fischsorten für Omega-3 und Hautgesundheit. Fettgehalt moderat (12–16 %).
-                Bei bereits sichtbaren Hautsymptomen: 8-wöchige Eliminationsdiät mit Insekten-
-                oder Pferdefleisch vor jeder weiteren Diagnose.
-              </p>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* EEAT: Deutscher Schäferhund */}
-      {breed.slug === "deutscher-schaeferhund" && (
-        <section className="max-w-5xl mx-auto w-full px-5 py-10">
-          <div className="card p-8">
-            <h2 className="text-xl font-extrabold tracking-tight mb-6">Deutscher Schäferhund und Futter: Was du wissen solltest</h2>
-            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
-              <p>
-                <strong>Exokrine Pankreasinsuffizienz (EPI):</strong> Der Deutsche Schäferhund ist
-                die am stärksten betroffene Rasse für EPI — eine Erkrankung, bei der die Bauchspeicheldrüse
-                keine ausreichenden Verdauungsenzyme mehr produziert. Betroffen sind schätzungsweise
-                1–3 % aller Schäferhunde. Symptome: massiver Gewichtsverlust trotz gutem Appetit,
-                großer, hellgefärbter, übelriechender Kot. EPI ist behandelbar (Enzymsubstitution),
-                aber nur wenn erkannt. Bei entsprechenden Symptomen: sofort Tierarzt, Kot-Elastase-Test.
-              </p>
-              <p>
-                <strong>Magendrehung (MDV/GDV):</strong> Große Hunde mit tiefer Brust wie der
-                Schäferhund haben ein erhöhtes Risiko für Magendilatation-Volvulus — ein medizinischer
-                Notfall. Vorbeugend: keine einzelne große Mahlzeit, sondern 2 Mahlzeiten täglich.
-                Mindestens 1 Stunde Ruhe nach dem Fressen. Kein Fressen direkt vor intensiver
-                Aktivität. Slow-Feeder oder erhöhter Napf werden diskutiert — die Evidenz ist gemischt,
-                schaden tut es aber nicht.
-              </p>
-              <p>
-                <strong>Hoher Energiebedarf bei Arbeits-Schäferhunden:</strong> Ein aktiver Schäferhund
-                in Arbeit (Schutz, Hüten, Sport) hat einen 1,5–2x erhöhten Grundumsatz gegenüber
-                einem ruhigen Haushund. Für diese Hunde: Protein ≥ 28 %, Fett ≥ 16 %, Energiedichte
-                ≥ 3.800 kcal/kg Trockenfutter. Für den wenig aktiven Haushalt-Schäferhund gelten
-                normale Werte (26 % Protein, 14 % Fett).
-              </p>
-              <p>
-                <strong>Hüftdysplasie und Futter:</strong> HD ist beim Schäferhund genetisch — Futter
-                kann es nicht verhindern. Was Futter tun kann: Übergewicht vermeiden
-                (jedes kg belastet HD-Hüften mehr), Omega-3 aus Fisch für entzündungshemmende
-                Wirkung, Glucosamin/Chondroitin als begleitende Maßnahme. Protein qualitativ hochwertig
-                für Muskelerhalt — Muskeln sind die beste Gelenkstabilisierung.
-              </p>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* EEAT: Beagle */}
-      {breed.slug === "beagle" && (
-        <section className="max-w-5xl mx-auto w-full px-5 py-10">
-          <div className="card p-8">
-            <h2 className="text-xl font-extrabold tracking-tight mb-6">Beagle und Futter: Was du wissen solltest</h2>
-            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
-              <p>
-                <strong>Nahrungsmotivation als Überlebenstrieb:</strong> Beagles wurden als Meutejaghunde
-                gezüchtet — ihr Antrieb, Nahrung zu finden und zu fressen, ist genetisch verankert.
-                Ein Beagle, der bettelnd vor dir steht, ist nicht hungrig — er ist ein Beagle.
-                Das hat praktische Konsequenzen: Beagles überschätzen ihren Hunger chronisch,
-                fressen was da ist und zeigen kein natürliches Sättigungsverhalten. Genaue
-                Portionierung nach Gramm (nicht nach Augenmaß) und konsequentes Nicht-Nachgeben
-                beim Betteln sind bei dieser Rasse keine Option sondern Pflicht.
-              </p>
-              <p>
-                <strong>Übergewicht und Kastration:</strong> Kastrierte Beagles reduzieren ihren
-                Grundumsatz um ca. 20–30 %. Das bedeutet: nach der Kastration die Futtermenge sofort
-                anpassen (nicht erst wenn der Hund sichtbar zunimmt). Ein kastrierter Beagle
-                braucht ca. 25 % weniger als der unkastrierte gleichen Gewichts.
-              </p>
-              <p>
-                <strong>Verstopfungsrisiko durch Knochen und Fremdkörper:</strong> Beagles verschlucken
-                was sie finden — sie sind die Rasse mit der höchsten Rate an Fremdkörperoperationen.
-                Rohe Knochen immer beaufsichtigt geben. Schnelle Fresser brauchen Slow-Feeder um
-                Würgen und Luftschlucken zu reduzieren.
-              </p>
-              <p>
-                <strong>Futter-Empfehlung Beagle:</strong> Energiereduzierte Sorten oder normales
-                hochwertiges Futter in kontrollierten Mengen. Keine kalorienreichen Sorten mit
-                hohem Fettgehalt. Proteingehalt 26–28 % für Muskelerhalt bei normalem Gewicht.
-                Kalorienarme Gemüse-Snacks (Möhren, Gurke) als Beschäftigung und Sättigungsmittel.
-              </p>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* EEAT: Chihuahua */}
-      {breed.slug === "chihuahua" && (
-        <section className="max-w-5xl mx-auto w-full px-5 py-10">
-          <div className="card p-8">
-            <h2 className="text-xl font-extrabold tracking-tight mb-6">Chihuahua und Futter: Was du wissen solltest</h2>
-            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
-              <p>
-                <strong>Hypoglykämie-Risiko:</strong> Chihuahuas und andere Toy-Rassen haben
-                ein hohes Risiko für Hypoglykämie (Unterzuckerung) — besonders Welpen und
-                Kleinsthunde unter 1,5 kg. Ursache: sehr geringes Körperfettdepot und hoher
-                relativer Energiebedarf. Praxis: Nie länger als 4–6 Stunden fasten lassen,
-                3–4 kleine Mahlzeiten täglich, besonders bei Welpen. Zeichen: Zittern,
-                Schwäche, Desorientierung, in schweren Fällen Krampfanfall. Bei Verdacht:
-                sofort ein Stück Honig auf die Schleimhäute und zum Tierarzt.
-              </p>
-              <p>
-                <strong>Kleine Magenkapazität:</strong> Ein Chihuahua frisst naturgemäß kleine
-                Portionen. Zu große Einzelportionen führen zu Erbrechen oder Würgen.
-                Richtgröße: 2–3 Mahlzeiten täglich, maximal 30–50 g Trockenfutter pro Mahlzeit
-                bei einem 2-kg-Hund. Kleine-Rassen-Kibble (kleinere Stücke) ist bei Chihuahuas
-                nicht nur Bequemlichkeit — es reduziert das Aspirationsrisiko.
-              </p>
-              <p>
-                <strong>Zahngesundheit kritisch:</strong> Chihuahuas haben eine der höchsten
-                Raten an Zahnerkrankungen aller Hunderassen — die kleinen Kiefer sind zu eng
-                für alle Zähne. Parodontitis kann bakteriell innere Organe belasten.
-                Konsequenz: tägliches Zähneputzen ist Pflicht, kein Luxus. Dental-Futter
-                und enzymatische Kausticks als Ergänzung. Futter mit kalziumfördernden Zutaten
-                (kein Zucker!) unterstützt Zahnsubstanz.
-              </p>
-              <p>
-                <strong>Futter-Empfehlung Chihuahua:</strong> Kleine-Rassen-Sorten mit hoher
-                Energiedichte (3.800–4.200 kcal/kg) — so reicht eine kleine Portion.
-                Protein ≥ 28 % für Muskelerhalt beim kleinen Körper. Keine Sorten mit
-                hohem Zuckeranteil. Nassfutter als Mahlzeit-Ergänzung erhöht die Flüssigkeitsaufnahme.
-              </p>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* EEAT: Dackel */}
-      {breed.slug === "dackel" && (
-        <section className="max-w-5xl mx-auto w-full px-5 py-10">
-          <div className="card p-8">
-            <h2 className="text-xl font-extrabold tracking-tight mb-6">Dackel und Futter: Was du wissen solltest</h2>
-            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
-              <p>
-                <strong>IVDD: Gewicht ist eine medizinische Frage:</strong> Bandscheibenvorfall
-                (Intervertebral Disc Disease, IVDD) betrifft schätzungsweise 25 % aller Dackel
-                im Laufe ihres Lebens. Die Chondrodystrophie — der genetische Grund für die
-                kurzen Beine — betrifft auch die Wirbelsäule. Übergewicht ist der stärkste
-                kontrollierbare Risikofaktor für Schweregrad und Häufigkeit von IVDD-Vorfällen.
-                Jedes überschüssige Kilo beim Dackel ist keine Ästhetikfrage — es kann über
-                eine Lähmung entscheiden.
-              </p>
-              <p>
-                <strong>Gewichtsmanagement beim Dackel:</strong> Idealgewicht Kurzdackel 7–14 kg
-                je nach Typ (Standard/Zwerg/Kaninchen). Die Futtermenge für einen 8-kg-Dackel:
-                ca. 140–160 g hochwertiges Trockenfutter täglich (bei 3.700 kcal/kg).
-                Packungsangaben der Hersteller sind systematisch zu hoch — immer nach
-                RER-Formel berechnen. Konsequente Snack-Kontrolle: Leckerli von der Tagesration
-                abziehen, nie zusätzlich geben.
-              </p>
-              <p>
-                <strong>Omega-3 als entzündungshemmende Unterstützung:</strong> Bei IVDD-gefährdeten
-                Hunden wird Omega-3 aus Fisch (EPA/DHA) für seine entzündungshemmende Wirkung
-                auf nervliches Gewebe diskutiert. Kein Heilmittel, aber eine risikoarme,
-                sinnvolle Ergänzung. Lachsöl (0,5–1 ml täglich für einen 10-kg-Dackel)
-                oder Futter mit Lachs als Erstzutat.
-              </p>
-              <p>
-                <strong>Futter-Empfehlung Dackel:</strong> Energiereduziert oder normale hochwertige
-                Sorte in reduzierter Menge. Kein Hochenergiefutter für aktive Hunde (zu kalorienreich).
-                Proteingehalt 25–28 %. Kein Zucker. Omega-3-reich (Lachs, Hering, Lachsöl).
-                Bei aktiv IVDD-kranken Dackeln: Rücksprache mit Tierarzt ob spezifisches Diätfutter.
-              </p>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* EEAT: Yorkshire Terrier */}
-      {breed.slug === "yorkshire-terrier" && (
-        <section className="max-w-5xl mx-auto w-full px-5 py-10">
-          <div className="card p-8">
-            <h2 className="text-xl font-extrabold tracking-tight mb-6">Yorkshire Terrier und Futter: Was du wissen solltest</h2>
-            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
-              <p>
-                <strong>Portosystemischer Shunt:</strong> Yorkies haben eine genetisch erhöhte
-                Häufigkeit für portosystemische Lebererkrankungen (PSS — eine Gefäßfehlbildung,
-                die Blut an der Leber vorbeileitet). Bei PSS-Hunden ist eine proteinmodifizierte
-                Diät essenziell — hochverdauliches Protein in reduzierter Menge, um
-                Ammoniakbelastung zu minimieren. Dies ist aber eine tierärztlich zu begleitende
-                Spezialdiät, kein Standard-Ratschlag für gesunde Yorkies.
-              </p>
-              <p>
-                <strong>Zahnerkrankungen extrem häufig:</strong> Yorkshire Terrier haben die
-                höchste Rate an schwerer Parodontitis unter allen Hunderassen. Die Zähne sind
-                zu nah beieinander, Plaque-Akkumulation ist unvermeidlich. Konsequenz:
-                tägliches Zähneputzen ab dem ersten Lebensmonat trainieren.
-                Futter-seitig: keine weichen Sorten als Alleinernährung — der mechanische
-                Kauaufwand von Trockenfutter ist minimal hilfreich.
-              </p>
-              <p>
-                <strong>Seidiges Fell und Fettsäuren:</strong> Das charakteristische, seidenglatte
-                Fell des Yorkies ist fettsäureabhängig. Unzureichende Omega-6-Versorgung
-                (Linolsäure) führt zu stumpfem, brüchigem Fell. Das ist kein Luxusproblem —
-                es zeigt Nährstoffmangel an. Futter mit Sonnenblumen- oder Distelöl als Quelle
-                für Linolsäure sowie Omega-3 für Balance. Fisch als Proteinquelle liefert beides.
-              </p>
-              <p>
-                <strong>Futter-Empfehlung Yorkie:</strong> Kleine-Rassen-Sorten mit hoher
-                Energiedichte. Protein ≥ 28 %, Fett 14–18 % mit gutem Fettsäureprofil.
-                Keine billigen Sorten ohne spezifische Fleischdeklaration — der kleine Körper
-                reagiert empfindlicher auf Minderqualität. 2–3 kleine Mahlzeiten täglich
-                (Hypoglykämie-Prävention bei kleinen Exemplaren).
-              </p>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* EEAT: Pudel */}
-      {breed.slug === "pudel" && (
-        <section className="max-w-5xl mx-auto w-full px-5 py-10">
-          <div className="card p-8">
-            <h2 className="text-xl font-extrabold tracking-tight mb-6">Pudel und Futter: Was du wissen solltest</h2>
-            <div className="space-y-5 text-sm text-[var(--muted)] leading-relaxed">
-              <p>
-                <strong>Vier Größen, vier Fütterungskonzepte:</strong> Groß-, Mittel-, Zwerg- und
-                Toy-Pudel haben grundlegend unterschiedliche Energiebedarfe. Ein Großpudel (45–70 cm)
-                braucht ähnliche Portionen wie ein Labrador. Ein Toy-Pudel (unter 28 cm) folgt den
-                Regeln der Kleinsthunde mit Hypoglykämie-Prävention und kleinen Mahlzeiten.
-                Die Größengruppe bestimmt hier mehr als die Rasse.
-              </p>
-              <p>
-                <strong>Sebaceous Adenitis (SA):</strong> Pudel haben eine genetisch erhöhte
-                Prädisposition für Sebaceous Adenitis — eine entzündliche Erkrankung der
-                Talgdrüsen, die zu Schuppenbildung, Haarausfall und Hautirritationen führt.
-                Ein ungünstiges Omega-6:Omega-3-Verhältnis in der Ernährung wird als
-                Triggerfaktor diskutiert. Empfehlung: Futter mit niedrigem Omega-6:Omega-3-
-                Verhältnis (idealerweise unter 7:1) — d.h. Lachs, Makrele, Hering als Protein
-                oder Lachsöl als Ergänzung.
-              </p>
-              <p>
-                <strong>Intelligenz und Aktivitätslevel:</strong> Pudel sind hochintelligent
-                und aktiv — sie brauchen mentale und körperliche Auslastung. Unterauslastung
-                führt zu Stress und ist ein indirekter Auslöser für Verdauungsprobleme.
-                Für aktive Pudel: Protein ≥ 26 %, Fett 14–16 %, moderate Energiedichte.
-                Für wenig aktive oder ältere Pudel: energiereduziert.
-              </p>
-              <p>
-                <strong>Futter-Empfehlung Pudel:</strong> Fisch als Hauptprotein ist für Pudel
-                besonders geeignet — Omega-3-Profil und vollständige Aminosäurenversorgung
-                in einem. Getreidefrei kann bei Pudeln mit Hautsymptomen sinnvoll sein.
-                Keine Sorten mit hohem Sonnenblumenöl-Anteil (verschiebt Omega-Verhältnis).
-                Größengerechte Kibble-Größe beachten.
-              </p>
-            </div>
-          </div>
-        </section>
-      )}
-
-      <ProductSchemaBlock foods={foods} listName={`Empfohlenes Hundefutter für ${breed.name}`} />
-
-      {/* BELLA CHAT — personalisierte Beratung */}
-      <section className="max-w-5xl mx-auto w-full px-5 py-10">
-        <h2 className="text-2xl font-extrabold tracking-tight mb-2">
-          BELLA findet das perfekte Futter für deinen {breed.name}
-        </h2>
-        <p className="text-[var(--muted)] text-sm mb-7">
-          Erzähl BELLA von deinem Hund — Alter, Gewicht, Allergien — und sie empfiehlt sofort die besten Sorten.
-        </p>
-        <BellaAdvisorWrapper
-          introMessage={`Hallo! Ich bin BELLA 🐕 — deine KI-Ernährungsberaterin.\n\nEin ${breed.name}! Super Rasse. Um das perfekte Futter zu finden, brauche ich noch ein paar Details:\n\n• Wie alt ist dein ${breed.name}?\n• Wie schwer ist er/sie?\n• Gibt es Allergien, Gelenkprobleme oder andere Gesundheitsthemen?\n\nDann empfehle ich dir sofort die passenden Sorten aus 8.000+ Produkten!`}
-          pageQuickOptions={[
-            { label: `🐕 Futter für ${breed.name}`, msg: `Ich habe einen ${breed.name} — welches Futter empfiehlst du?` },
-            { label: "🐶 Welpe", msg: `Mein ${breed.name}-Welpe braucht Welpen-Futter — was passt?` },
-            { label: "👴 Senior", msg: `Mein ${breed.name} ist älter — welches Senior-Futter ist das beste?` },
-            { label: "🩺 Allergie / empfindlich", msg: `Mein ${breed.name} hat eine Allergie / empfindlichen Magen — was empfiehlst du?` },
-          ]}
-        />
-      </section>
-
-      {/* EMPFOHLENE PRODUKTE — Schnellübersicht */}
+      {/* ── SEKTION 8: ERNÄHRUNG ──────────────────────────────────────── */}
       <section className="max-w-5xl mx-auto w-full px-5 py-6">
-        <h3 className="text-lg font-bold tracking-tight mb-2">
-          Schnellübersicht: Top-Sorten für {breed.name}
-        </h3>
-        <p className="text-[var(--muted)] text-sm mb-7">
-          Aus über 8.000 Sorten — {allergyProne ? "verträglich & " : ""}fair im Preis. Affiliate-Links (rel=sponsored).
-        </p>
-        {foods.length > 0 ? (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {foods.map((f, i) => (
-              <a
-                key={i}
-                href={f.affiliate_url}
-                target="_blank"
-                rel="sponsored nofollow noopener noreferrer"
-                className="card card-hover p-5 block"
-              >
-                <div className="flex flex-wrap gap-1.5 mb-2">
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-[rgba(240,167,60,0.14)] text-[#ffcd8a] capitalize">{f.type}</span>
-                  {f.protein && <span className="text-[10px] px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-300">{f.protein}</span>}
-                  {f.is_grain_free && <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300">getreidefrei</span>}
-                  {f.score != null && <ScoreBadge score={f.score} />}
-                </div>
-                <p className="font-semibold text-sm leading-tight">{f.name}</p>
-                <p className="text-[var(--muted)] text-xs mt-0.5">{f.brand}</p>
-                <div className="flex items-center justify-between mt-3">
-                  <span className="text-lg font-black">{f.price_per_kg ? `${parseFloat(f.price_per_kg).toFixed(2)} €` : ""}<span className="text-xs font-medium text-[var(--muted)]">/kg</span></span>
-                  <span className="text-xs text-[var(--honey)] font-semibold">Zum Futter →</span>
-                </div>
-              </a>
-            ))}
+        <div className="card p-6 mb-5">
+          <h2 className="text-xl font-extrabold tracking-tight mb-5">Ernährung: Was der {breed.name} braucht</h2>
+
+          {/* Experttext */}
+          <div className="space-y-4 text-sm text-[var(--muted)] leading-relaxed mb-6">
+            {feedingParas.map((p, i) => <p key={i}>{p}</p>)}
           </div>
-        ) : (
-          <div className="card p-6 text-center text-[var(--muted)]">
-            Frag BELLA oben im Chat — sie findet live das passende Futter für deinen {breed.name}.
+
+          {/* Portionsrechner-Tabelle */}
+          <div>
+            <h3 className="text-sm font-bold mb-3 flex items-center gap-2">
+              <span className="text-base">🍽️</span> Portionsrechner (Trockenfutter, ca. 3.500 kcal/kg)
+            </h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs text-center border-collapse">
+                <thead>
+                  <tr className="text-[var(--muted)]">
+                    <th className="py-2 px-3 text-left font-medium border-b border-white/10">Gewicht</th>
+                    <th className="py-2 px-3 font-medium border-b border-white/10">Wenig aktiv</th>
+                    <th className="py-2 px-3 font-medium border-b border-white/10 text-[var(--honey)]">Normal aktiv</th>
+                    <th className="py-2 px-3 font-medium border-b border-white/10">Sehr aktiv</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {portions.map((row) => (
+                    <tr key={row.weight} className="hover:bg-white/3 transition-colors">
+                      <td className="py-2.5 px-3 text-left font-semibold">{row.weight} kg</td>
+                      <td className="py-2.5 px-3 text-[var(--muted)]">{row.low} g</td>
+                      <td className="py-2.5 px-3 font-medium text-[var(--honey)]">{row.med} g</td>
+                      <td className="py-2.5 px-3 text-[var(--muted)]">{row.high} g</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-[10px] text-[var(--muted)] mt-2">
+              * RER-Formel (70 × kg^0,75 × Aktivitätsfaktor). Bei Kastration –10–15 %. Tierarzt-Rücksprache bei Erkrankung.
+            </p>
+          </div>
+        </div>
+
+        {/* Nährstoffbedarf */}
+        {(breed.recommendedProteinPercentage || breed.recommendedFatPercentage) && (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+            {breed.recommendedProteinPercentage && (
+              <div className="card p-4 text-center">
+                <div className="text-2xl font-extrabold text-[var(--honey)]">{breed.recommendedProteinPercentage}%</div>
+                <div className="text-xs text-[var(--muted)] mt-1">Rohprotein mind.</div>
+              </div>
+            )}
+            {breed.recommendedFatPercentage && (
+              <div className="card p-4 text-center">
+                <div className="text-2xl font-extrabold text-[var(--honey)]">{breed.recommendedFatPercentage}%</div>
+                <div className="text-xs text-[var(--muted)] mt-1">Rohfett ca.</div>
+              </div>
+            )}
+            <div className="card p-4 text-center">
+              <div className="text-2xl font-extrabold text-[var(--honey)]">2×</div>
+              <div className="text-xs text-[var(--muted)] mt-1">Mahlzeiten tägl.</div>
+            </div>
+            <div className="card p-4 text-center">
+              <div className="text-2xl font-extrabold text-[var(--honey)]">{midPortion?.med ?? "~200"}g</div>
+              <div className="text-xs text-[var(--muted)] mt-1">Richtwert {midWeight} kg</div>
+            </div>
           </div>
         )}
       </section>
 
-      {/* CTA */}
-      <section className="max-w-5xl mx-auto w-full px-5 py-12 text-center">
-        <div className="card p-8">
-          <h2 className="text-2xl font-extrabold tracking-tight mb-3">Unsicher, welche Sorte für deinen {breed.name}?</h2>
-          <p className="text-[var(--muted)] mb-6 max-w-xl mx-auto">BELLA fragt nach Alter, Allergien & Vorlieben und empfiehlt in 60 Sekunden die passende Sorte — kostenlos.</p>
-          <Link href="/#bella-advisor" className="btn-primary">BELLA jetzt fragen →</Link>
+      {/* ── SEKTION 9: BELLA KI-BERATERIN ─────────────────────────────── */}
+      <section className="max-w-5xl mx-auto w-full px-5 py-6">
+        <div className="card p-6 mb-5">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-lg font-bold text-black flex-shrink-0">B</div>
+            <div>
+              <div className="font-bold text-sm">BELLA — dein KI-Futter-Berater</div>
+              <div className="text-xs text-[var(--muted)]">Aus 8.442 echten Produkten das optimale Futter finden</div>
+            </div>
+          </div>
+        </div>
+        <BellaAdvisorWrapper
+          introMessage={bellaIntro}
+          pageQuickOptions={[
+            { label: `${breed.name}-Futter`, msg: `Ich suche das beste Futter für meinen ${breed.name}` },
+            { label: "Welpe", msg: `Mein ${breed.name} ist noch ein Welpe` },
+            { label: "Senior", msg: `Mein ${breed.name} ist ein Senior (7+ Jahre)` },
+            { label: "Allergie", msg: `Mein ${breed.name} hat eine Futtermittelallergie` },
+          ]}
+        />
+      </section>
+
+      {/* ── SEKTION 10: FUTTER-EMPFEHLUNGEN ───────────────────────────── */}
+      {foods.length > 0 && (
+        <section className="max-w-5xl mx-auto w-full px-5 py-6">
+          <h2 className="text-xl font-extrabold tracking-tight mb-5">
+            Futter-Empfehlungen für {breed.name}
+            <span className="ml-2 text-sm text-[var(--muted)] font-normal">nach Score sortiert</span>
+          </h2>
+          <ProductSchemaBlock foods={foods.map(f => ({ name: f.name, brand: f.brand, type: f.type, price_per_kg: f.price_per_kg, affiliate_url: f.affiliate_url }))} listName={`Futter für ${breed.name}`} />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {foods.map((f, i) => (
+              <a key={i} href={f.affiliate_url} target="_blank" rel="sponsored noopener noreferrer"
+                className="card p-4 hover:border-[var(--honey)] transition-colors group flex flex-col">
+                {f.image_url && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={f.image_url} alt={f.name}
+                    className="w-full h-40 object-contain mb-3 rounded-xl bg-white/3" />
+                )}
+                <div className="text-xs text-[var(--muted)] mb-1">{f.brand}</div>
+                <div className="text-sm font-semibold mb-2 line-clamp-2 flex-1">{f.name}</div>
+                <div className="flex flex-wrap gap-1 mb-3">
+                  {f.is_grain_free && <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300">Getreidefrei</span>}
+                  {f.is_hypoallergenic && <span className="text-[10px] px-2 py-0.5 rounded bg-blue-500/15 text-blue-300">Hypoallergen</span>}
+                  {f.protein && <span className="text-[10px] px-2 py-0.5 rounded bg-white/5 text-white/50">{f.protein}</span>}
+                </div>
+                <div className="flex items-center justify-between mt-auto">
+                  <span className="text-sm font-bold text-[var(--honey)]">
+                    {f.price_per_kg ? `${Number(f.price_per_kg).toFixed(2).replace(".", ",")} €/kg` : "Preis ansehen"}
+                  </span>
+                  <span className="text-xs text-[var(--muted)]">→ ansehen</span>
+                </div>
+              </a>
+            ))}
+          </div>
+          <p className="text-xs text-[var(--muted)] mt-3">* Affiliate-Links (AWIN). Preise können variieren.</p>
+        </section>
+      )}
+
+      {/* ── SEKTION 11: ÄHNLICHE RASSEN ───────────────────────────────── */}
+      {similar.length > 0 && (
+        <section className="max-w-5xl mx-auto w-full px-5 py-6">
+          <h2 className="text-xl font-extrabold tracking-tight mb-5">Ähnliche Rassen</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {similar.map((b) => {
+              const p = PHOTO[b.slug] ?? b.imageUrl;
+              return (
+                <Link key={b.slug} href={`/rasse/${b.slug}`}
+                  className="card p-4 hover:border-[var(--honey)] transition-colors text-center group">
+                  {p ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={p} alt={b.name} className="w-full h-28 object-cover rounded-xl mb-3" />
+                  ) : (
+                    <div className="w-full h-28 rounded-xl mb-3 bg-white/5 flex items-center justify-center text-3xl">🐕</div>
+                  )}
+                  <div className="text-sm font-semibold group-hover:text-[var(--honey)] transition-colors">{b.name}</div>
+                  <div className="text-xs text-[var(--muted)] mt-0.5">{SIZE_LABEL[b.size]?.split(" ")[0]}</div>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* ── SEKTION 12: HÄUFIGE FRAGEN ────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto w-full px-5 py-6">
+        <h2 className="text-xl font-extrabold tracking-tight mb-5">Häufige Fragen zum {breed.name}</h2>
+        <div className="space-y-3">
+          {faqs.map((f, i) => (
+            <details key={i} className="card p-5 group">
+              <summary className="font-semibold text-sm cursor-pointer list-none flex items-center justify-between gap-3">
+                {f.q}
+                <span className="text-[var(--muted)] group-open:rotate-180 transition-transform flex-shrink-0">▾</span>
+              </summary>
+              <p className="text-sm text-[var(--muted)] leading-relaxed mt-3 pt-3 border-t border-white/5">{f.a}</p>
+            </details>
+          ))}
         </div>
       </section>
 
-      <AuthorBox />
+      {/* ── AUTHOR + FOOTER ────────────────────────────────────────────── */}
+      <div className="max-w-5xl mx-auto w-full px-5 py-8">
+        <AuthorBox compact />
+      </div>
       <SiteFooter />
     </div>
   );
