@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next'
 import { CITIES } from '@/data/cities'
 import { BREEDS } from '@/data/breeds'
+import { TIP_CATEGORIES } from '@/data/tips'
 
 const BASE = 'https://welches-hundefutter.today'
 
@@ -43,6 +44,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/futter/senior`, lastModified: now, changeFrequency: 'monthly', priority: 0.85 },
     { url: `${BASE}/faq`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE}/blog`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
+    { url: `${BASE}/tipps`, lastModified: now, changeFrequency: 'weekly', priority: 0.85 },
     { url: `${BASE}/analyse/preisindex-2026`, lastModified: now, changeFrequency: 'weekly', priority: 0.85 },
     { url: `${BASE}/analyse/methodik`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${BASE}/vergleich`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
@@ -102,5 +104,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }))
 
-  return [...statisch, ...alleRassen, ...staedte, ...probleme, ...phasen, ...typen]
+  const tipps: MetadataRoute.Sitemap = TIP_CATEGORIES.map((c) => ({
+    url: `${BASE}/tipps/${c.slug}`,
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: 0.75,
+  }))
+
+  return [...statisch, ...alleRassen, ...staedte, ...probleme, ...phasen, ...typen, ...tipps]
 }
