@@ -2,13 +2,15 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import type { TipEntry, TipLevel } from "@/data/tips/types";
+import type { TipEntry, TipLevel, TipArticle } from "@/data/tips/types";
 import { TIP_LEVELS } from "@/data/tips/types";
 
 interface TipsListProps {
   tips: TipEntry[];
   accent: string;
   ctaEvery?: number; // alle N Tipps eine BELLA-CTA einstreuen
+  categorySlug?: string; // für Links zu Detailseiten
+  articles?: TipArticle[]; // vollständige Artikel für Detail-Links
 }
 
 const LEVEL_FILTERS: { value: TipLevel | "all"; label: string }[] = [
@@ -18,7 +20,7 @@ const LEVEL_FILTERS: { value: TipLevel | "all"; label: string }[] = [
   { value: 2, label: TIP_LEVELS[2].label },
 ];
 
-export default function TipsList({ tips, accent, ctaEvery = 25 }: TipsListProps) {
+export default function TipsList({ tips, accent, ctaEvery = 25, categorySlug, articles }: TipsListProps) {
   const [query, setQuery] = useState("");
   const [level, setLevel] = useState<TipLevel | "all">("all");
 
@@ -34,6 +36,12 @@ export default function TipsList({ tips, accent, ctaEvery = 25 }: TipsListProps)
       );
     });
   }, [tips, query, level]);
+
+  // Map von Tip-ID zu Artikel für schnellen Lookup
+  const articleMap = useMemo(() => {
+    if (!articles) return new Map<number, TipArticle>();
+    return new Map(articles.map((a) => [a.id, a]));
+  }, [articles]);
 
   return (
     <div>
@@ -77,49 +85,102 @@ export default function TipsList({ tips, accent, ctaEvery = 25 }: TipsListProps)
         {filtered.map((tip, idx) => {
           const [num, title, desc, lvl, tags] = tip;
           const lvlInfo = TIP_LEVELS[lvl];
+          const article = articleMap.get(num);
+          const hasDetailPage = article && categorySlug;
+
           return (
             <li key={num}>
-              <article className="card p-5 sm:p-6 relative overflow-hidden">
-                <span
-                  className="absolute -right-4 -top-8 text-[8rem] font-black leading-none opacity-[0.06] select-none pointer-events-none tabular-nums"
-                  style={{ color: accent }}
-                  aria-hidden
+              {hasDetailPage ? (
+                <Link
+                  href={`/tipps/${categorySlug}/${article.slug}`}
+                  className="card card-hover p-5 sm:p-6 relative overflow-hidden block"
                 >
-                  {num}
-                </span>
-                <div className="relative flex gap-4">
                   <span
-                    className="shrink-0 text-sm font-black tabular-nums w-9 h-9 rounded-xl grid place-items-center"
-                    style={{ background: `${accent}1f`, color: accent }}
+                    className="absolute -right-4 -top-8 text-[8rem] font-black leading-none opacity-[0.06] select-none pointer-events-none tabular-nums"
+                    style={{ color: accent }}
+                    aria-hidden
                   >
                     {num}
                   </span>
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <h3 className="font-bold tracking-tight">{title}</h3>
-                      <span
-                        className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
-                        style={{ background: `${lvlInfo.color}1f`, color: lvlInfo.color }}
-                      >
-                        {lvlInfo.label}
-                      </span>
-                    </div>
-                    <p className="text-[var(--muted)] text-sm leading-relaxed">{desc}</p>
-                    {tags.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5 mt-3">
-                        {tags.map((t) => (
-                          <span
-                            key={t}
-                            className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[var(--muted)]"
-                          >
-                            #{t}
-                          </span>
-                        ))}
+                  <div className="relative flex gap-4">
+                    <span
+                      className="shrink-0 text-sm font-black tabular-nums w-9 h-9 rounded-xl grid place-items-center"
+                      style={{ background: `${accent}1f`, color: accent }}
+                    >
+                      {num}
+                    </span>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <h3 className="font-bold tracking-tight">{title}</h3>
+                        <span
+                          className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
+                          style={{ background: `${lvlInfo.color}1f`, color: lvlInfo.color }}
+                        >
+                          {lvlInfo.label}
+                        </span>
+                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[var(--honey)]/20 text-[var(--honey)]">
+                          Vollständiger Artikel →
+                        </span>
                       </div>
-                    )}
+                      <p className="text-[var(--muted)] text-sm leading-relaxed">{desc}</p>
+                      {tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mt-3">
+                          {tags.map((t) => (
+                            <span
+                              key={t}
+                              className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[var(--muted)]"
+                            >
+                              #{t}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </article>
+                </Link>
+              ) : (
+                <article className="card p-5 sm:p-6 relative overflow-hidden">
+                  <span
+                    className="absolute -right-4 -top-8 text-[8rem] font-black leading-none opacity-[0.06] select-none pointer-events-none tabular-nums"
+                    style={{ color: accent }}
+                    aria-hidden
+                  >
+                    {num}
+                  </span>
+                  <div className="relative flex gap-4">
+                    <span
+                      className="shrink-0 text-sm font-black tabular-nums w-9 h-9 rounded-xl grid place-items-center"
+                      style={{ background: `${accent}1f`, color: accent }}
+                    >
+                      {num}
+                    </span>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <h3 className="font-bold tracking-tight">{title}</h3>
+                        <span
+                          className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
+                          style={{ background: `${lvlInfo.color}1f`, color: lvlInfo.color }}
+                        >
+                          {lvlInfo.label}
+                        </span>
+                      </div>
+                      <p className="text-[var(--muted)] text-sm leading-relaxed">{desc}</p>
+                      {tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mt-3">
+                          {tags.map((t) => (
+                            <span
+                              key={t}
+                              className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[var(--muted)]"
+                            >
+                              #{t}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              )}
 
               {/* BELLA-CTA in regelmäßigen Abständen */}
               {ctaEvery > 0 && (idx + 1) % ctaEvery === 0 && idx + 1 < filtered.length && (

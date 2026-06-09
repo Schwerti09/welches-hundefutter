@@ -14,7 +14,7 @@ import { verdauung } from "./verdauung";
 import { leckerlies } from "./leckerlies";
 import { hydration } from "./hydration";
 
-export type { TipCategory, TipEntry, TipLevel } from "./types";
+export type { TipCategory, TipEntry, TipLevel, TipArticle } from "./types";
 export { TIP_LEVELS } from "./types";
 
 export const TIP_CATEGORIES: TipCategory[] = [

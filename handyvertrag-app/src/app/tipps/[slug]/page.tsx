@@ -121,7 +121,7 @@ export default async function TippsCategoryPage({ params }: { params: Promise<{ 
 
       {/* TIPP-LISTE (Client mit Filter & Suche) */}
       <section className="max-w-4xl mx-auto w-full px-5 pb-14">
-        <TipsList tips={c.tips} accent={c.accent} ctaEvery={25} />
+        <TipsList tips={c.tips} accent={c.accent} ctaEvery={25} categorySlug={c.slug} articles={c.articles} />
       </section>
 
       {/* CTA */}
