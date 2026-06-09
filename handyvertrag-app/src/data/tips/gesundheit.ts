@@ -1,4 +1,4 @@
-import { TipCategory, TipArticle } from "./types";
+import { TipCategory, TipArticleType as TipArticle } from "./types";
 
 export const gesundheit: TipCategory = {
   slug: "gesundheit",
