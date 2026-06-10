@@ -32,7 +32,8 @@ else:
                     os.path.join(DL, "402766-66376.csv"),  # Canosept Hunde-Pflege (Augen/Fell/Haut/Zahn/Gelenk/Darmflora)
                     os.path.join(DL, "356592-66376 (4).csv"),  # SAUERLAND Zwinger/Hütten (überwiegend Equipment → Kurator filtert)
                     os.path.join(DL, "372775-66376.csv"),  # PAWZLOVE Print-Merch (Apparel → Kurator filtert)
-                    os.path.join(DL, "633778-66376.csv")]  # pfoten-boutique.de — Spielzeug, Halsbänder, Zubehör
+                    os.path.join(DL, "633778-66376.csv"),  # pfoten-boutique.de — Spielzeug, Halsbänder, Zubehör
+                    os.path.join(DL, "630262-66376.csv")]  # petshop24.de — Zubehör, NEM, Pflege
 
 DOG_RE = re.compile(r"hund|dog|welpe|barf|doggy", re.I)
 OTHER_PET_RE = re.compile(r"katz|\bcat\b|nager|\bvogel\b|aquarium|pferd|reitsport", re.I)

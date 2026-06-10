@@ -42,6 +42,7 @@ else:
         os.path.join(DL, "419197-66376.csv"),
         os.path.join(DL, "521034-66376.csv"),
         os.path.join(DL, "496158-66376.csv"),
+        os.path.join(DL, "630262-66376.csv"),  # petshop24.de
     ]
     AWIN_SHOPPING_FEEDS = [
         os.path.join(DL, "116601-retail-de_DE.csv.gz"),  # fidelis.dog / goodmoodpetfood (Kauartikel)
