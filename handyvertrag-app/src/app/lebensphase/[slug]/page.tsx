@@ -41,6 +41,49 @@ const PHASEN: Record<string, {
   },
 };
 
+const FAQS_BY_PHASE: Record<string, { question: string; answer: string }[]> = {
+  welpen: [
+    {
+      question: "Was ist das beste Futter für Welpen?",
+      answer: "Welpenfutter ist auf den 2- bis 3-fach höheren Energiebedarf von Welpen abgestimmt und liefert mehr Protein, Kalzium und Phosphor im richtigen Verhältnis (1:1 bis 1,3:1). Bei großen Rassen ist zu viel Kalzium riskant, da es Wachstumsstörungen begünstigen kann — hier sind Large-Breed-Welpenformeln wichtig. BELLA berücksichtigt Rasse und Größe deines Welpen bei der Empfehlung.",
+    },
+    {
+      question: "Ab wann ist ein Hund kein Welpe mehr?",
+      answer: "Kleine Rassen gelten meist ab 12 Monaten, große Rassen erst ab 18 Monaten als ausgewachsen, da ihr Skelett länger wächst. Bis dahin sollte durchgehend Welpenfutter oder eine speziell abgestimmte Wachstumsformel gefüttert werden — ein zu früher Wechsel auf Erwachsenenfutter kann den erhöhten Nährstoffbedarf in der Wachstumsphase nicht decken. Im Zweifel hilft der Tierarzt bei der Einschätzung.",
+    },
+  ],
+  junghund: [
+    {
+      question: "Was ist das beste Futter für Junghunde?",
+      answer: "Junghunde zwischen 6 und 18 Monaten haben das Hauptwachstum hinter sich, brauchen aber noch erhöhte Energie- und Proteinmengen für Muskelaufbau, Training und Sozialisation. Junior-Futter überbrückt diese Phase, alternativ ist eine schrittweise Umstellung auf hochwertiges Adult-Futter möglich — abhängig von Rasse und individueller Entwicklung. BELLA empfiehlt passendes Futter basierend auf Alter, Größe und Aktivitätslevel deines Hundes.",
+    },
+    {
+      question: "Wie viele Mahlzeiten braucht ein Junghund pro Tag?",
+      answer: "Für die meisten Junghunde reichen zwei Mahlzeiten täglich, idealerweise zu festen Zeiten morgens und abends. Das unterstützt eine gleichmäßige Verdauung und hilft bei der Stubenreinheit. Aktive oder noch sehr junge Hunde profitieren manchmal von einer dritten kleinen Portion. Wichtig ist vor allem, die Gesamtmenge an die individuelle Aktivität und das Gewicht des Hundes anzupassen — nicht nur an sein Alter.",
+    },
+  ],
+  adult: [
+    {
+      question: "Was ist das beste Futter für ausgewachsene Hunde?",
+      answer: "Ausgewachsene Hunde brauchen ein ausgewogenes Futter mit mindestens 25 % Protein und 10–18 % Fett in der Trockenmasse, dazu hochwertiges Fleisch als Hauptzutat statt Füllstoffen. Wichtiger als das Etikett ist die Portionskontrolle: Übergewicht ist die häufigste Ursache für Gelenkprobleme und eine verkürzte Lebenserwartung. BELLA berechnet die passende Tagesmenge basierend auf Gewicht, Rasse und Aktivität deines Hundes.",
+    },
+    {
+      question: "Wie oft sollte ein erwachsener Hund täglich gefüttert werden?",
+      answer: "Für die meisten erwachsenen Hunde haben sich zwei Mahlzeiten pro Tag bewährt — eine morgens, eine abends. Das hält den Blutzucker stabiler als eine große Portion und kann bei tiefbrüstigen Rassen das Risiko einer Magendrehung senken. Die Tagesmenge richtet sich nach Gewicht, Aktivität und Futtertyp und sollte bei Gewichtsveränderungen regelmäßig angepasst werden. Frisches Wasser sollte immer verfügbar sein.",
+    },
+  ],
+  senior: [
+    {
+      question: "Was ist das beste Futter für Seniorhunde?",
+      answer: "Seniorfutter ist kalorienreduziert (meist 20–30 % weniger als Adult-Futter), enthält Gelenkstoffe wie Glucosamin und Chondroitin sowie leicht verdauliche Proteine und Antioxidantien gegen Zellalterung. Ab welchem Alter ein Hund als Senior gilt, hängt stark von der Rasse ab — große Rassen früher, kleine später. BELLA berücksichtigt Alter, Rasse und eventuelle Erkrankungen bei der Futterempfehlung.",
+    },
+    {
+      question: "Ab welchem Alter gilt ein Hund als Senior?",
+      answer: "Große Rassen gelten oft schon ab 7 Jahren als Senior, kleine Rassen meist erst ab 9 Jahren — größere Hunde altern biologisch schneller. Typische Anzeichen sind weniger Ausdauer, längere Erholungszeiten nach Bewegung und beginnende Steifheit. Eine Futterumstellung muss nicht abrupt erfolgen: Schleiche das neue Futter über 1–2 Wochen ein, um Verdauungsprobleme zu vermeiden, und sprich bei Vorerkrankungen mit dem Tierarzt.",
+    },
+  ],
+};
+
 export function generateStaticParams() {
   return Object.keys(PHASEN).map((slug) => ({ slug }));
 }
@@ -113,10 +156,7 @@ export default async function LebensphaseePage({ params }: { params: Promise<{ s
           speakableSelectors: ["h1", ".bella-answer"],
         }}
       />
-      <StructuredData type="faq" faqs={[
-        { question: `Was ist das beste Futter für ${phase.name}?`, answer: phase.description.slice(0, 200) },
-        { question: `Ab wann ist ein Hund ein ${phase.name}?`, answer: `${phase.ageRange}.` },
-      ]} />
+      <StructuredData type="faq" faqs={FAQS_BY_PHASE[slug]} />
 
       <nav className="max-w-5xl mx-auto w-full px-5 pt-8 text-sm text-[var(--muted)]">
         <Link href="/" className="hover:text-[var(--honey)]">Start</Link>

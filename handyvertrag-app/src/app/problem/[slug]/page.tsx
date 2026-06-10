@@ -73,11 +73,15 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
   const faqItems = [
     {
       question: `Was ist das beste Hundefutter bei ${problem.name}?`,
-      answer: `${problem.recommendedCriteria.join(", ")} sind entscheidend. ${problem.description.slice(0, 100)}…`,
+      answer: `${problem.description} Achte besonders auf folgende Kriterien: ${problem.recommendedCriteria.join(", ")}. BELLA filtert den Live-Katalog automatisch nach diesen Eigenschaften.`,
     },
     {
       question: `Welche Zutaten sollte Futter bei ${problem.name} vermeiden?`,
-      answer: `Folgendes vermeiden: ${problem.avoidIngredients.join(", ")}.`,
+      answer: `Bei ${problem.name} solltest du auf folgende Inhaltsstoffe möglichst verzichten: ${problem.avoidIngredients.join(", ")}. Diese können bestehende Beschwerden verschlimmern oder die Verträglichkeit zusätzlich verschlechtern. BELLA schließt diese Zutaten bei der Futterauswahl für deinen Hund automatisch aus und zeigt dir nur passende Sorten aus dem Live-Katalog an.`,
+    },
+    {
+      question: `Wie lange dauert eine Futterumstellung bei ${problem.name}?`,
+      answer: `Eine Futterumstellung bei ${problem.name} sollte schrittweise über 7–10 Tage erfolgen, um Verdauungsprobleme zu vermeiden — das neue Futter wird dabei zunehmend untergemischt. Erste Verbesserungen zeigen sich oft nach 2–4 Wochen, bei chronischen Beschwerden kann es länger dauern. Beobachte deinen Hund und sprich bei anhaltenden oder starken Symptomen mit dem Tierarzt.`,
     },
   ];
 

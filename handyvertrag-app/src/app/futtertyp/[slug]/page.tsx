@@ -84,15 +84,15 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
   const faqItems = [
     {
       question: `Was ist ${typ.name} für Hunde?`,
-      answer: typ.description.slice(0, 200),
+      answer: `${typ.description} BELLA prüft, ob es zu deinem Hund passt.`,
     },
     {
       question: `Für welche Hunde ist ${typ.name} geeignet?`,
-      answer: typ.idealFor.join(", ") + ".",
+      answer: `${typ.name} eignet sich besonders für ${typ.idealFor.join(", ")}. Bei einem Preis von ${typ.priceRange} ist diese Futterart eine gute Wahl, wenn diese Kriterien auf deinen Hund zutreffen. BELLA prüft anhand von Rasse, Alter und Gesundheitszustand, ob ${typ.name} für deinen Hund die richtige Wahl ist.`,
     },
     {
       question: `Was kostet ${typ.name}?`,
-      answer: `${typ.name} kostet typischerweise ${typ.priceRange} — je nach Marke und Qualität.`,
+      answer: `${typ.name} kostet typischerweise ${typ.priceRange} — die Spanne hängt von Marke, Fleischanteil und Zusatzstoffen ab. Günstigere Produkte sind nicht zwangsläufig schlechter, aber teurere bieten oft einen höheren Fleischanteil und weniger Füllstoffe. BELLA zeigt dir aktuelle Preise aus dem Live-Katalog und filtert nach deinem Budget.`,
     },
   ];
 
