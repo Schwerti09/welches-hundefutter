@@ -267,6 +267,14 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
           speakableSelectors: ["h1", ".bella-answer"],
         }}
       />
+      <StructuredData
+        type="portions-howto"
+        portionsHowTo={{
+          breedName: breed.name,
+          url: `https://welches-hundefutter.today/rasse/${breed.slug}`,
+          rows: portions,
+        }}
+      />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       {/* ── BREADCRUMB ─────────────────────────────────────────────────── */}

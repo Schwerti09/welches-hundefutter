@@ -9,6 +9,19 @@ interface FAQItem {
   answer: string;
 }
 
+interface PortionRow {
+  weight: number;
+  low: number;
+  med: number;
+  high: number;
+}
+
+interface PortionsHowToData {
+  breedName: string;
+  url: string;
+  rows: PortionRow[];
+}
+
 interface ArticleData {
   headline: string;
   description: string;
@@ -20,11 +33,12 @@ interface ArticleData {
 }
 
 interface StructuredDataProps {
-  type: "organization" | "product" | "faq" | "breadcrumb" | "website" | "software" | "howto" | "article";
+  type: "organization" | "product" | "faq" | "breadcrumb" | "website" | "software" | "howto" | "article" | "portions-howto";
   productId?: string;
   breadcrumbs?: BreadcrumbItem[];
   faqs?: FAQItem[];
   article?: ArticleData;
+  portionsHowTo?: PortionsHowToData;
 }
 
 function buildOrganizationSchema() {
@@ -105,6 +119,56 @@ function buildHowToSchema() {
   };
 }
 
+function buildPortionsHowToSchema(data: PortionsHowToData) {
+  const { breedName, url, rows } = data;
+  const minW = rows[0]?.weight;
+  const maxW = rows[rows.length - 1]?.weight;
+  const mid = rows[Math.floor((rows.length - 1) / 2)];
+  const weightRange = minW === maxW ? `${minW} kg` : `${minW}–${maxW} kg`;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: `Futtermenge für den ${breedName} richtig berechnen`,
+    description: `Schritt für Schritt zur passenden Trockenfutter-Tagesmenge für deinen ${breedName} (${weightRange}) – nach der RER-Formel, angepasst an Aktivitätslevel.`,
+    totalTime: "PT2M",
+    supply: [
+      { "@type": "HowToSupply", name: "Küchen- oder Personenwaage" },
+      { "@type": "HowToSupply", name: "Trockenfutter (ca. 3.500 kcal/kg)" },
+    ],
+    step: [
+      {
+        "@type": "HowToStep",
+        position: 1,
+        name: "Körpergewicht ermitteln",
+        text: `Wiege deinen ${breedName}. Ausgewachsen liegt die Rasse meist bei ${weightRange}.`,
+      },
+      {
+        "@type": "HowToStep",
+        position: 2,
+        name: "Ruheenergiebedarf (RER) berechnen",
+        text: "Berechne den Ruheenergiebedarf in kcal/Tag mit der Formel RER = 70 × (Körpergewicht in kg)^0,75.",
+      },
+      {
+        "@type": "HowToStep",
+        position: 3,
+        name: "Aktivitätsfaktor anwenden",
+        text: "Multipliziere den RER mit 1,2 bei wenig Aktivität, 1,5 bei normaler Aktivität oder 1,8 bei sehr aktiven Hunden, um den täglichen Energiebedarf zu erhalten.",
+      },
+      {
+        "@type": "HowToStep",
+        position: 4,
+        name: "In Gramm Trockenfutter umrechnen und aufteilen",
+        text: mid
+          ? `Teile den kcal-Wert durch 3,5 (kcal pro Gramm bei ca. 3.500 kcal/kg). Für einen ${mid.weight}-kg-${breedName} ergibt das ca. ${mid.low}–${mid.high} g pro Tag, aufgeteilt auf 2 Mahlzeiten.`
+          : "Teile den kcal-Wert durch 3,5 (kcal pro Gramm bei ca. 3.500 kcal/kg) und teile die Tagesmenge auf 2 Mahlzeiten auf.",
+      },
+    ],
+    url,
+    mainEntityOfPage: url,
+  };
+}
+
 function buildProductSchema(_productId: string) {
   // Produkt-Schema wird künftig aus der DB (dog_foods) gespeist; aktuell ungenutzt.
   return null;
@@ -166,6 +230,7 @@ export default function StructuredData({
   breadcrumbs,
   faqs,
   article,
+  portionsHowTo,
 }: StructuredDataProps) {
   let schema: object | null = null;
 
@@ -193,6 +258,9 @@ export default function StructuredData({
       break;
     case "article":
       if (article) schema = buildArticleSchema(article);
+      break;
+    case "portions-howto":
+      if (portionsHowTo) schema = buildPortionsHowToSchema(portionsHowTo);
       break;
   }
 
