@@ -48,3 +48,9 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: node scripts/load-dog-foods.mjs
+
+      - name: IndexNow ping (Bing & Co.)
+        continue-on-error: true
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+        run: node scripts/indexnow-ping.mjs

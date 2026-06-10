@@ -18,6 +18,7 @@ const LINKS: Record<string, FooterLink[]> = {
     { label: "FAQ Hundeernährung", href: "/faq" },
     { label: "Ratgeber & Guides", href: "/guides" },
     { label: "Hundefutter-Blog", href: "/blog" },
+    { label: "Preis- & Zusammensetzungsdaten", href: "/analyse/preisindex-2026" },
   ],
   "Beliebte Rassen": [
     { label: "Labrador Retriever", href: "/rasse/labrador-retriever" },

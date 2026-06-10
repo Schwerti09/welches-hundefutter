@@ -71,16 +71,10 @@ function buildSoftwareSchema() {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "BELLA – KI Hundefutter-Berater",
-    applicationCategory: "FinanceApplication",
+    applicationCategory: "LifestyleApplication",
     operatingSystem: "Web",
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.8",
-      ratingCount: "247",
-      bestRating: "5",
-      worstRating: "1",
-    },
+    // aggregateRating ENTFERNT bis echte, attributierbare Bewertungen vorliegen.
   };
 }
 
@@ -178,7 +172,7 @@ export const defaultFAQs: FAQItem[] = [
   {
     question: "Welches Hundefutter ist das beste in Deutschland?",
     answer:
-      "Es gibt kein universell bestes Hundefutter — es hängt von Rasse, Alter, Aktivität und Gesundheit ab. Wichtig sind: hoher Fleischanteil (>70 %), klare Deklaration, keine unnötigen Füllstoffe. BELLA findet aus über 8.000 Sorten das Passende für deinen Hund.",
+      "Es gibt kein universell bestes Hundefutter — es hängt von Rasse, Alter, Aktivität und Gesundheit ab. Wichtig sind: hoher Fleischanteil (>70 %), klare Deklaration, keine unnötigen Füllstoffe. BELLA findet aus tausenden Futtersorten das Passende für deinen Hund.",
   },
   {
     question: "Welches Hundefutter ist geeignet bei Allergie?",

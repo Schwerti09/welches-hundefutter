@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: "BELLA analysiert 6.700+ Preis-Snapshots aus dem AWIN-Feed: welche Hundefutter-Typen teurer wurden, welche günstiger, und was das für deinen Geldbeutel bedeutet.",
   alternates: { canonical: "https://welches-hundefutter.today/analyse/preisindex-2026" },
   openGraph: {
-    title: "Hundefutter-Preisindex 2026 — Echte Preisdaten aus 8.000+ Sorten",
+    title: "Hundefutter-Preisindex 2026 — Echte Preisdaten aus dem gesamten aktiven Katalog",
     description: "Welche Futtertypen sind 2026 teurer geworden? BELLA hat über 6.700 Preis-Snapshots ausgewertet.",
   },
 };
@@ -40,13 +40,19 @@ interface SnapshotStat {
   avg_price_all: number;
 }
 
+interface CompositionStat {
+  total: number; with_meat: number; avg_meat: number | null; avg_meat_premium: number | null;
+  pct_grain_free: number; pct_monoprotein: number; pct_hypo: number; pct_named_protein: number;
+}
+interface ProteinStat { protein: string; n: number; }
+
 async function getData() {
   const url = process.env.DATABASE_URL;
   if (!url) return null;
   try {
     const sql = neon(url);
 
-    const [meta, typeStats, risers, fallers] = await Promise.all([
+    const [meta, typeStats, risers, fallers, composition, proteins] = await Promise.all([
       // Übersicht
       sql`SELECT
         count(*)::int AS total_snapshots,
@@ -100,6 +106,28 @@ async function getData() {
       HAVING count(*) >= 3 AND min(ph.price_per_kg) < max(ph.price_per_kg)
       ORDER BY change_pct ASC
       LIMIT 8`,
+
+      // Zusammensetzung (Original-Daten aus dog_foods)
+      sql`SELECT
+        count(*)::int AS total,
+        count(*) FILTER (WHERE meat_percentage IS NOT NULL)::int AS with_meat,
+        round(avg(meat_percentage) FILTER (WHERE meat_percentage IS NOT NULL)::numeric, 1)::float AS avg_meat,
+        round(avg(meat_percentage) FILTER (WHERE meat_percentage IS NOT NULL AND price_per_kg >= 8)::numeric, 1)::float AS avg_meat_premium,
+        round(100.0 * count(*) FILTER (WHERE is_grain_free) / NULLIF(count(*),0), 1)::float AS pct_grain_free,
+        round(100.0 * count(*) FILTER (WHERE is_monoprotein) / NULLIF(count(*),0), 1)::float AS pct_monoprotein,
+        round(100.0 * count(*) FILTER (WHERE is_hypoallergenic) / NULLIF(count(*),0), 1)::float AS pct_hypo,
+        round(100.0 * count(*) FILTER (WHERE protein IS NOT NULL AND protein <> '') / NULLIF(count(*),0), 1)::float AS pct_named_protein
+      FROM dog_foods
+      WHERE is_active = true AND type IN ('trocken','nass','barf','kaltgepresst')`,
+
+      // Häufigste deklarierte Proteinquellen
+      sql`SELECT lower(trim(protein)) AS protein, count(*)::int AS n
+      FROM dog_foods
+      WHERE is_active = true AND type IN ('trocken','nass','barf','kaltgepresst')
+        AND protein IS NOT NULL AND protein <> ''
+      GROUP BY lower(trim(protein))
+      ORDER BY n DESC
+      LIMIT 8`,
     ]);
 
     return {
@@ -107,6 +135,8 @@ async function getData() {
       typeStats: typeStats as TypeStat[],
       risers: risers as PriceMovement[],
       fallers: fallers as PriceMovement[],
+      composition: composition[0] as CompositionStat,
+      proteins: proteins as ProteinStat[],
     };
   } catch {
     return null;
@@ -141,8 +171,8 @@ export default async function PreisindexPage() {
         </h1>
         <p className="text-[var(--muted)] leading-relaxed max-w-2xl mb-6">
           BELLA erfasst täglich Preisänderungen aus dem AWIN-Affiliate-Feed.
-          Diese Analyse basiert auf <strong className="text-white">{data?.meta.total_snapshots.toLocaleString("de") ?? "6.700+"} Preis-Snapshots</strong> von{" "}
-          <strong className="text-white">{data?.meta.distinct_products.toLocaleString("de") ?? "3.000+"} Produkten</strong>.
+          Diese Analyse basiert auf <strong className="text-white">{data?.meta.total_snapshots.toLocaleString("de") ?? "tausenden"} Preis-Snapshots</strong> von{" "}
+          <strong className="text-white">{data?.meta.distinct_products.toLocaleString("de") ?? "tausenden"} Produkten</strong>.
           Keine redaktionelle Verzerrung — nur Rohdaten.
         </p>
         {data?.meta && (
@@ -152,6 +182,32 @@ export default async function PreisindexPage() {
           </p>
         )}
       </section>
+
+      {/* Zitierfähiger Antwort-Block (GEO B1/B4) */}
+      {data?.composition && (
+        <section className="max-w-5xl mx-auto w-full px-5">
+          <div className="bella-answer card p-5 mb-6 max-w-2xl">
+            <p className="leading-relaxed">
+              Im aktiven BELLA-Katalog ({data.composition.total.toLocaleString("de")} Hauptfutter-Sorten:
+              Trocken, Nass, BARF, Kaltgepresst) liegt der durchschnittliche{" "}
+              <strong className="text-white">Fleischanteil bei {data.composition.avg_meat ?? "—"} %</strong>
+              {data.composition.avg_meat_premium != null && <> (Premium ab 8 €/kg: {data.composition.avg_meat_premium} %)</>}.
+              {" "}<strong className="text-white">{data.composition.pct_grain_free} %</strong> sind getreidefrei,{" "}
+              <strong className="text-white">{data.composition.pct_monoprotein} %</strong> Monoprotein.
+              {data.proteins?.[0] && <> Häufigste deklarierte Proteinquelle: {data.proteins[0].protein}.</>}
+              {" "}Ø-Preis aller Typen: {data.meta?.avg_price_all?.toFixed(2)} €/kg. Stand: {data.meta?.last_snapshot}.
+            </p>
+          </div>
+
+          {/* Das Wichtigste in Kürze */}
+          <ul className="bella-tldr text-sm text-[var(--muted)] space-y-1 mb-6 max-w-2xl">
+            <li>• Ø Fleischanteil: <strong className="text-white">{data.composition.avg_meat ?? "—"} %</strong> (Datenbasis: {data.composition.with_meat.toLocaleString("de")} Sorten mit Angabe)</li>
+            <li>• Getreidefrei: <strong className="text-white">{data.composition.pct_grain_free} %</strong> · Monoprotein: <strong className="text-white">{data.composition.pct_monoprotein} %</strong> · Hypoallergen: <strong className="text-white">{data.composition.pct_hypo} %</strong></li>
+            <li>• Proteinquelle deklariert: <strong className="text-white">{data.composition.pct_named_protein} %</strong> der Sorten</li>
+            <li>• Preisdaten aus <strong className="text-white">{data.meta?.distinct_products.toLocaleString("de")}</strong> Produkten, {data.meta?.first_snapshot}–{data.meta?.last_snapshot}</li>
+          </ul>
+        </section>
+      )}
 
       {/* Preise nach Futtertyp */}
       <section className="max-w-5xl mx-auto w-full px-5 py-10">
@@ -218,6 +274,54 @@ export default async function PreisindexPage() {
         </div>
       </section>
 
+      {/* Zusammensetzung */}
+      <section className="max-w-5xl mx-auto w-full px-5 py-10">
+        <h2 className="text-2xl font-extrabold tracking-tight mb-2">Was steckt drin? Zusammensetzung im Katalog</h2>
+        <p className="text-[var(--muted)] text-sm mb-6 max-w-2xl">
+          Auswertung aller aktiven Hauptfutter-Sorten (Trocken, Nass, BARF, Kaltgepresst). Werte „wie deklariert" aus dem Affiliate-Feed.
+        </p>
+        {data?.composition ? (
+          <>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              <div className="card p-5">
+                <p className="text-sm font-bold mb-1">Ø Fleischanteil</p>
+                <p className="text-3xl font-black text-[var(--honey)]">{data.composition.avg_meat ?? "—"}<span className="text-base font-medium text-[var(--muted)]"> %</span></p>
+                <p className="text-[10px] text-white/25 mt-2">Premium ≥8 €/kg: {data.composition.avg_meat_premium ?? "—"} %</p>
+              </div>
+              <div className="card p-5">
+                <p className="text-sm font-bold mb-1">Getreidefrei</p>
+                <p className="text-3xl font-black text-[var(--honey)]">{data.composition.pct_grain_free}<span className="text-base font-medium text-[var(--muted)]"> %</span></p>
+              </div>
+              <div className="card p-5">
+                <p className="text-sm font-bold mb-1">Monoprotein</p>
+                <p className="text-3xl font-black text-[var(--honey)]">{data.composition.pct_monoprotein}<span className="text-base font-medium text-[var(--muted)]"> %</span></p>
+              </div>
+              <div className="card p-5">
+                <p className="text-sm font-bold mb-1">Hypoallergen</p>
+                <p className="text-3xl font-black text-[var(--honey)]">{data.composition.pct_hypo}<span className="text-base font-medium text-[var(--muted)]"> %</span></p>
+              </div>
+            </div>
+
+            {data.proteins?.length > 0 && (
+              <div className="card p-5">
+                <p className="text-sm font-bold mb-3">Häufigste deklarierte Proteinquellen</p>
+                <div className="flex flex-wrap gap-2">
+                  {data.proteins.map((p) => (
+                    <span key={p.protein} className="pill capitalize">{p.protein} · {p.n.toLocaleString("de")}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+            <p className="text-xs text-[var(--muted)] mt-3">
+              Datenbasis Fleischanteil: {data.composition.with_meat.toLocaleString("de")} von {data.composition.total.toLocaleString("de")} Sorten mit Herstellerangabe ·{" "}
+              <Link href="/analyse/methodik" className="text-[var(--honey)] hover:underline">Methodik →</Link>
+            </p>
+          </>
+        ) : (
+          <div className="card p-6 text-center text-[var(--muted)]">Daten werden geladen…</div>
+        )}
+      </section>
+
       {/* Hinweis + Methodik */}
       <section className="max-w-5xl mx-auto w-full px-5 pb-10">
         <div className="card p-6 text-sm text-[var(--muted)] space-y-2">
@@ -227,9 +331,41 @@ export default async function PreisindexPage() {
             <Link href="/analyse/methodik" className="text-[var(--honey)] hover:underline">BELLA-Score Methodik →</Link>
             {" · "}
             <Link href="/#bella-advisor" className="text-[var(--honey)] hover:underline">BELLA fragen →</Link>
+            {" · "}
+            <Link href="/data/hundefutter-report" className="text-[var(--honey)] hover:underline">Rohdaten als JSON/CSV →</Link>
           </p>
         </div>
       </section>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Dataset",
+            name: "BELLA Hundefutter-Marktreport 2026",
+            description:
+              "Auswertung des aktiven Hundefutter-Katalogs (Trocken, Nass, BARF, Kaltgepresst): durchschnittlicher Fleischanteil, Getreidefrei-/Monoprotein-/Hypoallergen-Anteil, häufigste deklarierte Proteinquellen, Durchschnittspreise pro Typ und Preisentwicklung aus täglichen Snapshots.",
+            url: "https://welches-hundefutter.today/analyse/preisindex-2026",
+            creator: { "@type": "Organization", "@id": "https://welches-hundefutter.today/#organization" },
+            license: "https://creativecommons.org/licenses/by/4.0/",
+            isAccessibleForFree: true,
+            inLanguage: "de-DE",
+            dateModified: new Date().toISOString().slice(0, 10),
+            ...(data?.meta?.first_snapshot && data?.meta?.last_snapshot
+              ? { temporalCoverage: `${data.meta.first_snapshot}/${data.meta.last_snapshot}` }
+              : {}),
+            variableMeasured: [
+              "Preis pro Kilogramm", "Fleischanteil", "Getreidefrei-Anteil",
+              "Monoprotein-Anteil", "Hypoallergen-Anteil", "Proteinquellen-Häufigkeit",
+            ],
+            distribution: [
+              { "@type": "DataDownload", encodingFormat: "application/json", contentUrl: "https://welches-hundefutter.today/data/hundefutter-report" },
+              { "@type": "DataDownload", encodingFormat: "text/csv", contentUrl: "https://welches-hundefutter.today/data/hundefutter-report?format=csv" },
+            ],
+          }),
+        }}
+      />
 
       <SiteFooter />
     </div>

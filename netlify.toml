@@ -6,6 +6,10 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
+[[edge_functions]]
+  path = "/*"
+  function = "block-bad-bots"
+
 [context.production.environment]
   NEXT_TELEMETRY_DISABLED = "1"
   NODE_VERSION            = "20"
