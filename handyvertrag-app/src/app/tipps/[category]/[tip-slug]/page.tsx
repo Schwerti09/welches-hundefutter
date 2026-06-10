@@ -50,16 +50,7 @@ export async function generateMetadata({
       description: article.seoDescription,
       url: `https://welches-hundefutter.today/tipps/${category}/${tipSlug}`,
       type: "article",
-      images: [
-        {
-          url: article.imageUrl.startsWith("http") 
-            ? article.imageUrl 
-            : `https://welches-hundefutter.today${article.imageUrl}`,
-          width: 1200,
-          height: 630,
-          alt: article.imageAlt,
-        },
-      ],
+      // OG-Bild wird dynamisch via opengraph-image.tsx generiert (premium gebrandet)
     },
   };
 }
@@ -200,6 +191,8 @@ export default async function TipArticlePage({
             alt={article.imageAlt}
             accent={cat.accent}
             icon={cat.icon}
+            number={article.id}
+            category={cat.title}
           />
           {article.imageAlt && (
             <figcaption className="text-xs text-[var(--muted)] mt-2 text-center">
