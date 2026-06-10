@@ -32,6 +32,15 @@ const faqItems = [
 export default function VergleichBarfTrockenPage() {
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
+      <StructuredData
+        type="article"
+        article={{
+          headline: "BARF vs. Trockenfutter: Direktvergleich 2026",
+          description: "BARF oder Trockenfutter? Kosten, Nährwerte, Aufwand, Risiken und Nutzen ehrlich verglichen. Für welche Hunde und Halter ist welche Methode geeignet?",
+          url: "https://welches-hundefutter.today/vergleich/barf-vs-trockenfutter",
+          dateModified: "2026-06-06",
+        }}
+      />
       <StructuredData type="faq" faqs={faqItems} />
 
       <nav className="max-w-5xl mx-auto w-full px-5 pt-8 text-sm text-[var(--muted)]">

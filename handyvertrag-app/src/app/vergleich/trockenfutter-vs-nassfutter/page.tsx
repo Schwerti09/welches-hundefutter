@@ -63,6 +63,15 @@ const CONS_NASS = [
 export default function VergleichTrockenNassPage() {
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
+      <StructuredData
+        type="article"
+        article={{
+          headline: "Trockenfutter vs. Nassfutter: Der ehrliche Vergleich 2026",
+          description: "Was ist besser für deinen Hund – Trocken- oder Nassfutter? Kosten, Nährwerte, Zahngesundheit, Sättigung und Praxis im Direktvergleich. Ohne Herstellermeinungen.",
+          url: "https://welches-hundefutter.today/vergleich/trockenfutter-vs-nassfutter",
+          dateModified: "2026-06-06",
+        }}
+      />
       <StructuredData type="faq" faqs={faqItems} />
 
       <nav className="max-w-5xl mx-auto w-full px-5 pt-8 text-sm text-[var(--muted)]">

@@ -97,11 +97,7 @@ export default async function TipArticlePage({
     image: article.imageUrl.startsWith("http") 
       ? article.imageUrl 
       : `https://welches-hundefutter.today${article.imageUrl}`,
-    author: { 
-      "@type": "Organization", 
-      name: "BELLA",
-      url: "https://welches-hundefutter.today"
-    },
+    author: { "@id": "https://welches-hundefutter.today/ueber-uns#person" },
     publisher: {
       "@type": "Organization",
       name: "BELLA",

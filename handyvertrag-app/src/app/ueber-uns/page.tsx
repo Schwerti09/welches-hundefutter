@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": "https://welches-hundefutter.today/ueber-uns#person",
   name: "Rolf Schwertfechter",
   url: "https://welches-hundefutter.today/ueber-uns",
   jobTitle: "Gründer, KI-Entwickler & Hundefutter-Analyst",

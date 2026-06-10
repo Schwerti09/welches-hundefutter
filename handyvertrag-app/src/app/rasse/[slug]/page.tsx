@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const b = BREED_BY_SLUG[slug];
   if (!b) return {};
   const title = `${b.name}: Futter, Gesundheit & alles zur Rasse — Lexikon`;
-  const description = `${b.name} Lexikon: Charakter, Herkunft, Gesundheit, optimales Futter & Portionsrechner. Datengetrieben, tierärztlich geprüft.`;
+  const description = `${b.name} Lexikon: Charakter, Herkunft, Gesundheit, optimales Futter & Portionsrechner. Datengetrieben, redaktionell geprüft.`;
   return {
     title,
     description,
@@ -256,6 +256,16 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
       <StructuredData type="organization" />
+      <StructuredData
+        type="article"
+        article={{
+          headline: `${breed.name}: Futter, Gesundheit & alles zur Rasse`,
+          description: breed.description ?? `${breed.name} Lexikon: Charakter, Herkunft, Gesundheit, optimales Futter & Portionsrechner.`,
+          url: `https://welches-hundefutter.today/rasse/${breed.slug}`,
+          dateModified: "2026-06-01",
+          ...(photo && { image: photo }),
+        }}
+      />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       {/* ── BREADCRUMB ─────────────────────────────────────────────────── */}

@@ -9,11 +9,21 @@ interface FAQItem {
   answer: string;
 }
 
+interface ArticleData {
+  headline: string;
+  description: string;
+  url: string;
+  dateModified: string;
+  datePublished?: string;
+  image?: string;
+}
+
 interface StructuredDataProps {
-  type: "organization" | "product" | "faq" | "breadcrumb" | "website" | "software" | "howto";
+  type: "organization" | "product" | "faq" | "breadcrumb" | "website" | "software" | "howto" | "article";
   productId?: string;
   breadcrumbs?: BreadcrumbItem[];
   faqs?: FAQItem[];
+  article?: ArticleData;
 }
 
 function buildOrganizationSchema() {
@@ -113,6 +123,23 @@ function buildFAQSchema(faqs: FAQItem[]) {
   };
 }
 
+function buildArticleSchema(article: ArticleData) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.headline,
+    description: article.description,
+    url: article.url,
+    mainEntityOfPage: article.url,
+    inLanguage: "de-DE",
+    ...(article.datePublished && { datePublished: article.datePublished }),
+    dateModified: article.dateModified,
+    ...(article.image && { image: article.image }),
+    author: { "@id": "https://welches-hundefutter.today/ueber-uns#person" },
+    publisher: { "@id": "https://welches-hundefutter.today/#organization" },
+  };
+}
+
 function buildBreadcrumbSchema(breadcrumbs: BreadcrumbItem[]) {
   return {
     "@context": "https://schema.org",
@@ -131,6 +158,7 @@ export default function StructuredData({
   productId,
   breadcrumbs,
   faqs,
+  article,
 }: StructuredDataProps) {
   let schema: object | null = null;
 
@@ -155,6 +183,9 @@ export default function StructuredData({
       break;
     case "breadcrumb":
       if (breadcrumbs) schema = buildBreadcrumbSchema(breadcrumbs);
+      break;
+    case "article":
+      if (article) schema = buildArticleSchema(article);
       break;
   }
 

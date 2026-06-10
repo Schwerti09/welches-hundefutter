@@ -83,6 +83,15 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
 
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
+      <StructuredData
+        type="article"
+        article={{
+          headline: problem.tagline,
+          description: problem.description,
+          url: `https://welches-hundefutter.today/problem/${problem.slug}`,
+          dateModified: "2026-06-01",
+        }}
+      />
       <StructuredData type="faq" faqs={faqItems} />
 
       <nav className="max-w-5xl mx-auto w-full px-5 pt-8 text-sm text-[var(--muted)]">

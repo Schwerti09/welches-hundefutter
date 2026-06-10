@@ -98,6 +98,15 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
 
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
+      <StructuredData
+        type="article"
+        article={{
+          headline: typ.tagline,
+          description: typ.description,
+          url: `https://welches-hundefutter.today/futtertyp/${typ.slug}`,
+          dateModified: "2026-06-01",
+        }}
+      />
       <StructuredData type="faq" faqs={faqItems} />
 
       <nav className="max-w-5xl mx-auto w-full px-5 pt-8 text-sm text-[var(--muted)]">

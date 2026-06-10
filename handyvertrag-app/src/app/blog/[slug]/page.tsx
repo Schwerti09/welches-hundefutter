@@ -46,6 +46,16 @@ export default async function BlogArticlePage({
 
   return (
     <>
+      <StructuredData
+        type="article"
+        article={{
+          headline: article.title,
+          description: article.description,
+          url: `https://welches-hundefutter.today/blog/${slug}`,
+          datePublished: article.publishedAt,
+          dateModified: article.updatedAt,
+        }}
+      />
       <StructuredData type="faq" faqs={article.faqs.map((f) => ({ question: f.question, answer: f.answer }))} />
       <StructuredData
         type="breadcrumb"
