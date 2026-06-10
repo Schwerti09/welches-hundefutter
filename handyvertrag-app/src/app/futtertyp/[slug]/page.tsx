@@ -105,6 +105,7 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
           description: typ.description,
           url: `https://welches-hundefutter.today/futtertyp/${typ.slug}`,
           dateModified: "2026-06-01",
+          speakableSelectors: ["h1", ".bella-answer"],
         }}
       />
       <StructuredData type="faq" faqs={faqItems} />
@@ -123,7 +124,7 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4 max-w-3xl">
           {typ.tagline}
         </h1>
-        <p className="text-[var(--muted)] leading-relaxed max-w-2xl mb-8">{typ.description}</p>
+        <p className="bella-answer text-[var(--muted)] leading-relaxed max-w-2xl mb-8">{typ.description}</p>
         <div className="flex gap-3 flex-wrap">
           <Link href="/#bella-advisor" className="btn-primary">BELLA findet das Beste für deinen Hund →</Link>
           <span className="self-center text-xs text-[var(--muted)]">{typ.priceRange} typisch</span>

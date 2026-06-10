@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { neon } from "@neondatabase/serverless";
 import SiteFooter from "@/components/SiteFooter";
+import StructuredData from "@/components/StructuredData";
 
 export const revalidate = 86400;
 
@@ -156,6 +157,16 @@ export default async function PreisindexPage() {
 
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
+      <StructuredData
+        type="article"
+        article={{
+          headline: "Hundefutter-Preisindex 2026",
+          description: "BELLA analysiert Preis-Snapshots aus dem AWIN-Feed: welche Hundefutter-Typen teurer wurden, welche günstiger, und was das für deinen Geldbeutel bedeutet.",
+          url: "https://welches-hundefutter.today/analyse/preisindex-2026",
+          dateModified: new Date().toISOString().slice(0, 10),
+          speakableSelectors: ["h1", ".bella-answer", ".bella-tldr"],
+        }}
+      />
       <nav className="max-w-5xl mx-auto w-full px-5 pt-8 text-sm text-[var(--muted)]">
         <Link href="/" className="hover:text-[var(--honey)]">Start</Link>
         <span className="mx-2">·</span>

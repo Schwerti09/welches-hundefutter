@@ -114,6 +114,10 @@ export default async function TipArticlePage({
     articleSection: cat.title,
     wordCount: article.content.split(" ").length,
     readingTime: `${article.readingTime} minutes`,
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", ".bella-answer"],
+    },
   };
 
   // Geo-Schema wenn regional relevant
@@ -180,7 +184,7 @@ export default async function TipArticlePage({
             {article.title}
           </h1>
           
-          <p className="text-[var(--muted)] text-lg leading-relaxed max-w-2xl mb-6">
+          <p className="bella-answer text-[var(--muted)] text-lg leading-relaxed max-w-2xl mb-6">
             {article.shortDescription}
           </p>
 

@@ -16,6 +16,7 @@ interface ArticleData {
   dateModified: string;
   datePublished?: string;
   image?: string;
+  speakableSelectors?: string[];
 }
 
 interface StructuredDataProps {
@@ -137,6 +138,12 @@ function buildArticleSchema(article: ArticleData) {
     ...(article.image && { image: article.image }),
     author: { "@id": "https://welches-hundefutter.today/ueber-uns#person" },
     publisher: { "@id": "https://welches-hundefutter.today/#organization" },
+    ...(article.speakableSelectors && {
+      speakable: {
+        "@type": "SpeakableSpecification",
+        cssSelector: article.speakableSelectors,
+      },
+    }),
   };
 }
 

@@ -39,6 +39,7 @@ export default function VergleichBarfTrockenPage() {
           description: "BARF oder Trockenfutter? Kosten, Nährwerte, Aufwand, Risiken und Nutzen ehrlich verglichen. Für welche Hunde und Halter ist welche Methode geeignet?",
           url: "https://welches-hundefutter.today/vergleich/barf-vs-trockenfutter",
           dateModified: "2026-06-06",
+          speakableSelectors: ["h1", ".bella-answer"],
         }}
       />
       <StructuredData type="faq" faqs={faqItems} />
@@ -56,7 +57,7 @@ export default function VergleichBarfTrockenPage() {
         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4 max-w-3xl">
           BARF vs. Trockenfutter: Was passt zu dir und deinem Hund?
         </h1>
-        <p className="text-[var(--muted)] leading-relaxed max-w-2xl mb-6">
+        <p className="bella-answer text-[var(--muted)] leading-relaxed max-w-2xl mb-6">
           BARF ist nicht für jeden — und Trockenfutter nicht per se schlechter. Hier vergleichen
           wir ehrlich: Kosten, Aufwand, Risiken, Nutzen.
         </p>

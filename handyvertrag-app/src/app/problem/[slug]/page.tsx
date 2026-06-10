@@ -90,6 +90,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
           description: problem.description,
           url: `https://welches-hundefutter.today/problem/${problem.slug}`,
           dateModified: "2026-06-01",
+          speakableSelectors: ["h1", ".bella-answer"],
         }}
       />
       <StructuredData type="faq" faqs={faqItems} />
@@ -108,7 +109,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4 max-w-3xl">
           {problem.tagline}
         </h1>
-        <p className="text-[var(--muted)] leading-relaxed max-w-2xl mb-8">{problem.description}</p>
+        <p className="bella-answer text-[var(--muted)] leading-relaxed max-w-2xl mb-8">{problem.description}</p>
         <Link href="/#bella-advisor" className="btn-primary">
           BELLA fragt nach deinem Hund → passende Sorten in 60 s
         </Link>

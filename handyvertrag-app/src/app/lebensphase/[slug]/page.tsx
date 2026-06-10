@@ -103,6 +103,16 @@ export default async function LebensphaseePage({ params }: { params: Promise<{ s
 
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
+      <StructuredData
+        type="article"
+        article={{
+          headline: phase.tagline,
+          description: phase.description,
+          url: `https://welches-hundefutter.today/lebensphase/${slug}`,
+          dateModified: "2026-06-10",
+          speakableSelectors: ["h1", ".bella-answer"],
+        }}
+      />
       <StructuredData type="faq" faqs={[
         { question: `Was ist das beste Futter für ${phase.name}?`, answer: phase.description.slice(0, 200) },
         { question: `Ab wann ist ein Hund ein ${phase.name}?`, answer: `${phase.ageRange}.` },
@@ -117,7 +127,7 @@ export default async function LebensphaseePage({ params }: { params: Promise<{ s
       <section className="hero-glow max-w-5xl mx-auto w-full px-5 pt-8 pb-14">
         <span className="pill mb-4">{phase.emoji} Lebensphase</span>
         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4 max-w-3xl">{phase.tagline}</h1>
-        <p className="text-[var(--muted)] leading-relaxed max-w-2xl mb-4">{phase.description}</p>
+        <p className="bella-answer text-[var(--muted)] leading-relaxed max-w-2xl mb-4">{phase.description}</p>
         <p className="text-sm text-[var(--muted)] mb-8"><span className="font-semibold text-[var(--ink)]">Altersbereich:</span> {phase.ageRange}</p>
         <Link href="/#bella-advisor" className="btn-primary">BELLA fragt nach deinem Hund — Empfehlung in 60 s →</Link>
       </section>

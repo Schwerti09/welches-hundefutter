@@ -264,6 +264,7 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
           url: `https://welches-hundefutter.today/rasse/${breed.slug}`,
           dateModified: "2026-06-01",
           ...(photo && { image: photo }),
+          speakableSelectors: ["h1", ".bella-answer"],
         }}
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
@@ -318,7 +319,7 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
                 Auch bekannt als: {(breed.alternativeNames ?? []).join(", ")}
               </p>
             )}
-            <p className="text-[var(--muted)] leading-relaxed mb-5 text-sm">{breed.description}</p>
+            <p className="bella-answer text-[var(--muted)] leading-relaxed mb-5 text-sm">{breed.description}</p>
 
             {/* Key Facts Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-6">

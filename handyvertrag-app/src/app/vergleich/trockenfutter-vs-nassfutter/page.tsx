@@ -70,6 +70,7 @@ export default function VergleichTrockenNassPage() {
           description: "Was ist besser für deinen Hund – Trocken- oder Nassfutter? Kosten, Nährwerte, Zahngesundheit, Sättigung und Praxis im Direktvergleich. Ohne Herstellermeinungen.",
           url: "https://welches-hundefutter.today/vergleich/trockenfutter-vs-nassfutter",
           dateModified: "2026-06-06",
+          speakableSelectors: ["h1", ".bella-answer"],
         }}
       />
       <StructuredData type="faq" faqs={faqItems} />
@@ -87,7 +88,7 @@ export default function VergleichTrockenNassPage() {
         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4 max-w-3xl">
           Trockenfutter vs. Nassfutter: Was ist besser für deinen Hund?
         </h1>
-        <p className="text-[var(--muted)] leading-relaxed max-w-2xl mb-6">
+        <p className="bella-answer text-[var(--muted)] leading-relaxed max-w-2xl mb-6">
           Kein Marketing, keine Hersteller-Meinungen. Nur die Fakten — basierend auf
           Nährwertdaten, Kosten aus unserem Live-Katalog und veterinärmedizinischer Evidenz.
         </p>

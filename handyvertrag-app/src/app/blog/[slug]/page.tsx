@@ -54,6 +54,7 @@ export default async function BlogArticlePage({
           url: `https://welches-hundefutter.today/blog/${slug}`,
           datePublished: article.publishedAt,
           dateModified: article.updatedAt,
+          speakableSelectors: ["h1", ".bella-answer"],
         }}
       />
       <StructuredData type="faq" faqs={article.faqs.map((f) => ({ question: f.question, answer: f.answer }))} />
@@ -92,7 +93,7 @@ export default async function BlogArticlePage({
         </div>
 
         <h1 className="text-3xl font-bold text-white mb-4 leading-tight">{article.title}</h1>
-        <p className="text-gray-400 text-lg mb-8 leading-relaxed">{article.description}</p>
+        <p className="bella-answer text-gray-400 text-lg mb-8 leading-relaxed">{article.description}</p>
 
         {/* Artikel-Inhalt */}
         <div className="space-y-8">
