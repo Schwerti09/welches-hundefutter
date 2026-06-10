@@ -220,6 +220,8 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
   const bellaIntro = `Ein ${breed.name}! ${breed.isMixedBreed ? "Mischlinge sind oft besonders robust." : "Tolle Wahl."} Ich bin BELLA und helfe dir, aus 8.000+ Produkten das optimale Futter zu finden. Kurz erzählen: Wie alt ist dein ${breed.name} und was ist das aktuelle Hauptproblem?`;
 
   // FAQ-Daten
+  const isLargeBreed = breed.size === "gross" || breed.size === "sehrgross";
+  const jointProne = (breed.commonHealthIssues ?? []).some((i) => /gelenk|hüft|arthros|ellbogen|patell|kreuzband/i.test(i));
   const faqs = [
     {
       q: `Wie viel Futter braucht ein ${breed.name} täglich?`,
@@ -240,6 +242,24 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
     {
       q: `Wie viel Bewegung braucht ein ${breed.name}?`,
       a: `${breed.name} brauchen täglich ca. ${breed.dailyExerciseMinutes ?? (breed.activityLevel === "sehrhoch" ? 120 : breed.activityLevel === "hoch" ? 90 : breed.activityLevel === "mittel" ? 60 : 30)} Minuten Bewegung. ${breed.activityLevel === "sehrhoch" || breed.activityLevel === "hoch" ? "Diese Rasse braucht zusätzlich geistige Auslastung." : ""}`,
+    },
+    {
+      q: `Was sollte ich einem ${breed.name}-Welpen füttern?`,
+      a: isLargeBreed
+        ? `${breed.name}-Welpen wachsen schnell und sollten ein Large-Breed-Welpenfutter mit kontrolliertem Kalzium- und Energiegehalt bekommen — zu schnelles Wachstum erhöht das Risiko für Gelenkprobleme wie Hüftdysplasie. Füttere 3–4 kleine Portionen täglich und wechsle erst nach Rücksprache mit dem Tierarzt auf Adult-Futter um. BELLA berücksichtigt das Wachstumstempo großer Rassen bei der Empfehlung.`
+        : `${breed.name}-Welpen haben einen 2- bis 3-fach höheren Energie- und Proteinbedarf als ausgewachsene Hunde und brauchen ein hochwertiges Welpenfutter mit ausgewogenem Kalzium-Phosphor-Verhältnis für ein gesundes Wachstum. Füttere 3–4 kleine Portionen täglich, bis die Rasse mit etwa 12 Monaten ausgewachsen ist. BELLA berücksichtigt Größe und Wachstumstempo der Rasse bei der Empfehlung.`,
+    },
+    {
+      q: `Worauf muss ich bei einem ${breed.name}-Senior beim Futter achten?`,
+      a: jointProne
+        ? `Ältere ${breed.name} brauchen kalorienreduziertes Futter mit weniger Fett, da der Energiebedarf sinkt und Übergewicht die Gelenke zusätzlich belastet. Da diese Rasse zu Gelenkproblemen neigt, sind Glucosamin, Chondroitin und Omega-3-Fettsäuren im Senior-Futter besonders wichtig. Leicht verdauliche Proteine und eine angepasste Portionsgröße runden die Ernährung im Alter ab.`
+        : `Ältere ${breed.name} brauchen kalorienreduziertes Futter mit weniger Fett und mehr Ballaststoffen, da der Energiebedarf mit dem Alter sinkt und Übergewicht die Gesundheit belastet. Leicht verdauliche Proteine, Antioxidantien gegen Zellalterung und Gelenkstoffe wie Glucosamin sind sinnvoll, auch wenn diese Rasse aktuell keine bekannten Gelenkprobleme zeigt. Die Portionsgröße sollte regelmäßig ans Gewicht angepasst werden.`,
+    },
+    {
+      q: `Neigt der ${breed.name} zu Futterunverträglichkeiten?`,
+      a: allergyProne
+        ? `Ja — der ${breed.name} zählt zu den Rassen mit erhöhter Neigung zu ${(breed.commonHealthIssues ?? []).filter((i) => /allergi|haut|magen|darm|verdau/i.test(i)).slice(0, 2).join(" und ")}. Achte auf Anzeichen wie Juckreiz, weichen Kot oder Erbrechen nach dem Fressen. Monoprotein-Futter mit einer ungewöhnlichen Fleischquelle wie Ente, Insekt oder Wild und ohne Getreide kann helfen, den Auslöser einzugrenzen — am besten in Absprache mit dem Tierarzt.`
+        : `Der ${breed.name} gilt nicht als besonders anfällig für Futterunverträglichkeiten, dennoch kann jeder Hund individuell reagieren. Achte bei einer Futterumstellung auf Anzeichen wie weichen Kot, Juckreiz oder Erbrechen. Hochwertiges Futter mit klarer Deklaration, benannten Fleischquellen und wenigen Zusatzstoffen senkt grundsätzlich das Risiko für Unverträglichkeiten.`,
     },
   ];
 
