@@ -5,6 +5,7 @@ import { TIP_CATEGORIES, TIP_CATEGORY_BY_SLUG, type TipArticle } from "@/data/ti
 import StructuredData from "@/components/StructuredData";
 import AuthorBox from "@/components/AuthorBox";
 import SiteFooter from "@/components/SiteFooter";
+import TipArticleImage from "@/components/TipArticleImage";
 
 export const revalidate = 86400;
 
@@ -194,11 +195,11 @@ export default async function TipArticlePage({
 
         {/* HAUPTBILD */}
         <figure className="mb-10 rounded-2xl overflow-hidden">
-          <img
+          <TipArticleImage
             src={article.imageUrl}
             alt={article.imageAlt}
-            className="w-full h-auto object-cover"
-            loading="eager"
+            accent={cat.accent}
+            icon={cat.icon}
           />
           {article.imageAlt && (
             <figcaption className="text-xs text-[var(--muted)] mt-2 text-center">

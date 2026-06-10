@@ -111,5 +111,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.75,
   }))
 
-  return [...statisch, ...alleRassen, ...staedte, ...probleme, ...phasen, ...typen, ...tipps]
+  // Einzelne Tipp-Artikel (Volltext-Seiten) für Kategorien, die welche haben
+  const tippArtikel: MetadataRoute.Sitemap = TIP_CATEGORIES.flatMap((c) =>
+    (c.articles ?? []).map((a) => ({
+      url: `${BASE}/tipps/${c.slug}/${a.slug}`,
+      lastModified: now,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    }))
+  )
+
+  return [...statisch, ...alleRassen, ...staedte, ...probleme, ...phasen, ...typen, ...tipps, ...tippArtikel]
 }
