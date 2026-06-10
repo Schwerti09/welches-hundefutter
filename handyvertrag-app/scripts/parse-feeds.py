@@ -28,21 +28,29 @@ _awin_urls = [u.strip() for u in os.environ.get("AWIN_FEED_URLS", "").split(",")
 _adcell_urls = [u.strip() for u in os.environ.get("ADCELL_FEED_URLS", "").split(",") if u.strip()]
 if _awin_urls or _adcell_urls:
     _tmp = tempfile.mkdtemp(prefix="bella-feeds-")
-    AWIN_FEEDS = [_download(u, _tmp, f"awin{i}") for i, u in enumerate(_awin_urls)]
+    AWIN_FEEDS = [(_download(u, _tmp, f"awin{i}"), "default") for i, u in enumerate(_awin_urls)]
     ADCELL_FEEDS = [_download(u, _tmp, f"adcell{i}") for i, u in enumerate(_adcell_urls)]
+    AWIN_SHOPPING_FEEDS = []
 else:
     AWIN_FEEDS = [
-        os.path.join(DL, "11703-23513-de_DE-Default.csv.gz"),    # schecker.de (Hunde-Shop)
-        os.path.join(DL, "56633-107909-de_DE-Default.csv.gz"),   # Bellerei Hundezubehör
+        (os.path.join(DL, "11703-23513-de_DE-Default.csv.gz"), "schecker"),       # schecker.de (Hunde-Shop)
+        (os.path.join(DL, "56633-107909-de_DE-Default.csv.gz"), "default"),       # Bellerei Hundezubehör
+        (os.path.join(DL, "84955-99728-de_DE-Produktdatenfeed.csv.gz"), "petfood_brand"),  # bosch Tiernahrung DE
+        (os.path.join(DL, "datafeed_615299 (24).csv.gz"), "mixed_shop"),          # Haustierkost DE (BARF/Nass/Trocken/Snacks)
     ]
     ADCELL_FEEDS = [
         os.path.join(DL, "419197-66376.csv"),
         os.path.join(DL, "521034-66376.csv"),
         os.path.join(DL, "496158-66376.csv"),
     ]
+    AWIN_SHOPPING_FEEDS = [
+        os.path.join(DL, "116601-retail-de_DE.csv.gz"),  # fidelis.dog / goodmoodpetfood (Kauartikel)
+    ]
 
 # ── Filter-Heuristiken ───────────────────────────────────────────────────────
 FOOD_RE = re.compile(r"futter|nahrung|men[üu]\b|trockenfutter|nassfutter|kausnack|kauknochen|kaustange|kauartikel|leckerli|leckerchen|trainingssnack|barf|frostfutter|frischfleisch|dose|dosen|nass\b|trocken\b|kroketten|flocken|alleinfutter|erg[äa]nzungsfutter", re.I)
+# Futter-Unterkategorien bei Mischshops (z.B. "Hund > BARF > Fertigbarf") — Pflege/Ergänzung ausgeschlossen
+FOOD_SUBCAT_RE = re.compile(r"^(BARF|Nassfutter|Trockenfutter|Snacks|Schonend gegart)", re.I)
 ACCESSORY_RE = re.compile(r"beutel|tasche|pocket|napf|leine|halsband|geschirr|spielzeug|\bball\b|decke|k[öo]rbchen|kissen|b[üu]rste|\bkamm\b|shampoo|mantel|jacke|schuhe|pfote(?:n)?schutz|transportbox|\bbox\b|eimer|zaun|gitter|clicker|pfeife|markierungs|kotbeutel|handschuh|h[üu]rde|tunnel|g[üu]rtel|rucksack|tragetasche|buch|dvd", re.I)
 DOG_RE = re.compile(r"hund|dog|welpe|barf|doggy", re.I)
 OTHER_PET_RE = re.compile(r"katz|\bcat\b|nager|kaninchen.?stall|vogel|\bfisch.?tank|aquarium|pferd|reit", re.I)
@@ -59,14 +67,14 @@ def is_dog_food(title, cat, merchant_is_dog=False):
 
 def infer_type(t):
     t = t.lower()
-    if re.search(r"kausnack|kauknochen|kaustange|kauartikel|leckerli|trainingssnack|\bsnack|knochen|sticks?\b", t): return "snack"
+    if re.search(r"kausnack|kauknochen|kaustange|kauartikel|leckerli|trainingssnack|\bsnack|knochen|kn[öo]chelchen|sticks?\b|h[üu]lse|ohren|ziemer|smoothie|hundeeis", t): return "snack"
     if re.search(r"barf|frostfutter|frischfleisch|\broh\b", t): return "barf"
-    if re.search(r"nassfutter|nass-|\bdose|dosen|frischebeutel|men[üu]\b|feucht|pastete", t): return "nass"
+    if re.search(r"nassfutter|nass-|\bdose|dosen|frischebeutel|men[üu]\b|feucht|pastete|schonend gegart|frischemen", t): return "nass"
     if re.search(r"kaltgepresst", t): return "kaltgepresst"
     if re.search(r"trockenfutter|trocken|kroketten|flocken", t): return "trocken"
     return "trocken"
 
-PROTEINS = [("h[äa]hnchen","Huhn"),("huhn","Huhn"),("rind","Rind"),("lachs","Lachs"),("lamm","Lamm"),
+PROTEINS = [("h[äa]hnchen","Huhn"),("huhn","Huhn"),("h[üu]hn","Huhn"),("rind","Rind"),("lachs","Lachs"),("lamm","Lamm"),
             ("ente","Ente"),("pute","Pute"),("truthahn","Pute"),("wild","Wild"),("kaninchen","Kaninchen"),
             ("pferd","Pferd"),("ziege","Ziege"),("insekt","Insekt"),("fisch","Fisch"),("strauss","Strauß")]
 def infer_protein(t):
@@ -103,6 +111,17 @@ def weight_kg(t):
 def slugify(s):
     return re.sub(r"[^a-z0-9]+", "-", (s or "").lower()).strip("-")[:90]
 
+def clean_title(title):
+    """Manche Feeds (z.B. Haustierkost DE) packen SEO-Snippets per '|' in product_name,
+    z.B. 'haustierkost | Wild-Komplett Extra, 500g | Reh- und Hirschfleisch...'.
+    Extrahiert das eigentliche Produkt-Segment."""
+    if "|" in title:
+        parts = [p.strip() for p in title.split("|")]
+        parts = [p for p in parts if p and p.lower() != "haustierkost"]
+        if parts:
+            return parts[0]
+    return title.strip()
+
 def smart_open(path):
     """Gzip per Magic-Bytes erkennen (Download-URLs haben oft keine .gz-Endung);
     cp1252/Latin-1 korrekt dekodieren, Fallback utf-8."""
@@ -122,16 +141,38 @@ def add(rec):
         return
     out.setdefault(rec["slug"], rec)
 
-def parse_awin(path):
+def parse_awin(path, mode="default"):
+    """mode:
+    - "schecker": Hunde-Shop, Top-Kategorie muss Hundefutter/Hundesnacks sein + FOOD_RE
+    - "petfood_brand": reiner Tiernahrung-Hersteller (z.B. bosch) — alles unter Top-Kat "Hund" ist Futter
+    - "mixed_shop": Mischshop (z.B. Haustierkost) — nur Futter-Subkategorien (BARF/Nass/Trocken/Snacks), Pflege/Ergänzung raus
+    - "default": generische Heuristik (is_dog_food)
+    """
     n = 0
-    merchant_is_dog = "schecker" in path.lower()
     for row in csv.DictReader(smart_open(path)):
-        title = row.get("product_name") or ""
+        title = clean_title(row.get("product_name") or "")
         cat = row.get("merchant_category") or ""
-        if not is_dog_food(title, cat, merchant_is_dog):
-            continue
-        if (cat.split(">")[0] not in ("Hundefutter", "Hundesnacks")) and merchant_is_dog:
-            continue
+        parts = [p.strip() for p in cat.split(">")]
+        top = parts[0] if parts else ""
+        sub = parts[1] if len(parts) > 1 else ""
+
+        if mode == "schecker":
+            if not is_dog_food(title, cat, merchant_is_dog=True):
+                continue
+            if top not in ("Hundefutter", "Hundesnacks"):
+                continue
+        elif mode == "petfood_brand":
+            if top != "Hund":
+                continue
+        elif mode == "mixed_shop":
+            if top not in ("Hund", "Hund & Katze"):
+                continue
+            if not FOOD_SUBCAT_RE.match(sub):
+                continue
+        else:
+            if not is_dog_food(title, cat):
+                continue
+
         price = num(row.get("search_price"))
         wk = weight_kg(title)
         ppk = round(price / wk, 2) if (price and wk and wk > 0) else None
@@ -188,11 +229,42 @@ def parse_adcell(path):
         n += 1
     return n
 
+def parse_awin_shopping(path):
+    """AWIN-Feed im Google-Shopping-Format (title/price/brand/image_link/aw_deep_link).
+    Wird für reine Snack-/Kauartikel-Shops genutzt (z.B. fidelis.dog)."""
+    n = 0
+    for row in csv.DictReader(smart_open(path)):
+        title = row.get("title") or ""
+        price = num(row.get("price"))
+        wk = weight_kg(title)
+        ppk = round(price / wk, 2) if (price and wk and wk > 0) else None
+        brand = (row.get("brand") or (title.split()[0] if title else "")).strip("®™,")
+        add({
+            "slug": slugify(f"{brand}-{title}-{row.get('gtin','') or row.get('mpn','')}"),
+            "brand": brand,
+            "name": title.strip(),
+            "type": infer_type(title),
+            "protein": infer_protein(title),
+            "isGrainFree": bool(re.search(r"getreidefrei|grain.?free", title, re.I)),
+            "isHypoallergenic": bool(re.search(r"hypoallergen|sensitiv|monoprotein|allergie", title, re.I)),
+            "pricePerKg": ppk,
+            "price": price,
+            "suitableFor": suitable_for(title),
+            "imageUrl": row.get("image_link") or None,
+            "affiliateNetwork": "awin",
+            "affiliateUrl": row.get("aw_deep_link") or row.get("link") or "",
+            "source": brand or "awin",
+        })
+        n += 1
+    return n
+
 print("BELLA Feed-Parser")
-for p in AWIN_FEEDS:
-    if os.path.exists(p): print(f"  AWIN {os.path.basename(p)}: {parse_awin(p)} Futter")
+for p, mode in AWIN_FEEDS:
+    if os.path.exists(p): print(f"  AWIN {os.path.basename(p)} [{mode}]: {parse_awin(p, mode)} Futter")
 for p in ADCELL_FEEDS:
     if os.path.exists(p): print(f"  AdCell {os.path.basename(p)}: {parse_adcell(p)} Futter")
+for p in AWIN_SHOPPING_FEEDS:
+    if os.path.exists(p): print(f"  AWIN-Shopping {os.path.basename(p)}: {parse_awin_shopping(p)} Futter")
 
 records = list(out.values())
 json.dump(records, open(os.path.join(os.path.dirname(__file__), "dog_foods.json"), "w", encoding="utf-8"), ensure_ascii=False)
