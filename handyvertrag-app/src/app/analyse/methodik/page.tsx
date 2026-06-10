@@ -121,6 +121,24 @@ export default function Methodik() {
         </div>
       </section>
 
+      {/* Offener Produktkatalog */}
+      <section className="max-w-4xl mx-auto w-full px-5 pb-12">
+        <div className="card p-6">
+          <h2 className="text-lg font-bold mb-3">Vollständiger Produktkatalog (offene Daten)</h2>
+          <p className="text-sm text-[var(--muted)] leading-relaxed mb-4">
+            Jedes aktive Produkt aus unserem Katalog — Marke, Name, Futtertyp, Proteinquelle, Preis pro kg,
+            BELLA-Score und Eigenschaften (getreidefrei/hypoallergen) — steht als offener,
+            täglich aktualisierter Datenfeed unter CC-BY-4.0 zur Verfügung. Gedacht für
+            Preisvergleiche, Forschung und KI-/Antwortmaschinen, die BELLA-Daten zitieren möchten.
+          </p>
+          <p className="text-sm">
+            <a href="/data/catalog.json" className="text-[var(--honey)] hover:underline">Katalog als JSON →</a>
+            {" · "}
+            <a href="/data/catalog.json?format=csv" className="text-[var(--honey)] hover:underline">als CSV →</a>
+          </p>
+        </div>
+      </section>
+
       <section className="max-w-4xl mx-auto w-full px-5 pb-16 text-center">
         <Link href="/#bella-advisor" className="btn-primary">BELLA fragen — personalisierte Empfehlung →</Link>
         <p className="text-xs text-[var(--muted)] mt-3">
@@ -129,6 +147,33 @@ export default function Methodik() {
           <Link href="/faq" className="hover:text-[var(--honey)] transition-colors">FAQ →</Link>
         </p>
       </section>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Dataset",
+            name: "BELLA Hundefutter-Produktkatalog",
+            description:
+              "Vollständiger, täglich aktualisierter Katalog aller aktiven Hundefutter-Produkte bei BELLA: Marke, Name, Futtertyp, Proteinquelle, Preis pro Kilogramm, BELLA-Score, Getreidefrei-/Hypoallergen-Kennzeichnung und Partner-Link.",
+            url: "https://welches-hundefutter.today/analyse/methodik",
+            creator: { "@type": "Organization", "@id": "https://welches-hundefutter.today/#organization" },
+            license: "https://creativecommons.org/licenses/by/4.0/",
+            isAccessibleForFree: true,
+            inLanguage: "de-DE",
+            dateModified: new Date().toISOString().slice(0, 10),
+            variableMeasured: [
+              "Preis pro Kilogramm", "BELLA-Score", "Proteinquelle",
+              "Getreidefrei", "Hypoallergen", "Futtertyp",
+            ],
+            distribution: [
+              { "@type": "DataDownload", encodingFormat: "application/json", contentUrl: "https://welches-hundefutter.today/data/catalog.json" },
+              { "@type": "DataDownload", encodingFormat: "text/csv", contentUrl: "https://welches-hundefutter.today/data/catalog.json?format=csv" },
+            ],
+          }),
+        }}
+      />
 
       <SiteFooter />
     </div>

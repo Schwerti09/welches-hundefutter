@@ -48,6 +48,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/analyse/preisindex-2026`, lastModified: now, changeFrequency: 'daily', priority: 0.85 },
     { url: `${BASE}/analyse/methodik`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${BASE}/data/hundefutter-report`, lastModified: now, changeFrequency: 'daily', priority: 0.7 },
+    { url: `${BASE}/data/catalog.json`, lastModified: now, changeFrequency: 'daily', priority: 0.7 },
     { url: `${BASE}/vergleich`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${BASE}/vergleich/trockenfutter-vs-nassfutter`, lastModified: now, changeFrequency: 'monthly', priority: 0.85 },
     { url: `${BASE}/vergleich/barf-vs-trockenfutter`, lastModified: now, changeFrequency: 'monthly', priority: 0.85 },
