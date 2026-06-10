@@ -6,6 +6,27 @@ import StructuredData from "@/components/StructuredData";
 import AuthorBox from "@/components/AuthorBox";
 import SiteFooter from "@/components/SiteFooter";
 import TipArticleImage from "@/components/TipArticleImage";
+import ReadingProgress from "@/components/ReadingProgress";
+
+// Wandelt eine Überschrift in einen URL-tauglichen Anker-Slug um
+function slugifyHeading(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+// Rendert **fett** innerhalb von Fließtext als <strong>
+function renderInline(text: string): React.ReactNode[] {
+  return text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
+    part.startsWith("**") && part.endsWith("**") ? (
+      <strong key={i} className="text-[var(--ink)] font-semibold">{part.slice(2, -2)}</strong>
+    ) : (
+      <span key={i}>{part}</span>
+    )
+  );
+}
 
 export const revalidate = 86400;
 
@@ -123,8 +144,18 @@ export default async function TipArticlePage({
     ?.map((id) => cat.articles?.find((a) => a.id === id))
     .filter(Boolean) as TipArticle[] || [];
 
+  // Inhaltsverzeichnis aus den ##-Überschriften des Artikels
+  const toc = article.content
+    .split("\n")
+    .filter((line) => line.startsWith("## ") && !line.startsWith("### "))
+    .map((line) => {
+      const text = line.replace(/^##\s+/, "").trim();
+      return { text, id: slugifyHeading(text) };
+    });
+
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
+      <ReadingProgress accent={cat.accent} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       {geoSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(geoSchema) }} />}
       <StructuredData type="breadcrumb" breadcrumbs={breadcrumbs} />
@@ -208,58 +239,94 @@ export default async function TipArticlePage({
           Fütterungsformen wende dich bitte an deine Tierärztin oder deinen Tierarzt.
         </div>
 
+        {/* INHALTSVERZEICHNIS */}
+        {toc.length >= 3 && (
+          <nav className="card p-5 mb-10" aria-label="Inhaltsverzeichnis">
+            <p className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)] mb-3">
+              Inhalt
+            </p>
+            <ol className="space-y-1.5">
+              {toc.map((h, i) => (
+                <li key={h.id} className="flex gap-2 text-sm">
+                  <span className="tabular-nums font-semibold" style={{ color: cat.accent }}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <a href={`#${h.id}`} className="text-[var(--muted)] hover:text-[var(--honey)] transition-colors">
+                    {h.text}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )}
+
         {/* ARTIKEL-CONTENT (Markdown-Rendering) */}
         <div className="prose prose-lg max-w-none">
           <div className="article-content">
             {article.content.split("\n\n").map((paragraph, idx) => {
               // Überschriften
               if (paragraph.startsWith("### ")) {
+                const text = paragraph.replace(/^###\s+/, "");
                 return (
-                  <h3 key={idx} className="text-2xl font-bold mt-8 mb-4">
-                    {paragraph.replace("### ", "")}
+                  <h3 key={idx} id={slugifyHeading(text)} className="text-xl sm:text-2xl font-bold mt-8 mb-3 scroll-mt-24">
+                    {text}
                   </h3>
                 );
               }
               if (paragraph.startsWith("## ")) {
+                const text = paragraph.replace(/^##\s+/, "");
                 return (
-                  <h2 key={idx} className="text-3xl font-bold mt-10 mb-6">
-                    {paragraph.replace("## ", "")}
+                  <h2 key={idx} id={slugifyHeading(text)} className="text-2xl sm:text-3xl font-extrabold tracking-tight mt-12 mb-5 scroll-mt-24">
+                    {text}
                   </h2>
                 );
               }
-              
+
               // Listen
               if (paragraph.startsWith("- ")) {
-                const items = paragraph.split("\n").map((item) => item.replace("- ", ""));
+                const items = paragraph.split("\n").map((item) => item.replace(/^-\s+/, ""));
                 return (
-                  <ul key={idx} className="list-disc pl-6 mb-6 space-y-2">
+                  <ul key={idx} className="list-disc pl-6 mb-6 space-y-2 marker:text-[var(--muted)]">
                     {items.map((item, i) => (
                       <li key={i} className="text-[var(--ink)] leading-relaxed">
-                        {item}
+                        {renderInline(item)}
                       </li>
                     ))}
                   </ul>
                 );
               }
-              
+
               // Nummerierte Listen
               if (paragraph.match(/^\d+\./)) {
                 const items = paragraph.split("\n").map((item) => item.replace(/^\d+\.\s/, ""));
                 return (
-                  <ol key={idx} className="list-decimal pl-6 mb-6 space-y-2">
+                  <ol key={idx} className="list-decimal pl-6 mb-6 space-y-2 marker:text-[var(--muted)]">
                     {items.map((item, i) => (
                       <li key={i} className="text-[var(--ink)] leading-relaxed">
-                        {item}
+                        {renderInline(item)}
                       </li>
                     ))}
                   </ol>
                 );
               }
-              
+
+              // Blockzitat / Hinweis
+              if (paragraph.startsWith("> ")) {
+                return (
+                  <blockquote
+                    key={idx}
+                    className="border-l-4 pl-5 py-1 my-6 text-[var(--muted)] italic"
+                    style={{ borderColor: cat.accent }}
+                  >
+                    {renderInline(paragraph.replace(/^>\s+/, ""))}
+                  </blockquote>
+                );
+              }
+
               // Normale Absätze
               return (
-                <p key={idx} className="text-[var(--ink)] leading-relaxed mb-6">
-                  {paragraph}
+                <p key={idx} className="text-[var(--ink)]/90 leading-relaxed mb-6">
+                  {renderInline(paragraph)}
                 </p>
               );
             })}

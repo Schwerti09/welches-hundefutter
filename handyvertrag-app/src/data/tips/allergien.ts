@@ -1,4 +1,5 @@
 import type { TipCategory } from "./types";
+import { allergienArticles } from "./articles/allergien";
 
 export const allergien: TipCategory = {
   slug: "allergien",
@@ -112,4 +113,5 @@ export const allergien: TipCategory = {
     [99, "Kleine Fortschritte würdigen", "Weniger Kratzen, ruhigere Nächte, bessere Haut — jeder Schritt zählt. Erfolge motivieren, am Plan dranzubleiben.", 0, ["motivation", "verlauf"]],
     [100, "Den juckreizfreien Hund als Ziel sehen", "Ein Hund, der nicht ständig leidet, gewinnt enorm an Lebensqualität. Dein konsequentes Management schenkt ihm spürbar Wohlbefinden.", 0, ["lebensqualitaet", "motivation"]],
   ],
+  articles: allergienArticles,
 };
