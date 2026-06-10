@@ -17,6 +17,12 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "images.dog.ceo",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 

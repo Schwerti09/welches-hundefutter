@@ -200,7 +200,7 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
 
   const allergyProne = (breed.commonHealthIssues ?? []).some((i) => /allergi|haut|magen|darm|verdau/i.test(i));
   const foods = await getBreedFoods(breed.slug, allergyProne);
-  const photo = PHOTO[breed.slug] ?? breed.imageUrl;
+  const photo = PHOTO[breed.slug];
 
   const portions = computePortions(breed);
   const feedingParas = buildFeedingParagraphs(breed);
