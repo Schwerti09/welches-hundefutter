@@ -25,8 +25,14 @@ export async function generateMetadata({
   return {
     title: `${cat.headline} – 100 Tipps von BELLA`,
     description: cat.description,
-    alternates: { 
-      canonical: `https://welches-hundefutter.today/tipps/${category}` 
+    alternates: {
+      canonical: `https://welches-hundefutter.today/tipps/${category}`,
+      languages: {
+        "de-DE": `https://welches-hundefutter.today/tipps/${category}`,
+        "de-AT": `https://welches-hundefutter.today/tipps/${category}`,
+        "de-CH": `https://welches-hundefutter.today/tipps/${category}`,
+        "x-default": `https://welches-hundefutter.today/tipps/${category}`,
+      },
     },
     openGraph: {
       title: cat.headline,

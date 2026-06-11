@@ -7,7 +7,15 @@ import SiteFooter from "@/components/SiteFooter";
 export const metadata: Metadata = {
   title: "Wissenschaftliche Quellen & Studien | welches-hundefutter.today",
   description: "Alle Studien, Leitlinien und wissenschaftlichen Quellen, auf die sich die Ratgeber von welches-hundefutter.today stuetzen — mit DOI, PubMed-Link und Kernaussage.",
-  alternates: { canonical: "https://welches-hundefutter.today/quellen" },
+  alternates: {
+    canonical: "https://welches-hundefutter.today/quellen",
+    languages: {
+      "de-DE": "https://welches-hundefutter.today/quellen",
+      "de-AT": "https://welches-hundefutter.today/quellen",
+      "de-CH": "https://welches-hundefutter.today/quellen",
+      "x-default": "https://welches-hundefutter.today/quellen",
+    },
+  },
 };
 
 const TYPE_LABEL: Record<string, string> = {

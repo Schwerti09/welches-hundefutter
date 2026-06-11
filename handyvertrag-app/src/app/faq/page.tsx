@@ -7,7 +7,15 @@ import SiteFooter from "@/components/SiteFooter";
 export const metadata: Metadata = {
   title: "Hundefutter FAQ 2026: 25 Fragen zur Hundeernährung beantwortet | BELLA",
   description: "Welches Hundefutter ist das beste? Was bei Allergie, Übergewicht, Welpen? Wie viel täglich? BELLA beantwortet 25 wichtige Fragen zur Hundeernährung – konkret und verständlich.",
-  alternates: { canonical: "https://welches-hundefutter.today/faq" },
+  alternates: {
+    canonical: "https://welches-hundefutter.today/faq",
+    languages: {
+      "de-DE": "https://welches-hundefutter.today/faq",
+      "de-AT": "https://welches-hundefutter.today/faq",
+      "de-CH": "https://welches-hundefutter.today/faq",
+      "x-default": "https://welches-hundefutter.today/faq",
+    },
+  },
 };
 
 const faqs = [

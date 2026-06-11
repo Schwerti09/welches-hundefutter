@@ -30,7 +30,12 @@ export const metadata: Metadata = {
   formatDetection: { email: false, address: false, telephone: false },
   alternates: {
     canonical: "https://welches-hundefutter.today",
-    languages: { "de-DE": "https://welches-hundefutter.today" },
+    languages: {
+      "de-DE": "https://welches-hundefutter.today",
+      "de-AT": "https://welches-hundefutter.today",
+      "de-CH": "https://welches-hundefutter.today",
+      "x-default": "https://welches-hundefutter.today",
+    },
   },
   openGraph: {
     type: "website",

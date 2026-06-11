@@ -312,7 +312,15 @@ export async function generateMetadata({
       title: `Hundefutter ${city.name} — BELLA berät kostenlos`,
       description: `~${dogs} Hunde in ${city.name}. BELLA findet das perfekte Futter für deinen Vierbeiner — kostenlos, ohne Anmeldung, aus über 8.400 echten Produkten.`,
     },
-    alternates: { canonical: `/stadt/${city.slug}` },
+    alternates: {
+      canonical: `/stadt/${city.slug}`,
+      languages: {
+        "de-DE": `/stadt/${city.slug}`,
+        "de-AT": `/stadt/${city.slug}`,
+        "de-CH": `/stadt/${city.slug}`,
+        "x-default": `/stadt/${city.slug}`,
+      },
+    },
   };
 }
 

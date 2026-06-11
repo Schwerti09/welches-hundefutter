@@ -25,7 +25,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: `${p.tagline} | BELLA – KI-Hundefutterberaterin`,
     description: `${p.description.slice(0, 150)}… BELLA findet das passende Futter aus 8.000+ Sorten.`,
-    alternates: { canonical: `https://welches-hundefutter.today/problem/${p.slug}` },
+    alternates: {
+      canonical: `https://welches-hundefutter.today/problem/${p.slug}`,
+      languages: {
+        "de-DE": `https://welches-hundefutter.today/problem/${p.slug}`,
+        "de-AT": `https://welches-hundefutter.today/problem/${p.slug}`,
+        "de-CH": `https://welches-hundefutter.today/problem/${p.slug}`,
+        "x-default": `https://welches-hundefutter.today/problem/${p.slug}`,
+      },
+    },
   };
 }
 

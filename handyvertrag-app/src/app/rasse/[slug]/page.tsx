@@ -31,7 +31,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title,
     description,
-    alternates: { canonical: `https://welches-hundefutter.today/rasse/${b.slug}` },
+    alternates: {
+      canonical: `https://welches-hundefutter.today/rasse/${b.slug}`,
+      languages: {
+        "de-DE": `https://welches-hundefutter.today/rasse/${b.slug}`,
+        "de-AT": `https://welches-hundefutter.today/rasse/${b.slug}`,
+        "de-CH": `https://welches-hundefutter.today/rasse/${b.slug}`,
+        "x-default": `https://welches-hundefutter.today/rasse/${b.slug}`,
+      },
+    },
     openGraph: { title, description, images: PHOTO[b.slug] ? [PHOTO[b.slug]] : [] },
   };
 }

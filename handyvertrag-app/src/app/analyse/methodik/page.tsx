@@ -5,7 +5,15 @@ import SiteFooter from "@/components/SiteFooter";
 export const metadata: Metadata = {
   title: "BELLA-Score: Unsere Bewertungsmethodik für Hundefutter | BELLA",
   description: "Wie BELLA Hundefutter bewertet: transparente Score-Methodik aus Proteinquelle, Getreidefreiheit, Preis-Qualität und Futtertyp. Verteidigbar, nachvollziehbar, ehrlich.",
-  alternates: { canonical: "https://welches-hundefutter.today/analyse/methodik" },
+  alternates: {
+    canonical: "https://welches-hundefutter.today/analyse/methodik",
+    languages: {
+      "de-DE": "https://welches-hundefutter.today/analyse/methodik",
+      "de-AT": "https://welches-hundefutter.today/analyse/methodik",
+      "de-CH": "https://welches-hundefutter.today/analyse/methodik",
+      "x-default": "https://welches-hundefutter.today/analyse/methodik",
+    },
+  },
 };
 
 const KRITERIEN = [

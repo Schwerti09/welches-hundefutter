@@ -9,7 +9,15 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: `${TOTAL_TIPS} Hunde-Tipps von BELLA – Ernährung, Gesundheit, Pflege & Training`,
   description: `Über ${TOTAL_TIPS} praktische Hunde-Tipps in ${TIP_CATEGORIES.length} Kategorien: Ernährung, Abnehmen, Gesundheit, Welpen, Senioren, Allergien, Zähne, BARF, Verdauung und mehr. Fundiert, alltagstauglich und kostenlos.`,
-  alternates: { canonical: "https://welches-hundefutter.today/tipps" },
+  alternates: {
+    canonical: "https://welches-hundefutter.today/tipps",
+    languages: {
+      "de-DE": "https://welches-hundefutter.today/tipps",
+      "de-AT": "https://welches-hundefutter.today/tipps",
+      "de-CH": "https://welches-hundefutter.today/tipps",
+      "x-default": "https://welches-hundefutter.today/tipps",
+    },
+  },
   openGraph: {
     title: `${TOTAL_TIPS} Hunde-Tipps von BELLA`,
     description: `Praktische Tipps rund um Ernährung, Gesundheit und Pflege deines Hundes — in ${TIP_CATEGORIES.length} Kategorien.`,

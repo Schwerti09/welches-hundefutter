@@ -5,7 +5,15 @@ import StructuredData from "@/components/StructuredData";
 export const metadata: Metadata = {
   title: "Ratgeber: Hundefutter für deinen Hund Schritt für Schritt | BELLA",
   description: "Kompletter Guide: So bekommst du einen Hundefutter trotz negativem Allergien-Eintrag. Mit Tipps & Tricks für 2026.",
-  alternates: { canonical: "https://welches-hundefutter.today/guides" },
+  alternates: {
+    canonical: "https://welches-hundefutter.today/guides",
+    languages: {
+      "de-DE": "https://welches-hundefutter.today/guides",
+      "de-AT": "https://welches-hundefutter.today/guides",
+      "de-CH": "https://welches-hundefutter.today/guides",
+      "x-default": "https://welches-hundefutter.today/guides",
+    },
+  },
 };
 
 const howToFaqs = [

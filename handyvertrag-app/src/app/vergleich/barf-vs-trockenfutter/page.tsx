@@ -7,7 +7,15 @@ import SiteFooter from "@/components/SiteFooter";
 export const metadata: Metadata = {
   title: "BARF vs. Trockenfutter: Direktvergleich 2026 | BELLA",
   description: "BARF oder Trockenfutter? Kosten, Nährwerte, Aufwand, Risiken und Nutzen ehrlich verglichen. Für welche Hunde und Halter ist welche Methode geeignet?",
-  alternates: { canonical: "https://welches-hundefutter.today/vergleich/barf-vs-trockenfutter" },
+  alternates: {
+    canonical: "https://welches-hundefutter.today/vergleich/barf-vs-trockenfutter",
+    languages: {
+      "de-DE": "https://welches-hundefutter.today/vergleich/barf-vs-trockenfutter",
+      "de-AT": "https://welches-hundefutter.today/vergleich/barf-vs-trockenfutter",
+      "de-CH": "https://welches-hundefutter.today/vergleich/barf-vs-trockenfutter",
+      "x-default": "https://welches-hundefutter.today/vergleich/barf-vs-trockenfutter",
+    },
+  },
 };
 
 const faqItems = [

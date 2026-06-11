@@ -20,7 +20,15 @@ export async function generateMetadata({
   return {
     title: `${article.title} | BELLA`,
     description: article.description,
-    alternates: { canonical: `https://welches-hundefutter.today/blog/${slug}` },
+    alternates: {
+      canonical: `https://welches-hundefutter.today/blog/${slug}`,
+      languages: {
+        "de-DE": `https://welches-hundefutter.today/blog/${slug}`,
+        "de-AT": `https://welches-hundefutter.today/blog/${slug}`,
+        "de-CH": `https://welches-hundefutter.today/blog/${slug}`,
+        "x-default": `https://welches-hundefutter.today/blog/${slug}`,
+      },
+    },
     authors: [{ name: "R. Schwertfechter", url: "https://welches-hundefutter.today/ueber-uns" }],
     openGraph: {
       title: article.title,

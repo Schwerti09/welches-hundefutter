@@ -95,7 +95,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: `${p.tagline} | BELLA – KI-Hundefutterberaterin`,
     description: `${p.description.slice(0, 155)}… BELLA empfiehlt das passende aus 8.000+ Sorten.`,
-    alternates: { canonical: `https://welches-hundefutter.today/lebensphase/${slug}` },
+    alternates: {
+      canonical: `https://welches-hundefutter.today/lebensphase/${slug}`,
+      languages: {
+        "de-DE": `https://welches-hundefutter.today/lebensphase/${slug}`,
+        "de-AT": `https://welches-hundefutter.today/lebensphase/${slug}`,
+        "de-CH": `https://welches-hundefutter.today/lebensphase/${slug}`,
+        "x-default": `https://welches-hundefutter.today/lebensphase/${slug}`,
+      },
+    },
   };
 }
 

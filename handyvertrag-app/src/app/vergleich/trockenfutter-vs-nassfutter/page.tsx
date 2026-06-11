@@ -7,7 +7,15 @@ import SiteFooter from "@/components/SiteFooter";
 export const metadata: Metadata = {
   title: "Trockenfutter vs. Nassfutter: Der ehrliche Vergleich 2026 | BELLA",
   description: "Was ist besser für deinen Hund – Trocken- oder Nassfutter? Kosten, Nährwerte, Zahngesundheit, Sättigung und Praxis im Direktvergleich. Ohne Herstellermeinungen.",
-  alternates: { canonical: "https://welches-hundefutter.today/vergleich/trockenfutter-vs-nassfutter" },
+  alternates: {
+    canonical: "https://welches-hundefutter.today/vergleich/trockenfutter-vs-nassfutter",
+    languages: {
+      "de-DE": "https://welches-hundefutter.today/vergleich/trockenfutter-vs-nassfutter",
+      "de-AT": "https://welches-hundefutter.today/vergleich/trockenfutter-vs-nassfutter",
+      "de-CH": "https://welches-hundefutter.today/vergleich/trockenfutter-vs-nassfutter",
+      "x-default": "https://welches-hundefutter.today/vergleich/trockenfutter-vs-nassfutter",
+    },
+  },
   openGraph: {
     title: "Trockenfutter vs. Nassfutter 2026 – Was ist besser für deinen Hund?",
     description: "Kosten, Nährwerte, Zähne, Sättigung im direkten Vergleich. Datenbasiert, ohne Hersteller-Bias.",

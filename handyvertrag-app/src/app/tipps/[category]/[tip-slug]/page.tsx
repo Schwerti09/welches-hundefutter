@@ -63,8 +63,14 @@ export async function generateMetadata({
     title: article.seoTitle,
     description: article.seoDescription,
     keywords: article.keywords,
-    alternates: { 
-      canonical: `https://welches-hundefutter.today/tipps/${category}/${tipSlug}` 
+    alternates: {
+      canonical: `https://welches-hundefutter.today/tipps/${category}/${tipSlug}`,
+      languages: {
+        "de-DE": `https://welches-hundefutter.today/tipps/${category}/${tipSlug}`,
+        "de-AT": `https://welches-hundefutter.today/tipps/${category}/${tipSlug}`,
+        "de-CH": `https://welches-hundefutter.today/tipps/${category}/${tipSlug}`,
+        "x-default": `https://welches-hundefutter.today/tipps/${category}/${tipSlug}`,
+      },
     },
     openGraph: {
       title: article.seoTitle,

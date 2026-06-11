@@ -63,7 +63,11 @@ function buildOrganizationSchema() {
       email: "support@welches-hundefutter.today",
       availableLanguage: ["German", "Deutsch"],
     },
-    areaServed: { "@type": "Country", name: "Deutschland" },
+    areaServed: [
+      { "@type": "Country", name: "Deutschland" },
+      { "@type": "Country", name: "Österreich" },
+      { "@type": "Country", name: "Schweiz" },
+    ],
     sameAs: ["https://github.com/Schwerti09/welches-hundefutter"],
     brand: {
       "@type": "Brand",

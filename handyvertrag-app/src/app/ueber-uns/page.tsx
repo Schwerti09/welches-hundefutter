@@ -5,7 +5,15 @@ import SiteFooter from "@/components/SiteFooter";
 export const metadata: Metadata = {
   title: "Über BELLA & Rolf Schwertfechter | Expertise, Methodik & Quellen",
   description: "Rolf Schwertfechter, Gründer von BELLA — KI-Ernährungsberaterin für Hunde. Über 8.442 analysierte Futtersorten, BELLA-Score-Methodik, peer-reviewed Quellen und vollständige Transparenz.",
-  alternates: { canonical: "https://welches-hundefutter.today/ueber-uns" },
+  alternates: {
+    canonical: "https://welches-hundefutter.today/ueber-uns",
+    languages: {
+      "de-DE": "https://welches-hundefutter.today/ueber-uns",
+      "de-AT": "https://welches-hundefutter.today/ueber-uns",
+      "de-CH": "https://welches-hundefutter.today/ueber-uns",
+      "x-default": "https://welches-hundefutter.today/ueber-uns",
+    },
+  },
 };
 
 const personSchema = {

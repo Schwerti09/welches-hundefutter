@@ -6,7 +6,15 @@ import SiteFooter from "@/components/SiteFooter";
 export const metadata: Metadata = {
   title: "Hundefutter Deals 2026 – Beste Angebote heute | BELLA",
   description: "Die besten Hundefutter-Deals: tagesaktuelle Angebote von Anifit, Wolfsblut, Futalis und mehr. Günstigste Preise aus dem Live-Katalog, täglich aktualisiert.",
-  alternates: { canonical: "https://welches-hundefutter.today/deals" },
+  alternates: {
+    canonical: "https://welches-hundefutter.today/deals",
+    languages: {
+      "de-DE": "https://welches-hundefutter.today/deals",
+      "de-AT": "https://welches-hundefutter.today/deals",
+      "de-CH": "https://welches-hundefutter.today/deals",
+      "x-default": "https://welches-hundefutter.today/deals",
+    },
+  },
 };
 
 interface DogFoodDeal {

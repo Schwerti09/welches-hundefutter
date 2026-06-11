@@ -5,7 +5,15 @@ import { blogArticles } from "@/data/blogArticles";
 export const metadata: Metadata = {
   title: "Blog: Hundefutter, Allergien & Bonität | BELLA",
   description: "Aktuelle Ratgeber zu Hundefutter für deinen Hund, Allergien-Score verbessern und Hundeernährung-Tipps für 2026.",
-  alternates: { canonical: "https://welches-hundefutter.today/blog" },
+  alternates: {
+    canonical: "https://welches-hundefutter.today/blog",
+    languages: {
+      "de-DE": "https://welches-hundefutter.today/blog",
+      "de-AT": "https://welches-hundefutter.today/blog",
+      "de-CH": "https://welches-hundefutter.today/blog",
+      "x-default": "https://welches-hundefutter.today/blog",
+    },
+  },
 };
 
 export default function BlogPage() {

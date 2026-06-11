@@ -25,7 +25,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: `${f.tagline} | BELLA – KI-Hundefutterberaterin`,
     description: `${f.description.slice(0, 155)}… BELLA vergleicht über 8.000 Sorten und empfiehlt das passende.`,
-    alternates: { canonical: `https://welches-hundefutter.today/futtertyp/${f.slug}` },
+    alternates: {
+      canonical: `https://welches-hundefutter.today/futtertyp/${f.slug}`,
+      languages: {
+        "de-DE": `https://welches-hundefutter.today/futtertyp/${f.slug}`,
+        "de-AT": `https://welches-hundefutter.today/futtertyp/${f.slug}`,
+        "de-CH": `https://welches-hundefutter.today/futtertyp/${f.slug}`,
+        "x-default": `https://welches-hundefutter.today/futtertyp/${f.slug}`,
+      },
+    },
   };
 }
 

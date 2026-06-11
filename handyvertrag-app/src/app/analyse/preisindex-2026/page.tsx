@@ -9,7 +9,15 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Hundefutter-Preisindex 2026: Welche Marken wurden teurer? | BELLA",
   description: "BELLA analysiert 6.700+ Preis-Snapshots aus dem AWIN-Feed: welche Hundefutter-Typen teurer wurden, welche günstiger, und was das für deinen Geldbeutel bedeutet.",
-  alternates: { canonical: "https://welches-hundefutter.today/analyse/preisindex-2026" },
+  alternates: {
+    canonical: "https://welches-hundefutter.today/analyse/preisindex-2026",
+    languages: {
+      "de-DE": "https://welches-hundefutter.today/analyse/preisindex-2026",
+      "de-AT": "https://welches-hundefutter.today/analyse/preisindex-2026",
+      "de-CH": "https://welches-hundefutter.today/analyse/preisindex-2026",
+      "x-default": "https://welches-hundefutter.today/analyse/preisindex-2026",
+    },
+  },
   openGraph: {
     title: "Hundefutter-Preisindex 2026 — Echte Preisdaten aus dem gesamten aktiven Katalog",
     description: "Welche Futtertypen sind 2026 teurer geworden? BELLA hat über 6.700 Preis-Snapshots ausgewertet.",
