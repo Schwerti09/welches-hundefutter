@@ -89,10 +89,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         {/* DNS Prefetch */}
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
-        
-        {/* Canonical Link */}
-        <link rel="canonical" href="https://welches-hundefutter.today" />
-        
+
         {/* Additional SEO Tags */}
         <meta name="author" content="R. Schwertfechter" />
         <meta name="copyright" content="© 2026 BELLA Intelligence System" />

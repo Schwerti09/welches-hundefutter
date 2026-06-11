@@ -283,7 +283,6 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
 
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
-      <StructuredData type="organization" />
       <StructuredData
         type="article"
         article={{

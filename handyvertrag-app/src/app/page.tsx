@@ -40,9 +40,6 @@ export default async function HomePage() {
   const heroBreeds = (breedGallery as { name: string; slug: string; img: string }[]).slice(0, 8);
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
-      <StructuredData type="organization" />
-      <StructuredData type="website" />
-      <StructuredData type="software" />
       <StructuredData type="faq" faqs={SCHEMA_FAQS} />
 
       {/* HERO — lebende BELLA · Bento-Universum · Schnüffel-Scan */}
