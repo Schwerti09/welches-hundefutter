@@ -31,7 +31,7 @@ export default function HeroLiving({ foodCount, topFood, breeds }: { foodCount: 
   const [focused, setFocused] = useState(false);
   const [scanning, setScanning] = useState(false);
   const [ph, setPh] = useState("");
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(foodCount);
 
   const reduced = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 

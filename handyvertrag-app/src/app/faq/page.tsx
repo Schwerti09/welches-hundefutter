@@ -28,7 +28,7 @@ const faqs = [
       },
       {
         frage: "Wie erkenne ich gutes Hundefutter?",
-        antwort: "Checkliste: (1) Fleisch als erste Zutat, spezifisch benannt. (2) Rohprotein ≥ 25 % bei Trockenfutter. (3) Keine Zucker, Melasse oder Karamell. (4) Keine Ethoxyquin (E324) als Konservierungsmittel. (5) Klare Deklaration – kein 'Fleisch und tierische Nebenerzeugnisse' ohne Herkunftsangabe. (6) Analysewerte auf der Packung nachvollziehbar. Der BELLA-Score bewertet diese Kriterien auf einer Skala von 35–98 für alle 8.442 Sorten im Katalog.",
+        antwort: "Checkliste: (1) Fleisch als erste Zutat, spezifisch benannt. (2) Rohprotein ≥ 25 % bei Trockenfutter. (3) Keine Zucker, Melasse oder Karamell. (4) Keine Ethoxyquin (E324) als Konservierungsmittel. (5) Klare Deklaration – kein 'Fleisch und tierische Nebenerzeugnisse' ohne Herkunftsangabe. (6) Analysewerte auf der Packung nachvollziehbar. Der BELLA-Score bewertet diese Kriterien auf einer Skala von 35–98 für alle 11.000+ Sorten im Katalog.",
       },
       {
         frage: "Was bedeutet 'tierische Nebenerzeugnisse' auf der Packung?",

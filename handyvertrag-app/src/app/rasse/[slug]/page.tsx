@@ -225,7 +225,7 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
   const midPortion = portions[Math.floor(portions.length / 2)];
 
   // BELLA-Intro personalisiert
-  const bellaIntro = `Ein ${breed.name}! ${breed.isMixedBreed ? "Mischlinge sind oft besonders robust." : "Tolle Wahl."} Ich bin BELLA und helfe dir, aus 8.000+ Produkten das optimale Futter zu finden. Kurz erzählen: Wie alt ist dein ${breed.name} und was ist das aktuelle Hauptproblem?`;
+  const bellaIntro = `Ein ${breed.name}! ${breed.isMixedBreed ? "Mischlinge sind oft besonders robust." : "Tolle Wahl."} Ich bin BELLA und helfe dir, aus 11.000+ Produkten das optimale Futter zu finden. Kurz erzählen: Wie alt ist dein ${breed.name} und was ist das aktuelle Hauptproblem?`;
 
   // FAQ-Daten
   const isLargeBreed = breed.size === "gross" || breed.size === "sehrgross";
@@ -647,7 +647,7 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-lg font-bold text-black flex-shrink-0">B</div>
             <div>
               <div className="font-bold text-sm">BELLA — dein KI-Futter-Berater</div>
-              <div className="text-xs text-[var(--muted)]">Aus 8.442 echten Produkten das optimale Futter finden</div>
+              <div className="text-xs text-[var(--muted)]">Aus 11.000+ echten Produkten das optimale Futter finden</div>
             </div>
           </div>
         </div>

@@ -197,7 +197,7 @@ export default async function HundSteckbriefPage({ params }: { params: { share_t
         <div className="rounded-2xl bg-gradient-to-r from-orange-600/20 to-amber-600/20 border border-orange-500/30 p-6 text-center">
           <p className="font-bold text-lg mb-2">Eigenes Futterprofil erstellen?</p>
           <p className="text-[var(--muted)] text-sm mb-4">
-            BELLA fragt 5 Dinge über deinen Hund und findet das passende Futter aus 8.000+ Sorten.
+            BELLA fragt 5 Dinge über deinen Hund und findet das passende Futter aus 11.000+ Sorten.
           </p>
           <Link
             href="/#bella-advisor"

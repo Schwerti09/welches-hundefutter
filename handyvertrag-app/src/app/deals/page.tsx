@@ -100,7 +100,7 @@ export default async function DealsPage() {
             <span className="text-[var(--honey)]">günstigste Sorten heute</span>
           </h1>
           <p className="text-[var(--muted)] text-lg max-w-xl mx-auto leading-relaxed">
-            Täglich aktualisierte Preise aus über 8.000 Sorten — BELLA zeigt dir die besten Deals.
+            Täglich aktualisierte Preise aus über 11.000 Sorten — BELLA zeigt dir die besten Deals.
           </p>
         </div>
 

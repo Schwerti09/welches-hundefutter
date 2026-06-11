@@ -12,7 +12,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Welches Hundefutter für meinen Hund? ✓ KI-Berater BELLA findet es in 60 Sekunden",
-  description: "Welches Hundefutter passt zu deinem Hund? BELLA vergleicht über 8.000 echte Sorten und empfiehlt das passende für Rasse, Alter & Allergien. Kostenlos & unabhängig.",
+  description: "Welches Hundefutter passt zu deinem Hund? BELLA vergleicht über 11.000 echte Sorten und empfiehlt das passende für Rasse, Alter & Allergien. Kostenlos & unabhängig.",
   alternates: {
     canonical: "https://welches-hundefutter.today",
     languages: {
@@ -33,7 +33,7 @@ const SCHEMA_FAQS = [
 
 export default async function HomePage() {
   const [topFoods, foodCount] = await Promise.all([getTopFoods(7), getFoodCount()]);
-  const countLabel = foodCount > 0 ? foodCount.toLocaleString("de-DE") : "8.000+";
+  const countLabel = foodCount > 0 ? foodCount.toLocaleString("de-DE") : "11.000+";
   const cheapest = topFoods[0]
     ? { brand: topFoods[0].brand, name: topFoods[0].name, pricePerKg: topFoods[0].pricePerKg, affiliateUrl: topFoods[0].affiliateUrl }
     : null;

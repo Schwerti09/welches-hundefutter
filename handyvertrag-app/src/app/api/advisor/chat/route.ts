@@ -162,7 +162,7 @@ async function fetchCandidates(intent: DogIntent): Promise<{ offers: ScoredFood[
   if (intent.foodType) { cond.push(`type = $${p++}`); params.push(intent.foodType); }
   if (intent.maxPricePerKg) { cond.push(`(price_per_kg IS NULL OR price_per_kg <= $${p++})`); params.push(intent.maxPricePerKg); }
 
-  let totalScanned = 8000;
+  let totalScanned = 11000;
   try {
     const cnt = await sql.query(`SELECT COUNT(*)::int total FROM dog_foods WHERE ${cond.join(" AND ")}`, params);
     totalScanned = ((cnt as unknown as { rows?: { total: number }[] }).rows ?? (cnt as unknown as { total: number }[]))[0]?.total ?? 0;

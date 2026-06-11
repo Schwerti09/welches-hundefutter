@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!f) return {};
   return {
     title: `${f.tagline} | BELLA – KI-Hundefutterberaterin`,
-    description: `${f.description.slice(0, 155)}… BELLA vergleicht über 8.000 Sorten und empfiehlt das passende.`,
+    description: `${f.description.slice(0, 155)}… BELLA vergleicht über 11.000 Sorten und empfiehlt das passende.`,
     alternates: {
       canonical: `https://welches-hundefutter.today/futtertyp/${f.slug}`,
       languages: {
@@ -224,10 +224,10 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
           BELLA findet die besten {typ.name}-Sorten für deinen Hund
         </h2>
         <p className="text-[var(--muted)] text-sm mb-7">
-          Erzähl BELLA von deinem Hund — sie empfiehlt sofort die passenden {typ.name}-Sorten aus 8.000+ Produkten.
+          Erzähl BELLA von deinem Hund — sie empfiehlt sofort die passenden {typ.name}-Sorten aus 11.000+ Produkten.
         </p>
         <BellaAdvisorWrapper
-          introMessage={`Hallo! Ich bin BELLA 🐕 — deine KI-Ernährungsberaterin.\n\nDu interessierst dich für ${typ.name}. Gute Wahl! Damit ich die besten Sorten für euch finde:\n\n• Welche Rasse ist dein Hund?\n• Wie alt und wie schwer?\n• Gibt es Allergien oder Gesundheitsthemen?\n\nDann zeige ich dir sofort die passenden ${typ.name}-Sorten aus 8.000+ Produkten!`}
+          introMessage={`Hallo! Ich bin BELLA 🐕 — deine KI-Ernährungsberaterin.\n\nDu interessierst dich für ${typ.name}. Gute Wahl! Damit ich die besten Sorten für euch finde:\n\n• Welche Rasse ist dein Hund?\n• Wie alt und wie schwer?\n• Gibt es Allergien oder Gesundheitsthemen?\n\nDann zeige ich dir sofort die passenden ${typ.name}-Sorten aus 11.000+ Produkten!`}
           pageQuickOptions={[
             { label: `🥘 Bestes ${typ.name}`, msg: `Welches ${typ.name} ist das beste für meinen Hund?` },
             { label: "🐶 Rasse + Alter nennen", msg: `Ich habe einen [Rasse], [Alter] Jahre alt — was empfiehlst du an ${typ.name}?` },
@@ -243,7 +243,7 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
           {typ.name} im Preisvergleich — Schnellübersicht
         </h3>
         <p className="text-[var(--muted)] text-sm mb-7">
-          Live-Preise aus 8.000+ Sorten · täglich aktualisiert · Affiliate-Links (rel=sponsored)
+          Live-Preise aus 11.000+ Sorten · täglich aktualisiert · Affiliate-Links (rel=sponsored)
         </p>
         {foods.length > 0 ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">

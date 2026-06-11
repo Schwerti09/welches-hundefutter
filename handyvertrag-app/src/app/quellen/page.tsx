@@ -256,7 +256,7 @@ export default function QuellenPage() {
         <div className="rounded-2xl bg-gradient-to-r from-orange-600/20 to-amber-600/20 border border-orange-500/30 p-8">
           <h2 className="text-xl font-extrabold tracking-tight mb-3">BELLA-Score Methodik</h2>
           <p className="text-[var(--muted)] text-sm mb-5 leading-relaxed">
-            Der BELLA-Score bewertet 8.442 Hundefutter-Sorten nach Proteinquelle, Deklarationstransparenz
+            Der BELLA-Score bewertet 11.000+ Hundefutter-Sorten nach Proteinquelle, Deklarationstransparenz
             und Preis-Leistung. Die genaue Berechnung, die verwendeten Gewichtungen und die Grenzen
             der Methodik sind auf der Methodik-Seite dokumentiert.
           </p>

@@ -4,7 +4,7 @@ import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
   title: "Über BELLA & Rolf Schwertfechter | Expertise, Methodik & Quellen",
-  description: "Rolf Schwertfechter, Gründer von BELLA — KI-Ernährungsberaterin für Hunde. Über 8.442 analysierte Futtersorten, BELLA-Score-Methodik, peer-reviewed Quellen und vollständige Transparenz.",
+  description: "Rolf Schwertfechter, Gründer von BELLA — KI-Ernährungsberaterin für Hunde. Über 11.000 analysierte Futtersorten, BELLA-Score-Methodik, peer-reviewed Quellen und vollständige Transparenz.",
   alternates: {
     canonical: "https://welches-hundefutter.today/ueber-uns",
     languages: {
@@ -50,7 +50,7 @@ const personSchema = {
 const CREDENTIALS = [
   {
     icon: "📊",
-    title: "8.442 analysierte Futtersorten",
+    title: "11.000+ analysierte Futtersorten",
     body: "Taegliche Auswertung von AWIN-Feeds. Jede Sorte wird anhand von Proteinquelle, Deklarationsguete, Zutatenreihenfolge und Preis-Leistung bewertet.",
   },
   {
@@ -142,7 +142,7 @@ export default function UeberUnsPage() {
             <p className="text-orange-400 text-sm mb-3">Gründer, KI-Entwickler & Hundefutter-Analyst</p>
             <p className="text-gray-400 text-sm leading-relaxed mb-3">
               Rolf Schwertfechter entwickelt seit 2024 BELLA — die erste deutschsprachige KI-Ernährungsberaterin
-              für Hunde. Er analysiert täglich über 8.000 Futtersorten aus dem AWIN-Feed und hat den
+              für Hunde. Er analysiert täglich über 11.000 Futtersorten aus dem AWIN-Feed und hat den
               BELLA-Score entwickelt, der Proteinquelle, Deklarationsqualität und Preis-Leistung kombiniert.
               Alle Ratgeber basieren auf peer-reviewed Studien aus internationalen Fachzeitschriften.
             </p>
@@ -173,7 +173,7 @@ export default function UeberUnsPage() {
           </h1>
           <p className="text-xl text-white/55 max-w-2xl mx-auto leading-relaxed">
             Jede Empfehlung auf welches-hundefutter.today basiert auf Studien, nicht auf
-            Marketingversprechen. 8.442 Sorten. 16+ peer-reviewed Quellen. Vollständige Transparenz.
+            Marketingversprechen. 11.000+ Sorten. 16+ peer-reviewed Quellen. Vollständige Transparenz.
           </p>
         </div>
 
@@ -181,7 +181,7 @@ export default function UeberUnsPage() {
         <section className="mb-14">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { value: "8.442", label: "Futtersorten analysiert" },
+              { value: "11.000+", label: "Futtersorten analysiert" },
               { value: "16+", label: "peer-reviewed Studien" },
               { value: "54", label: "Rassen-Steckbriefe" },
               { value: "14", label: "Gesundheitsratgeber" },
@@ -283,7 +283,7 @@ export default function UeberUnsPage() {
             {[
               ["KI-Beraterin BELLA", "Google Gemini 2.5 Flash + Anthropic Claude Haiku 4.5 — Streaming, Echtzeit, Kontextgedaechtnis"],
               ["BELLA-Score", "Proprietaeres Scoring-System — Protein, Deklaration, Preis. Dokumentiert auf /analyse/methodik"],
-              ["Datenbank", "PostgreSQL (Neon Serverless) — 8.442 Futtersorten aus AWIN-Feed, taeglich aktualisiert"],
+              ["Datenbank", "PostgreSQL (Neon Serverless) — 11.000+ Futtersorten aus AWIN-Feed, taeglich aktualisiert"],
               ["Affiliate-Netzwerk", "AWIN (a=615299) — direkte Feed-Integration, kein Tracking-Pixel, keine PII"],
               ["Hosting", "Netlify Edge Network — SSG + Serverless Functions, globale CDN-Auslieferung"],
               ["Framework", "Next.js 16 App Router (TypeScript, Tailwind v4) — Core Web Vitals optimiert"],

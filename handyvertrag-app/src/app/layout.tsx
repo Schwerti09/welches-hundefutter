@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     default: "Welches Hundefutter für meinen Hund? ✓ KI-Berater BELLA findet es in 60 Sekunden",
     template: "%s | BELLA – KI-Hundefutterberater",
   },
-  description: "Welches Hundefutter passt zu deinem Hund? BELLA fragt 5 Dinge und vergleicht über 8.000 echte Sorten und empfiehlt das passende für Rasse, Alter & Allergien. Kostenlos.",
+  description: "Welches Hundefutter passt zu deinem Hund? BELLA fragt 5 Dinge und vergleicht über 11.000 echte Sorten und empfiehlt das passende für Rasse, Alter & Allergien. Kostenlos.",
   keywords: [
     "welches hundefutter für meinen hund",
     "hundefutter berater",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     url: "https://welches-hundefutter.today",
     siteName: "BELLA – Welches Hundefutter für meinen Hund",
     title: "Welches Hundefutter passt? ✓ BELLA findet es in 60 Sekunden",
-    description: "KI-Ernährungsberatung für deinen Hund. über 8.000 Futter, individuell auf Rasse, Alter und Allergien zugeschnitten.",
+    description: "KI-Ernährungsberatung für deinen Hund. über 11.000 Futter, individuell auf Rasse, Alter und Allergien zugeschnitten.",
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "BELLA Hundefutter Berater" }],
   },
   twitter: {

@@ -84,7 +84,7 @@ export default function SiteFooter() {
               <span className="font-bold text-lg">welches-hundefutter<span className="text-orange-400">.today</span></span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-              BELLA findet das passende Hundefutter für deinen Hund – aus über 8.000 Produkten mit
+              BELLA findet das passende Hundefutter für deinen Hund – aus über 11.000 Produkten mit
               tagesaktuellen Preisen. Kostenlos, neutral, in 60 Sekunden.
             </p>
             <div className="flex items-center gap-2 mt-4">
@@ -113,7 +113,7 @@ export default function SiteFooter() {
 
         <div className="border-t border-white/5 pt-8 flex flex-col gap-5">
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-gray-500">
-            <span className="inline-flex items-center gap-1.5"><span aria-hidden>🦴</span> 8.000+ Hundefutter im Vergleich</span>
+            <span className="inline-flex items-center gap-1.5"><span aria-hidden>🦴</span> 11.000+ Hundefutter im Vergleich</span>
             <span className="inline-flex items-center gap-1.5"><span aria-hidden>📈</span> Preise täglich aktualisiert</span>
             <span className="inline-flex items-center gap-1.5"><span aria-hidden>⚖️</span> neutral &amp; kostenlos</span>
           </div>

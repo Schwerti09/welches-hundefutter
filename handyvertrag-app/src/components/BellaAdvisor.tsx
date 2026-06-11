@@ -237,7 +237,7 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions }: BellaAd
 
           <div className="rounded-2xl p-4 w-full glass space-y-2.5">
             {[
-              { icon: "🥘", label: "Futtersorten", value: "8.000+" },
+              { icon: "🥘", label: "Futtersorten", value: "11.000+" },
               { icon: "🐕", label: "Rassen-Profile", value: "50" },
               { icon: "⚡", label: "Antwortzeit", value: "< 1 Sek." },
             ].map(s => (

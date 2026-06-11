@@ -64,7 +64,7 @@ export default function Methodik() {
           So bewertet BELLA Hundefutter
         </h1>
         <p className="text-[var(--muted)] leading-relaxed max-w-2xl mb-2">
-          Jedes der über 8.000 Produkte in unserem Katalog bekommt einen <strong className="text-white">BELLA-Score von 28 bis 98</strong>.
+          Jedes der über 11.000 Produkte in unserem Katalog bekommt einen <strong className="text-white">BELLA-Score von 28 bis 98</strong>.
           Die Formel ist öffentlich, deterministisch und basiert ausschließlich auf nachprüfbaren Produkteigenschaften.
         </p>
         <p className="text-[var(--muted)] text-sm">

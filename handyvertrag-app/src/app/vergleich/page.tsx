@@ -4,7 +4,7 @@ import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
   title: "Hundefutter Vergleich 2026: Futtertypen im Direktvergleich | BELLA",
-  description: "Trockenfutter vs. Nassfutter, BARF vs. Fertigfutter — alle Vergleiche auf Basis echter Daten aus 8.442 Produkten. Ohne Hersteller-Bias.",
+  description: "Trockenfutter vs. Nassfutter, BARF vs. Fertigfutter — alle Vergleiche auf Basis echter Daten aus 11.000+ Produkten. Ohne Hersteller-Bias.",
   alternates: {
     canonical: "https://welches-hundefutter.today/vergleich",
     languages: {
@@ -46,7 +46,7 @@ export default function VergleichIndexPage() {
           Hundefutter im Vergleich
         </h1>
         <p className="text-[var(--muted)] leading-relaxed max-w-2xl">
-          Datenbasierte Vergleiche ohne Herstellermeinungen — auf Basis von 8.442 echten Produkten aus unserem Katalog.
+          Datenbasierte Vergleiche ohne Herstellermeinungen — auf Basis von 11.000+ echten Produkten aus unserem Katalog.
         </p>
       </section>
 

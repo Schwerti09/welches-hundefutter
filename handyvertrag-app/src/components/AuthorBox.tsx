@@ -40,7 +40,7 @@ export default function AuthorBox({ reviewedAt = "2026-06-01", compact = false }
             <p className="text-xs text-[var(--honey)] mb-1">Hundefutter-Experte & BELLA-Gründer</p>
             <p className="text-xs text-[var(--muted)] leading-relaxed">
               Rolf Schwertfechter betreibt BELLA seit 2024 und hat den BELLA-Score entwickelt, der
-              8.442 Hundefutter-Sorten nach Proteinquelle, Deklaration und Preis-Leistung bewertet.
+              11.000+ Hundefutter-Sorten nach Proteinquelle, Deklaration und Preis-Leistung bewertet.
               Er analysiert täglich Preisdaten aus dem AWIN-Feed, wertet aktuelle Studien aus und
               schreibt alle Ratgeber auf dieser Seite.
             </p>
@@ -49,7 +49,7 @@ export default function AuthorBox({ reviewedAt = "2026-06-01", compact = false }
 
         <div className="grid sm:grid-cols-3 gap-3 mb-5">
           <div className="rounded-xl bg-white/[0.03] border border-white/10 p-3 text-center">
-            <p className="text-lg font-black text-white">8.442</p>
+            <p className="text-lg font-black text-white">11.000+</p>
             <p className="text-[10px] text-[var(--muted)]">analysierte Futtersorten</p>
           </div>
           <div className="rounded-xl bg-white/[0.03] border border-white/10 p-3 text-center">

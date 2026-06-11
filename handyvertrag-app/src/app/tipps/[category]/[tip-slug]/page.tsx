@@ -401,7 +401,7 @@ export default async function TipArticlePage({
           </h2>
           <p className="text-[var(--muted)] mb-6 max-w-xl mx-auto">
             BELLA fragt nach Rasse, Alter, Gewicht und Gesundheit und empfiehlt in 60 Sekunden
-            die optimale Sorte aus über 8.000 Produkten — kostenlos.
+            die optimale Sorte aus über 11.000 Produkten — kostenlos.
           </p>
           <Link href="/#bella-advisor" className="btn-primary">
             🐕 BELLA fragen →

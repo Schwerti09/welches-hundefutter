@@ -307,10 +307,10 @@ export async function generateMetadata({
   const dogs = fmt(estimateDogs(city.population));
   return {
     title: `Hundefutter ${city.name} 2025 — BELLA empfiehlt kostenlos`,
-    description: `Das beste Hundefutter für ${city.name}: BELLA vergleicht über 8.400 Produkte und findet in Sekunden das ideale Futter für deinen Hund. ~${dogs} Hunde in ${city.name} vertrauen auf gute Ernährung.`,
+    description: `Das beste Hundefutter für ${city.name}: BELLA vergleicht über 11.000 Produkte und findet in Sekunden das ideale Futter für deinen Hund. ~${dogs} Hunde in ${city.name} vertrauen auf gute Ernährung.`,
     openGraph: {
       title: `Hundefutter ${city.name} — BELLA berät kostenlos`,
-      description: `~${dogs} Hunde in ${city.name}. BELLA findet das perfekte Futter für deinen Vierbeiner — kostenlos, ohne Anmeldung, aus über 8.400 echten Produkten.`,
+      description: `~${dogs} Hunde in ${city.name}. BELLA findet das perfekte Futter für deinen Vierbeiner — kostenlos, ohne Anmeldung, aus über 11.000 echten Produkten.`,
     },
     alternates: {
       canonical: `/stadt/${city.slug}`,
@@ -346,7 +346,7 @@ export default async function StadtPage({
   const faqs = [
     {
       q: `Welches Hundefutter ist für Hunde in ${city.name} am besten?`,
-      a: `Das beste Hundefutter hängt von Rasse, Alter, Gewicht und gesundheitlichen Besonderheiten deines Hundes ab — nicht vom Wohnort. BELLA berücksichtigt alle diese Faktoren und empfiehlt aus über 8.400 Produkten das passende Futter. In ${city.state} sind besonders ${breeds.slice(0, 3).map((b) => b.name).join(', ')} verbreitet — für diese Rassen hat BELLA spezialisierte Empfehlungen.`,
+      a: `Das beste Hundefutter hängt von Rasse, Alter, Gewicht und gesundheitlichen Besonderheiten deines Hundes ab — nicht vom Wohnort. BELLA berücksichtigt alle diese Faktoren und empfiehlt aus über 11.000 Produkten das passende Futter. In ${city.state} sind besonders ${breeds.slice(0, 3).map((b) => b.name).join(', ')} verbreitet — für diese Rassen hat BELLA spezialisierte Empfehlungen.`,
     },
     {
       q: `Wo kaufe ich das beste Hundefutter in ${city.name}?`,
@@ -439,7 +439,7 @@ export default async function StadtPage({
             </h1>
             <p className="text-lg max-w-2xl" style={{ color: 'rgba(255,255,255,0.7)' }}>
               Etwa <strong style={{ color: '#fff' }}>{fmt(dogs)} Hunde</strong> leben in {city.name}. Jeder verdient das beste Futter.
-              BELLA vergleicht über 8.400 Produkte und findet in 60 Sekunden die perfekte Empfehlung — kostenlos.
+              BELLA vergleicht über 11.000 Produkte und findet in 60 Sekunden die perfekte Empfehlung — kostenlos.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-4">
@@ -531,7 +531,7 @@ export default async function StadtPage({
                 <p className="mb-6 max-w-lg mx-auto" style={{ color: 'rgba(255,255,255,0.65)' }}>
                   Sag BELLA einfach Rasse, Alter und ob dein Hund besondere Bedürfnisse hat.
                   In unter 60 Sekunden bekommst du eine personalisierte Empfehlung aus
-                  über 8.400 echten Produkten — kostenlos, ohne Anmeldung.
+                  über 11.000 echten Produkten — kostenlos, ohne Anmeldung.
                 </p>
                 <div className="flex flex-wrap gap-3 justify-center">
                   <Link
@@ -695,7 +695,7 @@ export default async function StadtPage({
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.4)' }}>
               BELLA ist Deutschlands erste KI-Beraterin für Hundefutter.
-              Kostenlos · Ohne Anmeldung · 8.442 echte Produkte
+              Kostenlos · Ohne Anmeldung · 11.000+ echte Produkte
             </p>
             <Link
               href="/advisor"

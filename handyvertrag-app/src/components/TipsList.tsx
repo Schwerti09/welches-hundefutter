@@ -194,7 +194,7 @@ export default function TipsList({ tips, accent, ctaEvery = 25, categorySlug, ar
                     <div>
                       <p className="font-semibold text-sm">Frag BELLA zu deinem Hund</p>
                       <p className="text-[var(--muted)] text-xs">
-                        Persönliche Futter-Empfehlung aus 8.000+ Sorten — in 60 Sekunden, kostenlos.
+                        Persönliche Futter-Empfehlung aus 11.000+ Sorten — in 60 Sekunden, kostenlos.
                       </p>
                     </div>
                     <span className="ml-auto text-xs font-semibold shrink-0" style={{ color: accent }}>

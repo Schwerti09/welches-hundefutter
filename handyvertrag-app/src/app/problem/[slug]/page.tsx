@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!p) return {};
   return {
     title: `${p.tagline} | BELLA – KI-Hundefutterberaterin`,
-    description: `${p.description.slice(0, 150)}… BELLA findet das passende Futter aus 8.000+ Sorten.`,
+    description: `${p.description.slice(0, 150)}… BELLA findet das passende Futter aus 11.000+ Sorten.`,
     alternates: {
       canonical: `https://welches-hundefutter.today/problem/${p.slug}`,
       languages: {
@@ -724,7 +724,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
           Erzähl BELLA von deinem Hund — Rasse, Alter, Gewicht — und sie empfiehlt sofort die passenden Sorten.
         </p>
         <BellaAdvisorWrapper
-          introMessage={`Hallo! Ich bin BELLA 🐕 — deine KI-Ernährungsberaterin.\n\nDu schaust nach Futter bei ${problem.name}. Um die besten Sorten aus 8.000+ Produkten zu finden, erzähl mir kurz:\n\n• Welche Rasse ist dein Hund?\n• Wie alt und wie schwer ist er?\n• Gibt es neben ${problem.name} noch weitere Probleme?\n\nDann empfehle ich dir sofort die passenden Sorten!`}
+          introMessage={`Hallo! Ich bin BELLA 🐕 — deine KI-Ernährungsberaterin.\n\nDu schaust nach Futter bei ${problem.name}. Um die besten Sorten aus 11.000+ Produkten zu finden, erzähl mir kurz:\n\n• Welche Rasse ist dein Hund?\n• Wie alt und wie schwer ist er?\n• Gibt es neben ${problem.name} noch weitere Probleme?\n\nDann empfehle ich dir sofort die passenden Sorten!`}
           pageQuickOptions={[
             { label: `🩺 Futter bei ${problem.name}`, msg: `Mein Hund hat ${problem.name} — welches Futter empfiehlst du?` },
             { label: "🐶 Rasse nennen", msg: "Ich sage dir die Rasse meines Hundes:" },
@@ -740,7 +740,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
           Schnellübersicht: Top-Sorten bei {problem.name}
         </h3>
         <p className="text-[var(--muted)] text-sm mb-7">
-          Aus über 8.000 Sorten im Live-Katalog{problem.filterGrainFree ? " · getreidefrei" : ""}{problem.filterHypo ? " · hypoallergen" : ""} · Affiliate-Links (rel=sponsored)
+          Aus über 11.000 Sorten im Live-Katalog{problem.filterGrainFree ? " · getreidefrei" : ""}{problem.filterHypo ? " · hypoallergen" : ""} · Affiliate-Links (rel=sponsored)
         </p>
         {foods.length > 0 ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">

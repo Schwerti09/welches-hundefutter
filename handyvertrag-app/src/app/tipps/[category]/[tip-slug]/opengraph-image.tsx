@@ -141,7 +141,7 @@ export default async function OgImage({
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           <div style={{ width: 44, height: 6, borderRadius: 999, background: accent, display: "flex" }} />
           <span style={{ color: "#9a93a6", fontSize: 26, display: "flex" }}>
-            KI-Ernährungsberatung aus über 8.000 Hundefutter-Sorten
+            KI-Ernährungsberatung aus über 11.000 Hundefutter-Sorten
           </span>
         </div>
       </div>
