@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { neon } from "@neondatabase/serverless";
 import StructuredData from "@/components/StructuredData";
+import AuthorBox from "@/components/AuthorBox";
 import SiteFooter from "@/components/SiteFooter";
 
 export const revalidate = 86400;
@@ -238,6 +239,9 @@ export default async function LebensphaseePage({ params }: { params: Promise<{ s
         </div>
       </section>
 
+      <div className="max-w-5xl mx-auto w-full px-5 py-8">
+        <AuthorBox compact />
+      </div>
       <SiteFooter />
     </div>
   );

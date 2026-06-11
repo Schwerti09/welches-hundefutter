@@ -5,7 +5,8 @@ import HeroLiving from "@/components/HeroLiving";
 import BreedGallery from "@/components/BreedGallery";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
-import { getTopFoods, getFoodCount } from "@/db/queries/foods";
+import TopFoodsTable from "@/components/TopFoodsTable";
+import { getTopFoods, getTopFoodsByScore, getFoodCount } from "@/db/queries/foods";
 import breedGallery from "@/data/breed-gallery.json";
 
 export const revalidate = 3600;
@@ -32,7 +33,11 @@ const SCHEMA_FAQS = [
 ];
 
 export default async function HomePage() {
-  const [topFoods, foodCount] = await Promise.all([getTopFoods(7), getFoodCount()]);
+  const [topFoods, topFoodsByScore, foodCount] = await Promise.all([
+    getTopFoods(7),
+    getTopFoodsByScore(7),
+    getFoodCount(),
+  ]);
   const countLabel = foodCount > 0 ? foodCount.toLocaleString("de-DE") : "11.000+";
   const cheapest = topFoods[0]
     ? { brand: topFoods[0].brand, name: topFoods[0].name, pricePerKg: topFoods[0].pricePerKg, affiliateUrl: topFoods[0].affiliateUrl }
@@ -53,57 +58,8 @@ export default async function HomePage() {
       {/* FINDE DEINEN HUND — Rasse-Galerie mit echten Fotos */}
       <BreedGallery />
 
-      {/* TOP 7 TABELLE */}
-      <section className="max-w-5xl mx-auto px-5 py-16 w-full">
-        <h2 className="text-3xl font-black mb-2 text-center">
-          Hundefutter im Preisvergleich — günstige Top-Sorten
-        </h2>
-        <p className="text-[var(--muted)] text-center mb-8 text-sm">
-          Aus {countLabel} echten Sorten im Live-Katalog · günstigste zuerst · Affiliate-Links (rel=sponsored)
-        </p>
-        <div className="overflow-x-auto rounded-2xl border border-white/10">
-          <table className="w-full text-sm">
-            <thead className="bg-white/[0.04]">
-              <tr>
-                <th className="text-left px-4 py-3 font-semibold text-white/70">Platz</th>
-                <th className="text-left px-4 py-3 font-semibold text-white/70">Marke & Sorte</th>
-                <th className="text-left px-4 py-3 font-semibold text-white/70 hidden sm:table-cell">Eignung</th>
-                <th className="text-left px-4 py-3 font-semibold text-white/70">Preis/kg</th>
-                <th className="px-4 py-3"></th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/10">
-              {topFoods.map((f, i) => (
-                <tr key={f.id} className="bg-transparent hover:bg-white/[0.04] transition-colors">
-                  <td className="px-4 py-3 text-lg">{["🥇", "🥈", "🥉"][i] ?? i + 1}</td>
-                  <td className="px-4 py-3">
-                    <div className="font-semibold text-[var(--ink)]">{f.brand}</div>
-                    <div className="text-xs text-[var(--muted)]">{f.name}</div>
-                  </td>
-                  <td className="px-4 py-3 text-[var(--muted)] hidden sm:table-cell">
-                    <span className="capitalize">{f.foodType}</span>
-                    {f.protein ? ` · ${f.protein}` : ""}
-                    {f.grainFree ? " · getreidefrei" : ""}
-                  </td>
-                  <td className="px-4 py-3 font-semibold text-[var(--honey)] whitespace-nowrap">
-                    {f.pricePerKg != null ? `${f.pricePerKg.toFixed(2)} €/kg` : "—"}
-                  </td>
-                  <td className="px-4 py-3">
-                    <a
-                      href={f.affiliateUrl}
-                      target="_blank"
-                      rel="sponsored nofollow noopener noreferrer"
-                      className="text-xs px-3 py-1.5 rounded-lg btn-primary whitespace-nowrap"
-                    >
-                      Ansehen →
-                    </a>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+      {/* TOP 7 TABELLE — BELLA-Score / Günstigste */}
+      <TopFoodsTable byScore={topFoodsByScore} byPrice={topFoods} countLabel={countLabel} />
 
 
       {/* FUTTERTYPEN */}

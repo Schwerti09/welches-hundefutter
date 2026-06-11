@@ -8,6 +8,7 @@ interface Row {
   protein: string | null; is_grain_free: boolean; is_hypoallergenic: boolean;
   price_per_kg: string | null; price: string | null; suitable_for: string[] | null;
   image_url: string | null; affiliate_url: string; rating: string | null;
+  score: number | null;
 }
 
 function rows(r: unknown): Row[] {
@@ -22,11 +23,12 @@ function toFood(o: Row): DogFood {
     price: o.price != null ? parseFloat(o.price) : null,
     suitableFor: o.suitable_for ?? [], imageUrl: o.image_url,
     affiliateUrl: o.affiliate_url, rating: o.rating != null ? parseFloat(o.rating) : null,
+    score: o.score != null ? Number(o.score) : null,
   };
 }
 
 const COLS = `id, slug, brand, name, type, protein, is_grain_free, is_hypoallergenic,
-  price_per_kg, price, suitable_for, image_url, affiliate_url, rating`;
+  price_per_kg, price, suitable_for, image_url, affiliate_url, rating, score`;
 const NAME_KEY = "lower(regexp_replace(name, '[^a-zA-Z0-9]', '', 'g'))";
 const BASE = "is_active = true AND affiliate_url <> '' AND name <> ''";
 
@@ -58,6 +60,23 @@ export async function getTopFoods(limit = 7): Promise<DogFood[]> {
          WHERE ${BASE} AND price_per_kg BETWEEN 2 AND 60 AND type <> 'snack'
          ORDER BY ${NAME_KEY}, price_per_kg ASC
        ) d ORDER BY price_per_kg ASC LIMIT ${Math.max(1, Math.min(20, limit))}`
+    );
+    return rows(r).map(toFood);
+  } catch { return []; }
+}
+
+/** Top-Sorten nach BELLA-Score (höchster Score zuerst, Restplätze nach Preis). */
+export async function getTopFoodsByScore(limit = 7): Promise<DogFood[]> {
+  const sql = db();
+  if (!sql) return [];
+  try {
+    const r = await sql.query(
+      `SELECT ${COLS} FROM (
+         SELECT DISTINCT ON (${NAME_KEY}) ${COLS}
+         FROM dog_foods
+         WHERE ${BASE} AND price_per_kg BETWEEN 2 AND 60 AND type <> 'snack'
+         ORDER BY ${NAME_KEY}, price_per_kg ASC
+       ) d ORDER BY score DESC NULLS LAST, price_per_kg ASC LIMIT ${Math.max(1, Math.min(20, limit))}`
     );
     return rows(r).map(toFood);
   } catch { return []; }

@@ -17,4 +17,6 @@ export interface DogFood {
   imageUrl: string | null;
   affiliateUrl: string;
   rating: number | null;
+  /** BELLA-Score 0-100, siehe /analyse/methodik. null = noch nicht bewertet. */
+  score: number | null;
 }

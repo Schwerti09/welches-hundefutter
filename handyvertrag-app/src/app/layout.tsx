@@ -4,6 +4,7 @@ import "./globals.css";
 import StructuredData from "@/components/StructuredData";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
 import ExitIntent from "@/components/ExitIntent";
+import WebVitals from "@/components/WebVitals";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 
@@ -105,6 +106,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         {children}
         <StickyMobileCTA />
         <ExitIntent />
+        <WebVitals />
       </body>
     </html>
   );

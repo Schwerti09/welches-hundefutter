@@ -30,6 +30,10 @@ interface ArticleData {
   datePublished?: string;
   image?: string;
   speakableSelectors?: string[];
+  /** Nur gesetzt, sobald ein echter tiermedizinischer Review stattgefunden hat. */
+  reviewedBy?: { name: string; url: string; jobTitle: string };
+  /** ISO-Datum des fachlichen Reviews. */
+  lastReviewed?: string;
 }
 
 interface StructuredDataProps {
@@ -206,6 +210,15 @@ function buildArticleSchema(article: ArticleData) {
     ...(article.image && { image: article.image }),
     author: { "@id": "https://welches-hundefutter.today/ueber-uns#person" },
     publisher: { "@id": "https://welches-hundefutter.today/#organization" },
+    ...(article.reviewedBy && {
+      reviewedBy: {
+        "@type": "Person",
+        name: article.reviewedBy.name,
+        url: article.reviewedBy.url,
+        jobTitle: article.reviewedBy.jobTitle,
+      },
+    }),
+    ...(article.lastReviewed && { lastReviewed: article.lastReviewed }),
     ...(article.speakableSelectors && {
       speakable: {
         "@type": "SpeakableSpecification",
