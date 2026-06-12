@@ -50,3 +50,4 @@ node_modules/
 .next/
 *.log
 *.png
+!public/og-image.png

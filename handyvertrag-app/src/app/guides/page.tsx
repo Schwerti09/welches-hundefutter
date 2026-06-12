@@ -42,7 +42,7 @@ const steps = [
     nr: 2,
     titel: "Allergie-Score einordnen",
     inhalt: "Score über 90: Alle Marke zugänglich. Score 70–90: Futalis, Bellfor, Josera. Score unter 70: Nassfutter empfohlen. Nutze unseren Allergien-Rechner zur schnellen Einschätzung.",
-    link: "/tools/allergie-rechner",
+    link: "/problem/allergie",
     linkText: "Genehmigungschance mit dem Allergien-Rechner prüfen",
   },
   {

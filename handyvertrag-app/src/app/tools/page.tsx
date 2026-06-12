@@ -27,7 +27,7 @@ const tools = [
     icon: Calculator,
     title: 'Allergie-Score Rechner',
     description: 'Berechne kostenlos deinen persönlichen Allergien-Score und erfahre deine realistischen Chancen.',
-    href: '/tools/allergie-rechner',
+    href: '/problem/allergie',
     features: [
       '6 intelligente Fragen',
       'Personalisierte Empfehlung',

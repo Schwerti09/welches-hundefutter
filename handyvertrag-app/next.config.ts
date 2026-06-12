@@ -5,6 +5,19 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   compress: true,
 
+  // 301-Redirects: alte/verlinkte URLs ohne eigene Seite → kanonische Ziele.
+  // Verhindert 404s aus Sitemap-Altlasten, externen Links und KI-Zitaten.
+  async redirects() {
+    return [
+      { source: "/allergie", destination: "/problem/allergie", permanent: true },
+      { source: "/test/hundefutter-2026", destination: "/blog/hundefutter-test-2026", permanent: true },
+      { source: "/futter/welpen", destination: "/lebensphase/welpen", permanent: true },
+      { source: "/futter/senior", destination: "/lebensphase/senior", permanent: true },
+      { source: "/futter/:slug", destination: "/lebensphase/:slug", permanent: true },
+      { source: "/tools/allergie-rechner", destination: "/problem/allergie", permanent: true },
+    ];
+  },
+
   images: {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 31536000,

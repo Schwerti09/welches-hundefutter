@@ -90,7 +90,7 @@ export default async function HomePage() {
           Eliminationsdiät: 8–12 Wochen eine Proteinquelle, dann testen.
         </p>
         <div className="flex gap-3 flex-wrap">
-          <Link href="/allergie" className="px-5 py-2.5 rounded-xl btn-primary text-sm">
+          <Link href="/problem/allergie" className="px-5 py-2.5 rounded-xl btn-primary text-sm">
             Hundefutter bei Allergie →
           </Link>
           <Link href="/problem/sensibler-magen" className="px-5 py-2.5 rounded-xl border border-white/15 text-[var(--honey)] text-sm font-semibold hover:bg-white/5 transition-colors">
@@ -109,14 +109,14 @@ export default async function HomePage() {
               <p className="text-sm text-[var(--muted)] leading-relaxed">
                 Erhöhter Protein- und Kalziumgehalt für Wachstum. Große Rassen: Junior Large Breed – kontrolliertes Wachstum schützt Gelenke. Umstellen auf Adult: kleine Rassen ab 10 Monate, große ab 18–24 Monate.
               </p>
-              <Link href="/futter/welpen" className="mt-4 inline-block text-sm text-[var(--honey)] font-medium hover:underline">Welpenfutter →</Link>
+              <Link href="/lebensphase/welpen" className="mt-4 inline-block text-sm text-[var(--honey)] font-medium hover:underline">Welpenfutter →</Link>
             </div>
             <div className="card p-6">
               <h3 className="font-bold text-lg mb-2 tracking-tight">Seniorfutter</h3>
               <p className="text-sm text-[var(--muted)] leading-relaxed">
                 Weniger Kalorien, mehr Gelenkstoffe (Glucosamin, Chondroitin), leicht verdaulich. Umstellen: kleine Rassen ab 9 Jahren, große Rassen ab 7 Jahren.
               </p>
-              <Link href="/futter/senior" className="mt-4 inline-block text-sm text-[var(--honey)] font-medium hover:underline">Seniorfutter →</Link>
+              <Link href="/lebensphase/senior" className="mt-4 inline-block text-sm text-[var(--honey)] font-medium hover:underline">Seniorfutter →</Link>
             </div>
           </div>
         </div>
