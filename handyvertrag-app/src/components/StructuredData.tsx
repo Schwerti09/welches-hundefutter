@@ -119,7 +119,7 @@ function buildHowToSchema() {
     description: "Schritt-für-Schritt: Wie BELLA das passende Hundefutter für Rasse, Alter und Allergien findet.",
     totalTime: "PT2M",
     step: [
-      { "@type": "HowToStep", name: "Rasse & Größe angeben", text: "Nenne BELLA deine Hunderasse. BELLA kennt 54 Rassen mit typischen Ernährungsbedürfnissen.", position: 1 },
+      { "@type": "HowToStep", name: "Rasse & Größe angeben", text: "Nenne BELLA deine Hunderasse. BELLA kennt 186 Rassenprofile mit typischen Ernährungsbedürfnissen.", position: 1 },
       { "@type": "HowToStep", name: "Alter & Aktivität eingeben", text: "Welpe, Adult oder Senior? Aktiver Arbeitshund oder Couch-Potato? Das bestimmt den Kalorienbedarf.", position: 2 },
       { "@type": "HowToStep", name: "Allergien & Unverträglichkeiten nennen", text: "Huhn, Rind, Weizen? BELLA filtert Allergene konsequent aus dem Katalog raus.", position: 3 },
       { "@type": "HowToStep", name: "Empfehlung erhalten & bestellen", text: "BELLA liefert 3 passende Futter mit Preis/kg, Tagesmenge und direktem Affiliate-Link zum Bestellen.", position: 4 },
