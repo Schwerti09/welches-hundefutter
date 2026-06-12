@@ -11,7 +11,7 @@ name: KI-Sichtbarkeit prüfen
 
 on:
   schedule:
-    - cron: "0 7 1 * *"      # monatlich am 1., 07:00 UTC
+    - cron: "0 7 * * 1"      # wöchentlich montags, 07:00 UTC (Launch-Phase: engmaschig tracken)
   workflow_dispatch:
     inputs:
       dry_run:

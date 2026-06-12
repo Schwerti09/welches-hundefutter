@@ -129,6 +129,39 @@ export default function Methodik() {
         </div>
       </section>
 
+      {/* Unabhängigkeit & Finanzierung */}
+      <section className="max-w-4xl mx-auto w-full px-5 pb-12">
+        <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-6">
+          <h2 className="text-lg font-bold mb-3 text-emerald-300">Unabhängigkeit &amp; Finanzierung</h2>
+          <ul className="space-y-2 text-sm text-[var(--muted)]">
+            <li>→ BELLA finanziert sich über <strong className="text-white">Affiliate-Provisionen</strong>: Kaufst du ein Produkt über einen unserer Links, erhalten wir eine Provision vom Händler. Der Preis für dich ändert sich dadurch nicht.</li>
+            <li>→ <strong className="text-white">Die Provision fließt nicht in den Score ein.</strong> Die Formel oben ist vollständig abgebildet und enthält keine Variable für Provisionshöhe, Händler oder Marke — sie kann es technisch nicht, weil der Score per SQL über alle Produkte gleichzeitig berechnet wird.</li>
+            <li>→ Hersteller können <strong className="text-white">keine Platzierungen kaufen</strong>. Es gibt keine gesponserten Empfehlungen, keine bezahlten Testsiege, keine Werbedeals mit Futtermarken.</li>
+            <li>→ Empfehlungsreihenfolgen entstehen ausschließlich aus Score, Preis pro Kilo und den Angaben zum Hund (Allergien, Alter, Größe).</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* Wissenschaftliche Grundlagen */}
+      <section className="max-w-4xl mx-auto w-full px-5 pb-12">
+        <div className="card p-6">
+          <h2 className="text-lg font-bold mb-3">Wissenschaftliche Grundlagen</h2>
+          <p className="text-sm text-[var(--muted)] leading-relaxed mb-3">
+            Die Empfehlungslogik hinter BELLA stützt sich auf anerkannte veterinärmedizinische
+            Standards und Peer-Review-Forschung — unter anderem:
+          </p>
+          <ul className="space-y-2 text-sm text-[var(--muted)] mb-4">
+            <li>→ <strong className="text-white">NRC (2006), Nutrient Requirements of Dogs and Cats</strong> — Quelle der RER-Formel (70 × kg<sup>0,75</sup>), mit der BELLA Tagesrationen berechnet</li>
+            <li>→ <strong className="text-white">FEDIAF Nutritional Guidelines</strong> — europäischer Standard für Nährstoffprofile von Alleinfuttermitteln</li>
+            <li>→ <strong className="text-white">WSAVA Nutritional Assessment Guidelines</strong> — Rahmenwerk für die Ernährungsbewertung beim Hund</li>
+            <li>→ <strong className="text-white">Olivry &amp; Mueller (2017)</strong> — Datenbasis für unsere Allergie-Filter (häufigste Allergene: Huhn, Rind, Milch, Weizen)</li>
+          </ul>
+          <p className="text-sm">
+            <Link href="/quellen" className="text-[var(--honey)] hover:underline">Alle Quellen mit DOI/PubMed-Links →</Link>
+          </p>
+        </div>
+      </section>
+
       {/* Offener Produktkatalog */}
       <section className="max-w-4xl mx-auto w-full px-5 pb-12">
         <div className="card p-6">

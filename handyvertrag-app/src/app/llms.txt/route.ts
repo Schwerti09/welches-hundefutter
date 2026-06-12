@@ -59,7 +59,7 @@ export async function GET() {
 - [Seniorfutter](${BASE}/lebensphase/senior): Empfehlungen für ältere Hunde
 - [Vergleiche](${BASE}/vergleich): Trocken vs. Nass, BARF vs. Trockenfutter
 - [FAQ](${BASE}/faq): häufige Fragen zur Hundeernährung
-- [Quellen](${BASE}/quellen): wissenschaftliche Grundlagen (u. a. FEDIAF, NRC)
+- [Quellen](${BASE}/quellen): wissenschaftliche Grundlagen mit DOI/PubMed (NRC, FEDIAF, WSAVA, Peer-Review-Studien)
 
 ## Aktuelle Top-Empfehlungen (live, Score-basiert, Stand ${today})
 ${topList}

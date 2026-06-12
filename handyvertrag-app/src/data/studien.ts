@@ -17,6 +17,31 @@ export interface Studie {
 
 export const STUDIEN: Studie[] = [
   {
+    id: "nrc-2006",
+    authors: "National Research Council (NRC)",
+    title: "Nutrient Requirements of Dogs and Cats",
+    journal: "The National Academies Press, Washington DC",
+    year: 2006,
+    doi: "10.17226/10668",
+    url: "https://nap.nationalacademies.org/catalog/10668/nutrient-requirements-of-dogs-and-cats",
+    type: "guidelines",
+    kategorie: ["energiebedarf", "naehrstoffe", "grundlagen"],
+    kernaussage: "Das Standardwerk fuer Naehrstoff- und Energiebedarf von Hunden. Quelle der RER-Formel (70 x kg^0,75), mit der BELLA Tagesrationen und Futterverbrauch berechnet.",
+    relevanteSlugs: ["welpen", "senior", "uebergewicht"],
+  },
+  {
+    id: "fediaf-2024",
+    authors: "FEDIAF — The European Pet Food Industry",
+    title: "Nutritional Guidelines for Complete and Complementary Pet Food for Cats and Dogs",
+    journal: "FEDIAF, Bruessel",
+    year: 2024,
+    url: "https://europeanpetfood.org/self-regulation/nutritional-guidelines/",
+    type: "guidelines",
+    kategorie: ["naehrstoffe", "alleinfutter", "grundlagen"],
+    kernaussage: "Europaeischer Branchenstandard fuer Naehrstoffprofile von Alleinfuttermitteln. Massstab dafuer, ob ein Futter als 'Alleinfutter' alle essentiellen Naehrstoffe abdeckt.",
+    relevanteSlugs: ["welpen", "senior"],
+  },
+  {
     id: "olivry-mueller-2017",
     authors: "Olivry T, Mueller RS",
     title: "Critically appraised topic on adverse food reactions of companion animals: common food allergen sources in dogs and cats",
