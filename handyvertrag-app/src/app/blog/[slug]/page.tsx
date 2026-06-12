@@ -18,7 +18,7 @@ export async function generateMetadata({
   if (!article) return {};
 
   return {
-    title: `${article.title} | BELLA`,
+    title: article.title,
     description: article.description,
     alternates: {
       canonical: `https://welches-hundefutter.today/blog/${slug}`,

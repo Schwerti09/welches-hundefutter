@@ -94,7 +94,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const p = PHASEN[slug];
   if (!p) return {};
   return {
-    title: `${p.tagline} | BELLA – KI-Hundefutterberaterin`,
+    title: p.tagline,
     description: `${p.description.slice(0, 155)}… BELLA empfiehlt das passende aus 11.000+ Sorten.`,
     alternates: {
       canonical: `https://welches-hundefutter.today/lebensphase/${slug}`,

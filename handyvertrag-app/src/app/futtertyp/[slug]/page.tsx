@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const f = FUTTERTYP_BY_SLUG[slug];
   if (!f) return {};
   return {
-    title: `${f.tagline} | BELLA – KI-Hundefutterberaterin`,
+    title: f.tagline,
     description: `${f.description.slice(0, 155)}… BELLA vergleicht über 11.000 Sorten und empfiehlt das passende.`,
     alternates: {
       canonical: `https://welches-hundefutter.today/futtertyp/${f.slug}`,

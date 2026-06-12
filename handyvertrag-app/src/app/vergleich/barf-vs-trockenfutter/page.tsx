@@ -5,7 +5,7 @@ import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "BARF vs. Trockenfutter: Direktvergleich 2026 | BELLA",
+  title: "BARF vs. Trockenfutter: Direktvergleich 2026",
   description: "BARF oder Trockenfutter? Kosten, Nährwerte, Aufwand, Risiken und Nutzen ehrlich verglichen. Für welche Hunde und Halter ist welche Methode geeignet?",
   alternates: {
     canonical: "https://welches-hundefutter.today/vergleich/barf-vs-trockenfutter",

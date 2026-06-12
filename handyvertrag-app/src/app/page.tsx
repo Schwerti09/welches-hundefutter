@@ -12,7 +12,7 @@ import breedGallery from "@/data/breed-gallery.json";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Welches Hundefutter für meinen Hund? ✓ KI-Berater BELLA findet es in 60 Sekunden",
+  title: "Welches Hundefutter für meinen Hund? | BELLA Futter-Finder",
   description: "Welches Hundefutter passt zu deinem Hund? BELLA vergleicht über 11.000 echte Sorten und empfiehlt das passende für Rasse, Alter & Allergien. Kostenlos & unabhängig.",
   alternates: {
     canonical: "https://welches-hundefutter.today",

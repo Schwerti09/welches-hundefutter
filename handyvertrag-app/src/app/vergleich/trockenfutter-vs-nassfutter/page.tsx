@@ -5,7 +5,7 @@ import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "Trockenfutter vs. Nassfutter: Der ehrliche Vergleich 2026 | BELLA",
+  title: "Trockenfutter vs. Nassfutter: Der ehrliche Vergleich 2026",
   description: "Was ist besser für deinen Hund – Trocken- oder Nassfutter? Kosten, Nährwerte, Zahngesundheit, Sättigung und Praxis im Direktvergleich. Ohne Herstellermeinungen.",
   alternates: {
     canonical: "https://welches-hundefutter.today/vergleich/trockenfutter-vs-nassfutter",

@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const p = PROBLEM_BY_SLUG[slug];
   if (!p) return {};
   return {
-    title: `${p.tagline} | BELLA – KI-Hundefutterberaterin`,
+    title: p.tagline,
     description: `${p.description.slice(0, 150)}… BELLA findet das passende Futter aus 11.000+ Sorten.`,
     alternates: {
       canonical: `https://welches-hundefutter.today/problem/${p.slug}`,

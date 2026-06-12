@@ -23,7 +23,7 @@ export async function generateMetadata({
   if (!cat) return {};
   
   return {
-    title: `${cat.headline} – 100 Tipps von BELLA`,
+    title: `${cat.headline} – 100 Tipps`,
     description: cat.description,
     alternates: {
       canonical: `https://welches-hundefutter.today/tipps/${category}`,
