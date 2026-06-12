@@ -305,8 +305,13 @@ export async function generateMetadata({
   const city = CITY_BY_SLUG[slug];
   if (!city) return { title: 'Stadt nicht gefunden' };
   const dogs = fmt(estimateDogs(city.population));
+  // Doorway-Schutz: Nur Großstädte (≥100k) sind indexierbar — dort gibt es echtes
+  // Suchvolumen für "hundefutter {stadt}". Kleinere Städte bleiben nutzbar &
+  // verlinkt (follow), werden aber nicht indexiert (Scaled-Content-Abuse-Risiko).
+  const indexable = city.population >= 100000;
   return {
-    title: `Hundefutter ${city.name} 2025 — BELLA empfiehlt kostenlos`,
+    title: `Hundefutter ${city.name} 2026 — BELLA empfiehlt kostenlos`,
+    robots: { index: indexable, follow: true },
     description: `Das beste Hundefutter für ${city.name}: BELLA vergleicht über 11.000 Produkte und findet in Sekunden das ideale Futter für deinen Hund. ~${dogs} Hunde in ${city.name} vertrauen auf gute Ernährung.`,
     openGraph: {
       title: `Hundefutter ${city.name} — BELLA berät kostenlos`,

@@ -11,6 +11,15 @@ import ProductSchemaBlock from "@/components/ProductSchemaBlock";
 import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
+import CitableStat from "@/components/CitableStat";
+import type { CitableVariant } from "@/db/queries/stats";
+
+// Problem-Slug → zitierfähige Live-Statistik (nur wo fachlich passend)
+const PROBLEM_STAT: Record<string, CitableVariant> = {
+  "allergie": "hypoallergen",
+  "futtermittelunvertraeglichkeit": "monoprotein",
+  "haut-und-fell": "getreidefrei",
+};
 
 export const revalidate = 86400;
 
@@ -122,6 +131,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
           {problem.tagline}
         </h1>
         <p className="bella-answer text-[var(--muted)] leading-relaxed max-w-2xl mb-8">{problem.description}</p>
+        {PROBLEM_STAT[slug] && <CitableStat variant={PROBLEM_STAT[slug]} />}
         <Link href="/#bella-advisor" className="btn-primary">
           BELLA fragt nach deinem Hund → passende Sorten in 60 s
         </Link>

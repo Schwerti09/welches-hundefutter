@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "sw
 export const metadata: Metadata = {
   metadataBase: new URL("https://welches-hundefutter.today"),
   title: {
-    default: "Welches Hundefutter für meinen Hund? | BELLA Futter-Finder",
+    default: "Welches Hundefutter? 11.000+ Sorten im Preis-Check | BELLA",
     template: "%s | BELLA – KI-Hundefutterberater",
   },
   description: "Welches Hundefutter passt zu deinem Hund? BELLA fragt 5 Dinge und vergleicht über 11.000 echte Sorten und empfiehlt das passende für Rasse, Alter & Allergien. Kostenlos.",

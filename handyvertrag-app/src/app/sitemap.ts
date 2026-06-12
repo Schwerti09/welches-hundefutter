@@ -71,7 +71,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }))
 
-  const staedte: MetadataRoute.Sitemap = CITIES.map((c) => ({
+  // Nur indexierbare Großstädte (≥100k) in die Sitemap — der Rest ist noindex
+  // (Doorway-Schutz) und gehört damit nicht in die Sitemap.
+  const staedte: MetadataRoute.Sitemap = CITIES.filter((c) => c.population >= 100000).map((c) => ({
     url: `${BASE}/stadt/${c.slug}`,
     lastModified: now,
     changeFrequency: 'monthly' as const,

@@ -11,6 +11,19 @@ import ProductSchemaBlock from "@/components/ProductSchemaBlock";
 import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
+import CitableStat from "@/components/CitableStat";
+import type { CitableVariant } from "@/db/queries/stats";
+
+// Futtertyp-Slug → zitierfähige Live-Statistik
+const TYP_STAT: Record<string, CitableVariant> = {
+  "trockenfutter": "typ:trocken",
+  "nassfutter": "typ:nass",
+  "barf": "typ:barf",
+  "kaltgepresst": "typ:kaltgepresst",
+  "getreidefrei": "getreidefrei",
+  "hypoallergen": "hypoallergen",
+  "monoprotein": "monoprotein",
+};
 
 export const revalidate = 86400;
 
@@ -133,6 +146,7 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
           {typ.tagline}
         </h1>
         <p className="bella-answer text-[var(--muted)] leading-relaxed max-w-2xl mb-8">{typ.description}</p>
+        {TYP_STAT[slug] && <CitableStat variant={TYP_STAT[slug]} />}
         <div className="flex gap-3 flex-wrap">
           <Link href="/#bella-advisor" className="btn-primary">BELLA findet das Beste für deinen Hund →</Link>
           <span className="self-center text-xs text-[var(--muted)]">{typ.priceRange} typisch</span>
