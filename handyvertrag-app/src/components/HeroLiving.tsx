@@ -163,10 +163,10 @@ export default function HeroLiving({ foodCount, topFood, breeds }: { foodCount: 
                 <div className="absolute inset-0 -z-10 blur-2xl rounded-full" style={{ background: "radial-gradient(circle, rgba(240,167,60,.35), transparent 60%)" }} />
                 <Bella mood={scanning ? "thinking" : "happy"} size={150} track className="animate-[breathe_5s_ease-in-out_infinite]" />
               </div>
-              <h1 className="mt-2 text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.05]">
+              <h2 className="mt-2 text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.05]">
                 Das richtige Futter für deinen Hund —{" "}
                 <span className="text-accent">in 60 Sekunden</span>
-              </h1>
+              </h2>
               <p className="mt-3 text-[var(--muted)] text-sm sm:text-base max-w-md leading-relaxed">
                 Erzähl BELLA von deinem Hund. Sie schnüffelt durch{" "}
                 <span className="count-shimmer font-bold">{count.toLocaleString("de-DE")}</span> echte Sorten und findet die wirklich passenden.

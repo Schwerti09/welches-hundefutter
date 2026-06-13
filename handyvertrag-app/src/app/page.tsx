@@ -2,11 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
 import HeroLiving from "@/components/HeroLiving";
+import CostHook from "@/components/CostHook";
 import BreedGallery from "@/components/BreedGallery";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 import TopFoodsTable from "@/components/TopFoodsTable";
-import { getTopFoods, getTopFoodsByScore, getFoodCount } from "@/db/queries/foods";
+import { getTopFoods, getTopFoodsByScore, getFoodCount, getAvgPricePerKgDry } from "@/db/queries/foods";
+import { getBreedsSlim } from "@/lib/breeds-slim";
+import { DogInfoProvider } from "@/contexts/DogInfoContext";
 import breedGallery from "@/data/breed-gallery.json";
 
 export const revalidate = 3600;
@@ -33,27 +36,39 @@ const SCHEMA_FAQS = [
 ];
 
 export default async function HomePage() {
-  const [topFoods, topFoodsByScore, foodCount] = await Promise.all([
+  const [topFoods, topFoodsByScore, foodCount, avgPricePerKgDry] = await Promise.all([
     getTopFoods(7),
     getTopFoodsByScore(7),
     getFoodCount(),
+    getAvgPricePerKgDry(),
   ]);
   const countLabel = foodCount > 0 ? foodCount.toLocaleString("de-DE") : "11.000+";
   const cheapest = topFoods[0]
     ? { brand: topFoods[0].brand, name: topFoods[0].name, pricePerKg: topFoods[0].pricePerKg, affiliateUrl: topFoods[0].affiliateUrl }
     : null;
   const heroBreeds = (breedGallery as { name: string; slug: string; img: string }[]).slice(0, 8);
+  const breedsSlim = getBreedsSlim();
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
       <StructuredData type="faq" faqs={SCHEMA_FAQS} />
 
-      {/* HERO — lebende BELLA · Bento-Universum · Schnüffel-Scan */}
-      <HeroLiving foodCount={foodCount} topFood={cheapest} breeds={heroBreeds} />
+      <DogInfoProvider>
+        {/* KOSTEN-HOOK — neuer Einstieg: "Was kostet dein Hund?" */}
+        <CostHook breeds={breedsSlim} avgPricePerKgDry={avgPricePerKgDry} countLabel={countLabel} />
 
-      {/* BELLA-Berater — Ziel des Hero-Einstiegs (Schnüffel-Scan landet hier) */}
-      <section id="bella-advisor" className="px-5 pb-10 scroll-mt-4">
-        <BellaAdvisorWrapper />
-      </section>
+        {/* HERO — lebende BELLA · Bento-Universum · Schnüffel-Scan */}
+        <div className="px-4 sm:px-5">
+          <div className="max-w-2xl mx-auto -mb-2">
+            <span className="pill">🔎 Und so findet BELLA das passende Futter</span>
+          </div>
+        </div>
+        <HeroLiving foodCount={foodCount} topFood={cheapest} breeds={heroBreeds} />
+
+        {/* BELLA-Berater — Ziel des Hero-Einstiegs (Schnüffel-Scan landet hier) */}
+        <section id="bella-advisor" className="px-5 pb-10 scroll-mt-4">
+          <BellaAdvisorWrapper />
+        </section>
+      </DogInfoProvider>
 
       {/* FINDE DEINEN HUND — Rasse-Galerie mit echten Fotos */}
       <BreedGallery />

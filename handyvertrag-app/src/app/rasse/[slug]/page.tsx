@@ -308,7 +308,7 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
       <nav className="max-w-5xl mx-auto w-full px-5 pt-8 text-sm text-[var(--muted)] flex gap-2 flex-wrap">
         <Link href="/" className="hover:text-[var(--honey)]">Start</Link>
         <span>·</span>
-        <Link href="/rasse" className="hover:text-[var(--honey)]">Alle Rassen</Link>
+        <Link href="/rassen" className="hover:text-[var(--honey)]">Alle Rassen</Link>
         <span>·</span>
         <span className="text-[var(--ink)]">{breed.name}</span>
       </nav>

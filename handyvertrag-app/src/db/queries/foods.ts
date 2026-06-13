@@ -116,6 +116,22 @@ export async function getFoodsForBreed(allergyProne: boolean, limit = 6): Promis
   } catch { return []; }
 }
 
+/** Durchschnittlicher €/kg-Preis für Trockenfutter (für den Kosten-Hook auf der Startseite). */
+export async function getAvgPricePerKgDry(): Promise<number> {
+  const sql = db();
+  if (!sql) return 5.5;
+  try {
+    const r = await sql.query(
+      `SELECT AVG(price_per_kg)::numeric(8,2) AS avg
+       FROM dog_foods
+       WHERE is_active = true AND type = 'trocken'
+         AND price_per_kg IS NOT NULL AND price_per_kg BETWEEN 2 AND 60`
+    );
+    const v = rows(r)[0] as unknown as { avg: string } | undefined;
+    return v?.avg ? parseFloat(v.avg) : 5.5;
+  } catch { return 5.5; }
+}
+
 export async function getFoodBySlug(slug: string): Promise<DogFood | null> {
   const sql = db();
   if (!sql) return null;

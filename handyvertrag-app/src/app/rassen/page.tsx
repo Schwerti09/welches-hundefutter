@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BREEDS } from "@/data/breeds";
+import gallery from "@/data/breed-gallery.json";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 
 export const revalidate = 86400;
 
 const BASE = "https://welches-hundefutter.today";
+
+const PHOTO: Record<string, string> = Object.fromEntries(
+  (gallery as { slug: string; img: string }[]).map((g) => [g.slug, g.img])
+);
 
 export const metadata: Metadata = {
   title: `Hunderassen-Lexikon: Futterempfehlung für ${BREEDS.length} Rassen`,
@@ -91,16 +96,29 @@ export default function RassenHubPage() {
               </h2>
               <p className="mt-1 text-sm text-[var(--muted)]">{group.sub}</p>
               <ul className="mt-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-                {breeds.map((b) => (
-                  <li key={b.slug}>
-                    <Link
-                      href={`/rasse/${b.slug}`}
-                      className="glass block rounded-xl px-4 py-3 text-sm font-medium hover:border-[var(--honey)] hover:text-[var(--honey)] transition-colors"
-                    >
-                      {b.name}
-                    </Link>
-                  </li>
-                ))}
+                {breeds.map((b) => {
+                  const photo = PHOTO[b.slug] ?? b.imageUrl;
+                  return (
+                    <li key={b.slug}>
+                      <Link
+                        href={`/rasse/${b.slug}`}
+                        className="glass card-hover group block rounded-xl overflow-hidden hover:border-[var(--honey)] transition-colors"
+                      >
+                        {photo ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={photo} alt={b.name} loading="lazy" className="w-full h-24 object-cover" />
+                        ) : (
+                          <div className="w-full h-24 flex items-center justify-center text-3xl bg-gradient-to-br from-amber-500/10 to-orange-500/5">
+                            🐕
+                          </div>
+                        )}
+                        <p className="px-3 py-2.5 text-sm font-medium group-hover:text-[var(--honey)] transition-colors">
+                          {b.name}
+                        </p>
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </section>
           );
