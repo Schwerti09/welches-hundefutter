@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import StructuredData from "@/components/StructuredData";
+import SiteHeader from "@/components/SiteHeader";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
 import ExitIntent from "@/components/ExitIntent";
 import WebVitals from "@/components/WebVitals";
@@ -81,13 +82,14 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
 
         {/* Additional SEO Tags */}
-        <meta name="author" content="R. Schwertfechter" />
+        <meta name="author" content="Rolf Schwertfechter" />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
       </head>
       <body className="min-h-full bg-[#08080c] text-[#f4f1ea]">
         <StructuredData type="organization" />
         <StructuredData type="website" />
         <StructuredData type="software" />
+        <SiteHeader />
         {children}
         <StickyMobileCTA />
         <ExitIntent />

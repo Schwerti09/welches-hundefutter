@@ -184,3 +184,7 @@ html, body {
   .aurora__blob, .scan__line, .tile__sheen::after, .count-shimmer { animation: none !important; }
   .reveal { opacity: 1 !important; transform: none !important; }
 }
+
+/* Horizontale Scroll-Navigation ohne sichtbare Scrollbar (mobiler Header) */
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
