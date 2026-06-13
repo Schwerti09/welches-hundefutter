@@ -52,8 +52,9 @@ async function getProfile(token: string): Promise<{ profile: Profile; food: Food
   } catch { return null; }
 }
 
-export async function generateMetadata({ params }: { params: { share_token: string } }): Promise<Metadata> {
-  const data = await getProfile(params.share_token);
+export async function generateMetadata({ params }: { params: Promise<{ share_token: string }> }): Promise<Metadata> {
+  const { share_token } = await params;
+  const data = await getProfile(share_token);
   if (!data) return { title: "Profil nicht gefunden | BELLA" };
   return {
     title: `${data.profile.name}s Futterprofil | BELLA – Hundefutter-Beraterin`,
@@ -69,8 +70,9 @@ const ACTIVITY_LABELS: Record<string, string> = {
   sehr_hoch: "Arbeitshund / Sport",
 };
 
-export default async function HundSteckbriefPage({ params }: { params: { share_token: string } }) {
-  const data = await getProfile(params.share_token);
+export default async function HundSteckbriefPage({ params }: { params: Promise<{ share_token: string }> }) {
+  const { share_token } = await params;
+  const data = await getProfile(share_token);
   if (!data) notFound();
 
   const { profile, food } = data;
