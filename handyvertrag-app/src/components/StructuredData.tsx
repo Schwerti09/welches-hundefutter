@@ -51,7 +51,7 @@ function buildOrganizationSchema() {
     "@type": "Organization",
     "@id": "https://welches-hundefutter.today/#organization",
     name: "BELLA",
-    alternateName: "BELLA Intelligence System",
+    alternateName: "welches-hundefutter.today",
     url: "https://welches-hundefutter.today",
     logo: {
       "@type": "ImageObject",
@@ -59,8 +59,8 @@ function buildOrganizationSchema() {
       width: 512,
       height: 512,
     },
-    description: "KI-Ernährungsberaterin für Hunde – powered by HANSI Decision Intelligence Engine™.",
-    founder: { "@type": "Person", name: "R. Schwertfechter" },
+    description: "Unabhängiger KI-Hundefutterberater für den DACH-Raum: vergleicht täglich über 11.000 Futtersorten aus echten Händler-Feeds und empfiehlt in fünf Fragen passendes Futter.",
+    founder: { "@id": "https://welches-hundefutter.today/#person-rolf-schwertfechter" },
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer support",
@@ -72,12 +72,18 @@ function buildOrganizationSchema() {
       { "@type": "Country", name: "Österreich" },
       { "@type": "Country", name: "Schweiz" },
     ],
-    sameAs: ["https://github.com/Schwerti09/welches-hundefutter"],
-    brand: {
-      "@type": "Brand",
-      name: "HANSI Decision Intelligence Engine™",
-      description: "Proprietäres KI-Empfehlungssystem für individuelle Produktberatung.",
-    },
+    // Entitäten-Brücke (Trick #7): bidirektional verifizierbare Profile.
+    // WICHTIG: Nur echte, existierende URLs aufnehmen — Google prüft die
+    // Rückverlinkung. Weitere ergänzen, sobald die Profile angelegt sind
+    // (Roadmap siehe ENTITY_BRIDGE.md): LinkedIn-Unternehmensseite,
+    // Crunchbase, und perspektivisch Wikidata-Eintrag.
+    sameAs: [
+      "https://github.com/Schwerti09/welches-hundefutter",
+      "https://de.pinterest.com/BellaKIHundefutterberaterin/",
+      "https://www.youtube.com/channel/UCxtl5yNgHvePpkZ6s___nlA",
+      "https://x.com/bellaberaterin",
+    ],
+    knowsAbout: ["Hundeernährung", "Hundefutter", "Tiergesundheit", "Futtervergleich"],
   };
 }
 
@@ -208,7 +214,7 @@ function buildArticleSchema(article: ArticleData) {
     ...(article.datePublished && { datePublished: article.datePublished }),
     dateModified: article.dateModified,
     ...(article.image && { image: article.image }),
-    author: { "@id": "https://welches-hundefutter.today/ueber-uns#person" },
+    author: { "@id": "https://welches-hundefutter.today/#person-rolf-schwertfechter" },
     publisher: { "@id": "https://welches-hundefutter.today/#organization" },
     ...(article.reviewedBy && {
       reviewedBy: {

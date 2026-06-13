@@ -56,7 +56,10 @@ export const metadata: Metadata = {
   },
   verification: {
     google: ["Apib7-x98H0j5cPqHWwSMm6dNU4GmODRoqxLiDzdx9I", "TCNbNGc8cJA0Hh5w6f2ojLRVGC4FUAeonQpE5GKwxTM"],
-    other: { "msvalidate.01": ["03fce00755d90f20151908f4b591a4bc"] },
+    other: {
+      "msvalidate.01": ["03fce00755d90f20151908f4b591a4bc"],
+      "p:domain_verify": ["3d17c42b9949e7b4dc5bb911e4364653"],
+    },
   },
 };
 

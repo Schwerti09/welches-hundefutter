@@ -19,14 +19,13 @@ export const metadata: Metadata = {
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
-  "@id": "https://welches-hundefutter.today/ueber-uns#person",
+  "@id": "https://welches-hundefutter.today/#person-rolf-schwertfechter",
   name: "Rolf Schwertfechter",
+  alternateName: "Rolf Peter Schwertfechter",
   url: "https://welches-hundefutter.today/ueber-uns",
   jobTitle: "Gründer, KI-Entwickler & Hundefutter-Analyst",
   worksFor: {
-    "@type": "Organization",
     "@id": "https://welches-hundefutter.today/#organization",
-    name: "welches-hundefutter.today",
   },
   knowsAbout: [
     "Hundeernährung",
@@ -44,7 +43,12 @@ const personSchema = {
     addressCountry: "DE",
   },
   email: "support@welches-hundefutter.today",
-  sameAs: ["https://github.com/Schwerti09"],
+  // Entitäten-Brücke: nur verifizierbare Profile. Weitere ergänzen, sobald
+  // angelegt (siehe ENTITY_BRIDGE.md).
+  sameAs: [
+    "https://github.com/Schwerti09",
+    "https://www.linkedin.com/in/r-peter-schwertfechter-4a750a416/",
+  ],
 };
 
 const CREDENTIALS = [
@@ -61,7 +65,7 @@ const CREDENTIALS = [
   {
     icon: "🐕",
     title: "Rassen-spezifisches Expertenwissen",
-    body: "54 Rasse-Steckbriefe mit klinisch relevanten Ernaehrungshinweisen. Quellen: rassenspezifische Genetikstudien, Prevalenzdaten zu Erbkrankheiten und tieraerztliche Standardwerke.",
+    body: "186 Rasse-Steckbriefe mit klinisch relevanten Ernaehrungshinweisen. Quellen: rassenspezifische Genetikstudien, Prevalenzdaten zu Erbkrankheiten und tieraerztliche Standardwerke.",
   },
   {
     icon: "🔒",
@@ -183,7 +187,7 @@ export default function UeberUnsPage() {
             {[
               { value: "11.000+", label: "Futtersorten analysiert" },
               { value: "16+", label: "peer-reviewed Studien" },
-              { value: "54", label: "Rassen-Steckbriefe" },
+              { value: "186", label: "Rassen-Steckbriefe" },
               { value: "14", label: "Gesundheitsratgeber" },
             ].map((k) => (
               <div key={k.label} className="bg-white/[0.04] rounded-2xl p-5 text-center border border-white/10">
