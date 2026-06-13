@@ -1,170 +1,93 @@
-﻿import Link from 'next/link';
-import { BookOpen, Calculator, BarChart3 } from 'lucide-react';
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
+import Link from "next/link";
+import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: 'Tools & Guides – Hund für deinen Hund',
-  description: 'Kostenlose Tools, Rechner & Guides für Hundverträge für deinen Hund: Allergien-Score Rechner, Vergleichstool & umfangreiche Guides.',
+  title: "Tools & Rechner für Hundehalter | BELLA",
+  description: "Kostenlose Tools von BELLA: Futter-Finder (5 Fragen, 3 Empfehlungen), Portionsrechner pro Rasse, Preisindex aus über 11.000 Produkten und Futtertyp-Vergleiche.",
+  alternates: {
+    canonical: "https://welches-hundefutter.today/tools",
+    languages: {
+      "de-DE": "https://welches-hundefutter.today/tools",
+      "de-AT": "https://welches-hundefutter.today/tools",
+      "de-CH": "https://welches-hundefutter.today/tools",
+      "x-default": "https://welches-hundefutter.today/tools",
+    },
+  },
 };
 
 const tools = [
   {
-    id: 'guide',
-    icon: BookOpen,
-    title: 'Vollständiger Guide',
-    description: 'Der ultimative Ratgeber für Hundverträge für deinen Hund, negative Bonität und alles rund um Allergien-Auskunft.',
-    href: '/guides',
-    features: [
-      'Was ist die Allergien?',
-      'Marke-Vergleich',
-      'Schritt-für-Schritt Anleitung',
-      'Häufige Fragen',
-      '5000+ Wörter Content',
-    ],
+    href: "/tools/futter-finder",
+    emoji: "🔍",
+    title: "Futter-Finder",
+    description: "5 Fragen zu Rasse, Alter, Gewicht und Empfindlichkeiten — BELLA vergleicht über 11.000 Sorten und empfiehlt 3 passende. Kostenlos, ohne Anmeldung.",
+    cta: "Jetzt Futter finden →",
   },
   {
-    id: 'calculator',
-    icon: Calculator,
-    title: 'Allergie-Score Rechner',
-    description: 'Berechne kostenlos deinen persönlichen Allergien-Score und erfahre deine realistischen Chancen.',
-    href: '/problem/allergie',
-    features: [
-      '6 intelligente Fragen',
-      'Personalisierte Empfehlung',
-      'Beste Marke für dich',
-      'Nächste Schritte',
-      'Kostenlos & anonym',
-    ],
+    href: "/rassen",
+    emoji: "⚖️",
+    title: "Portionsrechner",
+    description: "Auf jeder der 186 Rassenseiten berechnet BELLA per RER-Formel die passende Tagesmenge nach Gewicht und Aktivitätslevel.",
+    cta: "Rasse auswählen →",
   },
   {
-    id: 'comparison',
-    icon: BarChart3,
-    title: 'Vergleich-Tool',
-    description: 'Vergleiche 1000+ Hundverträge mit intelligenten Filtern und finde dein perfektes Angebot.',
-    href: '/tools/vergleich',
-    features: [
-      'Echtzeit-Vergleich',
-      'Preis-Filter',
-      'Futtervolumen-Filter',
-      'Allergie-Kulanz anzeigen',
-      'Match-Score System',
-    ],
+    href: "/analyse/preisindex-2026",
+    emoji: "📊",
+    title: "Preisindex & Datenreport",
+    description: "Ø-Fleischanteil, Getreidefrei- und Hypoallergen-Quote, Top-Proteinquellen — aggregiert aus dem kompletten Live-Katalog, täglich aktualisiert.",
+    cta: "Report ansehen →",
+  },
+  {
+    href: "/vergleich",
+    emoji: "⚔️",
+    title: "Futtertyp-Vergleiche",
+    description: "BARF vs. Trockenfutter, Trockenfutter vs. Nassfutter — Kosten, Nährwerte und Aufwand datenbasiert gegenübergestellt.",
+    cta: "Vergleiche lesen →",
+  },
+  {
+    href: "/data/catalog.json",
+    emoji: "🗂️",
+    title: "Offener Produktkatalog",
+    description: "Der komplette aktive Katalog als JSON/CSV unter CC-BY-4.0 — frei nutzbar für eigene Auswertungen, Tools oder Recherchen.",
+    cta: "Datensatz öffnen →",
   },
 ];
 
 export default function ToolsPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-gray-900 mb-4">
-            Tools & Guides für Hund für deinen Hund
-          </h1>
-          <p className="text-xl text-gray-600">
-            Kostenlose Ressourcen, um die beste Lösung für deine Situation zu finden
-          </p>
+    <div className="min-h-screen text-[var(--ink)] flex flex-col">
+      <nav className="max-w-5xl mx-auto w-full px-5 pt-8 text-sm text-[var(--muted)]">
+        <Link href="/" className="hover:text-[var(--honey)]">Start</Link>
+        <span className="mx-2">·</span>
+        <span className="text-[var(--ink)]">Tools</span>
+      </nav>
+
+      <section className="hero-glow max-w-5xl mx-auto w-full px-5 pt-8 pb-14">
+        <span className="pill mb-4">🛠️ Kostenlose Tools</span>
+        <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4">
+          Tools & Rechner für deinen Hund
+        </h1>
+        <p className="text-[var(--muted)] leading-relaxed max-w-2xl">
+          Alle Tools laufen direkt auf dem Live-Katalog mit über 11.000 Sorten — kostenlos,
+          unabhängig und ohne Anmeldung.
+        </p>
+      </section>
+
+      <section className="max-w-5xl mx-auto w-full px-5 pb-16">
+        <div className="grid sm:grid-cols-2 gap-4">
+          {tools.map((t) => (
+            <Link key={t.href} href={t.href} className="card card-hover p-6 block">
+              <div className="text-3xl mb-3">{t.emoji}</div>
+              <h2 className="text-lg font-extrabold tracking-tight mb-2">{t.title}</h2>
+              <p className="text-sm text-[var(--muted)] leading-relaxed mb-4">{t.description}</p>
+              <span className="text-xs text-[var(--honey)] font-semibold">{t.cta}</span>
+            </Link>
+          ))}
         </div>
+      </section>
 
-        {/* Tools Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          {tools.map((tool) => {
-            const Icon = tool.icon;
-            return (
-              <Link
-                key={tool.id}
-                href={tool.href}
-                className="group bg-white rounded-lg shadow-lg hover:shadow-xl transition-all hover:-translate-y-2"
-              >
-                <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-8 rounded-t-lg">
-                  <Icon className="w-12 h-12 mb-4" />
-                  <h3 className="text-2xl font-bold">{tool.title}</h3>
-                </div>
-
-                <div className="p-8">
-                  <p className="text-gray-600 mb-6">{tool.description}</p>
-
-                  <div className="space-y-2 mb-8">
-                    {tool.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-start">
-                        <span className="text-blue-600 mr-3 font-bold">✓</span>
-                        <span className="text-gray-700">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <button className="w-full bg-blue-600 group-hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors">
-                    Tool öffnen →
-                  </button>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-
-        {/* Info Section */}
-        <div className="bg-blue-50 rounded-lg p-12 mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">
-            Warum diese Tools nutzen?
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">🎯 Personalisiert</h3>
-              <p className="text-gray-700">
-                Alle Tools sind speziell auf deine Situation ausgerichtet – ob gute oder schlechte Allergien.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">💯 Kostenlos</h3>
-              <p className="text-gray-700">
-                100% kostenlos und unverbindlich. Keine versteckten Gebühren oder Überraschungen.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">⚡ Schnell</h3>
-              <p className="text-gray-700">
-                In 5-10 Minuten weißt du genau, welche Optionen für dich verfügbar sind.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-          <div className="text-center">
-            <p className="text-4xl font-bold text-blue-600 mb-2">50.000+</p>
-            <p className="text-gray-600">Nutzer geholfen</p>
-          </div>
-          <div className="text-center">
-            <p className="text-4xl font-bold text-blue-600 mb-2">1000+</p>
-            <p className="text-gray-600">Hundverträge</p>
-          </div>
-          <div className="text-center">
-            <p className="text-4xl font-bold text-blue-600 mb-2">95%</p>
-            <p className="text-gray-600">Erfolgsquote</p>
-          </div>
-          <div className="text-center">
-            <p className="text-4xl font-bold text-blue-600 mb-2">4.8★</p>
-            <p className="text-gray-600">Bewertung</p>
-          </div>
-        </div>
-
-        {/* CTA */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg p-12 text-center">
-          <h2 className="text-3xl font-bold mb-4">
-            Bereit, deinen perfekten Hundefutter zu finden?
-          </h2>
-          <p className="text-xl mb-8 text-blue-100">
-            Starte mit dem Allergien-Score Rechner oder dem Vergleich-Tool!
-          </p>
-          <Link
-            href="/"
-            className="inline-block bg-white text-blue-600 px-8 py-3 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
-          >
-            Zur KI-Beratung →
-          </Link>
-        </div>
-      </div>
+      <SiteFooter />
     </div>
   );
 }

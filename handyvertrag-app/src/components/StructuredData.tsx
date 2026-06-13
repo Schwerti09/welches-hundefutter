@@ -97,11 +97,6 @@ function buildWebsiteSchema() {
     description: "Hundefutter für deinen Hund finden mit KI-Beratung",
     publisher: { "@id": "https://welches-hundefutter.today/#organization" },
     inLanguage: "de-DE",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: "https://welches-hundefutter.today/tools/vergleich?q={search_term_string}",
-      "query-input": "required name=search_term_string",
-    },
   };
 }
 
