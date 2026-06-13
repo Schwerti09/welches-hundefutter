@@ -20,13 +20,18 @@ function buildDescription(f: FoodItem): string {
 }
 
 export default function ProductSchemaBlock({ foods, listName }: { foods: FoodItem[]; listName: string }) {
-  if (!foods.length) return null;
+  // Nur Produkte mit gültigem Bild ins Schema: ein Product OHNE image ist für
+  // Google ungültig (Rich-Result-Fehler). Lieber weniger, aber valide Einträge.
+  // Wurzelursache imageloser Produkte ist ein fehlendes image_url in der DB
+  // (Feed-Import) — siehe Hinweis im Deploy-Report.
+  const valid = foods.filter((f) => f.image_url && /^https?:\/\//.test(f.image_url));
+  if (!valid.length) return null;
 
   const schema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: listName,
-    itemListElement: foods.map((f, i) => ({
+    itemListElement: valid.map((f, i) => ({
       "@type": "ListItem",
       position: i + 1,
       item: {
@@ -35,7 +40,7 @@ export default function ProductSchemaBlock({ foods, listName }: { foods: FoodIte
         brand: { "@type": "Brand", name: f.brand },
         category: f.type,
         description: buildDescription(f),
-        ...(f.image_url && /^https?:\/\//.test(f.image_url) ? { image: f.image_url } : {}),
+        image: f.image_url,
         ...(f.price_per_kg
           ? {
               offers: {
