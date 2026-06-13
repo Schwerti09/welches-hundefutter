@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 interface FoodRow {
   brand: string; name: string; type: string; protein: string | null;
   price_per_kg: string | null; is_grain_free: boolean; is_hypoallergenic: boolean;
-  affiliate_url: string; score: number | null;
+  affiliate_url: string; image_url: string | null; score: number | null;
 }
 
 async function getFoodsForProblem(grainFree: boolean, hypo: boolean): Promise<FoodRow[]> {
@@ -70,7 +70,7 @@ async function getFoodsForProblem(grainFree: boolean, hypo: boolean): Promise<Fo
     const rows = await sql.query(
       `SELECT * FROM (
          SELECT DISTINCT ON (${nameKey}) brand, name, type, protein, price_per_kg,
-           is_grain_free, is_hypoallergenic, affiliate_url, score
+           is_grain_free, is_hypoallergenic, affiliate_url, image_url, score
          FROM dog_foods WHERE ${filter}
          ORDER BY ${nameKey}, price_per_kg ASC
        ) d ORDER BY ${bias} score DESC NULLS LAST, price_per_kg ASC LIMIT 6`,

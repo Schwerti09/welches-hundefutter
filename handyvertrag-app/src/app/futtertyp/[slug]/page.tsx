@@ -53,7 +53,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 interface FoodRow {
   brand: string; name: string; type: string; protein: string | null;
   price_per_kg: string | null; is_grain_free: boolean; is_hypoallergenic: boolean;
-  affiliate_url: string; score: number | null;
+  affiliate_url: string; image_url: string | null; score: number | null;
 }
 
 async function getFoodsByType(dbType: string, grainFree: boolean, hypo: boolean): Promise<FoodRow[]> {
@@ -72,7 +72,7 @@ async function getFoodsByType(dbType: string, grainFree: boolean, hypo: boolean)
     const rows = await sql.query(
       `SELECT * FROM (
          SELECT DISTINCT ON (${nameKey}) brand, name, type, protein, price_per_kg,
-           is_grain_free, is_hypoallergenic, affiliate_url, score
+           is_grain_free, is_hypoallergenic, affiliate_url, image_url, score
          FROM dog_foods WHERE ${filters}
          ORDER BY ${nameKey}, price_per_kg ASC
        ) d ORDER BY score DESC NULLS LAST, price_per_kg ASC LIMIT 6`,
@@ -84,7 +84,7 @@ async function getFoodsByType(dbType: string, grainFree: boolean, hypo: boolean)
     const fallback = await sql.query(
       `SELECT * FROM (
          SELECT DISTINCT ON (${nameKey}) brand, name, type, protein, price_per_kg,
-           is_grain_free, is_hypoallergenic, affiliate_url, score
+           is_grain_free, is_hypoallergenic, affiliate_url, image_url, score
          FROM dog_foods WHERE is_active = true AND affiliate_url <> '' AND name <> ''
            AND price_per_kg BETWEEN 2 AND 60 AND type <> 'snack'
          ORDER BY ${nameKey}, price_per_kg ASC

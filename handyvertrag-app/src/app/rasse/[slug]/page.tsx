@@ -669,7 +669,7 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
             Futter-Empfehlungen für {breed.name}
             <span className="ml-2 text-sm text-[var(--muted)] font-normal">nach Score sortiert</span>
           </h2>
-          <ProductSchemaBlock foods={foods.map(f => ({ name: f.name, brand: f.brand, type: f.type, price_per_kg: f.price_per_kg, affiliate_url: f.affiliate_url }))} listName={`Futter für ${breed.name}`} />
+          <ProductSchemaBlock foods={foods.map(f => ({ name: f.name, brand: f.brand, type: f.type, protein: f.protein, price_per_kg: f.price_per_kg, affiliate_url: f.affiliate_url, image_url: f.image_url }))} listName={`Futter für ${breed.name}`} />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {foods.map((f, i) => (
               <a key={i} href={f.affiliate_url} target="_blank" rel="sponsored noopener noreferrer"
