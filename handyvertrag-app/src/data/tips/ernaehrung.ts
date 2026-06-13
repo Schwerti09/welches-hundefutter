@@ -9,7 +9,7 @@ const ernaehrungArticles: TipArticle[] = [
     shortDescription: "Der erste Bestandteil auf der Zutatenliste hat den größten Gewichtsanteil. Bei gutem Futter steht hier Fleisch — nicht Getreide oder \"tierische Nebenerzeugnisse\".",
     level: 0,
     tags: ["deklaration", "fleischanteil"],
-    imageUrl: "/images/tipps/fleisch-an-erster-stelle.jpg",
+    imageUrl: "/images/tipps/ernaehrung/1.jpg",
     imageAlt: "Hund frisst hochwertiges Fleischfutter aus einer Schale",
     content: `## Warum die Reihenfolge der Zutaten entscheidend ist
 
@@ -76,7 +76,7 @@ Die erste Zutat gibt dir einen schnellen ersten Eindruck, aber keine Garantie. K
     shortDescription: "\"Geflügelmehl 28 %\" sagt dir mehr als \"tierische Nebenerzeugnisse\". Je genauer Sorte und Prozent angegeben sind, desto transparenter der Hersteller.",
     level: 0,
     tags: ["deklaration"],
-    imageUrl: "/images/tipps/offene-deklaration.jpg",
+    imageUrl: "/images/tipps/ernaehrung/2.jpg",
     imageAlt: "Hundefutter Verpackung mit detaillierter Zutatenliste",
     content: `## Was ist eine offene Deklaration?
 
@@ -176,7 +176,7 @@ Offene Deklaration ist mehr als ein Marketing-Begriff — sie ist ein Zeichen f�
     shortDescription: "Frischfleisch besteht zu ~70 % aus Wasser. Steht \"Frischfleisch 60 %\", bleibt nach dem Trocknen viel weniger übrig. Getrocknetes Fleisch/Fleischmehl ist gehaltvoller als es klingt.",
     level: 1,
     tags: ["fleischanteil", "deklaration"],
-    imageUrl: "/images/tipps/fleischanteil.jpg",
+    imageUrl: "/images/tipps/ernaehrung/3.jpg",
     imageAlt: "Vergleich zwischen Frischfleisch und Fleischmehl",
     content: `## Der Wasser-Trick bei Frischfleisch
 
@@ -303,7 +303,7 @@ Der angegebene Fleischanteil auf der Verpackung ist oft irreführend. Rechne Fri
     shortDescription: "Rohprotein, Rohfett, Rohasche und Rohfaser stehen auf jeder Packung. Rohasche über 10 % deutet oft auf viele Knochen-/Mineralanteile hin.",
     level: 1,
     tags: ["deklaration", "naehrwerte"],
-    imageUrl: "/images/tipps/analytische-bestandteile.jpg",
+    imageUrl: "/images/tipps/ernaehrung/4.jpg",
     imageAlt: "Hundefutter Verpackung mit analytischen Bestandteilen",
     content: `## Was sind analytische Bestandteile?
 
@@ -446,7 +446,7 @@ Die analytischen Bestandteile sind ein wichtiges Werkzeug zur Futterbewertung, a
     shortDescription: "Zucker, Karamell oder Melasse dienen nur Farbe und Geschmack. Sie belasten Zähne und Stoffwechsel — meide Futter, das sie listet.",
     level: 0,
     tags: ["zusatzstoffe"],
-    imageUrl: "/images/tipps/zucker-hundefutter.jpg",
+    imageUrl: "/images/tipps/ernaehrung/5.jpg",
     imageAlt: "Hund mit gesunden Zähnen ohne Zucker im Futter",
     content: `## Warum Zucker im Hundefutter problematisch ist
 
@@ -588,7 +588,7 @@ Zucker im Hundefutter ist unnötig und schädlich. Es gibt keinen Grund, deinem 
     shortDescription: "Wenn ein Futter \"Aroma\" oder Lockstoffe braucht, damit der Hund es frisst, fehlt es meist an echtem Fleisch.",
     level: 1,
     tags: ["zusatzstoffe"],
-    imageUrl: "/images/tipps/lockstoffe-hundefutter.jpg",
+    imageUrl: "/images/tipps/ernaehrung/6.jpg",
     imageAlt: "Hund snifft an Futter mit künstlichen Aromen",
     content: `## Was sind Lockstoffe und Aromen?
 
@@ -745,7 +745,7 @@ Lockstoffe und künstliche Aromen sind ein Warnsignal für minderwertiges Futter
     shortDescription: "Als Faustregel frisst ein Hund 2–3 % seines Idealgewichts täglich. Welpen, aktive und untergewichtige Hunde brauchen mehr.",
     level: 0,
     tags: ["menge", "fuetterung"],
-    imageUrl: "/images/tipps/futtermenge-koerpergewicht.jpg",
+    imageUrl: "/images/tipps/ernaehrung/7.jpg",
     imageAlt: "Hund wird gewogen für die korrekte Futtermenge",
     content: `## Warum das Körpergewicht entscheidend ist
 
@@ -921,7 +921,7 @@ Die Futtermenge sollte sich am Idealgewicht orientieren, nicht am Istgewicht. Be
     shortDescription: "Ist dein Hund zu dick, berechne die Menge nach dem Zielgewicht — sonst zementierst du das Übergewicht.",
     level: 1,
     tags: ["menge", "gewicht"],
-    imageUrl: "/images/tipps/idealgewicht-hund.jpg",
+    imageUrl: "/images/tipps/ernaehrung/8.jpg",
     imageAlt: "Hund mit gesundem Idealgewicht",
     content: `## Warum Idealgewicht wichtiger ist als Istgewicht
 
@@ -1113,7 +1113,7 @@ Bei übergewichtigen Hunden immer nach Idealgewicht füttern, nicht nach Istgewi
     shortDescription: "Zwei Portionen pro Tag halten den Blutzucker stabiler und beugen Heißhunger und Magendrehung bei großen Rassen vor.",
     level: 0,
     tags: ["fuetterung"],
-    imageUrl: "/images/tipps/zwei-mahlzeiten-hund.jpg",
+    imageUrl: "/images/tipps/ernaehrung/9.jpg",
     imageAlt: "Hund frisst aus zwei Näpfen am Tag",
     content: `## Warum zwei Mahlzeiten besser sind als eine
 
@@ -1296,7 +1296,7 @@ Zwei Mahlzeiten pro Tag sind für die meisten Hunde optimal. Sie stabilisieren d
     shortDescription: "Ein Rhythmus hilft der Verdauung und macht den Stuhlgang planbar. Hunde sind Gewohnheitstiere.",
     level: 0,
     tags: ["fuetterung", "routine"],
-    imageUrl: "/images/tipps/fuetterungszeiten-hund.jpg",
+    imageUrl: "/images/tipps/ernaehrung/10.jpg",
     imageAlt: "Hund wartet geduldig auf seine Futterzeit",
     content: `## Warum feste Fütterungszeiten wichtig sind
 
@@ -1493,7 +1493,7 @@ Feste Fütterungszeiten sind einfach einzuführen und haben große Vorteile für
     shortDescription: "Neues Futter über 7–10 Tage einschleichen: erst 25 %, dann mehr. Ein abrupter Wechsel führt oft zu Durchfall.",
     level: 0,
     tags: ["umstellung", "verdauung"],
-    imageUrl: "/images/tipps/futterumstellung.jpg",
+    imageUrl: "/images/tipps/ernaehrung/11.jpg",
     imageAlt: "Hund frisst gemischtes Futter während der Umstellungsphase",
     content: `## Warum eine langsame Futterumstellung wichtig ist
 
@@ -1695,7 +1695,7 @@ Eine langsame Futterumstellung über 7-10 Tage ist essenziell für die Verdauung
     shortDescription: "Gib einem neuen Futter Zeit. Erst nach 2–4 Wochen siehst du an Fell, Kot und Energie, ob es wirklich passt.",
     level: 1,
     tags: ["umstellung"],
-    imageUrl: "/images/tipps/futter-testen.jpg",
+    imageUrl: "/images/tipps/ernaehrung/12.jpg",
     imageAlt: "Hund mit glänzendem Fell nach erfolgreicher Futterumstellung",
     content: `## Warum Geduld bei der Futterbewertung wichtig ist
 
@@ -1916,7 +1916,7 @@ Gib einem neuen Futter mindestens 2-4 Wochen Zeit. Beobachte Fell, Kot, Energie 
     shortDescription: "Hunde verwerten gekochte Kohlenhydrate aus Reis, Kartoffel oder Hafer gut. Wichtig ist die Qualität, nicht die bloße Anwesenheit.",
     level: 1,
     tags: ["kohlenhydrate", "naehrwerte"],
-    imageUrl: "/images/tipps/kohlenhydrate-hund.jpg",
+    imageUrl: "/images/tipps/ernaehrung/13.jpg",
     imageAlt: "Hund mit gesunden Kohlenhydraten im Futter",
     content: `## Das Missverständnis um Kohlenhydrate
 
@@ -2111,7 +2111,7 @@ Kohlenhydrate sind nicht der Feind — sie sind eine wertvolle Energiequelle, di
     shortDescription: "Lachsöl oder fettiger Fisch liefern EPA und DHA, die Haut, Fell und Gelenke unterstützen können.",
     level: 1,
     tags: ["fette", "omega3"],
-    imageUrl: "/images/tipps/omega-3-hund.jpg",
+    imageUrl: "/images/tipps/ernaehrung/14.jpg",
     imageAlt: "Lachsöl als Omega-3 Quelle für Hunde",
     content: `## Warum Omega-3 essentiell für Hunde sind
 
@@ -2341,7 +2341,7 @@ Omega-3-Fettsäuren sind essenziell für die Gesundheit deines Hundes. Sie unter
     shortDescription: "Für ausgewachsene Hunde liegt es etwa bei 1,2–1,4 : 1. Besonders bei selbst gekochtem Futter ist die Balance entscheidend.",
     level: 2,
     tags: ["mineralstoffe", "selbstgekocht"],
-    imageUrl: "/images/tipps/kalzium-phosphor.jpg",
+    imageUrl: "/images/tipps/ernaehrung/15.jpg",
     imageAlt: "Kalzium und Phosphor Balance im Hundefutter",
     content: `## Warum das Kalzium-Phosphor-Verhältnis kritisch ist
 
@@ -2582,7 +2582,7 @@ Das Kalzium-Phosphor-Verhältnis ist kritisch für die Knochengesundheit. Bei ko
     shortDescription: "Gewürztes, Salziges und Fettiges aus der Pfanne überfordert den Hundemagen. Belohne lieber mit hundegerechten Snacks.",
     level: 0,
     tags: ["fuetterung", "sicherheit"],
-    imageUrl: "/images/tipps/hund-tischreste.jpg",
+    imageUrl: "/images/tipps/ernaehrung/16.jpg",
     imageAlt: "Hund schaut hungrig auf den Esstisch - bekommt aber keine Reste",
     content: `## Warum Tischreste für Hunde gefährlich sind
 
@@ -2815,7 +2815,7 @@ Tischreste sind keine Mahlzeit für Hunde. Gewürzte, salzige und fettige mensch
     shortDescription: "Schokolade, Weintrauben, Rosinen, Zwiebeln, Knoblauch, Xylit und Avocado sind für Hunde gefährlich bis giftig. Strikt fernhalten.",
     level: 0,
     tags: ["sicherheit", "giftig"],
-    imageUrl: "/images/tipps/giftige-lebensmittel-hund.jpg",
+    imageUrl: "/images/tipps/ernaehrung/1.jpg",
     imageAlt: "Gefährliche Lebensmittel für Hunde - Schokolade, Trauben, Zwiebeln",
     content: `## Lebensgefährliche Lebensmittel für Hunde
 
@@ -3072,7 +3072,7 @@ Giftige Lebensmittel wie Schokolade, Weintrauben, Zwiebeln und Xylit können fü
     shortDescription: "Wasser ist der wichtigste \"Nährstoff\". Stelle mehrere Näpfe auf und wechsle das Wasser täglich.",
     level: 0,
     tags: ["wasser", "hydration"],
-    imageUrl: "/images/tipps/hund-wasser.jpg",
+    imageUrl: "/images/tipps/ernaehrung/2.jpg",
     imageAlt: "Hund trinkt frisches Wasser aus einem Napf",
     content: `## Warum Wasser der wichtigste Nährstoff ist
 
@@ -3312,7 +3312,7 @@ Wasser ist der wichtigste Nährstoff für deinen Hund. Stelle mehrere frische Wa
     shortDescription: "Wärme und Licht zersetzen Fette und Vitamine. Lagere das Futter kühl, trocken und luftdicht.",
     level: 0,
     tags: ["lagerung"],
-    imageUrl: "/images/tipps/trockenfutter-lagerung.jpg",
+    imageUrl: "/images/tipps/ernaehrung/3.jpg",
     imageAlt: "Trockenfutter wird kühl und dunkel gelagert",
     content: `## Warum richtige Lagerung von Trockenfutter wichtig ist
 
@@ -3569,7 +3569,7 @@ Richtige Lagerung von Trockenfutter ist essenziell für Qualität und Sicherheit
     shortDescription: "Die Tüte schützt vor Fett-Oxidation. Stell sie in die Tonne, statt das Futter umzufüllen — das hält Aroma und Frische länger.",
     level: 1,
     tags: ["lagerung"],
-    imageUrl: "/images/tipps/futter-originaltuete.jpg",
+    imageUrl: "/images/tipps/ernaehrung/4.jpg",
     imageAlt: "Hundefutter in der Originalverpackung aufbewahrt",
     content: `## Warum die Originaltüte die beste Aufbewahrung ist
 
@@ -3794,7 +3794,7 @@ Die Originaltüte ist die beste Aufbewahrung für Trockenfutter. Sie schützt vo
     shortDescription: "Ab dem MHD sinkt die Vitaminqualität. Futter nach Ablauf nicht mehr füttern — auch wenn es noch gut riecht.",
     level: 0,
     tags: ["lagerung", "sicherheit"],
-    imageUrl: "/images/tipps/mindesthaltbarkeitsdatum.jpg",
+    imageUrl: "/images/tipps/ernaehrung/5.jpg",
     imageAlt: "Hundefutter Verpackung mit Mindesthaltbarkeitsdatum",
     content: `## Warum das Mindesthaltbarkeitsdatum wichtig ist
 
@@ -4047,7 +4047,7 @@ Das Mindesthaltbarkeitsdatum ist ernst zu nehmen. Ab diesem Datum sinkt die Qual
     shortDescription: "Fester, geformter Kot in dunkelbraun zeigt gute Verdauung. Weicher Kot, Schleim oder Blut sind Warnsignale.",
     level: 1,
     tags: ["verdauung", "gesundheit"],
-    imageUrl: "/images/tipps/hund-kot.jpg",
+    imageUrl: "/images/tipps/ernaehrung/6.jpg",
     imageAlt: "Gesunder Hundekot als Indikator für gute Verdauung",
     content: `## Warum der Kot ein wichtiger Gesundheitsindikator ist
 
@@ -4295,7 +4295,7 @@ Der Kot ist ein wertvoller Indikator für die Verdauungsgesundheit. Beobachte Fa
     shortDescription: "Snacks machen bis zu 10 % der Kalorien aus. Ziehe sie von der Hauptmahlzeit ab, sonst wird dein Hund dick.",
     level: 0,
     tags: ["leckerlies", "gewicht"],
-    imageUrl: "/images/tipps/hund-leckerlis.jpg",
+    imageUrl: "/images/tipps/ernaehrung/7.jpg",
     imageAlt: "Hund erhält Leckerli als Belohnung",
     content: `## Warum Leckerlis oft unterschätzt werden
 
@@ -4494,7 +4494,7 @@ Leckerlis machen bis zu 10% der täglichen Kalorien aus und müssen von der Haup
     shortDescription: "Ein 15kg-Sack für 50€ ist günstiger als ein 3kg-Sack für 15€. Rechne den Preis pro 100g aus für fairen Vergleich.",
     level: 0,
     tags: ["kauf", "preis"],
-    imageUrl: "/images/tipps/hundefutter-preisvergleich.jpg",
+    imageUrl: "/images/tipps/ernaehrung/8.jpg",
     imageAlt: "Preisvergleich verschiedener Hundefutter-Packungen",
     content: `## Warum der Preis pro 100g der einzige faire Vergleich ist
 
@@ -4721,7 +4721,7 @@ Der Preis pro 100g ist der einzige faire Vergleich zwischen verschiedenen Hundef
     shortDescription: "Eine kleine Dose Nassfutter am Abend macht das Futter schmackhafter und erhöht die Feuchtigkeitsaufnahme.",
     level: 0,
     tags: ["futterart", "kombination"],
-    imageUrl: "/images/tipps/nassfutter-trockenfutter-kombination.jpg",
+    imageUrl: "/images/tipps/ernaehrung/9.jpg",
     imageAlt: "Hund frisst Kombination aus Nass- und Trockenfutter",
     content: `## Warum die Kombination sinnvoll sein kann
 
@@ -4932,7 +4932,7 @@ Die Kombination von Nass- und Trockenfutter kann sinnvoll sein: 70-80% Trockenfu
     shortDescription: "Beides kann gut sein — wichtig ist die Qualität. Trockenfutter ist praktisch, Nassfutter feuchtigkeitsreich.",
     level: 0,
     tags: ["futterart"],
-    imageUrl: "/images/tipps/trockenfutter-nassfutter.jpg",
+    imageUrl: "/images/tipps/ernaehrung/10.jpg",
     imageAlt: "Vergleich zwischen Trockenfutter und Nassfutter",
     content: `## Die große Entscheidung: Trocken oder Nass?
 
@@ -5100,7 +5100,7 @@ Die Entscheidung zwischen Trocken- und Nassfutter hängt von verschiedenen Fakto
     shortDescription: "Rohfütterung erfordert Wissen, Zeit und Geld. Ohne Rezeptberechnung riskierst du Mangelernährung. Informiere dich gründlich.",
     level: 2,
     tags: ["barf", "selbstgekocht"],
-    imageUrl: "/images/tipps/barf-hund.jpg",
+    imageUrl: "/images/tipps/ernaehrung/11.jpg",
     imageAlt: "Hund frisst BARF - Rohfütterung",
     content: `## Was BARF wirklich bedeutet
 
@@ -5319,7 +5319,7 @@ BARF ist keine einfache Lösung — es erfordert Wissen, Zeit, Geld und Diszipli
     shortDescription: "Gekochtes Futter ist kein BARF-Ersatz. Ohne präzise Nährstoffberechnung droht Mangelernährung.",
     level: 2,
     tags: ["selbstgekocht", "rezeptberechnung"],
-    imageUrl: "/images/tipps/selbst-kochen-hund.jpg",
+    imageUrl: "/images/tipps/ernaehrung/12.jpg",
     imageAlt: "Selbstgekochtes Hundefutter mit frischen Zutaten",
     content: `## Warum selbst kochen keine einfache Alternative ist
 
@@ -5525,7 +5525,7 @@ Selbstgekochtes Hundefutter ist keine einfache Alternative — es erfordert prof
     shortDescription: "Hunde lieben Routine. Zu häufiges Wechseln des Futters kann die Verdauung irritieren und zu Futterverweigerung führen.",
     level: 0,
     tags: ["umstellung", "routine"],
-    imageUrl: "/images/tipps/futterwechsel-hund.jpg",
+    imageUrl: "/images/tipps/ernaehrung/13.jpg",
     imageAlt: "Hund mit verschiedenen Futtersorten - Futterwechsel",
     content: `## Warum Stabilität besser ist als ständiger Wechsel
 
@@ -5748,7 +5748,7 @@ Hunde lieben Routine und ihr Verdauungssystem braucht Stabilität. Zu häufiges 
     shortDescription: "Getreidefrei ist nur bei echter Allergie sinnvoll. Für gesunde Hunde ohne Getreideunverträglichkeit kann Getreide Teil einer ausgewogenen Ernährung sein.",
     level: 1,
     tags: ["getreide", "marketing"],
-    imageUrl: "/images/tipps/getreidefrei-hundefutter.jpg",
+    imageUrl: "/images/tipps/ernaehrung/14.jpg",
     imageAlt: "Hundefutter mit und ohne Getreide im Vergleich",
     content: `## Das Getreidefrei-Mythos entlarven
 
@@ -5901,7 +5901,7 @@ Getreidefrei ist nicht automatisch besser — es ist nur bei echter Getreidealle
     shortDescription: "\"Fleisch und tierische Nebenerzeugnisse\" ist eine geschlossene Deklaration. Offene Formen nennen die genauen Fleischsorten.",
     level: 0,
     tags: ["deklaration", "qualitaet"],
-    imageUrl: "/images/tipps/offene-deklaration.jpg",
+    imageUrl: "/images/tipps/ernaehrung/15.jpg",
     imageAlt: "Hundefutter Zutatenliste mit offener Deklaration",
     content: `## Warum offene Deklaration wichtig ist
 
@@ -6084,7 +6084,7 @@ Offene Deklaration ist ein Qualitätsmerkmal — sie nennt die genauen Zutaten u
     shortDescription: "Lachsöl oxidiert schnell. Lagere es kühl, dunkel und verbrauche es nach Öffnen innerhalb von 3 Monaten.",
     level: 1,
     tags: ["ergaenzung", "omega3", "lagerung"],
-    imageUrl: "/images/tipps/lachs-oel-lagerung.jpg",
+    imageUrl: "/images/tipps/ernaehrung/16.jpg",
     imageAlt: "Lachsölflasche wird kühl und dunkel gelagert",
     content: `## Warum Lachsöl besondere Pflege braucht
 
@@ -6257,7 +6257,7 @@ Lachsöl ist empfindlich und oxidiert schnell. Lagere es kühl, dunkel und luftd
     shortDescription: "Ein bisschen Wasser oder Brühe über das Trockenfutter erhöht die Feuchtigkeitsaufnahme und macht es schmackhafter.",
     level: 0,
     tags: ["wasser", "trockenfutter"],
-    imageUrl: "/images/tipps/wasser-trockenfutter.jpg",
+    imageUrl: "/images/tipps/ernaehrung/1.jpg",
     imageAlt: "Wasser wird über Trockenfutter gegeben",
     content: `## Warum Wasser im Trockenfutter sinnvoll sein kann
 
@@ -6428,7 +6428,7 @@ Ein bisschen Wasser oder ungesalzene Brühe über das Trockenfutter zu geben, ka
     shortDescription: "Ein Futterautomat ist praktisch, aber er ersetzt nicht die Fütterungszeit als Bindungsmoment. Füttere auch persönlich.",
     level: 0,
     tags: ["fuetterung", "bindung"],
-    imageUrl: "/images/tipps/futterautomat-hund.jpg",
+    imageUrl: "/images/tipps/ernaehrung/2.jpg",
     imageAlt: "Hund mit Futterautomat - aber auch persönliche Fütterung",
     content: `## Warum persönliche Fütterung wichtig ist
 
@@ -6619,7 +6619,7 @@ Futterautomaten sind praktisch, aber sie sollten nicht die persönliche Fütteru
     shortDescription: "Getrocknete Süßkartoffel, Apfelstücke oder Karotten sind einfache, gesunde Alternativen zu gekauften Leckerlis.",
     level: 1,
     tags: ["leckerlies", "selbstgemacht"],
-    imageUrl: "/images/tipps/hundesnack-selbst.jpg",
+    imageUrl: "/images/tipps/ernaehrung/3.jpg",
     imageAlt: "Selbstgemachte Hunde-Snacks aus Karotten und Apfel",
     content: `## Warum selbstgemachte Snacks sinnvoll sein können
 
@@ -6803,7 +6803,7 @@ Selbstgemachte Hunde-Snacks sind gesund, kostengünstig und individuell anpassba
     shortDescription: "Warte 30-60 Minuten nach intensivem Training, bevor du fütterst. Sofort füttern kann zu Magendrehung führen.",
     level: 1,
     tags: ["fuetterung", "training"],
-    imageUrl: "/images/tipps/hund-training-futter.jpg",
+    imageUrl: "/images/tipps/ernaehrung/4.jpg",
     imageAlt: "Hund nach dem Training - Warten vor dem Füttern",
     content: `## Warum das Timing nach dem Training wichtig ist
 
@@ -6976,7 +6976,7 @@ Warte 30-60 Minuten nach intensivem Training, bevor du fütterst. Sofort fütter
     shortDescription: "Futter ist Nahrung, kein Spielzeug. Nutze Leckerlis für Training, nicht die Hauptmahlzeit als \"Treat\".",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-belohnung.jpg",
+    imageUrl: "/images/tipps/ernaehrung/5.jpg",
     imageAlt: "Hund wird mit Leckerli belohnt - nicht mit Hauptfutter",
     content: `## Warum Futter und Belohnung getrennt werden sollten
 
@@ -7129,7 +7129,7 @@ Futter ist Nahrung, keine Belohnung. Trenne klar zwischen Hauptmahlzeit und Leck
     shortDescription: "Futterentzug als Strafe ist emotionaler Missbrauch. Futter ist für Ernährung, nicht für Dominanzspiele.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-macht.jpg",
+    imageUrl: "/images/tipps/ernaehrung/6.jpg",
     imageAlt: "Hund wartet auf Futter - keine Machtdemonstration",
     content: `## Warum Futter niemals als Machtmittel sein sollte
 
@@ -7274,7 +7274,7 @@ Futter ist für Ernährung, nicht für Machtdemonstration. Futterentzug als Stra
     shortDescription: "Futter ist kein Trostspender. Bei Stress oder Trauer ist Aufmerksamkeit, Bewegung und Ruhe besser als Futter.",
     level: 0,
     tags: ["fuetterung", "verhalten"],
-    imageUrl: "/images/tipps/hund-troest.jpg",
+    imageUrl: "/images/tipps/ernaehrung/7.jpg",
     imageAlt: "Hund wird gestreichelt - nicht mit Futter getröstet",
     content: `## Warum Futter kein Trostspender sein sollte
 
@@ -7419,7 +7419,7 @@ Futter ist kein Trostspender — emotionales Füttern führt zu ungesunden Gewoh
     shortDescription: "Kauartikel, Spielzeug und interaktives Spiel sind bessere Beschäftigung als Futter. Futter ist zum Essen, nicht zum Zeitvertreib.",
     level: 0,
     tags: ["fuetterung", "beschaeftigung"],
-    imageUrl: "/images/tipps/hund-beschaeftigung.jpg",
+    imageUrl: "/images/tipps/ernaehrung/8.jpg",
     imageAlt: "Hund mit Kauknochen - Beschäftigung statt Futter",
     content: `## Warum Futter keine Beschäftigung sein sollte
 
@@ -7564,7 +7564,7 @@ Futter ist zum Essen, nicht zur Beschäftigung. Nutze Kauartikel, Spielzeug und 
     shortDescription: "Futter ist Grundversorgung, kein Verdienst. Dein Hund hat ein Recht auf Nahrung, unabhängig von \"Gehorsam\".",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-lohn.jpg",
+    imageUrl: "/images/tipps/ernaehrung/9.jpg",
     imageAlt: "Hund erhält Futter - als Grundversorgung, nicht als Lohn",
     content: `## Warum Futter kein Lohn sein sollte
 
@@ -7691,7 +7691,7 @@ Futter ist Grundversorgung, kein Lohn für Arbeit. Dein Hund hat ein Recht auf N
     shortDescription: "Futterentzug ist keine Strafe. Es ist emotionaler Missbrauch und schädigt die Beziehung und das Vertrauen.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-strafe.jpg",
+    imageUrl: "/images/tipps/ernaehrung/10.jpg",
     imageAlt: "Hund wartet auf Futter - keine Bestrafung",
     content: `## Warum Futter niemals als Bestrafung sein sollte
 
@@ -7816,7 +7816,7 @@ Futterentzug ist keine Strafe — es ist emotionaler Missbrauch. Futter ist Grun
     shortDescription: "Futter zur Kontrolle einzusetzen ist Machtmissbrauch. Eine gesunde Beziehung basiert auf Vertrauen, nicht auf Kontrolle.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-kontrolle.jpg",
+    imageUrl: "/images/tipps/ernaehrung/11.jpg",
     imageAlt: "Hund und Besitzer - Vertrauen statt Kontrolle",
     content: `## Warum Futter kein Kontrollmittel sein sollte
 
@@ -7947,7 +7947,7 @@ Futter zur Kontrolle einzusetzen ist Machtmissbrauch. Eine gesunde Hund-Mensch-B
     shortDescription: "Futter zur Manipulation einzusetzen ist unethisch. Eine gesunde Beziehung basiert auf Ehrlichkeit, nicht auf Manipulation.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-manipulation.jpg",
+    imageUrl: "/images/tipps/ernaehrung/12.jpg",
     imageAlt: "Hund und Besitzer - Ehrlichkeit statt Manipulation",
     content: `## Warum Futter kein Manipulationsmittel sein sollte
 
@@ -8078,7 +8078,7 @@ Futter zur Manipulation einzusetzen ist unethisch. Eine gesunde Hund-Mensch-Bezi
     shortDescription: "Futter zur Dominanz einzusetzen ist veraltet und schädlich. Partnership statt Dominanz ist der moderne Ansatz.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-dominanz.jpg",
+    imageUrl: "/images/tipps/ernaehrung/13.jpg",
     imageAlt: "Hund und Besitzer - Partnership statt Dominanz",
     content: `## Warum Futter kein Dominanzmittel sein sollte
 
@@ -8209,7 +8209,7 @@ Futter zur Dominanz einzusetzen ist veraltet und schädlich. Die Dominanz-Theori
     shortDescription: "Futter zur Erpressung einzusetzen ist unethisch. Eine gesunde Beziehung basiert auf Freiwilligkeit, nicht auf Zwang.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-erpressung.jpg",
+    imageUrl: "/images/tipps/ernaehrung/14.jpg",
     imageAlt: "Hund und Besitzer - Freiwilligkeit statt Erpressung",
     content: `## Warum Futter kein Erpressungsmittel sein sollte
 
@@ -8340,7 +8340,7 @@ Futter zur Erpressung einzusetzen ist unethisch. Eine gesunde Hund-Mensch-Bezieh
     shortDescription: "Futter zur Bedingung einzusetzen ist ungesund. Eine gesunde Beziehung basiert auf bedingungsloser Fürsorge, nicht auf Bedingungen.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-bedingung.jpg",
+    imageUrl: "/images/tipps/ernaehrung/15.jpg",
     imageAlt: "Hund und Besitzer - bedingungslose Fürsorge",
     content: `## Warum Futter kein Bedingungsmittel sein sollte
 
@@ -8471,7 +8471,7 @@ Futter zur Bedingung einzusetzen ist ungesund. Eine gesunde Hund-Mensch-Beziehun
     shortDescription: "Futter zur Verhaltensmanipulation einzusetzen ist kurzfristig effektiv, langfristig aber schädlich für die Beziehung.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-verhalten.jpg",
+    imageUrl: "/images/tipps/ernaehrung/16.jpg",
     imageAlt: "Hund und Besitzer - authentische Beziehung statt Manipulation",
     content: `## Warum Futter kein Verhaltensmanipulationsmittel sein sollte
 
@@ -8602,7 +8602,7 @@ Futter zur Verhaltensmanipulation einzusetzen ist kurzfristig effektiv, langfris
     shortDescription: "Futter zur emotionalen Manipulation einzusetzen ist unethisch. Eine gesunde Beziehung basiert auf emotionaler Ehrlichkeit.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-emotion.jpg",
+    imageUrl: "/images/tipps/ernaehrung/1.jpg",
     imageAlt: "Hund und Besitzer - emotionale Ehrlichkeit",
     content: `## Warum Futter kein emotionales Manipulationsmittel sein sollte
 
@@ -8733,7 +8733,7 @@ Futter zur emotionalen Manipulation einzusetzen ist unethisch. Eine gesunde Hund
     shortDescription: "Futter zur Machtdemonstration einzusetzen ist unethisch. Eine gesunde Beziehung basiert auf Partnership, nicht auf Macht.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-macht.jpg",
+    imageUrl: "/images/tipps/ernaehrung/2.jpg",
     imageAlt: "Hund und Besitzer - Partnership statt Macht",
     content: `## Warum Futter kein Machtdemonstrationsmittel sein sollte
 
@@ -8864,7 +8864,7 @@ Futter zur Machtdemonstration einzusetzen ist unethisch. Eine gesunde Hund-Mensc
     shortDescription: "Futter zur Abhängigkeit einzusetzen ist unethisch. Eine gesunde Beziehung basiert auf Freiheit, nicht auf Abhängigkeit.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-abhaengigkeit.jpg",
+    imageUrl: "/images/tipps/ernaehrung/3.jpg",
     imageAlt: "Hund und Besitzer - Freiheit statt Abhängigkeit",
     content: `## Warum Futter kein Abhängigkeitsmittel sein sollte
 
@@ -8995,7 +8995,7 @@ Futter zur Abhängigkeit einzusetzen ist unethisch. Eine gesunde Hund-Mensch-Bez
     shortDescription: "Futter zur Unterwerfung einzusetzen ist veraltet und schädlich. Partnership statt Unterwerfung ist der moderne Ansatz.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-unterwerfung.jpg",
+    imageUrl: "/images/tipps/ernaehrung/4.jpg",
     imageAlt: "Hund und Besitzer - Partnership statt Unterwerfung",
     content: `## Warum Futter kein Unterwerfungsmittel sein sollte
 
@@ -9126,7 +9126,7 @@ Futter zur Unterwerfung einzusetzen ist veraltet und schädlich. Die Unterwerfun
     shortDescription: "Futter zur Angst einzusetzen ist unethisch. Eine gesunde Beziehung basiert auf Sicherheit, nicht auf Angst.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-angst.jpg",
+    imageUrl: "/images/tipps/ernaehrung/5.jpg",
     imageAlt: "Hund und Besitzer - Sicherheit statt Angst",
     content: `## Warum Futter kein Angstmittel sein sollte
 
@@ -9257,7 +9257,7 @@ Futter zur Angst einzusetzen ist unethisch. Eine gesunde Hund-Mensch-Beziehung b
     shortDescription: "Futter zur Unsicherheit einzusetzen ist unethisch. Eine gesunde Beziehung basiert auf Vorhersehbarkeit, nicht auf Unsicherheit.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-unsicherheit.jpg",
+    imageUrl: "/images/tipps/ernaehrung/6.jpg",
     imageAlt: "Hund und Besitzer - Vorhersehbarkeit statt Unsicherheit",
     content: `## Warum Futter kein Unsicherheitsmittel sein sollte
 
@@ -9388,7 +9388,7 @@ Futter zur Unsicherheit einzusetzen ist unethisch. Eine gesunde Hund-Mensch-Bezi
     shortDescription: "Futter zur Verwirrung einzusetzen ist unethisch. Eine gesunde Beziehung basiert auf Klarheit, nicht auf Verwirrung.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-verwirrung.jpg",
+    imageUrl: "/images/tipps/ernaehrung/7.jpg",
     imageAlt: "Hund und Besitzer - Klarheit statt Verwirrung",
     content: `## Warum Futter kein Verwirrungsmittel sein sollte
 
@@ -9519,7 +9519,7 @@ Futter zur Verwirrung einzusetzen ist unethisch. Eine gesunde Hund-Mensch-Bezieh
     shortDescription: "Futter zur Frustration einzusetzen ist unethisch. Eine gesunde Beziehung basiert auf Erfüllung, nicht auf Frustration.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-frustration.jpg",
+    imageUrl: "/images/tipps/ernaehrung/8.jpg",
     imageAlt: "Hund und Besitzer - Erfüllung statt Frustration",
     content: `## Warum Futter kein Frustrationsmittel sein sollte
 
@@ -9650,7 +9650,7 @@ Futter zur Frustration einzusetzen ist unethisch. Eine gesunde Hund-Mensch-Bezie
     shortDescription: "Futter zur Enttäuschung einzusetzen ist unethisch. Eine gesunde Beziehung basiert auf Zuverlässigkeit, nicht auf Enttäuschung.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-enttaeuschung.jpg",
+    imageUrl: "/images/tipps/ernaehrung/9.jpg",
     imageAlt: "Hund und Besitzer - Zuverlässigkeit statt Enttäuschung",
     content: `## Warum Futter kein Enttäuschungsmittel sein sollte
 
@@ -9781,7 +9781,7 @@ Futter zur Enttäuschung einzusetzen ist unethisch. Eine gesunde Hund-Mensch-Bez
     shortDescription: "Futter zur Demütigung einzusetzen ist unethisch. Eine gesunde Beziehung basiert auf Würde, nicht auf Demütigung.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-demuetigung.jpg",
+    imageUrl: "/images/tipps/ernaehrung/10.jpg",
     imageAlt: "Hund und Besitzer - Würde statt Demütigung",
     content: `## Warum Futter kein Demütigungsmittel sein sollte
 
@@ -9912,7 +9912,7 @@ Futter zur Demütigung einzusetzen ist unethisch. Eine gesunde Hund-Mensch-Bezie
     shortDescription: "Futter zur Erniedrigung einzusetzen ist unethisch. Eine gesunde Beziehung basiert auf Respekt, nicht auf Erniedrigung.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-erniedrigung.jpg",
+    imageUrl: "/images/tipps/ernaehrung/11.jpg",
     imageAlt: "Hund und Besitzer - Respekt statt Erniedrigung",
     content: `## Warum Futter kein Erniedrigungsmittel sein sollte
 
@@ -10043,7 +10043,7 @@ Futter zur Erniedrigung einzusetzen ist unethisch. Eine gesunde Hund-Mensch-Bezi
     shortDescription: "Leckerlies sind Kalorien. Rechne sie in die Tagesration ein, um Übergewicht zu vermeiden.",
     level: 0,
     tags: ["leckerlies", "kalorien"],
-    imageUrl: "/images/tipps/leckerlies-tagesration.jpg",
+    imageUrl: "/images/tipps/ernaehrung/12.jpg",
     imageAlt: "Leckerlies werden in die Tagesration einberechnet",
     content: `## Warum Leckerlies in der Tagesration einrechnen wichtig ist
 
@@ -10196,7 +10196,7 @@ Leckerlies sind Kalorien und müssen in die Tagesration einberechnet werden. Erm
     shortDescription: "Fettreste werden ranzig und ziehen Keime an. Ein sauberer Napf schützt vor Magenproblemen und Hautirritationen am Maul.",
     level: 0,
     tags: ["hygiene", "napf"],
-    imageUrl: "/images/tipps/hund-napf-reinigen.jpg",
+    imageUrl: "/images/tipps/ernaehrung/13.jpg",
     imageAlt: "Hund napf wird gereinigt",
     content: `## Warum saubere Näpfe wichtig sind
 
@@ -10313,7 +10313,7 @@ Ein sauberer Napf schützt deinen Hund vor Magenproblemen, Hautirritationen und 
     shortDescription: "Sie sind hygienischer als Plastik, das Kratzer bekommt und Bakterien sowie Allergene speichert.",
     level: 1,
     tags: ["hygiene", "ausstattung"],
-    imageUrl: "/images/tipps/hund-napf-edelstahl.jpg",
+    imageUrl: "/images/tipps/ernaehrung/14.jpg",
     imageAlt: "Edelstahl Hund napf",
     content: `## Warum das Napf-Material wichtig ist
 
@@ -10449,7 +10449,7 @@ Edelstahl- und Keramiknäpfe sind hygienischer als Plastiknäpfe, die Kratzer be
     shortDescription: "Frisst dein Hund zu hastig, verlangsamt ein Napf mit Noppen das Tempo und beugt Luftschlucken und Erbrechen vor.",
     level: 1,
     tags: ["fuetterung", "magen"],
-    imageUrl: "/images/tipps/hund-schling-napf.jpg",
+    imageUrl: "/images/tipps/ernaehrung/15.jpg",
     imageAlt: "Anti-Schling-Napf für Hunde",
     content: `## Warum Schlingen ein Problem ist
 
@@ -10560,7 +10560,7 @@ Ein Anti-Schling-Napf verlangsamt das Fressen, zwingt zum Kauen und beugt Luftsc
     shortDescription: "Verteile die Ration in einem Schnüffelteppich oder Futterball. Das fordert den Kopf und bremst zu schnelles Fressen.",
     level: 1,
     tags: ["beschaeftigung", "fuetterung"],
-    imageUrl: "/images/tipps/hund-schnueffelteppich.jpg",
+    imageUrl: "/images/tipps/ernaehrung/16.jpg",
     imageAlt: "Hund mit Schnüffelteppich",
     content: `## Warum Denksport beim Fressen wichtig ist
 
@@ -10691,7 +10691,7 @@ Schnüffelteppiche, Futterbälle und andere Beschäftigungsmöglichkeiten machen
     shortDescription: "Hunde brauchen keine Abwechslung wie Menschen. Ständige Wechsel belasten den Magen und können Unverträglichkeiten auslösen.",
     level: 0,
     tags: ["umstellung", "verdauung"],
-    imageUrl: "/images/tipps/hund-futterwechsel.jpg",
+    imageUrl: "/images/tipps/ernaehrung/1.jpg",
     imageAlt: "Hund frisst aus dem Napf",
     content: `## warum Hunde keine Abwechslung brauchen
 
@@ -10816,7 +10816,7 @@ Hunde brauchen keine Abwechslung wie Menschen. Ein ständiger Futterwechsel bela
     shortDescription: "Futter ist Energie, kein Spielzeug. Zu viele Leckerlis führen zu Übergewicht und verwässern den Wert des Futters.",
     level: 0,
     tags: ["leckerli", "erziehung"],
-    imageUrl: "/images/tipps/hund-leckerli-belohnung.jpg",
+    imageUrl: "/images/tipps/ernaehrung/2.jpg",
     imageAlt: "Hund erhält Leckerli als Belohnung",
     content: `## Warum Futter keine Belohnung sein sollte
 
@@ -10921,7 +10921,7 @@ Futter ist Energie, keine Belohnung. Zu viele Leckerlis führen zu Übergewicht,
     shortDescription: "Stress belastet die Verdauung. Warte, bis dein Hund sich beruhigt hat, bevor du fütterst.",
     level: 0,
     tags: ["stress", "verdauung"],
-    imageUrl: "/images/tipps/hund-stress-fuettern.jpg",
+    imageUrl: "/images/tipps/ernaehrung/3.jpg",
     imageAlt: "Gestresster Hund",
     content: `## Warum Stress und Futter nicht zusammenpassen
 
@@ -11026,7 +11026,7 @@ Stress belastet die Verdauung. Wenn dein Hund gestresst ist, solltest du nicht f
     shortDescription: "Futter zur Kontrolle einzusetzen ist unethisch und schädlich. Eine gesunde Beziehung basiert auf Vertrauen, nicht auf Macht.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-macht.jpg",
+    imageUrl: "/images/tipps/ernaehrung/4.jpg",
     imageAlt: "Hund und Besitzer - Vertrauen statt Macht",
     content: `## Warum Futter kein Machtmittel sein sollte
 
@@ -11131,7 +11131,7 @@ Futter zur Kontrolle oder Bestrafung einzusetzen ist unethisch und schädlich. E
     shortDescription: "Futter zu entziehen ist keine effektive Bestrafung. Es schädigt das Vertrauen und kann zu Futterneid führen.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-bestrafung.jpg",
+    imageUrl: "/images/tipps/ernaehrung/5.jpg",
     imageAlt: "Hund und Besitzer - Positive Verstärkung statt Bestrafung",
     content: `## Warum Futter keine Bestrafung sein sollte
 
@@ -11236,7 +11236,7 @@ Futter zu entziehen ist keine effektive Bestrafung — es schädigt das Vertraue
     shortDescription: "Futter zur Beruhigung einzusetzen kann zu emotionalem Fressen führen. Biete stattdessen Aufmerksamkeit und Spiel.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-trost.jpg",
+    imageUrl: "/images/tipps/ernaehrung/6.jpg",
     imageAlt: "Hund und Besitzer - Aufmerksamkeit statt Futter",
     content: `## Warum Futter kein Trostmittel sein sollte
 
@@ -11347,7 +11347,7 @@ Futter zur Beruhigung oder als Trost einzusetzen kann zu emotionalem Fressen, Ü
     shortDescription: "Futter zur Erziehung einzusetzen ist kurzfristig effektiv, langfristig aber kontraproduktiv. Baue eine Beziehung auf Vertrauen auf.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-erziehung.jpg",
+    imageUrl: "/images/tipps/ernaehrung/7.jpg",
     imageAlt: "Hund und Besitzer - Vertrauen statt Futter",
     content: `## Warum Futter kein Erziehungsmittel sein sollte
 
@@ -11452,7 +11452,7 @@ Futter zur Erziehung einzusetzen ist kurzfristig effektiv, langfristig aber kont
     shortDescription: "Futter löst nicht alle Probleme. Verhaltensprobleme brauchen Training, nicht mehr Futter.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-probleme.jpg",
+    imageUrl: "/images/tipps/ernaehrung/8.jpg",
     imageAlt: "Hund und Besitzer - Training statt Futter",
     content: `## Warum Futter nicht alle Probleme löst
 
@@ -11557,7 +11557,7 @@ Futter löst nicht alle Probleme. Verhaltensprobleme brauchen Training, Geduld u
     shortDescription: "Langeweile wird nicht durch Futter gelöst. Hunde brauchen Beschäftigung, Spiel und Bewegung.",
     level: 0,
     tags: ["fuetterung", "beschaeftigung"],
-    imageUrl: "/images/tipps/hund-futter-langeweile.jpg",
+    imageUrl: "/images/tipps/ernaehrung/9.jpg",
     imageAlt: "Hund spielt mit Spielzeug statt Futter",
     content: `## Warum Futter keine Lösung für Langeweile ist
 
@@ -11662,7 +11662,7 @@ Langeweile wird nicht durch Futter gelöst — sie wird durch Beschäftigung, Sp
     shortDescription: "Angst wird nicht durch Futter gelöst. Hunde brauchen Sicherheit, Vertrauen und Training.",
     level: 0,
     tags: ["fuetterung", "psychologie"],
-    imageUrl: "/images/tipps/hund-futter-angst.jpg",
+    imageUrl: "/images/tipps/ernaehrung/10.jpg",
     imageAlt: "Gestresster Hund braucht Sicherheit statt Futter",
     content: `## Warum Futter keine Lösung für Angst ist
 
@@ -11767,7 +11767,7 @@ Angst wird nicht durch Futter gelöst — sie wird durch Sicherheit, Vertrauen u
     shortDescription: "Trauer wird nicht durch Futter gelöst. Hunde brauchen Zeit, Aufmerksamkeit und Unterstützung.",
     level: 0,
     tags: ["fuetterung", "psychologie"],
-    imageUrl: "/images/tipps/hund-futter-trauer.jpg",
+    imageUrl: "/images/tipps/ernaehrung/11.jpg",
     imageAlt: "Trauriger Hund braucht Aufmerksamkeit statt Futter",
     content: `## Warum Futter keine Lösung für Trauer ist
 
@@ -11872,7 +11872,7 @@ Trauer wird nicht durch Futter gelöst — sie wird durch Zeit, Aufmerksamkeit u
     shortDescription: "Aggression wird nicht durch Futter gelöst. Hunde brauchen Training, Grenzen und professionelle Hilfe.",
     level: 0,
     tags: ["fuetterung", "erziehung"],
-    imageUrl: "/images/tipps/hund-futter-aggression.jpg",
+    imageUrl: "/images/tipps/ernaehrung/12.jpg",
     imageAlt: "Aggressiver Hund braucht Training statt Futter",
     content: `## Warum Futter keine Lösung für Aggression ist
 
@@ -11957,7 +11957,7 @@ Aggression wird nicht durch Futter gelöst — sie wird durch Training, Grenzen 
     shortDescription: "Depression wird nicht durch Futter gelöst. Hunde brauchen Tierarzt, Bewegung und Aufmerksamkeit.",
     level: 0,
     tags: ["fuetterung", "psychologie"],
-    imageUrl: "/images/tipps/hund-futter-depression.jpg",
+    imageUrl: "/images/tipps/ernaehrung/13.jpg",
     imageAlt: "Depressiver Hund braucht Hilfe statt Futter",
     content: `## Warum Futter keine Lösung für Depression ist
 
@@ -12042,7 +12042,7 @@ Depression wird nicht durch Futter gelöst — sie wird durch Tierarzt, Bewegung
     shortDescription: "Trennungsangst wird nicht durch Futter gelöst. Hunde brauchen Training, Routine und Geduld.",
     level: 0,
     tags: ["fuetterung", "psychologie"],
-    imageUrl: "/images/tipps/hund-futter-trennungsangst.jpg",
+    imageUrl: "/images/tipps/ernaehrung/14.jpg",
     imageAlt: "Hund mit Trennungsangst braucht Training statt Futter",
     content: `## Warum Futter keine Lösung für Trennungsangst ist
 
@@ -12127,7 +12127,7 @@ Trennungsangst wird nicht durch Futter gelöst — sie wird durch Training, Rout
     shortDescription: "Phobien werden nicht durch Futter gelöst. Hunde brauchen Desensibilisierung, Training und Geduld.",
     level: 0,
     tags: ["fuetterung", "psychologie"],
-    imageUrl: "/images/tipps/hund-futter-phobien.jpg",
+    imageUrl: "/images/tipps/ernaehrung/15.jpg",
     imageAlt: "Hund mit Phobie braucht Training statt Futter",
     content: `## Warum Futter keine Lösung für Phobien ist
 
@@ -12212,7 +12212,7 @@ Phobien werden nicht durch Futter gelöst — sie werden durch Desensibilisierun
     shortDescription: "Obsessive Verhaltensweisen werden nicht durch Futter gelöst. Hunde brauchen Training, Beschäftigung und professionelle Hilfe.",
     level: 0,
     tags: ["fuetterung", "psychologie"],
-    imageUrl: "/images/tipps/hund-futter-obsessiv.jpg",
+    imageUrl: "/images/tipps/ernaehrung/16.jpg",
     imageAlt: "Hund mit obsessivem Verhalten braucht Training statt Futter",
     content: `## Warum Futter keine Lösung für obsessive Verhaltensweisen ist
 
@@ -12317,7 +12317,7 @@ Obsessive Verhaltensweisen werden nicht durch Futter gelöst — sie werden durc
     shortDescription: "Übergewicht wird nicht durch weniger Futter gelöst. Hunde brauchen Diät, Bewegung und tierärztliche Beratung.",
     level: 0,
     tags: ["fuetterung", "gesundheit"],
-    imageUrl: "/images/tipps/hund-futter-uebergewicht.jpg",
+    imageUrl: "/images/tipps/ernaehrung/1.jpg",
     imageAlt: "Übergewichtiger Hund braucht Diät statt weniger Futter",
     content: `## Warum Futter keine Lösung für Übergewicht ist
 
@@ -12402,7 +12402,7 @@ Obsessive Verhaltensweisen werden nicht durch Futter gelöst — sie werden durc
     shortDescription: "Untergewicht wird nicht durch mehr Futter gelöst. Hunde brauchen tierärztliche Diagnose, hochwertiges Futter und Geduld.",
     level: 0,
     tags: ["fuetterung", "gesundheit"],
-    imageUrl: "/images/tipps/hund-futter-untergewicht.jpg",
+    imageUrl: "/images/tipps/ernaehrung/2.jpg",
     imageAlt: "Untergewichtiger Hund braucht tierärztliche Hilfe statt mehr Futter",
     content: `## Warum Futter keine Lösung für Untergewicht ist
 
@@ -12487,7 +12487,7 @@ Untergewicht wird nicht durch mehr Futter gelöst — es wird durch tierärztlic
     shortDescription: "Allergien werden nicht durch Futterwechsel gelöst. Hunde brauchen tierärztliche Diagnose, Eliminationsdiät und Geduld.",
     level: 0,
     tags: ["fuetterung", "gesundheit"],
-    imageUrl: "/images/tipps/hund-futter-allergien.jpg",
+    imageUrl: "/images/tipps/ernaehrung/3.jpg",
     imageAlt: "Hund mit Allergien braucht tierärztliche Hilfe statt Futterwechsel",
     content: `## Warum Futter keine Lösung für Allergien ist
 
@@ -12572,7 +12572,7 @@ Allergien werden nicht durch Futterwechsel gelöst — sie werden durch tierärz
     shortDescription: "Intoleranzen werden nicht durch Futterwechsel gelöst. Hunde brauchen tierärztliche Diagnose, Eliminationsdiät und Geduld.",
     level: 0,
     tags: ["fuetterung", "gesundheit"],
-    imageUrl: "/images/tipps/hund-futter-intoleranzen.jpg",
+    imageUrl: "/images/tipps/ernaehrung/4.jpg",
     imageAlt: "Hund mit Intoleranzen braucht tierärztliche Hilfe statt Futterwechsel",
     content: `## Warum Futter keine Lösung für Intoleranzen ist
 
@@ -12657,7 +12657,7 @@ Intoleranzen werden nicht durch Futterwechsel gelöst — sie werden durch tier�
     shortDescription: "Magenprobleme werden nicht durch Futterwechsel gelöst. Hunde brauchen tierärztliche Diagnose, Diät und Ruhe.",
     level: 0,
     tags: ["fuetterung", "gesundheit"],
-    imageUrl: "/images/tipps/hund-futter-magenprobleme.jpg",
+    imageUrl: "/images/tipps/ernaehrung/5.jpg",
     imageAlt: "Hund mit Magenproblemen braucht tierärztliche Hilfe statt Futterwechsel",
     content: `## Warum Futter keine Lösung für Magenprobleme ist
 
@@ -12742,7 +12742,7 @@ Magenprobleme werden nicht durch Futterwechsel gelöst — sie werden durch tier
     shortDescription: "Darmprobleme werden nicht durch Futterwechsel gelöst. Hunde brauchen tierärztliche Diagnose, Probiotika und Diät.",
     level: 0,
     tags: ["fuetterung", "gesundheit"],
-    imageUrl: "/images/tipps/hund-futter-darmprobleme.jpg",
+    imageUrl: "/images/tipps/ernaehrung/6.jpg",
     imageAlt: "Hund mit Darmproblemen braucht tierärztliche Hilfe statt Futterwechsel",
     content: `## Warum Futter keine Lösung für Darmprobleme ist
 
@@ -12827,7 +12827,7 @@ Darmprobleme werden nicht durch Futterwechsel gelöst — sie werden durch tier�
     shortDescription: "Leberprobleme werden nicht durch Futterwechsel gelöst. Hunde brauchen tierärztliche Diagnose, Medikamente und spezielle Diät.",
     level: 0,
     tags: ["fuetterung", "gesundheit"],
-    imageUrl: "/images/tipps/hund-futter-leberprobleme.jpg",
+    imageUrl: "/images/tipps/ernaehrung/7.jpg",
     imageAlt: "Hund mit Leberproblemen braucht tierärztliche Hilfe statt Futterwechsel",
     content: `## Warum Futter keine Lösung für Leberprobleme ist
 
@@ -12912,7 +12912,7 @@ Leberprobleme werden nicht durch Futterwechsel gelöst — sie werden durch tier
     shortDescription: "Nierenprobleme werden nicht durch Futterwechsel gelöst. Hunde brauchen tierärztliche Diagnose, Medikamente und spezielle Diät.",
     level: 0,
     tags: ["fuetterung", "gesundheit"],
-    imageUrl: "/images/tipps/hund-futter-nierenprobleme.jpg",
+    imageUrl: "/images/tipps/ernaehrung/8.jpg",
     imageAlt: "Hund mit Nierenproblemen braucht tierärztliche Hilfe statt Futterwechsel",
     content: `## Warum Futter keine Lösung für Nierenprobleme ist
 
@@ -12997,7 +12997,7 @@ Nierenprobleme werden nicht durch Futterwechsel gelöst — sie werden durch tie
     shortDescription: "Herzprobleme werden nicht durch Futterwechsel gelöst. Hunde brauchen tierärztliche Diagnose, Medikamente und spezielle Diät.",
     level: 0,
     tags: ["fuetterung", "gesundheit"],
-    imageUrl: "/images/tipps/hund-futter-herzprobleme.jpg",
+    imageUrl: "/images/tipps/ernaehrung/9.jpg",
     imageAlt: "Hund mit Herzproblemen braucht tierärztliche Hilfe statt Futterwechsel",
     content: `## Warum Futter keine Lösung für Herzprobleme ist
 
@@ -13082,7 +13082,7 @@ Herzprobleme werden nicht durch Futterwechsel gelöst — sie werden durch tier�
     shortDescription: "Diabetes wird nicht durch Futterwechsel gelöst. Hunde brauchen tierärztliche Diagnose, Insulin und spezielle Diät.",
     level: 0,
     tags: ["fuetterung", "gesundheit"],
-    imageUrl: "/images/tipps/hund-futter-diabetes.jpg",
+    imageUrl: "/images/tipps/ernaehrung/10.jpg",
     imageAlt: "Hund mit Diabetes braucht tierärztliche Hilfe statt Futterwechsel",
     content: `## Warum Futter keine Lösung für Diabetes ist
 
@@ -13167,7 +13167,7 @@ Diabetes wird nicht durch Futterwechsel gelöst — er wird durch tierärztliche
     shortDescription: "Krebs wird nicht durch Futterwechsel gelöst. Hunde brauchen tierärztliche Diagnose, Behandlung und unterstützende Diät.",
     level: 0,
     tags: ["fuetterung", "gesundheit"],
-    imageUrl: "/images/tipps/hund-futter-krebs.jpg",
+    imageUrl: "/images/tipps/ernaehrung/11.jpg",
     imageAlt: "Hund mit Krebs braucht tierärztliche Hilfe statt Futterwechsel",
     content: `## Warum Futter keine Lösung für Krebs ist
 
@@ -13252,7 +13252,7 @@ Krebs wird nicht durch Futterwechsel gelöst — er wird durch tierärztliche Di
     shortDescription: "Arthritis wird nicht durch Futterwechsel gelöst. Hunde brauchen tierärztliche Diagnose, Medikamente und Bewegung.",
     level: 0,
     tags: ["fuetterung", "gesundheit"],
-    imageUrl: "/images/tipps/hund-futter-arthritis.jpg",
+    imageUrl: "/images/tipps/ernaehrung/12.jpg",
     imageAlt: "Hund mit Arthritis braucht tierärztliche Hilfe statt Futterwechsel",
     content: `## Warum Futter keine Lösung für Arthritis ist
 
@@ -13337,7 +13337,7 @@ Arthritis wird nicht durch Futterwechsel gelöst — sie wird durch tierärztlic
     shortDescription: "Hautprobleme werden nicht durch Futterwechsel gelöst. Hunde brauchen tierärztliche Diagnose, Behandlung und Diät.",
     level: 0,
     tags: ["fuetterung", "gesundheit"],
-    imageUrl: "/images/tipps/hund-futter-hautprobleme.jpg",
+    imageUrl: "/images/tipps/ernaehrung/13.jpg",
     imageAlt: "Hund mit Hautproblemen braucht tierärztliche Hilfe statt Futterwechsel",
     content: `## Warum Futter keine Lösung für Hautprobleme ist
 
@@ -13422,7 +13422,7 @@ Hautprobleme werden nicht durch Futterwechsel gelöst — sie werden durch tier�
     shortDescription: "Augenprobleme werden nicht durch Futterwechsel gelöst. Hunde brauchen tierärztliche Diagnose, Behandlung und sometimes Operation.",
     level: 0,
     tags: ["fuetterung", "gesundheit"],
-    imageUrl: "/images/tipps/hund-futter-augenprobleme.jpg",
+    imageUrl: "/images/tipps/ernaehrung/14.jpg",
     imageAlt: "Hund mit Augenproblemen braucht tierärztliche Hilfe statt Futterwechsel",
     content: `## Warum Futter keine Lösung für Augenprobleme ist
 
@@ -13507,7 +13507,7 @@ Augenprobleme werden nicht durch Futterwechsel gelöst — sie werden durch tier
     shortDescription: "Ohrenprobleme werden nicht durch Futterwechsel gelöst. Hunde brauchen tierärztliche Diagnose, Behandlung und Reinigung.",
     level: 0,
     tags: ["fuetterung", "gesundheit"],
-    imageUrl: "/images/tipps/hund-futter-ohrenprobleme.jpg",
+    imageUrl: "/images/tipps/ernaehrung/15.jpg",
     imageAlt: "Hund mit Ohrenproblemen braucht tierärztliche Hilfe statt Futterwechsel",
     content: `## Warum Futter keine Lösung für Ohrenprobleme ist
 
@@ -13592,7 +13592,7 @@ Ohrenprobleme werden nicht durch Futterwechsel gelöst — sie werden durch tier
     shortDescription: "Zahnprobleme werden nicht durch Futterwechsel gelöst. Hunde brauchen tierärztliche Diagnose, Behandlung und Zahnpflege.",
     level: 0,
     tags: ["fuetterung", "gesundheit"],
-    imageUrl: "/images/tipps/hund-futter-zahnprobleme.jpg",
+    imageUrl: "/images/tipps/ernaehrung/16.jpg",
     imageAlt: "Hund mit Zahnproblemen braucht tierärztliche Hilfe statt Futterwechsel",
     content: `## Warum Futter keine Lösung für Zahnprobleme ist
 
@@ -13677,7 +13677,7 @@ Zahnprobleme werden nicht durch Futterwechsel gelöst — sie werden durch tier�
     shortDescription: "Atemwegsprobleme werden nicht durch Futterwechsel gelöst. Hunde brauchen tierärztliche Diagnose, Behandlung und sometimes Unterstützung.",
     level: 0,
     tags: ["fuetterung", "gesundheit"],
-    imageUrl: "/images/tipps/hund-futter-atemwegsprobleme.jpg",
+    imageUrl: "/images/tipps/ernaehrung/1.jpg",
     imageAlt: "Hund mit Atemwegsproblemen braucht tierärztliche Hilfe statt Futterwechsel",
     content: `## Warum Futter keine Lösung für Atemwegsprobleme ist
 
@@ -13762,7 +13762,7 @@ Atemwegsprobleme werden nicht durch Futterwechsel gelöst — sie werden durch t
     shortDescription: "Harnwegsprobleme werden nicht durch Futterwechsel gelöst. Hunde brauchen tierärztliche Diagnose, Behandlung und sometimes Diät.",
     level: 0,
     tags: ["fuetterung", "gesundheit"],
-    imageUrl: "/images/tipps/hund-futter-harnwegsprobleme.jpg",
+    imageUrl: "/images/tipps/ernaehrung/2.jpg",
     imageAlt: "Hund mit Harnwegsproblemen braucht tierärztliche Hilfe statt Futterwechsel",
     content: `## Warum Futter keine Lösung für Harnwegsprobleme ist
 
@@ -13847,7 +13847,7 @@ Harnwegsprobleme werden nicht durch Futterwechsel gelöst — sie werden durch t
     shortDescription: "Immunprobleme werden nicht durch Futterwechsel gelöst. Hunde brauchen tierärztliche Diagnose, Behandlung und Unterstützung.",
     level: 0,
     tags: ["fuetterung", "gesundheit"],
-    imageUrl: "/images/tipps/hund-futter-immunprobleme.jpg",
+    imageUrl: "/images/tipps/ernaehrung/3.jpg",
     imageAlt: "Hund mit Immunproblemen braucht tierärztliche Hilfe statt Futterwechsel",
     content: `## Warum Futter keine Lösung für Immunprobleme ist
 
@@ -13932,7 +13932,7 @@ Immunprobleme werden nicht durch Futterwechsel gelöst — sie werden durch tier
     shortDescription: "Alte Hunde brauchen nicht spezielles Futter, sondern tierärztliche Betreuung, Bewegung und Liebe.",
     level: 0,
     tags: ["fuetterung", "gesundheit"],
-    imageUrl: "/images/tipps/hund-futter-alte-hunde.jpg",
+    imageUrl: "/images/tipps/ernaehrung/4.jpg",
     imageAlt: "Alter Hund braucht Betreuung statt spezielles Futter",
     content: `## Warum Futter keine Lösung für alte Hunde ist
 

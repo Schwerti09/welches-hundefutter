@@ -120,7 +120,7 @@ export const gesundheit: TipCategory = {
       shortDescription: "Streichle deinen Hund bewusst und achte auf Knoten, Schwellungen oder schmerzhafte Stellen. Veränderungen fallen so früh auf.",
       level: 0,
       tags: ["vorsorge", "kontrolle"],
-      imageUrl: "/images/tipps/hund-abtasten.jpg",
+      imageUrl: "/images/tipps/gesundheit/1.jpg",
       imageAlt: "Hund wird abgetastet",
       content: `## Warum regelmäßiges Abtasten wichtig ist
 
@@ -265,7 +265,7 @@ Regelmäßiges Abtasten ist wichtig für die Gesundheit. Streichle deinen Hund b
       shortDescription: "Nur wer weiß, wie sein Hund normalerweise frisst, schläft und sich bewegt, erkennt Abweichungen. Beobachtung ist die beste Früherkennung.",
       level: 0,
       tags: ["beobachtung", "vorsorge"],
-      imageUrl: "/images/tipps/hund-verhalten.jpg",
+      imageUrl: "/images/tipps/gesundheit/2.jpg",
       imageAlt: "Hund zeigt normales Verhalten",
       content: `## Warum das normale Verhalten kennen wichtig ist
 
@@ -410,7 +410,7 @@ Das normale Verhalten kennen ist wichtig für die Gesundheit. Nur wer weiß, wie
       shortDescription: "Ein jährlicher Tierarztcheck deckt Probleme auf, bevor sie ernst werden. Bei Senioren lieber halbjährlich.",
       level: 0,
       tags: ["vorsorge", "tierarzt"],
-      imageUrl: "/images/tipps/hund-tierarzt.jpg",
+      imageUrl: "/images/tipps/gesundheit/3.jpg",
       imageAlt: "Hund beim Tierarzt",
       content: `## Warum der jährliche Gesundheitscheck wichtig ist
 
@@ -554,7 +554,7 @@ Der jährliche Gesundheitscheck ist wichtig für die Gesundheit. Ein jährlicher
       shortDescription: "Halte die Grundimmunisierung und empfohlene Auffrischungen ein. Welche Impfungen nötig sind, klärt der Tierarzt individuell.",
       level: 0,
       tags: ["impfung", "vorsorge"],
-      imageUrl: "/images/tipps/hund-impfung.jpg",
+      imageUrl: "/images/tipps/gesundheit/4.jpg",
       imageAlt: "Hund wird geimpft",
       content: `## Warum der Impfschutz wichtig ist
 
@@ -699,7 +699,7 @@ Der Impfschutz ist wichtig für die Gesundheit. Halte die Grundimmunisierung und
       shortDescription: "Würmer bleiben oft unbemerkt. Entweder regelmäßig entwurmen oder per Kotprobe gezielt prüfen — nach tierärztlichem Schema.",
       level: 0,
       tags: ["wurmkur", "parasiten"],
-      imageUrl: "/images/tipps/hund-wuermer.jpg",
+      imageUrl: "/images/tipps/gesundheit/5.jpg",
       imageAlt: "Hund Wurmkur",
       content: `## Warum Entwurmung wichtig ist
 
@@ -844,7 +844,7 @@ Entwurmung ist wichtig für die Gesundheit. Würmer bleiben oft unbemerkt. Entwe
       shortDescription: "Zecken übertragen Krankheiten wie Borreliose. Nutze in der Saison einen geeigneten Schutz und suche das Fell nach jeder Runde ab.",
       level: 0,
       tags: ["zecken", "parasiten"],
-      imageUrl: "/images/tipps/hund-zecken.jpg",
+      imageUrl: "/images/tipps/gesundheit/6.jpg",
       imageAlt: "Hund Zeckenschutz",
       content: `## Warum Zeckenschutz wichtig ist
 
@@ -989,7 +989,7 @@ Zeckenschutz ist wichtig für die Gesundheit. Zecken übertragen Krankheiten wie
       shortDescription: "Mit Zeckenzange oder -karte nah an der Haut greifen und gerade herausziehen, ohne zu quetschen. Die Stelle danach beobachten.",
       level: 1,
       tags: ["zecken", "erste-hilfe"],
-      imageUrl: "/images/tipps/hund-zecke-entfernen.jpg",
+      imageUrl: "/images/tipps/gesundheit/7.jpg",
       imageAlt: "Zecke wird entfernt",
       content: `## Warum Zecken richtig entfernen wichtig ist
 
@@ -1114,7 +1114,7 @@ Zecken richtig entfernen ist wichtig für die Gesundheit. Mit Zeckenzange oder -
       shortDescription: "Kratzt sich dein Hund vermehrt, suche nach Flohkot im Fell. Bei Befall müssen Hund und Umgebung behandelt werden.",
       level: 1,
       tags: ["floehe", "parasiten"],
-      imageUrl: "/images/tipps/hund-floehe.jpg",
+      imageUrl: "/images/tipps/gesundheit/8.jpg",
       imageAlt: "Hund Flohbekämpfung",
       content: `## Warum Flohbekämpfung wichtig ist
 
@@ -1259,7 +1259,7 @@ Flohbekämpfung ist wichtig für die Gesundheit. Kratzt sich dein Hund vermehrt,
       shortDescription: "Übergewicht ist einer der größten Gesundheitsrisikofaktoren. Ein schlanker Hund lebt länger und gesünder.",
       level: 0,
       tags: ["gewicht", "praevention"],
-      imageUrl: "/images/tipps/hund-gewicht.jpg",
+      imageUrl: "/images/tipps/gesundheit/9.jpg",
       imageAlt: "Hund mit Idealgewicht",
       content: `## Warum das Idealgewicht wichtig ist
 
@@ -1404,7 +1404,7 @@ Das Idealgewicht zu halten ist wichtig für die Gesundheit. Übergewicht ist ein
       shortDescription: "Die normale Temperatur liegt etwa bei 38–39 °C. Über 39,5 °C ist Fieber, darunter Untertemperatur — beides ernst nehmen.",
       level: 1,
       tags: ["temperatur", "diagnostik"],
-      imageUrl: "/images/tipps/hund-temperatur.jpg",
+      imageUrl: "/images/tipps/gesundheit/10.jpg",
       imageAlt: "Hund Temperatur messen",
       content: `## Warum die Körpertemperatur kennen wichtig ist
 
@@ -1549,7 +1549,7 @@ Die Körpertemperatur zu kennen ist wichtig für die Gesundheit. Die normale Tem
       shortDescription: "In Ruhe atmet ein Hund etwa 10–30 Mal pro Minute. Stark erhöhte Werte in Ruhe können auf Probleme hindeuten.",
       level: 2,
       tags: ["vitalwerte", "diagnostik"],
-      imageUrl: "/images/tipps/hund-atmung.jpg",
+      imageUrl: "/images/tipps/gesundheit/11.jpg",
       imageAlt: "Hund Atmung messen",
       content: `## Warum Puls und Atmung kennen wichtig ist
 
@@ -1694,7 +1694,7 @@ Puls und Atmung zu kennen ist wichtig für die Gesundheit. In Ruhe atmet ein Hun
       shortDescription: "Rosa Zahnfleisch ist gesund. Blasse, blaue oder gelbe Schleimhäute sind ein Notfallzeichen — sofort zum Tierarzt.",
       level: 1,
       tags: ["schleimhaut", "notfall"],
-      imageUrl: "/images/tipps/hund-zahnfleisch.jpg",
+      imageUrl: "/images/tipps/gesundheit/12.jpg",
       imageAlt: "Hund Zahnfleisch prüfen",
       content: `## Warum das Zahnfleisch als Indikator wichtig ist
 
@@ -1845,7 +1845,7 @@ Das Zahnfleisch als Indikator ist wichtig für die Gesundheit. Rosa Zahnfleisch 
       shortDescription: "Drücke aufs Zahnfleisch — die Farbe sollte in 1–2 Sekunden zurückkehren. Längere Zeit deutet auf Kreislaufprobleme hin.",
       level: 2,
       tags: ["kreislauf", "diagnostik"],
-      imageUrl: "/images/tipps/hund-kreislauf.jpg",
+      imageUrl: "/images/tipps/gesundheit/13.jpg",
       imageAlt: "Hund Kreislauf prüfen",
       content: `## Warum der Kapillarfüllungstest wichtig ist
 
@@ -1990,7 +1990,7 @@ Der Kapillarfüllungstest ist wichtig für die Gesundheit. Drücke aufs Zahnflei
       shortDescription: "Klare, glänzende Augen ohne starken Ausfluss sind gesund. Trübungen, Rötung oder Kneifen gehören abgeklärt.",
       level: 0,
       tags: ["augen", "kontrolle"],
-      imageUrl: "/images/tipps/hund-augen.jpg",
+      imageUrl: "/images/tipps/gesundheit/14.jpg",
       imageAlt: "Hund Augen prüfen",
       content: `## Warum tägliche Augenkontrolle wichtig ist
 
@@ -2135,7 +2135,7 @@ Tägliche Augenkontrolle ist wichtig für die Gesundheit. Klare, glänzende Auge
       shortDescription: "Rote, riechende oder stark verschmutzte Ohren deuten auf Entzündung hin. Schlappohrige Rassen sind besonders anfällig.",
       level: 0,
       tags: ["ohren", "kontrolle"],
-      imageUrl: "/images/tipps/hund-ohren.jpg",
+      imageUrl: "/images/tipps/gesundheit/15.jpg",
       imageAlt: "Hund Ohren prüfen",
       content: `## Warum regelmäßige Ohrenkontrolle wichtig ist
 
@@ -2280,7 +2280,7 @@ Regelmäßige Ohrenkontrolle ist wichtig für die Gesundheit. Rote, riechende od
       shortDescription: "Reinige nur den sichtbaren Bereich mit geeignetem Reiniger, niemals mit Wattestäbchen tief im Gehörgang.",
       level: 1,
       tags: ["ohren", "pflege"],
-      imageUrl: "/images/tipps/hund-ohren-reinigen.jpg",
+      imageUrl: "/images/tipps/gesundheit/16.jpg",
       imageAlt: "Hund Ohren reinigen",
       content: `## Warum vorsichtiges Ohrenreinigen wichtig ist
 
@@ -2405,7 +2405,7 @@ Vorsichtiges Ohrenreinigen ist wichtig für die Gesundheit. Reinige nur den sich
       shortDescription: "Prüfe regelmäßig auf Risse, Fremdkörper, Grannen zwischen den Zehen und entzündete Stellen.",
       level: 0,
       tags: ["pfoten", "kontrolle"],
-      imageUrl: "/images/tipps/hund-pfoten.jpg",
+      imageUrl: "/images/tipps/gesundheit/17.jpg",
       imageAlt: "Hund Pfoten prüfen",
       content: `## Warum Pfotenkontrolle wichtig ist
 
@@ -2550,7 +2550,7 @@ Pfotenkontrolle ist wichtig für die Gesundheit. Prüfe regelmäßig auf Risse, 
       shortDescription: "Zu lange Krallen verursachen Fehlstellungen und Schmerzen. Hörst du Klackern auf hartem Boden, müssen sie gekürzt werden.",
       level: 1,
       tags: ["krallen", "pflege"],
-      imageUrl: "/images/tipps/hund-krallen.jpg",
+      imageUrl: "/images/tipps/gesundheit/18.jpg",
       imageAlt: "Hund Krallen schneiden",
       content: `## Warum Krallen kurz halten wichtig ist
 
@@ -2695,7 +2695,7 @@ Krallen kurz halten ist wichtig für die Gesundheit. Zu lange Krallen verursache
       shortDescription: "Starker Mundgeruch ist meist ein Zeichen für Zahnstein oder Zahnfleischentzündung — und kein normaler Hundegeruch.",
       level: 0,
       tags: ["zaehne", "kontrolle"],
-      imageUrl: "/images/tipps/hund-mundgeruch.jpg",
+      imageUrl: "/images/tipps/gesundheit/19.jpg",
       imageAlt: "Hund Mundgeruch prüfen",
       content: `## Warum auf Mundgeruch achten wichtig ist
 
@@ -2840,7 +2840,7 @@ Auf Mundgeruch achten ist wichtig für die Gesundheit. Starker Mundgeruch ist me
       shortDescription: "Tägliches Zähneputzen mit Hundezahnpasta beugt Zahnstein und schmerzhaften Entzündungen am wirksamsten vor.",
       level: 1,
       tags: ["zaehne", "pflege"],
-      imageUrl: "/images/tipps/hund-zaehne-pflegen.jpg",
+      imageUrl: "/images/tipps/gesundheit/20.jpg",
       imageAlt: "Hund Zähne putzen",
       content: `## Warum regelmäßige Zahnpflege wichtig ist
 
@@ -2965,7 +2965,7 @@ Regelmäßige Zahnpflege ist wichtig für die Gesundheit. Tägliches Zähneputze
       shortDescription: "Form, Farbe und Häufigkeit verraten viel über die Verdauung. Anhaltende Veränderungen oder Blut gehören abgeklärt.",
       level: 0,
       tags: ["verdauung", "kontrolle"],
-      imageUrl: "/images/tipps/hund-kot.jpg",
+      imageUrl: "/images/tipps/gesundheit/1.jpg",
       imageAlt: "Hund Kot prüfen",
       content: `## Warum Kotbeobachtung wichtig ist
 
@@ -3110,7 +3110,7 @@ Kotbeobachtung ist wichtig für die Gesundheit. Form, Farbe und Häufigkeit verr
       shortDescription: "Häufiges, schmerzhaftes oder blutiges Urinieren weist auf Blasenprobleme hin. Auch deutlich mehr Trinken und Pinkeln ist ein Warnsignal.",
       level: 1,
       tags: ["urin", "kontrolle"],
-      imageUrl: "/images/tipps/hund-urin.jpg",
+      imageUrl: "/images/tipps/gesundheit/2.jpg",
       imageAlt: "Hund Urin prüfen",
       content: `## Warum Urinbeobachtung wichtig ist
 
@@ -3255,7 +3255,7 @@ Urinbeobachtung ist wichtig für die Gesundheit. Häufiges, schmerzhaftes oder b
       shortDescription: "Trinkt dein Hund plötzlich viel mehr, kann das auf Niere, Diabetes oder Hormone hindeuten. Beobachten und abklären lassen.",
       level: 1,
       tags: ["durst", "symptome"],
-      imageUrl: "/images/tipps/hund-durst.jpg",
+      imageUrl: "/images/tipps/gesundheit/3.jpg",
       imageAlt: "Hund trinkt viel",
       content: `## Warum vermehrten Durst ernst nehmen wichtig ist
 
@@ -3400,7 +3400,7 @@ Vermehrten Durst ernst nehmen ist wichtig für die Gesundheit. Trinkt dein Hund 
       shortDescription: "Verweigert ein normalerweise verfressener Hund das Futter, ist das ein ernstes Warnsignal. Bei Anhalten zum Tierarzt.",
       level: 0,
       tags: ["appetit", "symptome"],
-      imageUrl: "/images/tipps/hund-fressunlust.jpg",
+      imageUrl: "/images/tipps/gesundheit/4.jpg",
       imageAlt: "Hund frisst nicht",
       content: `## Warum Fressunlust beachten wichtig ist
 
@@ -3545,7 +3545,7 @@ Fressunlust beachten ist wichtig für die Gesundheit. Verweigert ein normalerwei
       shortDescription: "Einmaliges Erbrechen ist oft harmlos. Wiederholtes Erbrechen, Blut oder begleitende Apathie sind ein Fall für die Praxis.",
       level: 1,
       tags: ["erbrechen", "symptome"],
-      imageUrl: "/images/tipps/hund-erbrechen.jpg",
+      imageUrl: "/images/tipps/gesundheit/5.jpg",
       imageAlt: "Hund erbricht",
       content: `## Warum Erbrechen einordnen wichtig ist
 
@@ -3690,7 +3690,7 @@ Erbrechen einordnen ist wichtig für die Gesundheit. Einmaliges Erbrechen ist of
       shortDescription: "Kurzer Durchfall klingt oft von selbst ab. Hält er über zwei Tage an oder zeigt Blut, braucht der Hund tierärztliche Hilfe.",
       level: 0,
       tags: ["durchfall", "symptome"],
-      imageUrl: "/images/tipps/hund-durchfall.jpg",
+      imageUrl: "/images/tipps/gesundheit/6.jpg",
       imageAlt: "Hund mit Durchfall",
       content: `## Warum Durchfallbeobachtung wichtig ist
 
@@ -3835,7 +3835,7 @@ Durchfallbeobachtung ist wichtig für die Gesundheit. Kurzer Durchfall klingt of
       shortDescription: "Lahmt dein Hund länger als ein, zwei Tage oder stark, lass es untersuchen. Schonung allein behebt die Ursache nicht.",
       level: 1,
       tags: ["lahmheit", "gelenke"],
-      imageUrl: "/images/tipps/hund-lahmheit.jpg",
+      imageUrl: "/images/tipps/gesundheit/7.jpg",
       imageAlt: "Hund lahmt",
       content: `## Warum Lahmheit nicht ignorieren wichtig ist
 
@@ -3980,7 +3980,7 @@ Lahmheit nicht ignorieren ist wichtig für die Gesundheit. Lahmt dein Hund läng
       shortDescription: "Angestrengte Atmung, blaue Schleimhäute oder Maulatmung in Ruhe erfordern sofortige tierärztliche Hilfe.",
       level: 0,
       tags: ["atmung", "notfall"],
-      imageUrl: "/images/tipps/hund-atemnot.jpg",
+      imageUrl: "/images/tipps/gesundheit/8.jpg",
       imageAlt: "Hund mit Atemnot",
       content: `## Warum Atemnot als Notfall wichtig ist
 
@@ -4125,7 +4125,7 @@ Atemnot als Notfall ist wichtig für die Gesundheit. Angestrengte Atmung, blaue 
       shortDescription: "Aufgeblähter Bauch, erfolgloses Würgen, Unruhe und Speicheln bei großen Rassen sind ein lebensbedrohlicher Notfall. Sofort in die Klinik.",
       level: 1,
       tags: ["magendrehung", "notfall"],
-      imageUrl: "/images/tipps/hund-magendrehung.jpg",
+      imageUrl: "/images/tipps/gesundheit/9.jpg",
       imageAlt: "Hund Magendrehung",
       content: `## Warum Magendrehung erkennen wichtig ist
 
@@ -4270,7 +4270,7 @@ Magendrehung erkennen ist wichtig für die Gesundheit. Aufgeblähter Bauch, erfo
       shortDescription: "Speichere die Nummer der nächsten Tierklinik mit Nachtdienst. Im Ernstfall zählt jede Minute.",
       level: 0,
       tags: ["notfall", "vorsorge"],
-      imageUrl: "/images/tipps/hund-notfall.jpg",
+      imageUrl: "/images/tipps/gesundheit/10.jpg",
       imageAlt: "Hund Notfallkontakt",
       content: `## Warum Notfallkontakt wichtig ist
 
@@ -4415,7 +4415,7 @@ Notfallkontakt ist wichtig für die Gesundheit. Speichere die Nummer der nächst
       shortDescription: "Speichere die Nummer der Giftnotrufzentrale. Bei Verdacht auf Vergiftung sofort anrufen, nicht abwarten.",
       level: 0,
       tags: ["notfall", "vorsorge"],
-      imageUrl: "/images/tipps/hund-giftnotruf.jpg",
+      imageUrl: "/images/tipps/gesundheit/11.jpg",
       imageAlt: "Hund Giftnotruf",
       content: `## Warum Giftnotrufnummer kennen wichtig ist
 
@@ -4560,7 +4560,7 @@ Giftnotrufnummer kennen ist wichtig für die Gesundheit. Speichere die Nummer de
       shortDescription: "Ein Kurs leitet dich durch Notfälle: Herzdruckmassage, Wundversorgung, Vergiftungen — Wissen, das Leben retten kann.",
       level: 1,
       tags: ["notfall", "vorsorge"],
-      imageUrl: "/images/tipps/hund-erste-hilfe.jpg",
+      imageUrl: "/images/tipps/gesundheit/12.jpg",
       imageAlt: "Hund Erste Hilfe",
       content: `## Warum Erste-Hilfe-Kurs wichtig ist
 
@@ -4705,7 +4705,7 @@ Erste-Hilfe-Kurs ist wichtig für die Gesundheit. Ein Kurs leitet dich durch Not
       shortDescription: "Impfungen schützen vor gefährlichen Krankheiten. Halte die Auffrischungstermine ein — sie sind lebenswichtig.",
       level: 0,
       tags: ["impfung", "vorsorge"],
-      imageUrl: "/images/tipps/hund-impfung.jpg",
+      imageUrl: "/images/tipps/gesundheit/13.jpg",
       imageAlt: "Hund Impfung",
       content: `## Warum Impfungen auffrischen wichtig ist
 
@@ -4850,7 +4850,7 @@ Impfungen auffrischen ist wichtig für die Gesundheit. Impfungen schützen vor g
       shortDescription: "Würmer können die Gesundheit schwer schädigen. Entwurme deinen Hund nach Tierarztempfehlung, nicht nur bei sichtbaren Würmern.",
       level: 0,
       tags: ["entwurmung", "vorsorge"],
-      imageUrl: "/images/tipps/hund-entwurmung.jpg",
+      imageUrl: "/images/tipps/gesundheit/14.jpg",
       imageAlt: "Hund Entwurmung",
       content: `## Warum Entwurmung wichtig ist
 
@@ -4995,7 +4995,7 @@ Entwurmung ist wichtig für die Gesundheit. Würmer können die Gesundheit schwe
       shortDescription: "Zecken übertragen gefährliche Krankheiten. Flohschutz verhindert Juckreiz und Bandwürmer. Ganzjährig schützen.",
       level: 0,
       tags: ["parasiten", "vorsorge"],
-      imageUrl: "/images/tipps/hund-zecken.jpg",
+      imageUrl: "/images/tipps/gesundheit/15.jpg",
       imageAlt: "Hund Zeckenschutz",
       content: `## Warum Zecken- und Flohschutz wichtig ist
 
@@ -5140,7 +5140,7 @@ Zecken- und Flohschutz ist wichtig für die Gesundheit. Zecken übertragen gefä
       shortDescription: "Herzwürmer sind tödlich und schwer behandelbar. In Risikogebieten ist eine vorbeugende Medikamentation lebenswichtig.",
       level: 1,
       tags: ["parasiten", "vorsorge"],
-      imageUrl: "/images/tipps/hund-herzwurm.jpg",
+      imageUrl: "/images/tipps/gesundheit/16.jpg",
       imageAlt: "Hund Herzwurm",
       content: `## Warum Herzwurm vorbeugen wichtig ist
 
@@ -5285,7 +5285,7 @@ Herzwurm vorbeugen ist wichtig für die Gesundheit. Herzwürmer sind tödlich un
       shortDescription: "Übergewicht belastet Gelenke und Organe. Fühl regelmäßig die Rippen — sie sollten leicht tastbar sein.",
       level: 0,
       tags: ["gewicht", "kontrolle"],
-      imageUrl: "/images/tipps/hund-gewicht.jpg",
+      imageUrl: "/images/tipps/gesundheit/17.jpg",
       imageAlt: "Hund Gewicht prüfen",
       content: `## Warum Gewichtskontrolle wichtig ist
 
@@ -5410,7 +5410,7 @@ Gewichtskontrolle ist wichtig für die Gesundheit. Übergewicht belastet Gelenke
       shortDescription: "Aktive Hunde brauchen mehr Futter, kastrierte oder ältere oft weniger. Passe die Menge an Aktivität und Zustand an.",
       level: 0,
       tags: ["futter", "gewicht"],
-      imageUrl: "/images/tipps/hund-futtermenge.jpg",
+      imageUrl: "/images/tipps/gesundheit/18.jpg",
       imageAlt: "Hund Futter portionieren",
       content: `## Warum Futtermenge anpassen wichtig ist
 
@@ -5555,7 +5555,7 @@ Futtermenge anpassen ist wichtig für die Gesundheit. Aktive Hunde brauchen mehr
       shortDescription: "Leckerlies sollten nicht mehr als 10 % der Tagesration ausmachen. Zu viele Snacks führen zu Übergewicht.",
       level: 0,
       tags: ["leckerlies", "gewicht"],
-      imageUrl: "/images/tipps/hund-leckerlies.jpg",
+      imageUrl: "/images/tipps/gesundheit/19.jpg",
       imageAlt: "Hund Leckerlies",
       content: `## Warum Leckerlies begrenzen wichtig ist
 
@@ -5679,7 +5679,7 @@ Leckerlies begrenzen ist wichtig für die Gesundheit. Leckerlies sollten nicht m
       shortDescription: "Lecken, Zittern, Vermeidung und übermäßiges Bellen sind Stresszeichen. Dauerhafter Stress schadet der Gesundheit.",
       level: 1,
       tags: ["stress", "verhalten"],
-      imageUrl: "/images/tipps/hund-stress.jpg",
+      imageUrl: "/images/tipps/gesundheit/20.jpg",
       imageAlt: "Hund Stress",
       content: `## Warum Stresserkennung wichtig ist
 
@@ -5824,7 +5824,7 @@ Stresserkennung ist wichtig für die Gesundheit. Lecken, Zittern, Vermeidung und
       shortDescription: "Hunde brauchen viel Schlaf. Sorge für einen ruhigen Rückzugsort und schütze ihn vor dauernder Stimulation.",
       level: 0,
       tags: ["ruhe", "wohlfühlen"],
-      imageUrl: "/images/tipps/hund-ruhe.jpg",
+      imageUrl: "/images/tipps/gesundheit/1.jpg",
       imageAlt: "Hund ruht",
       content: `## Warum Ruhephasen wichtig sind
 
@@ -5949,7 +5949,7 @@ Ruhephasen sind wichtig für die Gesundheit. Hunde brauchen viel Schlaf. Sorge f
       shortDescription: "Nasenarbeit, Suchspiele und Intelligenzspielzeug halten den Kopf fit und verhindern Langeweile und Verhaltensprobleme.",
       level: 0,
       tags: ["mental", "beschaeftigung"],
-      imageUrl: "/images/tipps/hund-mental.jpg",
+      imageUrl: "/images/tipps/gesundheit/2.jpg",
       imageAlt: "Hund mental beschäftigt",
       content: `## Warum mentale Beschäftigung wichtig ist
 
@@ -6074,7 +6074,7 @@ Mentale Beschäftigung ist wichtig für die Gesundheit. Nasenarbeit, Suchspiele 
       shortDescription: "Hunde sind soziale Tiere. Regelmäßige Begegnungen mit Artgenossen und Menschen fördern das Wohlbefinden.",
       level: 0,
       tags: ["sozial", "kontakt"],
-      imageUrl: "/images/tipps/hund-sozial.jpg",
+      imageUrl: "/images/tipps/gesundheit/3.jpg",
       imageAlt: "Hund sozialer Kontakt",
       content: `## Warum Sozialkontakt wichtig ist
 
@@ -6199,7 +6199,7 @@ Sozialkontakt ist wichtig für die Gesundheit. Hunde sind soziale Tiere. Regelm�
       shortDescription: "Feste Futter-, Schlaf- und Spazierzeiten geben Sicherheit und reduzieren Stress. Hunde lieben Vorhersehbarkeit.",
       level: 0,
       tags: ["routine", "struktur"],
-      imageUrl: "/images/tipps/hund-routine.jpg",
+      imageUrl: "/images/tipps/gesundheit/4.jpg",
       imageAlt: "Hund Routine",
       content: `## Warum Routine wichtig ist
 
@@ -6324,7 +6324,7 @@ Routine ist wichtig für die Gesundheit. Feste Futter-, Schlaf- und Spazierzeite
       shortDescription: "Wechsle Spielzeug regelmäßig, biete Kauartikel und sorge für Abwechslung. Langeweile führt zu Verhaltensproblemen.",
       level: 0,
       tags: ["umgebung", "stimulation"],
-      imageUrl: "/images/tipps/hund-umgebung.jpg",
+      imageUrl: "/images/tipps/gesundheit/5.jpg",
       imageAlt: "Hund Umgebung",
       content: `## Warum stimulierende Umgebung wichtig ist
 
@@ -6449,7 +6449,7 @@ Stimulierende Umgebung ist wichtig für die Gesundheit. Wechsle Spielzeug regelm
       shortDescription: "Vermeide übermäßiges Treppensteigen und springen, besonders bei Welpen und großen Rassen. Sanfte Bewegung ist besser.",
       level: 0,
       tags: ["gelenke", "bewegung"],
-      imageUrl: "/images/tipps/hund-gelenke.jpg",
+      imageUrl: "/images/tipps/gesundheit/6.jpg",
       imageAlt: "Hund Gelenke schonen",
       content: `## Warum Gelenkschonung wichtig ist
 
@@ -6574,7 +6574,7 @@ Gelenkschonung ist wichtig für die Gesundheit. Vermeide übermäßiges Treppens
       shortDescription: "Steifheit nach dem Liegen, Unlust zum Spielen und Schwierigkeiten beim Aufstehen können auf Arthrose hindeuten.",
       level: 1,
       tags: ["arthrose", "gelenke"],
-      imageUrl: "/images/tipps/hund-arthrose.jpg",
+      imageUrl: "/images/tipps/gesundheit/7.jpg",
       imageAlt: "Hund Arthrose",
       content: `## Warum Arthroseerkennung wichtig ist
 
@@ -6719,7 +6719,7 @@ Arthroseerkennung ist wichtig für die Gesundheit. Steifheit nach dem Liegen, Un
       shortDescription: "Regelmäßige Tierarztbesuche, gesundes Gewicht und moderate Bewegung stärken das Herz. Achte auf Atemnot oder Husten.",
       level: 1,
       tags: ["herz", "vorsorge"],
-      imageUrl: "/images/tipps/hund-herz.jpg",
+      imageUrl: "/images/tipps/gesundheit/8.jpg",
       imageAlt: "Hund Herz",
       content: `## Warum Herzkrankheitsvorbeugung wichtig ist
 
@@ -6844,7 +6844,7 @@ Herzkrankheitsvorbeugung ist wichtig für die Gesundheit. Regelmäßige Tierarzt
       shortDescription: "Vermehrter Durst, viel Urin, Gewichtsverlust trotz Appetit und Trübung der Augenlinsen sind typische Anzeichen.",
       level: 1,
       tags: ["diabetes", "krankheit"],
-      imageUrl: "/images/tipps/hund-diabetes.jpg",
+      imageUrl: "/images/tipps/gesundheit/9.jpg",
       imageAlt: "Hund Diabetes",
       content: `## Warum Diabeteserkennung wichtig ist
 
@@ -6989,7 +6989,7 @@ Diabeteserkennung ist wichtig für die Gesundheit. Vermehrter Durst, viel Urin, 
       shortDescription: "Vermehrter Durst, viel Urin, Appetitlosigkeit und Müdigkeit können auf Nierenprobleme hindeuten. Blutbild ist wichtig.",
       level: 1,
       tags: ["nieren", "krankheit"],
-      imageUrl: "/images/tipps/hund-nieren.jpg",
+      imageUrl: "/images/tipps/gesundheit/10.jpg",
       imageAlt: "Hund Nieren",
       content: `## Warum Nierenproblemerkennung wichtig ist
 
@@ -7134,7 +7134,7 @@ Nierenproblemerkennung ist wichtig für die Gesundheit. Vermehrter Durst, viel U
       shortDescription: "Regelmäßige Entwurmung und Flohschutz sind wichtig. Achte auf Zecken beim Spaziergang und prüfe regelmäßig auf Befall.",
       level: 0,
       tags: ["parasiten", "vorsorge"],
-      imageUrl: "/images/tipps/hund-parasiten.jpg",
+      imageUrl: "/images/tipps/gesundheit/11.jpg",
       imageAlt: "Hund Parasiten",
       content: `## Warum Parasitenvorbeugung wichtig ist
 
@@ -7259,7 +7259,7 @@ Parasitenvorbeugung ist wichtig für die Gesundheit. Regelmäßige Entwurmung un
       shortDescription: "Entferne Zecken mit einer Zeckenzange oder -karte. Drehen Sie nicht und entferne den Kopf vollständig.",
       level: 0,
       tags: ["zecken", "parasiten"],
-      imageUrl: "/images/tipps/hund-zecken.jpg",
+      imageUrl: "/images/tipps/gesundheit/12.jpg",
       imageAlt: "Hund Zecken entfernen",
       content: `## Warum Zeckenentfernung wichtig ist
 
@@ -7384,7 +7384,7 @@ Zeckenentfernung ist wichtig für die Gesundheit. Entferne Zecken mit einer Zeck
       shortDescription: "Welpen werden häufiger entwurmt. Erwachsene Hunde je nach Lebensstil. Tierarzt berät zum optimalen Intervall.",
       level: 0,
       tags: ["wurmkur", "parasiten"],
-      imageUrl: "/images/tipps/hund-wurmkur.jpg",
+      imageUrl: "/images/tipps/gesundheit/13.jpg",
       imageAlt: "Hund Wurmkur",
       content: `## Warum Wurmkur wichtig ist
 
@@ -7509,7 +7509,7 @@ Wurmkur ist wichtig für die Gesundheit. Welpen werden häufiger entwurmt. Erwac
       shortDescription: "Grundimmunisierung und Auffrischungsimpfungen schützen vor gefährlichen Krankheiten. Tierarzt erstellt Impfplan.",
       level: 0,
       tags: ["impfung", "vorsorge"],
-      imageUrl: "/images/tipps/hund-impfung.jpg",
+      imageUrl: "/images/tipps/gesundheit/14.jpg",
       imageAlt: "Hund Impfung",
       content: `## Warum Impfungsauffrischung wichtig ist
 
@@ -7634,7 +7634,7 @@ Impfungsauffrischung ist wichtig für die Gesundheit. Grundimmunisierung und Auf
       shortDescription: "Jährliche Kontrolluntersuchungen sind wichtig, auch wenn der Hund gesund wirkt. Früherkennung von Krankheiten.",
       level: 0,
       tags: ["tierarzt", "vorsorge"],
-      imageUrl: "/images/tipps/hund-tierarzt.jpg",
+      imageUrl: "/images/tipps/gesundheit/15.jpg",
       imageAlt: "Hund Tierarzt",
       content: `## Warum Tierarztbesuche wichtig sind
 
@@ -7759,7 +7759,7 @@ Tierarztbesuche sind wichtig für die Gesundheit. Jährliche Kontrolluntersuchun
       shortDescription: "Regelmäßige Blutbilder zeigen Organfunktionen und mögliche Krankheiten. Besonders wichtig bei älteren Hunden.",
       level: 1,
       tags: ["blutbild", "diagnose"],
-      imageUrl: "/images/tipps/hund-blutbild.jpg",
+      imageUrl: "/images/tipps/gesundheit/16.jpg",
       imageAlt: "Hund Blutbild",
       content: `## Warum Blutbildprüfung wichtig ist
 
@@ -7884,7 +7884,7 @@ Blutbildprüfung ist wichtig für die Gesundheit. Regelmäßige Blutbilder zeige
       shortDescription: "Kleine Schnitte und Kratzer reinigen und desinfizieren. Tiefe Wunden oder Bisse vom Tierarzt behandeln lassen.",
       level: 0,
       tags: ["haut", "verletzung"],
-      imageUrl: "/images/tipps/hund-haut.jpg",
+      imageUrl: "/images/tipps/gesundheit/17.jpg",
       imageAlt: "Hund Hautverletzung",
       content: `## Warum Hautversorgung wichtig ist
 
@@ -8009,7 +8009,7 @@ Hautversorgung ist wichtig für die Gesundheit. Kleine Schnitte und Kratzer rein
       shortDescription: "Reinige die Augen regelmäßig mit einem feuchten Tuch. Rötung, Ausfluss oder Trübung gehören abgeklärt.",
       level: 0,
       tags: ["augen", "pflege"],
-      imageUrl: "/images/tipps/hund-augen.jpg",
+      imageUrl: "/images/tipps/gesundheit/18.jpg",
       imageAlt: "Hund Augenpflege",
       content: `## Warum Augenpflege wichtig ist
 
@@ -8134,7 +8134,7 @@ Augenpflege ist wichtig für die Gesundheit. Reinige die Augen regelmäßig mit 
       shortDescription: "Reinige die Ohren vorsichtig mit einem speziellen Ohrenreiniger. Keine Wattestäbchen in den Gehörgang einführen.",
       level: 0,
       tags: ["ohren", "pflege"],
-      imageUrl: "/images/tipps/hund-ohren.jpg",
+      imageUrl: "/images/tipps/gesundheit/19.jpg",
       imageAlt: "Hund Ohrenreinigung",
       content: `## Warum Ohrenreinigung wichtig ist
 
@@ -8259,7 +8259,7 @@ Ohrenreinigung ist wichtig für die Gesundheit. Reinige die Ohren vorsichtig mit
       shortDescription: "Halte Verbandmaterial, Desinfektion, Pinzette und die Nummer des Tierarztes bereit. Regelmäßig überprüfen.",
       level: 0,
       tags: ["notfall", "apotheke"],
-      imageUrl: "/images/tipps/hund-notfallapotheke.jpg",
+      imageUrl: "/images/tipps/gesundheit/20.jpg",
       imageAlt: "Hund Notfallapotheke",
       content: `## Warum Notfallapotheke wichtig ist
 
@@ -8384,7 +8384,7 @@ Notfallapotheke ist wichtig für die Gesundheit. Halte Verbandmaterial, Desinfek
       shortDescription: "Nie im Auto lassen, Schatten suchen, frisches Wasser bereitstellen. Anzeichen: Hecheln, Sabbern, Unsicherheit.",
       level: 0,
       tags: ["hitzschlag", "sommer"],
-      imageUrl: "/images/tipps/hund-hitzschlag.jpg",
+      imageUrl: "/images/tipps/gesundheit/1.jpg",
       imageAlt: "Hund Hitzschlag",
       content: `## Warum Hitzschlagvermeidung wichtig ist
 
@@ -8509,7 +8509,7 @@ Hitzschlagvermeidung ist wichtig für die Gesundheit. Nie im Auto lassen, Schatt
       shortDescription: "Asphalt kann heiß werden. Prüfe mit der Hand. Geh am frühen Morgen oder späten Abend spazieren.",
       level: 0,
       tags: ["pfoten", "sommer"],
-      imageUrl: "/images/tipps/hund-pfoten-sommer.jpg",
+      imageUrl: "/images/tipps/gesundheit/2.jpg",
       imageAlt: "Hund Pfoten Sommer",
       content: `## Warum Pfotenschutz wichtig ist
 
@@ -8634,7 +8634,7 @@ Pfotenschutz ist wichtig für die Gesundheit. Asphalt kann heiß werden. Prüfe 
       shortDescription: "Kleine Hunde und kurzhaarige Rassen frieren schneller. Mäntel und kürzere Spaziergänge helfen.",
       level: 0,
       tags: ["kaelteschutz", "winter"],
-      imageUrl: "/images/tipps/hund-kaelteschutz.jpg",
+      imageUrl: "/images/tipps/gesundheit/3.jpg",
       imageAlt: "Hund Kälteschutz",
       content: `## Warum Kälteschutz wichtig ist
 
@@ -8759,7 +8759,7 @@ Kälteschutz ist wichtig für die Gesundheit. Kleine Hunde und kurzhaarige Rasse
       shortDescription: "Streusalz reizt die Pfoten. Nach dem Spaziergang mit warmem Wasser abwaschen und Pfotenpflege auftragen.",
       level: 0,
       tags: ["salz", "pfoten"],
-      imageUrl: "/images/tipps/hund-salz.jpg",
+      imageUrl: "/images/tipps/gesundheit/4.jpg",
       imageAlt: "Hund Salz Pfoten",
       content: `## Warum Salzentfernung wichtig ist
 
@@ -8884,7 +8884,7 @@ Salzentfernung ist wichtig für die Gesundheit. Streusalz reizt die Pfoten. Nach
       shortDescription: "Juckreiz, Hautausschläge, Ohrenentzündungen oder Verdauungsprobleme können auf Allergien hindeuten.",
       level: 1,
       tags: ["allergien", "erkennung"],
-      imageUrl: "/images/tipps/hund-allergien.jpg",
+      imageUrl: "/images/tipps/gesundheit/5.jpg",
       imageAlt: "Hund Allergien",
       content: `## Warum Allergieerkennung wichtig ist
 
@@ -9029,7 +9029,7 @@ Allergieerkennung ist wichtig für die Gesundheit. Juckreiz, Hautausschläge, Oh
       shortDescription: "Eliminationsdiät unter tierärztlicher Aufsicht hilft, Auslöser zu identifizieren. Schrittweise Wiedereinführung.",
       level: 1,
       tags: ["futterallergie", "diagnose"],
-      imageUrl: "/images/tipps/hund-futterallergie.jpg",
+      imageUrl: "/images/tipps/gesundheit/6.jpg",
       imageAlt: "Hund Futterallergie",
       content: `## Warum Futterallergietestung wichtig ist
 
@@ -9154,7 +9154,7 @@ Futterallergietestung ist wichtig für die Gesundheit. Eliminationsdiät unter t
       shortDescription: "Pollen, Hausstaub oder Schimmelpilze können Auslöser sein. Tierarzt kann Medikamente oder Immuntherapie verschreiben.",
       level: 1,
       tags: ["umweltallergie", "behandlung"],
-      imageUrl: "/images/tipps/hund-umweltallergie.jpg",
+      imageUrl: "/images/tipps/gesundheit/7.jpg",
       imageAlt: "Hund Umweltallergie",
       content: `## Warum Umweltallergiebehandlung wichtig ist
 
@@ -9299,7 +9299,7 @@ Umweltallergiebehandlung ist wichtig für die Gesundheit. Pollen, Hausstaub oder
       shortDescription: "Reinige die betroffene Stelle, vermeide Kratzen. Tierarzt bei anhaltenden oder schlimmer werdenden Ausschlägen.",
       level: 0,
       tags: ["hautausschlag", "haut"],
-      imageUrl: "/images/tipps/hund-hautausschlag.jpg",
+      imageUrl: "/images/tipps/gesundheit/8.jpg",
       imageAlt: "Hund Hautausschlag",
       content: `## Warum Hautausschlagbehandlung wichtig ist
 
@@ -9424,7 +9424,7 @@ Hautausschlagbehandlung ist wichtig für die Gesundheit. Reinige die betroffene 
       shortDescription: "Reinige die Ohren vorsichtig, tropfe Ohrentropfen nach tierärztlicher Anweisung. Vermeide Wasser in den Ohren.",
       level: 0,
       tags: ["ohrenentzuendung", "ohren"],
-      imageUrl: "/images/tipps/hund-ohrenentzuendung.jpg",
+      imageUrl: "/images/tipps/gesundheit/9.jpg",
       imageAlt: "Hund Ohrenentzündung",
       content: `## Warum Ohrenentzündungsbehandlung wichtig ist
 
@@ -9549,7 +9549,7 @@ Ohrenentzündungsbehandlung ist wichtig für die Gesundheit. Reinige die Ohren v
       shortDescription: "Bei Durchfall oder Erbrechen: Futter pausieren, viel Wasser anbieten. Tierarzt bei anhaltenden Problemen.",
       level: 0,
       tags: ["verdauung", "probleme"],
-      imageUrl: "/images/tipps/hund-verdauung.jpg",
+      imageUrl: "/images/tipps/gesundheit/10.jpg",
       imageAlt: "Hund Verdauungsprobleme",
       content: `## Warum Verdauungsproblemlösung wichtig ist
 

@@ -16,19 +16,15 @@ ist überwiegend KEIN Code mehr — sondern Off-Page-Arbeit, die kein Commit lö
 - **Entität** (Block C1): Organization + Person konsolidiert, 5 sameAs-Profile verdrahtet, HANSI-Leaks raus, Logo existiert
 - **Header/Logo** (NEU, 13.06.): globaler Header mit Marke + Navigation — schließt das interne Verlinkungsloch
 - **Produkt-`image`-Schema-Fehler** (GSC) defensiv gelöst
+- **Block G — Core Web Vitals** (NEU, 13.06.): Lighthouse 100/100 erreicht
+- **Futter-Pass-Steckbrief** (NEU, 13.06.): 404 auf `/hund/[share_token]` gefixt (Next-16-`params`-Promise)
 
-## B) Code, der noch sinnvoll ist — aber ehrlich: nur EINER zählt wirklich
-1. **Block G — Core Web Vitals ⚠️ (der einzige große Code-Hebel, der noch Ranking bringt).**
-   Du hattest „Speed Index 39 s" im Lighthouse — falls das stimmt, ist das auf Mobil
-   katastrophal und ein echter Ranking-Faktor. Hauptverdächtiger steht fest: `HeroLiving`
-   ist komplett `"use client"` mit nativen `<img>` statt `next/image` → das LCP-Element
-   wartet auf JS-Hydration. **Braucht eine eigene Session mit dem vollen Lighthouse-Report
-   (Messung vorher/nachher).** Schick den Report, dann machen wir G1–G7 gezielt.
-2. **F2 — Bild-SEO**: sprechende Dateinamen + Alt-Texte im Maßstab. Modest, aber legitim.
-3. **A3 (llms-full.txt) / A4 (Bot-Logging)**: nice-to-have, geringe Wirkung. Würde ich
+## B) Code, der noch sinnvoll ist
+1. **F2 — Bild-SEO**: sprechende Dateinamen + Alt-Texte im Maßstab. Modest, aber legitim.
+2. **A3 (llms-full.txt) / A4 (Bot-Logging)**: nice-to-have, geringe Wirkung. Würde ich
    hintanstellen.
 
-→ Außer Block G ist hier nichts, was die Nadel bewegt. Wer „fertig" über mehr Code
+→ Hier ist nichts, was die Nadel allein bewegt. Wer „fertig" über mehr Code
 definiert, optimiert ab hier Nachkommastellen.
 
 ## C) KEIN Code — das ist die eigentliche Ziellinie (und der Flaschenhals)

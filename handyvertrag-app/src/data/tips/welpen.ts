@@ -120,7 +120,7 @@ export const welpen: TipCategory = {
       shortDescription: "Welpen wachsen rasant und brauchen energie- und proteinreiches Spezialfutter, das auf ihren hohen Bedarf abgestimmt ist.",
       level: 0,
       tags: ["fuetterung", "futter"],
-      imageUrl: "/images/tipps/welpe-futter.jpg",
+      imageUrl: "/images/tipps/welpen/1.jpg",
       imageAlt: "Welpe frisst hochwertiges Welpenfutter",
       content: `## Warum hochwertiges Welpenfutter wichtig ist
 
@@ -211,7 +211,7 @@ Hochwertiges Welpenfutter ist die Grundlage für ein gesundes Hundeleben. Invest
       shortDescription: "Ein Welpenmagen ist klein. Verteile die Tagesration auf 3–4 Mahlzeiten, um Energie und Verdauung stabil zu halten.",
       level: 0,
       tags: ["fuetterung", "rhythmus"],
-      imageUrl: "/images/tipps/welpe-mahlzeiten.jpg",
+      imageUrl: "/images/tipps/welpen/2.jpg",
       imageAlt: "Welpe frisst mehrere kleine Mahlzeiten am Tag",
       content: `## Warum mehrere kleine Mahlzeiten wichtig sind
 
@@ -328,7 +328,7 @@ Mehrere kleine Mahlzeiten sind für Welpen die ideale Fütterungsweise. Sie för
       shortDescription: "Übernimm anfangs das Futter des Züchters und stelle erst nach der Eingewöhnung langsam um. Ein Wechsel plus Umzugsstress überfordert den Darm.",
       level: 1,
       tags: ["fuetterung", "umstellung"],
-      imageUrl: "/images/tipps/welpe-futterwechsel.jpg",
+      imageUrl: "/images/tipps/welpen/3.jpg",
       imageAlt: "Welpe wird langsam an neues Futter gewöhnt",
       content: `## Warum das gewohnte Futter wichtig ist
 
@@ -459,7 +459,7 @@ Behalte das gewohnte Futter des Züchters bei und wechsle nur langsam und mit gu
       shortDescription: "Spezielles Junior-Futter für große Rassen begrenzt Energie und Kalzium, damit Knochen und Gelenke gesund heranreifen.",
       level: 2,
       tags: ["grosse-rasse", "gelenke"],
-      imageUrl: "/images/tipps/welpe-grosse-rasse.jpg",
+      imageUrl: "/images/tipps/welpen/4.jpg",
       imageAlt: "Großer Welpe wächst langsam und gesund heran",
       content: `## Warum langsames Wachstum wichtig ist
 
@@ -578,7 +578,7 @@ Große Rassen brauchen spezielles Junior-Futter und kontrolliertes Wachstum. Inv
       shortDescription: "Ein runder Welpenbauch ist niedlich, dauerhaftes Übergewicht schadet aber den wachsenden Gelenken. Füttere nach Bedarf, nicht nach Bettelblick.",
       level: 1,
       tags: ["fuetterung", "gewicht"],
-      imageUrl: "/images/tipps/welpe-uebergewicht.jpg",
+      imageUrl: "/images/tipps/welpen/5.jpg",
       imageAlt: "Welpe sollte nicht überfüttert werden",
       content: `## Warum Überfüttern gefährlich ist
 
@@ -703,7 +703,7 @@ Ein runder Welpenbauch ist niedlich, dauerhaftes Übergewicht schadet aber den w
       shortDescription: "Welpen brauchen ständigen Zugang zu Wasser. Stelle mehrere flache Näpfe auf, die leicht erreichbar sind.",
       level: 0,
       tags: ["hydration", "fuetterung"],
-      imageUrl: "/images/tipps/welpe-wasser.jpg",
+      imageUrl: "/images/tipps/welpen/6.jpg",
       imageAlt: "Welpe trinkt frisches Wasser",
       content: `## Warum frisches Wasser wichtig ist
 
@@ -834,7 +834,7 @@ Frisches Wasser ist lebensnotwendig für Welpen. Stelle mehrere flache Näpfe au
       shortDescription: "Bring den Welpen nach Schlafen, Fressen und Spielen sofort nach draußen und lobe jedes Geschäft im Freien ausgiebig.",
       level: 0,
       tags: ["stubenreinheit", "erziehung"],
-      imageUrl: "/images/tipps/welpe-stubenreinheit.jpg",
+      imageUrl: "/images/tipps/welpen/7.jpg",
       imageAlt: "Welpe wird stubenrein",
       content: `## Warum Geduld bei Stubenreinheit wichtig ist
 
@@ -965,7 +965,7 @@ Stubenreinheit erfordert Geduld, Konsequenz und positive Verstärkung. Bring den
       shortDescription: "Schimpfen verunsichert nur. Wische kommentarlos auf und sorge für mehr Gelegenheiten draußen. Stubenreinheit braucht Wochen.",
       level: 0,
       tags: ["stubenreinheit", "erziehung"],
-      imageUrl: "/images/tipps/welpe-pfuetzen.jpg",
+      imageUrl: "/images/tipps/welpen/8.jpg",
       imageAlt: "Welpe hat Pfütze gemacht - nicht bestrafen",
       content: `## Warum Bestrafung bei Pfützen schadet
 
@@ -1104,7 +1104,7 @@ Bestrafung bei Pfützen im Haus schadet mehr als sie nützt. Wische kommentarlos
       shortDescription: "Junge Welpen können nachts noch nicht durchhalten. Plane ein, sie einmal in der Nacht nach draußen zu tragen.",
       level: 1,
       tags: ["stubenreinheit", "nacht"],
-      imageUrl: "/images/tipps/welpe-nacht.jpg",
+      imageUrl: "/images/tipps/welpen/9.jpg",
       imageAlt: "Welpe wird nachts nach draußen getragen",
       content: `## Warum nächtliche Gassigänge wichtig sind
 
@@ -1243,7 +1243,7 @@ Nächtliche Gassigänge sind normal und notwendig für junge Welpen. Plane ein, 
       shortDescription: "In den ersten Wochen ist der Welpe besonders aufnahmefähig. Positive Erfahrungen jetzt wirken ein Leben lang.",
       level: 1,
       tags: ["sozialisierung", "praegung"],
-      imageUrl: "/images/tipps/welpe-praegung.jpg",
+      imageUrl: "/images/tipps/welpen/10.jpg",
       imageAlt: "Welpe in der Prägephase lernt viel",
       content: `## Warum die Prägephase so wichtig ist
 
@@ -1388,7 +1388,7 @@ Die Prägephase ist eine kritische Zeit für die Entwicklung deines Welpen. Nutz
       shortDescription: "Mache den Welpen mit Menschen, Geräuschen, Untergründen und Situationen bekannt — dosiert und positiv, ohne ihn zu überfordern.",
       level: 1,
       tags: ["sozialisierung", "umwelt"],
-      imageUrl: "/images/tipps/welpe-sozialisierung.jpg",
+      imageUrl: "/images/tipps/welpen/11.jpg",
       imageAlt: "Welpe wird behutsam sozialisiert",
       content: `## Warum behutsame Sozialisierung wichtig ist
 
@@ -1522,7 +1522,7 @@ Behutsame Sozialisierung ist wichtig für ein gesundes, selbstbewusstes Hundeleb
       shortDescription: "Wenige gute Begegnungen mit freundlichen Hunden sind wertvoller als viele chaotische. Achte auf passende Spielpartner.",
       level: 1,
       tags: ["sozialisierung", "hundekontakt"],
-      imageUrl: "/images/tipps/welpe-hundekontakt.jpg",
+      imageUrl: "/images/tipps/welpen/12.jpg",
       imageAlt: "Welpe spielt mit freundlichen Hunden",
       content: `## Warum Qualität wichtiger ist als Quantität
 
@@ -1653,7 +1653,7 @@ Qualität vor Quantität bei Hundebegegnungen ist wichtig für ein gesundes, sel
       shortDescription: "Staubsauger, Verkehr und Gewitter mit Ruhe und Leckerli verbinden. Frühe positive Gewöhnung beugt späteren Ängsten vor.",
       level: 2,
       tags: ["sozialisierung", "geraeusche"],
-      imageUrl: "/images/tipps/welpe-geraeusche.jpg",
+      imageUrl: "/images/tipps/welpen/13.jpg",
       imageAlt: "Welpe gewöhnt sich an Geräusche",
       content: `## Warum positive Geräuschgewöhnung wichtig ist
 
@@ -1788,7 +1788,7 @@ Positive Geräuschgewöhnung ist wichtig für ein angstfreies Hundeleben. Staubs
       shortDescription: "Ein Welpe braucht viel Schlaf. Zu viele Reize und Aktivitäten machen ihn überdreht und gestresst statt müde.",
       level: 0,
       tags: ["ruhe", "ueberforderung"],
-      imageUrl: "/images/tipps/welpe-ueberforderung.jpg",
+      imageUrl: "/images/tipps/welpen/14.jpg",
       imageAlt: "Welpe braucht Ruhe und Schlaf",
       content: `## Warum Überforderung schadet
 
@@ -1913,7 +1913,7 @@ Ein Welpe braucht viel Schlaf. Zu viele Reize und Aktivitäten machen ihn überd
       shortDescription: "Welpen schlafen bis zu 20 Stunden am Tag. Sorge für einen ruhigen Rückzugsort, an dem er ungestört dösen kann.",
       level: 0,
       tags: ["ruhe", "schlaf"],
-      imageUrl: "/images/tipps/welpe-schlaf.jpg",
+      imageUrl: "/images/tipps/welpen/15.jpg",
       imageAlt: "Welpe schläft viel",
       content: `## Warum genug Schlaf wichtig ist
 
@@ -2038,7 +2038,7 @@ Genug Schlaf ist essentiell für Welpen. Welpen schlafen bis zu 20 Stunden am Ta
       shortDescription: "Wenn der Welpe schläft, lass ihn schlafen — auch Kinder. Ungestörte Ruhe ist für die Entwicklung essenziell.",
       level: 0,
       tags: ["ruhe", "kinder"],
-      imageUrl: "/images/tipps/welpe-ruheplatz.jpg",
+      imageUrl: "/images/tipps/welpen/16.jpg",
       imageAlt: "Welpe schläft ungestört",
       content: `## Warum der Ruheplatz respektiert werden muss
 
@@ -2163,7 +2163,7 @@ Der Ruheplatz muss respektiert werden. Wenn der Welpe schläft, lass ihn schlafe
       shortDescription: "Beginne mit Sekunden und steigere langsam. So lernt der Welpe, dass Alleinsein normal und ungefährlich ist.",
       level: 1,
       tags: ["alleinbleiben", "training"],
-      imageUrl: "/images/tipps/welpe-alleinbleiben.jpg",
+      imageUrl: "/images/tipps/welpen/17.jpg",
       imageAlt: "Welpe übt Alleinbleiben",
       content: `## warum Alleinbleiben wichtig ist
 
@@ -2300,7 +2300,7 @@ Alleinbleiben muss trainiert werden. Beginne mit Sekunden und steigere langsam. 
       shortDescription: "Mach Kommen und Gehen unaufgeregt. Kein großes Drama beim Verabschieden, damit Alleinsein nicht emotional aufgeladen wird.",
       level: 2,
       tags: ["alleinbleiben", "psyche"],
-      imageUrl: "/images/tipps/welpe-trennungsangst.jpg",
+      imageUrl: "/images/tipps/welpen/18.jpg",
       imageAlt: "Welpe lernt, dass Alleinsein normal ist",
       content: `## Warum Trennungsangst vorbeugen wichtig ist
 
@@ -2446,7 +2446,7 @@ Trennungsangst vorbeugen ist wichtig für ein glückliches Hundeleben. Mach Komm
       shortDescription: "Eine Transportbox positiv aufbauen — mit Futter und Ruhe. Sie wird zum Rückzugsort und erleichtert Reisen und Tierarztbesuche.",
       level: 1,
       tags: ["box", "training"],
-      imageUrl: "/images/tipps/welpe-box.jpg",
+      imageUrl: "/images/tipps/welpen/19.jpg",
       imageAlt: "Welpe in der Box",
       content: `## Warum die Box wichtig ist
 
@@ -2583,7 +2583,7 @@ Die Box ist ein wertvolles Werkzeug für die Sicherheit und das Training von Wel
       shortDescription: "Beißt der Welpe zu fest, beende das Spiel kurz. So lernt er, wie zart er mit seinen Zähnen umgehen muss.",
       level: 1,
       tags: ["beisshemmung", "erziehung"],
-      imageUrl: "/images/tipps/welpe-beisshemmung.jpg",
+      imageUrl: "/images/tipps/welpen/20.jpg",
       imageAlt: "Welpe lernt Beißhemmung",
       content: `## Warum Beißhemmung wichtig ist
 
@@ -2714,7 +2714,7 @@ Beißhemmung ist wichtig für sicheres Spiel und Verhalten. Beißt der Welpe zu 
       shortDescription: "Zwischen dem dritten und siebten Monat fallen die Milchzähne aus. Biete geeignete Kauartikel an, um den Kaudrang zu lenken.",
       level: 1,
       tags: ["zahnwechsel", "kauen"],
-      imageUrl: "/images/tipps/welpe-zahnwechsel.jpg",
+      imageUrl: "/images/tipps/welpen/21.jpg",
       imageAlt: "Welpe im Zahnwechsel",
       content: `## Warum der Zahnwechsel begleitet werden muss
 
@@ -2833,7 +2833,7 @@ Der Zahnwechsel ist eine natürliche Phase, aber für Welpen unangenehm. Zwische
       shortDescription: "Lenke den Kautrieb auf erlaubte Objekte. Räume Schuhe und Kabel weg, statt nur zu schimpfen.",
       level: 0,
       tags: ["kauen", "management"],
-      imageUrl: "/images/tipps/welpe-kau-spielzeug.jpg",
+      imageUrl: "/images/tipps/welpen/22.jpg",
       imageAlt: "Welpe kaut auf Spielzeug",
       content: `## Warum Kauspielzeug wichtig ist
 
@@ -2958,7 +2958,7 @@ Kauspielzeug ist wichtig für Welpen. Lenke den Kautrieb auf erlaubte Objekte. R
       shortDescription: "Kabel, Giftpflanzen, Putzmittel und Kleinteile außer Reichweite bringen. Ein Welpe erkundet alles mit dem Maul.",
       level: 0,
       tags: ["sicherheit", "haushalt"],
-      imageUrl: "/images/tipps/welpe-wohnung-sicher.jpg",
+      imageUrl: "/images/tipps/welpen/23.jpg",
       imageAlt: "Welpensichere Wohnung",
       content: `## Warum die Wohnung welpensicher sein muss
 
@@ -3101,7 +3101,7 @@ Eine welpensichere Wohnung ist essenziell für die Sicherheit deines Welpen. Kab
       shortDescription: "Bis zum Wachstumsabschluss schonen Treppensteigen und Sprünge die Gelenke. Trage kleine Welpen oder nutze Rampen.",
       level: 1,
       tags: ["gelenke", "bewegung"],
-      imageUrl: "/images/tipps/welpe-treppen.jpg",
+      imageUrl: "/images/tipps/welpen/1.jpg",
       imageAlt: "Welpe sollte Treppen meiden",
       content: `## Warum Treppen und Sprünge schaden
 
@@ -3240,7 +3240,7 @@ Treppen und Sprünge schaden Welpen. Bis zum Wachstumsabschluss schonen Treppens
       shortDescription: "Eine grobe Orientierung: rund fünf Minuten pro Lebensmonat, mehrmals täglich. Mehr überlastet wachsende Gelenke.",
       level: 1,
       tags: ["bewegung", "gelenke"],
-      imageUrl: "/images/tipps/welpe-spaziergang.jpg",
+      imageUrl: "/images/tipps/welpen/2.jpg",
       imageAlt: "Welpe auf kurzem Spaziergang",
       content: `## Warum kurze Spaziergänge wichtig sind
 
@@ -3365,7 +3365,7 @@ Kurze Spaziergänge sind wichtig für Welpen. Eine grobe Orientierung: rund fün
       shortDescription: "Sag den Namen und belohne, wenn der Welpe schaut. Der Name soll nie mit Schimpfen verbunden sein.",
       level: 0,
       tags: ["training", "name"],
-      imageUrl: "/images/tipps/welpe-name.jpg",
+      imageUrl: "/images/tipps/welpen/3.jpg",
       imageAlt: "Welpe lernt seinen Namen",
       content: `## Warum der Name positiv aufgebaut werden muss
 
@@ -3496,7 +3496,7 @@ Der Name muss positiv aufgebaut werden. Sag den Namen und belohne, wenn der Welp
       shortDescription: "Übe das Kommen auf Zuruf von Anfang an mit hoher Belohnung. Ein junger Welpe bleibt von Natur aus gern in der Nähe — nutze das.",
       level: 1,
       tags: ["rueckruf", "training"],
-      imageUrl: "/images/tipps/welpe-rueckruf.jpg",
+      imageUrl: "/images/tipps/welpen/4.jpg",
       imageAlt: "Welpe kommt auf Zuruf",
       content: `## Warum der Rückruf früh trainiert werden muss
 
@@ -3627,7 +3627,7 @@ Der Rückruf muss früh trainiert werden. Übe das Kommen auf Zuruf von Anfang a
       shortDescription: "Wenige Minuten mehrmals täglich passen zur kurzen Aufmerksamkeitsspanne. Beende jede Einheit mit einem Erfolg.",
       level: 1,
       tags: ["training", "konzentration"],
-      imageUrl: "/images/tipps/welpe-training.jpg",
+      imageUrl: "/images/tipps/welpen/5.jpg",
       imageAlt: "Welpe trainiert kurz",
       content: `## Warum kurze Trainingseinheiten wichtig sind
 
@@ -3752,7 +3752,7 @@ Kurze Trainingseinheiten sind wichtig für Welpen. Wenige Minuten mehrmals tägl
       shortDescription: "Belohne erwünschtes Verhalten, statt Fehler zu bestrafen. So lernt der Welpe mit Freude und Vertrauen.",
       level: 0,
       tags: ["training", "methode"],
-      imageUrl: "/images/tipps/welpe-positive-verstaerkung.jpg",
+      imageUrl: "/images/tipps/welpen/6.jpg",
       imageAlt: "Welpe wird positiv verstärkt",
       content: `## Warum positive Verstärkung wichtig ist
 
@@ -3871,7 +3871,7 @@ Positive Verstärkung ist wichtig für die Welpenerziehung. Belohne erwünschtes
       shortDescription: "Regeln müssen für alle gelten und immer. Geduld und Wiederholung sind der Schlüssel zur Welpenerziehung.",
       level: 0,
       tags: ["erziehung", "konsequenz"],
-      imageUrl: "/images/tipps/welpe-konsequenz.jpg",
+      imageUrl: "/images/tipps/welpen/7.jpg",
       imageAlt: "Welpe lernt durch Konsequenz",
       content: `## Warum Konsequenz und Geduld wichtig sind
 
@@ -4016,7 +4016,7 @@ Konsequenz und Geduld sind wichtig für die Welpenerziehung. Regeln müssen für
       shortDescription: "Nimm den Welpe direkt nach Futter, Schlafen und Spielen nach draußen. Belohne jedes Mal, wenn er dort Geschäft macht.",
       level: 1,
       tags: ["stubenreinheit", "training"],
-      imageUrl: "/images/tipps/welpe-stubenreinheit.jpg",
+      imageUrl: "/images/tipps/welpen/8.jpg",
       imageAlt: "Welpe wird stubenrein",
       content: `## Warum Stubenreinheit früh gefördert werden muss
 
@@ -4147,7 +4147,7 @@ Stubenreinheit muss früh gefördert werden. Nimm den Welpe direkt nach Futter, 
       shortDescription: "Schnüffeln, Kreisen, Jammern — das sind Vorboten. Reagiere sofort, bevor es zu spät ist.",
       level: 1,
       tags: ["stubenreinheit", "zeichen"],
-      imageUrl: "/images/tipps/welpe-zeichen-not.jpg",
+      imageUrl: "/images/tipps/welpen/9.jpg",
       imageAlt: "Welpe zeigt Zeichen der Not",
       content: `## Warum Zeichen der Not wichtig sind
 
@@ -4258,7 +4258,7 @@ Zeichen der Not sind wichtig für die Stubenreinheit. Schnüffeln, Kreisen, Jamm
       shortDescription: "Wenn es doch passiert: gründlich reinigen, kein Schimpfen. Schimpfen macht nur Angst, nicht sauber.",
       level: 1,
       tags: ["stubenreinheit", "unfaelle"],
-      imageUrl: "/images/tipps/welpe-unfall.jpg",
+      imageUrl: "/images/tipps/welpen/10.jpg",
       imageAlt: "Welpe Unfall ohne Drama",
       content: `## Warum Unfälle ohne Drama behandelt werden müssen
 
@@ -4383,7 +4383,7 @@ Unfälle müssen ohne Drama behandelt werden. Wenn es doch passiert: gründlich 
       shortDescription: "Gewöhne den Welpen an Halsband und Leine, bevor er groß und stark ist. Beginne drinnen mit Belohnungen.",
       level: 1,
       tags: ["leine", "training"],
-      imageUrl: "/images/tipps/welpe-leine.jpg",
+      imageUrl: "/images/tipps/welpen/11.jpg",
       imageAlt: "Welpe gewöhnt sich an Leine",
       content: `## Warum die Leine früh eingeführt werden muss
 
@@ -4514,7 +4514,7 @@ Die Leine muss früh eingeführt werden. Gewöhne den Welpen an Halsband und Lei
       shortDescription: "Wenn der Welpe zieht, stehen bleiben oder die Richtung wechseln. Nur Bewegung bei lockerer Leine.",
       level: 2,
       tags: ["leine", "ziehen"],
-      imageUrl: "/images/tipps/welpe-leine-zieht.jpg",
+      imageUrl: "/images/tipps/welpen/12.jpg",
       imageAlt: "Welpe zieht nicht an der Leine",
       content: `## Warum Ziehen an der Leine vermieden werden muss
 
@@ -4645,7 +4645,7 @@ Ziehen an der Leine muss vermieden werden. Wenn der Welpe zieht, stehen bleiben 
       shortDescription: "Leine bedeutet Abenteuer, nicht Einschränkung. Verbinde sie mit Spaziergängen, Spiel und Belohnungen.",
       level: 1,
       tags: ["leine", "positiv"],
-      imageUrl: "/images/tipps/welpe-leine-positiv.jpg",
+      imageUrl: "/images/tipps/welpen/13.jpg",
       imageAlt: "Welpe freut sich über Leine",
       content: `## Warum die Leine positiv sein muss
 
@@ -4776,7 +4776,7 @@ Die Leine muss positiv sein. Leine bedeutet Abenteuer, nicht Einschränkung. Ver
       shortDescription: "Lass den Welpen auf Abstand andere Hunde beobachten. Belohne ruhiges Verhalten, nicht Bellen und Ziehen.",
       level: 1,
       tags: ["hundekontakt", "sozialisierung"],
-      imageUrl: "/images/tipps/welpe-andere-hunde.jpg",
+      imageUrl: "/images/tipps/welpen/14.jpg",
       imageAlt: "Welpe begegnet anderen Hunden",
       content: `## Warum andere Hunde positiv begegnet werden müssen
 
@@ -4908,7 +4908,7 @@ Andere Hunde müssen positiv begegnet werden. Lass den Welpen auf Abstand andere
       shortDescription: "Gewöhne den Welpen an Berührungen an Pfoten, Ohren und Maul. So sind Untersuchungen stressfreier.",
       level: 1,
       tags: ["tierarzt", "vorbereitung"],
-      imageUrl: "/images/tipps/welpe-tierarzt.jpg",
+      imageUrl: "/images/tipps/welpen/15.jpg",
       imageAlt: "Welpe beim Tierarzt",
       content: `## Warum der erste Tierarztbesuch vorbereitet werden muss
 
@@ -5039,7 +5039,7 @@ Der erste Tierarztbesuch muss vorbereitet werden. Gewöhne den Welpen an Berühr
       shortDescription: "Halte dich an den Impfplan deines Tierarztes. Regelmäßige Entwurmung schützt den Welpen und deine Familie.",
       level: 0,
       tags: ["gesundheit", "impfung"],
-      imageUrl: "/images/tipps/welpe-impfung.jpg",
+      imageUrl: "/images/tipps/welpen/16.jpg",
       imageAlt: "Welpe wird geimpft",
       content: `## Warum Impfungen und Wurmkuren wichtig sind
 
@@ -5164,7 +5164,7 @@ Impfungen und Wurmkuren sind wichtig für die Gesundheit deines Welpen. Halte di
       shortDescription: "Erste Tage: Ruhe, Routine und viel Schlaf. Keine Besucher, keine Überforderung — nur Zeit für Bindung.",
       level: 0,
       tags: ["ankunft", "routine"],
-      imageUrl: "/images/tipps/welpe-erste-woche.jpg",
+      imageUrl: "/images/tipps/welpen/17.jpg",
       imageAlt: "Welpe erste Woche zu Hause",
       content: `## Warum die erste Woche zu Hause wichtig ist
 
@@ -5295,7 +5295,7 @@ Die erste Woche zu Hause ist wichtig für die Bindung und das Vertrauen. Erste T
       shortDescription: "Gewöhne den Welpen schrittweise an kurze Abwesenheiten. Beginne mit wenigen Minuten und steigere langsam.",
       level: 1,
       tags: ["alleine", "training"],
-      imageUrl: "/images/tipps/welpe-alleine.jpg",
+      imageUrl: "/images/tipps/welpen/18.jpg",
       imageAlt: "Welpe lernt alleine zu bleiben",
       content: `## Warum Alleinebleiben wichtig ist
 
@@ -5426,7 +5426,7 @@ Alleinebleiben muss trainiert werden. Gewöhne den Welpen schrittweise an kurze 
       shortDescription: "Kein großes Drama beim Verlassen und Wiederkommen. Neutralität verhindert Aufregung und Angst.",
       level: 1,
       tags: ["alleine", "neutralitaet"],
-      imageUrl: "/images/tipps/welpe-abschied.jpg",
+      imageUrl: "/images/tipps/welpen/19.jpg",
       imageAlt: "Neutraler Abschied vom Welpen",
       content: `## Warum Neutralität wichtig ist
 
@@ -5531,7 +5531,7 @@ Neutralität ist wichtig für das Alleinebleiben. Kein großes Drama beim Verlas
       shortDescription: "Kauartikel, Spielzeuge und Futter-Spielzeuge halten den Welpen beschäftigt und reduzieren Langeweile.",
       level: 1,
       tags: ["alleine", "beschaeftigung"],
-      imageUrl: "/images/tipps/welpe-beschaeftigung.jpg",
+      imageUrl: "/images/tipps/welpen/20.jpg",
       imageAlt: "Welpe beschäftigt sich allein",
       content: `## Warum Beschäftigung wichtig ist
 
@@ -5656,7 +5656,7 @@ Beschäftigung ist wichtig für das Alleinebleiben. Kauartikel, Spielzeuge und F
       shortDescription: "Erste Nächte sind schwer. Kuscheldecke mit Geruch der Mutter, Wärmflasche und viel Geduld helfen.",
       level: 0,
       tags: ["nacht", "ankunft"],
-      imageUrl: "/images/tipps/welpe-erste-nacht.jpg",
+      imageUrl: "/images/tipps/welpen/21.jpg",
       imageAlt: "Welpe erste Nacht zu Hause",
       content: `## Warum die erste Nacht wichtig ist
 
@@ -5781,7 +5781,7 @@ Die erste Nacht ist wichtig für die Anpassung. Erste Nächte sind schwer. Kusch
       shortDescription: "Fester, ruhiger Ort mit Korb oder Decke. Keine Zugluft, keine direkte Heizung. Sicherheit ist wichtig.",
       level: 0,
       tags: ["schlaf", "platz"],
-      imageUrl: "/images/tipps/welpe-schlafplatz.jpg",
+      imageUrl: "/images/tipps/welpen/22.jpg",
       imageAlt: "Gemütlicher Schlafplatz für Welpen",
       content: `## Warum der Schlafplatz wichtig ist
 
@@ -5906,7 +5906,7 @@ Der Schlafplatz ist wichtig für das Wohlbefinden. Fester, ruhiger Ort mit Korb 
       shortDescription: "Feste Futterzeiten, frisches Wasser immer verfügbar. Futterplatz ruhig und ungestört.",
       level: 0,
       tags: ["futter", "wasser"],
-      imageUrl: "/images/tipps/welpe-futter.jpg",
+      imageUrl: "/images/tipps/welpen/23.jpg",
       imageAlt: "Welpe frisst und trinkt",
       content: `## Warum Futter und Wasser wichtig sind
 
@@ -6031,7 +6031,7 @@ Futter und Wasser sind wichtig für die Gesundheit. Feste Futterzeiten, frisches
       shortDescription: "Richte dich nach Alter, Gewicht und Aktivität. Zu viel führt zu Übergewicht, zu wenig zu Mangelernährung.",
       level: 1,
       tags: ["futter", "menge"],
-      imageUrl: "/images/tipps/welpe-futtermenge.jpg",
+      imageUrl: "/images/tipps/welpen/1.jpg",
       imageAlt: "Welpe frisst richtige Menge",
       content: `## Warum die richtige Futtermenge wichtig ist
 
@@ -6156,7 +6156,7 @@ Die richtige Futtermenge ist wichtig für die Gesundheit. Richte dich nach Alter
       shortDescription: "Welpen brauchen spezielles Welpenfutter mit mehr Protein und Energie. Adultfutter ist nicht geeignet.",
       level: 0,
       tags: ["futter", "welpenfutter"],
-      imageUrl: "/images/tipps/welpe-welpenfutter.jpg",
+      imageUrl: "/images/tipps/welpen/2.jpg",
       imageAlt: "Welpenfutter für Welpen",
       content: `## Warum Welpenfutter wichtig ist
 
@@ -6281,7 +6281,7 @@ Welpenfutter ist wichtig für das Wachstum. Welpen brauchen spezielles Welpenfut
       shortDescription: "Nie abrupt das Futter wechseln. Mische altes und neues Futter über 7-10 Tage langsam.",
       level: 1,
       tags: ["futter", "wechsel"],
-      imageUrl: "/images/tipps/welpe-futterwechsel.jpg",
+      imageUrl: "/images/tipps/welpen/3.jpg",
       imageAlt: "Langsamer Futterwechsel für Welpen",
       content: `## Warum langsamer Futterwechsel wichtig ist
 
@@ -6386,7 +6386,7 @@ Langsamer Futterwechsel ist wichtig für die Verdauung. Nie abrupt das Futter we
       shortDescription: "Leckerlies sind Belohnungen, keine Mahlzeiten. Maximal 10% der täglichen Kalorien sollten aus Leckerlis stammen.",
       level: 1,
       tags: ["leckerlies", "belohnung"],
-      imageUrl: "/images/tipps/welpe-leckerlies.jpg",
+      imageUrl: "/images/tipps/welpen/4.jpg",
       imageAlt: "Welpe bekommt Leckerlis",
       content: `## Warum Maß bei Leckerlis wichtig ist
 
@@ -6511,7 +6511,7 @@ Maß bei Leckerlis ist wichtig für die Gesundheit. Leckerlies sind Belohnungen,
       shortDescription: "Kauartikel reinigen die Zähne und stärken das Zahnfleisch. Wähle sichere, geeignete Kauartikel.",
       level: 1,
       tags: ["zaehne", "kauartikel"],
-      imageUrl: "/images/tipps/welpe-kauartikel.jpg",
+      imageUrl: "/images/tipps/welpen/5.jpg",
       imageAlt: "Welpe kaut auf Kauartikel",
       content: `## Warum Kauartikel wichtig sind
 
@@ -6636,7 +6636,7 @@ Kauartikel sind wichtig für die Zahnpflege. Kauartikel reinigen die Zähne und 
       shortDescription: "Gewöhne den Welpen an das Zähneputzen. Beginne mit Fingerhut und spezieller Welpen-Zahnpasta.",
       level: 1,
       tags: ["zaehne", "pflege"],
-      imageUrl: "/images/tipps/welpe-zaehne-pflegen.jpg",
+      imageUrl: "/images/tipps/welpen/6.jpg",
       imageAlt: "Welpe Zähne putzen",
       content: `## Warum frühe Zahnpflege wichtig ist
 
@@ -6767,7 +6767,7 @@ Frühe Zahnpflege ist wichtig für die Mundhygiene. Gewöhne den Welpen an das Z
       shortDescription: "Mit 3-4 Monaten beginnt der Zahnwechsel. Kühlende Spielzeuge und Kauartikel lindern den Schmerz.",
       level: 1,
       tags: ["zaehne", "zahnwechsel"],
-      imageUrl: "/images/tipps/welpe-zahnwechsel.jpg",
+      imageUrl: "/images/tipps/welpen/7.jpg",
       imageAlt: "Welpe im Zahnwechsel",
       content: `## Warum der Zahnwechsel wichtig ist
 
@@ -6892,7 +6892,7 @@ Der Zahnwechsel ist eine wichtige Phase. Mit 3-4 Monaten beginnt der Zahnwechsel
       shortDescription: "Bürste den Welpen regelmäßig, damit er sich an das Bürsten gewöhnt. So ist die Fellpflege später stressfrei.",
       level: 1,
       tags: ["fell", "pflege"],
-      imageUrl: "/images/tipps/welpe-fellpflege.jpg",
+      imageUrl: "/images/tipps/welpen/8.jpg",
       imageAlt: "Welpe wird gebürstet",
       content: `## Warum frühe Fellpflege wichtig ist
 
@@ -7023,7 +7023,7 @@ Frühe Fellpflege ist wichtig für das Fell. Bürste den Welpen regelmäßig, da
       shortDescription: "Welpen müssen nicht oft gebadet werden. Nur wenn nötig, mit spezieller Welpen-Shampoo.",
       level: 1,
       tags: ["fell", "baden"],
-      imageUrl: "/images/tipps/welpe-baden.jpg",
+      imageUrl: "/images/tipps/welpen/9.jpg",
       imageAlt: "Welpe wird gebadet",
       content: `## Warum Baden nur wenn nötig ist
 
@@ -7148,7 +7148,7 @@ Baden nur wenn nötig ist wichtig für die Gesundheit. Welpen müssen nicht oft 
       shortDescription: "Gewöhne den Welpen an das Berühren der Pfoten. Lerne das richtige Krallenschneiden oder lasse es machen.",
       level: 2,
       tags: ["pflege", "krallen"],
-      imageUrl: "/images/tipps/welpe-krallen.jpg",
+      imageUrl: "/images/tipps/welpen/10.jpg",
       imageAlt: "Welpe Krallen schneiden",
       content: `## Warum Krallenschneiden wichtig ist
 
@@ -7273,7 +7273,7 @@ Krallenschneiden ist wichtig für die Gesundheit. Gewöhne den Welpen an das Ber
       shortDescription: "Regelmäßiges Spiel und Bewegung fördern die Muskeln, Knochen und das Immunsystem. Aber nicht überfordern.",
       level: 1,
       tags: ["spiel", "bewegung"],
-      imageUrl: "/images/tipps/welpe-spiel.jpg",
+      imageUrl: "/images/tipps/welpen/11.jpg",
       imageAlt: "Welpe spielt und bewegt sich",
       content: `## Warum Spiel und Bewegung wichtig sind
 
@@ -7398,7 +7398,7 @@ Spiel und Bewegung sind wichtig für das Wachstum. Regelmäßiges Spiel und Bewe
       shortDescription: "Welpen brauchen Bewegung, aber nicht zu viel. Die Faustregel: 5 Minuten pro Lebensmonat, zweimal täglich.",
       level: 1,
       tags: ["bewegung", "menge"],
-      imageUrl: "/images/tipps/welpe-bewegung-menge.jpg",
+      imageUrl: "/images/tipps/welpen/12.jpg",
       imageAlt: "Welpe hat richtige Bewegung",
       content: `## Warum die richtige Menge an Bewegung wichtig ist
 
@@ -7523,7 +7523,7 @@ Die richtige Menge an Bewegung ist wichtig für das Wachstum. Welpen brauchen Be
       shortDescription: "Apportieren, Verstecken und Klettern sind gute Spiele. Vermeide Springen und harte Stopps.",
       level: 1,
       tags: ["spiel", "spiele"],
-      imageUrl: "/images/tipps/welpe-spiele.jpg",
+      imageUrl: "/images/tipps/welpen/13.jpg",
       imageAlt: "Welpe spielt geeignetes Spiel",
       content: `## Warum geeignete Spiele wichtig sind
 
@@ -7674,7 +7674,7 @@ Geeignete Spiele sind wichtig für die Entwicklung. Apportieren, Verstecken und 
       shortDescription: "Welpen brauchen viel Schlaf und Ruhe. Übermäßige Aktivität schadet dem Wachstum und der Entwicklung.",
       level: 0,
       tags: ["ruhe", "wachstum"],
-      imageUrl: "/images/tipps/welpe-ruhephasen.jpg",
+      imageUrl: "/images/tipps/welpen/14.jpg",
       imageAlt: "Welpe schläft und ruht",
       content: `## Warum Ruhephasen wichtig sind
 
@@ -7799,7 +7799,7 @@ Ruhephasen sind wichtig für das Wachstum. Welpen brauchen viel Schlaf und Ruhe.
       shortDescription: "Gewöhne den Welpen früh an verschiedene Menschen, Tiere und Umgebungen. Das ist entscheidend für sein Verhalten.",
       level: 1,
       tags: ["sozialisierung", "verhalten"],
-      imageUrl: "/images/tipps/welpe-sozialisierung.jpg",
+      imageUrl: "/images/tipps/welpen/15.jpg",
       imageAlt: "Welpe wird sozialisiert",
       content: `## Warum frühe Sozialisierung wichtig ist
 
@@ -7924,7 +7924,7 @@ Frühe Sozialisierung ist wichtig für das Verhalten. Gewöhne den Welpen früh 
       shortDescription: "Lass den Welpen nur mit geimpften, freundlichen Hunden spielen. Überwache die Begegnungen.",
       level: 1,
       tags: ["sozialisierung", "hunde"],
-      imageUrl: "/images/tipps/welpe-hunde-begegnung.jpg",
+      imageUrl: "/images/tipps/welpen/16.jpg",
       imageAlt: "Welpe trifft andere Hunde",
       content: `## Warum Begegnungen mit anderen Hunden wichtig sind
 
@@ -8049,7 +8049,7 @@ Begegnungen mit anderen Hunden sind wichtig für die Sozialisierung. Lass den We
       shortDescription: "Gewöhne den Welpen an verschiedene Geräusche, Oberflächen und Situationen. Das verhindert Ängste.",
       level: 1,
       tags: ["sozialisierung", "umwelt"],
-      imageUrl: "/images/tipps/welpe-umweltreize.jpg",
+      imageUrl: "/images/tipps/welpen/17.jpg",
       imageAlt: "Welpe gewöhnt sich an Umweltreize",
       content: `## Warum Umweltreize wichtig sind
 
@@ -8194,7 +8194,7 @@ Umweltreize sind wichtig für die Anpassung. Gewöhne den Welpen an verschiedene
       shortDescription: "Gewöhne den Welpen langsam an kurze Alleinsein-Phasen. Beginne mit wenigen Minuten und steigere langsam.",
       level: 1,
       tags: ["training", "alleinsein"],
-      imageUrl: "/images/tipps/welpe-alleinsein.jpg",
+      imageUrl: "/images/tipps/welpen/18.jpg",
       imageAlt: "Welpe übt Alleinsein",
       content: `## Warum Alleinsein wichtig ist
 
@@ -8319,7 +8319,7 @@ Alleinsein ist wichtig für die Unabhängigkeit. Gewöhne den Welpen langsam an 
       shortDescription: "Vermeide dramatische Abschiede und Begrüßungen. Sei ruhig und konsequent beim Kommen und Gehen.",
       level: 1,
       tags: ["training", "trennungsangst"],
-      imageUrl: "/images/tipps/welpe-trennungsangst.jpg",
+      imageUrl: "/images/tipps/welpen/19.jpg",
       imageAlt: "Welpe ohne Trennungsangst",
       content: `## Warum Trennungsangst verhindern wichtig ist
 
@@ -8444,7 +8444,7 @@ Trennungsangst verhindern ist wichtig für das Wohlbefinden. Vermeide dramatisch
       shortDescription: "Gewöhne den Welpen an eine Kiste oder Box. Das ist ein sicherer Rückzugsort und hilft beim Alleinsein.",
       level: 1,
       tags: ["training", "kiste"],
-      imageUrl: "/images/tipps/welpe-kiste.jpg",
+      imageUrl: "/images/tipps/welpen/20.jpg",
       imageAlt: "Welpe in der Kiste",
       content: `## Warum Kiste und Box-Training wichtig ist
 
@@ -8569,7 +8569,7 @@ Kiste und Box-Training ist wichtig für Sicherheit. Gewöhne den Welpen an eine 
       shortDescription: "Sitz, Platz und Hier sind die wichtigsten Grundkommandos. Beginne früh und übe regelmäßig.",
       level: 1,
       tags: ["training", "kommandos"],
-      imageUrl: "/images/tipps/welpe-kommandos.jpg",
+      imageUrl: "/images/tipps/welpen/21.jpg",
       imageAlt: "Welpe lernt Kommandos",
       content: `## Warum Grundkommandos wichtig sind
 
@@ -8719,7 +8719,7 @@ Grundkommandos sind wichtig für Sicherheit. Sitz, Platz und Hier sind die wicht
       shortDescription: "Belohne gewünschtes Verhalten sofort mit Leckerlis, Lob oder Spiel. Strafe ist unnötig und kontraproduktiv.",
       level: 0,
       tags: ["training", "verstaerkung"],
-      imageUrl: "/images/tipps/welpe-positive-verstaerkung.jpg",
+      imageUrl: "/images/tipps/welpen/22.jpg",
       imageAlt: "Welpe wird positiv verstärkt",
       content: `## Warum positive Verstärkung wichtig ist
 
@@ -8842,7 +8842,7 @@ Positive Verstärkung ist wichtig für das Lernen. Belohne gewünschtes Verhalte
       shortDescription: "Sei konsistent mit Regeln und Kommandos. Alle Familienmitglieder sollten das Gleiche tun.",
       level: 1,
       tags: ["training", "konsistenz"],
-      imageUrl: "/images/tipps/welpe-konsistenz.jpg",
+      imageUrl: "/images/tipps/welpen/23.jpg",
       imageAlt: "Welpe Training mit Konsistenz",
       content: `## Warum Konsistenz im Training wichtig ist
 
@@ -8964,7 +8964,7 @@ Konsistenz ist wichtig für das Verständnis. Sei konsistent mit Regeln und Komm
       shortDescription: "Welpen haben kurze Aufmerksamkeitsspannen. Halte Trainingseinheiten auf 5-10 Minuten, mehrmals täglich.",
       level: 1,
       tags: ["training", "einheiten"],
-      imageUrl: "/images/tipps/welpe-training-kurz.jpg",
+      imageUrl: "/images/tipps/welpen/1.jpg",
       imageAlt: "Welpe kurze Trainingseinheit",
       content: `## Warum kurze Trainingseinheiten wichtig sind
 
@@ -9088,7 +9088,7 @@ Kurze Trainingseinheiten sind wichtig für das Lernen. Welpen haben kurze Aufmer
       shortDescription: "Welpen beißen beim Spielen. Leite das Beißen auf Spielzeug um und belohne sanftes Verhalten.",
       level: 1,
       tags: ["verhalten", "beissen"],
-      imageUrl: "/images/tipps/welpe-beissen.jpg",
+      imageUrl: "/images/tipps/welpen/2.jpg",
       imageAlt: "Welpe beißt Spielzeug",
       content: `## Warum Beißen und Kauen wichtig ist
 
@@ -9211,7 +9211,7 @@ Beißen und Kauen ist natürlich. Welpen beißen beim Spielen. Leite das Beißen
       shortDescription: "Ignoriere den Welpen, wenn er springt. Belohne ihn nur, wenn alle vier Pfoten am Boden sind.",
       level: 1,
       tags: ["verhalten", "springen"],
-      imageUrl: "/images/tipps/welpe-springen.jpg",
+      imageUrl: "/images/tipps/welpen/3.jpg",
       imageAlt: "Welpe steht am Boden",
       content: `## Warum Springen verhindern wichtig ist
 
@@ -9334,7 +9334,7 @@ Springen verhindern ist wichtig für Sicherheit. Ignoriere den Welpen, wenn er s
       shortDescription: "Ignoriere Bellen und Anspringen. Belohne ruhiges Verhalten. Gib dem Welpen eine Alternative.",
       level: 1,
       tags: ["verhalten", "bellen"],
-      imageUrl: "/images/tipps/welpe-bellen.jpg",
+      imageUrl: "/images/tipps/welpen/4.jpg",
       imageAlt: "Welpe ist ruhig",
       content: `## Warum Bellen und Anspringen verhindern wichtig ist
 
@@ -9457,7 +9457,7 @@ Bellen und Anspringen verhindern ist wichtig für Ruhe. Ignoriere Bellen und Ans
       shortDescription: "Gib dem Welpen genug Beschäftigung und Spielzeug. Zerstörung ist oft ein Zeichen von Langeweile.",
       level: 1,
       tags: ["verhalten", "zerstoerung"],
-      imageUrl: "/images/tipps/welpe-spielzeug.jpg",
+      imageUrl: "/images/tipps/welpen/5.jpg",
       imageAlt: "Welpe spielt mit Spielzeug",
       content: `## Warum Zerstörung verhindern wichtig ist
 
@@ -9582,7 +9582,7 @@ Zerstörung verhindern ist wichtig für Sicherheit. Gib dem Welpen genug Beschä
       shortDescription: "Beschäftige den Welpen regelmäßig mit Spiel, Training und Spaziergängen. Langeweile führt zu Verhaltensproblemen.",
       level: 1,
       tags: ["verhalten", "langeweile"],
-      imageUrl: "/images/tipps/welpe-beschaeftigung.jpg",
+      imageUrl: "/images/tipps/welpen/6.jpg",
       imageAlt: "Welpe ist beschäftigt",
       content: `## Warum Langeweile verhindern wichtig ist
 
@@ -9706,7 +9706,7 @@ Langeweile verhindern ist wichtig für das Wohlbefinden. Beschäftige den Welpen
       shortDescription: "Biete dem Welpen verschiedene Spielzeuge und Beschäftigungsmöglichkeiten. Wechsle regelmäßig ab.",
       level: 1,
       tags: ["spiel", "spielzeug"],
-      imageUrl: "/images/tipps/welpe-spielzeug-variiert.jpg",
+      imageUrl: "/images/tipps/welpen/7.jpg",
       imageAlt: "Welpe mit verschiedenen Spielzeugen",
       content: `## Warum Spielzeug und Beschäftigung wichtig sind
 
@@ -9851,7 +9851,7 @@ Spielzeug und Beschäftigung sind wichtig für das Wohlbefinden. Biete dem Welpe
       shortDescription: "Untersuche den Welpen regelmäßig auf Parasiten, Hautprobleme und andere Gesundheitsprobleme.",
       level: 1,
       tags: ["gesundheit", "checks"],
-      imageUrl: "/images/tipps/welpe-gesundheitscheck.jpg",
+      imageUrl: "/images/tipps/welpen/8.jpg",
       imageAlt: "Welpe wird untersucht",
       content: `## Warum Gesundheits-Checks wichtig sind
 
@@ -10008,7 +10008,7 @@ Gesundheits-Checks sind wichtig für die Gesundheit. Untersuche den Welpen regel
       shortDescription: "Halte den Impfplan ein und entwurme den Welpen regelmäßig. Das ist wichtig für die Gesundheit.",
       level: 1,
       tags: ["gesundheit", "impfung"],
-      imageUrl: "/images/tipps/welpe-impfung.jpg",
+      imageUrl: "/images/tipps/welpen/9.jpg",
       imageAlt: "Welpe beim Tierarzt",
       content: `## Warum Impfungen und Entwurmung wichtig sind
 
@@ -10147,7 +10147,7 @@ Impfungen und Entwurmung sind wichtig für die Gesundheit. Halte den Impfplan ei
       shortDescription: "Plane regelmäßige Tierarzt-Besuche für Impfungen, Checks und Beratung. Der Tierarzt ist dein Partner.",
       level: 1,
       tags: ["gesundheit", "tierarzt"],
-      imageUrl: "/images/tipps/welpe-tierarzt.jpg",
+      imageUrl: "/images/tipps/welpen/10.jpg",
       imageAlt: "Welpe beim Tierarztbesuch",
       content: `## Warum Tierarzt-Besuche wichtig sind
 
@@ -10297,7 +10297,7 @@ Tierarzt-Besuche sind wichtig für die Gesundheit. Plane regelmäßige Tierarzt-
       shortDescription: "Habe einen Notfall-Plan mit Tierarzt-Nummer, Erste-Hilfe-Kenntnissen und Transportmöglichkeiten.",
       level: 1,
       tags: ["gesundheit", "notfall"],
-      imageUrl: "/images/tipps/welpe-notfall.jpg",
+      imageUrl: "/images/tipps/welpen/11.jpg",
       imageAlt: "Welpe Notfall-Plan",
       content: `## Warum ein Notfall-Plan wichtig ist
 
@@ -10448,7 +10448,7 @@ Ein Notfall-Plan ist wichtig für Sicherheit. Habe einen Notfall-Plan mit Tierar
       shortDescription: "Plane Reisen mit dem Welpen gut vorbereitet. Reisekiste, Dokumente und routinierte Gewöhnung sind wichtig.",
       level: 1,
       tags: ["reise", "vorbereitung"],
-      imageUrl: "/images/tipps/welpe-reise.jpg",
+      imageUrl: "/images/tipps/welpen/12.jpg",
       imageAlt: "Welpe auf Reise",
       content: `## Warum Reise-Vorbereitung wichtig ist
 
@@ -10592,7 +10592,7 @@ Reise-Vorbereitung ist wichtig für Sicherheit. Plane Reisen mit dem Welpen gut 
       shortDescription: "Gewöhne den Welpen früh ans Auto. Sichere Transportbox oder Sicherheitsgurt sind Pflicht.",
       level: 1,
       tags: ["reise", "auto"],
-      imageUrl: "/images/tipps/welpe-auto.jpg",
+      imageUrl: "/images/tipps/welpen/13.jpg",
       imageAlt: "Welpe im Auto",
       content: `## Warum Auto fahren mit Welpe wichtig ist
 
@@ -10736,7 +10736,7 @@ Auto fahren mit Welpe ist wichtig für Sicherheit. Gewöhne den Welpen früh ans
       shortDescription: "Informiere dich über Regeln für Hunde in Bahn, Bus und Flugzeug. Box und Maulkorb sind oft Pflicht.",
       level: 1,
       tags: ["reise", "verkehr"],
-      imageUrl: "/images/tipps/welpe-bahn.jpg",
+      imageUrl: "/images/tipps/welpen/14.jpg",
       imageAlt: "Welpe in der Bahn",
       content: `## Warum öffentliche Verkehrsmittel wichtig sind
 
@@ -10881,7 +10881,7 @@ Informiere dich über Regeln für Hunde in Bahn, Bus und Flugzeug. Box und Maulk
       shortDescription: "Suche nach hundefreundlichen Unterkünften. Prüfe Regeln und Buche frühzeitig.",
       level: 1,
       tags: ["reise", "unterkunft"],
-      imageUrl: "/images/tipps/welpe-hotel.jpg",
+      imageUrl: "/images/tipps/welpen/15.jpg",
       imageAlt: "Welpe im Hotel",
       content: `## Warum Hotel und Unterkunft wichtig sind
 
@@ -11026,7 +11026,7 @@ Hotel und Unterkunft sind wichtig für angenehme Reisen. Suche nach hundefreundl
       shortDescription: "Plane den Urlaub mit dem Welpen gut. Aktivitäten, Unterkunft und Notfall-Plan sind wichtig.",
       level: 1,
       tags: ["reise", "urlaub"],
-      imageUrl: "/images/tipps/welpe-urlaub.jpg",
+      imageUrl: "/images/tipps/welpen/16.jpg",
       imageAlt: "Welpe im Urlaub",
       content: `## Warum Urlaub mit Welpe planen wichtig ist
 
@@ -11171,7 +11171,7 @@ Urlaub mit Welpe planen ist wichtig für Freude. Plane den Urlaub mit dem Welpen
       shortDescription: "Gewöhne den Welpen langsam an andere Haustiere. Überwache Begegnungen und gib beiden Sicherheit.",
       level: 1,
       tags: ["sozialisierung", "haustiere"],
-      imageUrl: "/images/tipps/welpe-haustiere.jpg",
+      imageUrl: "/images/tipps/welpen/17.jpg",
       imageAlt: "Welpe mit anderen Haustieren",
       content: `## Warum Welpen und andere Haustiere wichtig sind
 
@@ -11316,7 +11316,7 @@ Welpen und andere Haustiere sind wichtig für Harmonie. Gewöhne den Welpen lang
       shortDescription: "Lehre Kinder, wie sie mit Welpen umgehen. Überwache Begegnungen und gib beiden Sicherheit.",
       level: 1,
       tags: ["sozialisierung", "kinder"],
-      imageUrl: "/images/tipps/welpe-kinder.jpg",
+      imageUrl: "/images/tipps/welpen/18.jpg",
       imageAlt: "Welpe mit Kindern",
       content: `## Warum Welpen und Kinder wichtig sind
 
@@ -11461,7 +11461,7 @@ Welpen und Kinder sind wichtig für Sicherheit. Lehre Kinder, wie sie mit Welpen
       shortDescription: "Lehne Besucher nicht ab, sondern gewöhne den Welpen an sie. Regeln und Ruhe sind wichtig.",
       level: 1,
       tags: ["sozialisierung", "besucher"],
-      imageUrl: "/images/tipps/welpe-besucher.jpg",
+      imageUrl: "/images/tipps/welpen/19.jpg",
       imageAlt: "Welpe mit Besuchern",
       content: `## Warum Welpen und Besucher wichtig sind
 
@@ -11605,7 +11605,7 @@ Welpen und Besucher sind wichtig für Sozialisierung. Lehne Besucher nicht ab, s
       shortDescription: "Gewöhne den Welpen an verschiedene Umgebungen. Stadt, Land, Wasser und Verkehr sind wichtig.",
       level: 1,
       tags: ["sozialisierung", "umgebung"],
-      imageUrl: "/images/tipps/welpe-umgebung.jpg",
+      imageUrl: "/images/tipps/welpen/20.jpg",
       imageAlt: "Welpe in verschiedener Umgebung",
       content: `## Warum Welpen und Umgebung wichtig sind
 
@@ -11750,7 +11750,7 @@ Welpen und Umgebung sind wichtig für Sozialisierung. Gewöhne den Welpen an ver
       shortDescription: "Gewöhne den Welpen an verschiedene Geräusche. Donner, Feuerwerk, Verkehr und Haushaltsgeräte sind wichtig.",
       level: 1,
       tags: ["sozialisierung", "geraeusche"],
-      imageUrl: "/images/tipps/welpe-geraeusche.jpg",
+      imageUrl: "/images/tipps/welpen/21.jpg",
       imageAlt: "Welpe hört Geräusche",
       content: `## Warum Welpen und Geräusche wichtig sind
 
@@ -11900,7 +11900,7 @@ Welpen und Geräusche sind wichtig für Sicherheit. Gewöhne den Welpen an versc
       shortDescription: "Schütze den Welpen vor extremem Wetter. Hitze, Kälte, Regen und Wind erfordern besondere Vorsicht.",
       level: 1,
       tags: ["gesundheit", "wetter"],
-      imageUrl: "/images/tipps/welpe-wetter.jpg",
+      imageUrl: "/images/tipps/welpen/22.jpg",
       imageAlt: "Welpe bei verschiedenen Wetterbedingungen",
       content: `## Warum Welpen und Wetter wichtig sind
 
@@ -12051,7 +12051,7 @@ Welpen und Wetter sind wichtig für Gesundheit. Schütze den Welpen vor extremem
       shortDescription: "Achte auf die Körpertemperatur des Welpen. Überhitzung und Unterkühlung sind gefährlich.",
       level: 1,
       tags: ["gesundheit", "temperatur"],
-      imageUrl: "/images/tipps/welpe-temperatur.jpg",
+      imageUrl: "/images/tipps/welpen/23.jpg",
       imageAlt: "Welpe Temperatur messen",
       content: `## Warum Welpen und Temperatur wichtig sind
 
@@ -12196,7 +12196,7 @@ Welpen und Temperatur sind wichtig für Gesundheit. Achte auf die Körpertempera
       shortDescription: "Schütze den Welpen vor der Sonne. Schatten, Wasser und Sonnenschutzmittel sind wichtig.",
       level: 1,
       tags: ["gesundheit", "sonnenschutz"],
-      imageUrl: "/images/tipps/welpe-sonne.jpg",
+      imageUrl: "/images/tipps/welpen/1.jpg",
       imageAlt: "Welpe im Schatten",
       content: `## Warum Welpen und Sonnenschutz wichtig sind
 
@@ -12341,7 +12341,7 @@ Welpen und Sonnenschutz sind wichtig für Gesundheit. Schütze den Welpen vor de
       shortDescription: "Schütze den Welpen vor Kälte. Decken, warme Kleidung und kurze Spaziergänge sind wichtig.",
       level: 1,
       tags: ["gesundheit", "kaelteschutz"],
-      imageUrl: "/images/tipps/welpe-kaelte.jpg",
+      imageUrl: "/images/tipps/welpen/2.jpg",
       imageAlt: "Welpe im warmen Mantel",
       content: `## Warum Welpen und Kälteschutz wichtig sind
 
@@ -12486,7 +12486,7 @@ Welpen und Kälteschutz sind wichtig für Gesundheit. Schütze den Welpen vor K�
       shortDescription: "Schütze den Welpen vor Regen. Regencape, Trocken halten und kurze Spaziergänge sind wichtig.",
       level: 1,
       tags: ["gesundheit", "regenschutz"],
-      imageUrl: "/images/tipps/welpe-regen.jpg",
+      imageUrl: "/images/tipps/welpen/3.jpg",
       imageAlt: "Welpe im Regencape",
       content: `## Warum Welpen und Regenschutz wichtig sind
 
@@ -12631,7 +12631,7 @@ Welpen und Regenschutz sind wichtig für Gesundheit. Schütze den Welpen vor Reg
       shortDescription: "Gewöhne den Welpen langsam an Wasser. Schwimmen, Sicherheit und Überwachung sind wichtig.",
       level: 1,
       tags: ["gesundheit", "wasser"],
-      imageUrl: "/images/tipps/welpe-wasser.jpg",
+      imageUrl: "/images/tipps/welpen/4.jpg",
       imageAlt: "Welpe am Wasser",
       content: `## Warum Welpen und Wassersicherheit wichtig sind
 
@@ -12776,7 +12776,7 @@ Welpen und Wassersicherheit sind wichtig für Sicherheit. Gewöhne den Welpen la
       shortDescription: "Lehre den Welpen schwimmen. Schrittweise Gewöhnung, Positive Erfahrungen und Sicherheit sind wichtig.",
       level: 1,
       tags: ["sport", "schwimmen"],
-      imageUrl: "/images/tipps/welpe-schwimmen.jpg",
+      imageUrl: "/images/tipps/welpen/5.jpg",
       imageAlt: "Welpe schwimmt",
       content: `## Warum Welpen und Schwimmen wichtig sind
 
@@ -12901,7 +12901,7 @@ Welpen und Schwimmen sind wichtig für Fitness. Lehre den Welpen schwimmen. Schr
       shortDescription: "Beginne langsam mit Sport. Spaziergänge, Spiel und leichte Übungen sind wichtig für die Entwicklung.",
       level: 1,
       tags: ["sport", "bewegung"],
-      imageUrl: "/images/tipps/welpe-sport.jpg",
+      imageUrl: "/images/tipps/welpen/6.jpg",
       imageAlt: "Welpe beim Sport",
       content: `## Warum Welpen und Sport wichtig sind
 
@@ -13046,7 +13046,7 @@ Welpen und Sport sind wichtig für Fitness. Beginne langsam mit Sport. Spazierg�
       shortDescription: "Fördere die geistige Entwicklung des Welpen. Puzzle, Spiel und Training sind wichtig.",
       level: 1,
       tags: ["erziehung", "mental"],
-      imageUrl: "/images/tipps/welpe-mental.jpg",
+      imageUrl: "/images/tipps/welpen/7.jpg",
       imageAlt: "Welpe löst Puzzle",
       content: `## Warum Welpen und Mental-Training wichtig sind
 
@@ -13189,7 +13189,7 @@ Welpen und Mental-Training sind wichtig für Intelligenz. Fördere die geistige 
       shortDescription: "Plane die Zukunft mit dem Welpen. Ausbildung, Gesundheit und Pflege sind wichtig für ein langes, glückliches Leben.",
       level: 1,
       tags: ["erziehung", "zukunft"],
-      imageUrl: "/images/tipps/welpe-zukunft.jpg",
+      imageUrl: "/images/tipps/welpen/8.jpg",
       imageAlt: "Welpe blickt in die Zukunft",
       content: `## Warum Welpen und Zukunft wichtig sind
 
