@@ -42,11 +42,11 @@ export default function CostHook({ breeds, avgPricePerKgDry, countLabel }: { bre
     const q = query.trim().toLowerCase();
     if (q.length === 0) {
       if (!searchFocused) return [];
-      // Beim Fokussieren ohne Eingabe: weitere Rassen jenseits der Chips zeigen.
+      // Beim Fokussieren ohne Eingabe: alle Rassen jenseits der Chips, alphabetisch, scrollbar.
       const popularNames = new Set(POPULAR_BREEDS);
-      return [...breeds].filter((b) => !popularNames.has(b.name)).sort((a, b) => a.name.localeCompare(b.name, "de")).slice(0, 8);
+      return [...breeds].filter((b) => !popularNames.has(b.name)).sort((a, b) => a.name.localeCompare(b.name, "de"));
     }
-    return breeds.filter((b) => b.name.toLowerCase().includes(q)).slice(0, 8);
+    return breeds.filter((b) => b.name.toLowerCase().includes(q)).slice(0, 20);
   }, [breeds, query, searchFocused]);
 
   const grams = dailyGrams(weightKg, "mittel");
