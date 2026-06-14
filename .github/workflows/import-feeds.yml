@@ -1,8 +1,8 @@
 name: Hundefutter-Feeds importieren
 
-# Frische zuerst: lädt täglich die AWIN-/AdCell-Feeds, parst sie und schreibt
-# sie nach Neon (Upsert + Lifecycle + Preis-Historie). Reuse der verifizierten
-# Scripts parse-feeds.py + load-dog-foods.mjs — kein TS-Port, kein neues Risiko.
+# Manueller Fallback/Debug — der tägliche Lauf passiert seit der Netlify-Migration
+# über netlify/functions/import-feeds.mts (Scheduled Function, 05:00 UTC).
+# Reuse der Scripts parse-feeds.py + load-dog-foods.mjs für lokale/manuelle Runs.
 #
 # Nötige Repo-Secrets (Settings → Secrets and variables → Actions):
 #   DATABASE_URL      – Neon-Connection-String
@@ -10,9 +10,7 @@ name: Hundefutter-Feeds importieren
 #   ADCELL_FEED_URLS  – komma-separierte AdCell-Feed-CSV-URLs
 
 on:
-  schedule:
-    - cron: "0 5 * * *"     # täglich 05:00 UTC (~07:00 DE)
-  workflow_dispatch: {}      # manuell auslösbar (zum Testen)
+  workflow_dispatch: {}      # manuell auslösbar (Fallback/Debug)
 
 concurrency:
   group: import-feeds

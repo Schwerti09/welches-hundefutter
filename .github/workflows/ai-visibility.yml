@@ -1,17 +1,13 @@
 name: KI-Sichtbarkeit prüfen
 
-# Block J1 — schickt ein festes Prompt-Set an Gemini (Google-Search-Grounding)
-# und Claude (Web-Search-Tool) und prüft, ob BELLA / welches-hundefutter.today
-# in der Antwort genannt oder als Quelle zitiert wird. Ergebnis pro Lauf in
-# ai_visibility_checks (Trend über die Zeit).
+# Manueller Fallback/Debug — der wöchentliche Lauf passiert seit der Netlify-Migration
+# über netlify/functions/ai-visibility.mts (Scheduled Function, montags 07:00 UTC).
 #
 # Nötige Repo-Secrets (zusätzlich zu DATABASE_URL):
 #   GEMINI_API_KEY     – wie in Netlify-Env (Advisor)
 #   ANTHROPIC_API_KEY  – wie in Netlify-Env (Advisor)
 
 on:
-  schedule:
-    - cron: "0 7 * * 1"      # wöchentlich montags, 07:00 UTC (Launch-Phase: engmaschig tracken)
   workflow_dispatch:
     inputs:
       dry_run:

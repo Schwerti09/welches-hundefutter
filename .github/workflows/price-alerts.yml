@@ -1,8 +1,7 @@
 name: Preis-Wecker prüfen
 
-# Schicht 2 — prüft täglich aktive Preis-Wecker bestätigter Abonnenten gegen
-# price_history und mailt NUR bei echter Preissenkung (30-Tage-Tief, Anti-Spam).
-# Läuft NACH dem Feed-Import (05:00), damit die Preise frisch sind.
+# Manueller Fallback/Debug — der tägliche Lauf passiert seit der Netlify-Migration
+# über netlify/functions/price-alerts.mts (Scheduled Function, 06:00 UTC).
 #
 # Nötige Repo-Secrets (zusätzlich zu DATABASE_URL):
 #   RESEND_API_KEY  – Resend-API-Key (verifizierte Domain für SPF/DKIM/DMARC)
@@ -10,8 +9,6 @@ name: Preis-Wecker prüfen
 #   SITE_URL        – https://welches-hundefutter.today (für Links in Mails)
 
 on:
-  schedule:
-    - cron: "0 6 * * *"      # täglich 06:00 UTC, nach dem Import
   workflow_dispatch:
     inputs:
       dry_run:
