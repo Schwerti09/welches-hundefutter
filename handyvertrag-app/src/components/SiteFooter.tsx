@@ -14,6 +14,7 @@ const LINKS: Record<string, FooterLink[]> = {
   Beratung: [
     { label: "BELLA – Futter-Beraterin", href: "/" },
     { label: "Futter-Finder & Tools", href: "/tools" },
+    { label: "Was kostet ein Hund?", href: "/ratgeber/was-kostet-ein-hund" },
     { label: "1.400 Hunde-Tipps", href: "/tipps" },
     { label: "FAQ Hundeernährung", href: "/faq" },
     { label: "Ratgeber & Guides", href: "/guides" },

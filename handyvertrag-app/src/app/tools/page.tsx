@@ -25,6 +25,13 @@ const tools = [
     cta: "Jetzt Futter finden →",
   },
   {
+    href: "/tools/lebenszeit-kosten",
+    emoji: "🐕",
+    title: "Lebenszeit-Kosten-Rechner",
+    description: "Was kostet dein Hund über sein ganzes Leben — allein an Futter? Rasse wählen, Gewicht & Alter anpassen, sofort die Summe sehen.",
+    cta: "Kosten berechnen →",
+  },
+  {
     href: "/rassen",
     emoji: "⚖️",
     title: "Portionsrechner",
