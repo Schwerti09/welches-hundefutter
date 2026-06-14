@@ -47,6 +47,15 @@ const CATEGORIES = {
       "puppy training",
     ],
   },
+  abnehmen: {
+    file: "abnehmen.ts",
+    queries: [
+      "overweight dog",
+      "dog walking exercise",
+      "dog swimming",
+      "dog diet food bowl",
+    ],
+  },
 };
 
 async function searchPexels(query, perPage = 6) {
@@ -110,8 +119,24 @@ async function assignImages(categorySlug, file, pool) {
 }
 
 async function main() {
-  const credits = [];
-  for (const [slug, cfg] of Object.entries(CATEGORIES)) {
+  const filter = process.argv.slice(2);
+  const entries = filter.length
+    ? Object.entries(CATEGORIES).filter(([slug]) => filter.includes(slug))
+    : Object.entries(CATEGORIES);
+
+  let existingCredits = [];
+  try {
+    existingCredits = JSON.parse(
+      await readFile(path.join(PUBLIC_DIR, "credits.json"), "utf-8")
+    );
+  } catch {
+    // credits.json existiert noch nicht
+  }
+
+  const processedSlugs = entries.map(([slug]) => slug);
+  const credits = existingCredits.filter((c) => !processedSlugs.includes(c.category));
+
+  for (const [slug, cfg] of entries) {
     console.log(`\n=== ${slug} ===`);
     const pool = await buildPool(slug, cfg.queries);
     await assignImages(slug, cfg.file, pool);
@@ -123,7 +148,7 @@ async function main() {
     JSON.stringify(credits, null, 2),
     "utf-8"
   );
-  console.log(`\nFertig. ${credits.length} Fotos, Credits in public/images/tipps/credits.json`);
+  console.log(`\nFertig. ${credits.length} Fotos gesamt, Credits in public/images/tipps/credits.json`);
 }
 
 main().catch((e) => {
