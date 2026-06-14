@@ -64,7 +64,7 @@ export default function SiteHeader() {
           {/* Mobil: nur primäre CTA */}
           <Link
             href="/tools/futter-finder"
-            className="btn-primary md:hidden rounded-xl px-3.5 py-2 text-sm font-semibold shrink-0"
+            className="btn-primary md:!hidden rounded-xl px-3.5 py-2 text-sm font-semibold shrink-0"
           >
             Futter-Finder
           </Link>
