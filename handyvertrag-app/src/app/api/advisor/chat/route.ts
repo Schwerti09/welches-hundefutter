@@ -121,8 +121,25 @@ function parseIntent(message: string, history: { role: string; content: string }
   return intent;
 }
 
-function hasEnoughIntent(i: DogIntent): boolean {
-  return Boolean(i.foodType || i.lifePhase || i.sensitive || i.grainFree || i.protein || i.maxPricePerKg || i.breed);
+function intentSignalCount(i: DogIntent): number {
+  let n = 0;
+  if (i.lifePhase) n++;
+  if (i.foodType) n++;
+  if (i.sensitive || i.protein) n++;
+  if (i.maxPricePerKg) n++;
+  if (i.breed) n++;
+  return n;
+}
+
+// Empfiehlt erst ab 2 erkannten Signalen (z. B. Lebensphase + Allergie) — bei nur
+// einem Signal stellt BELLA noch eine Rückfrage. Nach einer beantworteten
+// Rückfrage (>= 2 Nutzer-Nachrichten) reicht auch 1 Signal, um nicht endlos
+// nachzufragen.
+function hasEnoughIntent(i: DogIntent, history: { role: string; content: string }[]): boolean {
+  const signals = intentSignalCount(i);
+  if (signals >= 2) return true;
+  const userTurns = history.filter(h => h.role === "user").length + 1;
+  return signals >= 1 && userTurns >= 2;
 }
 
 function computeConfidence(i: DogIntent, history: { content: string }[]): number {
@@ -250,10 +267,18 @@ function buildSystemPrompt(offers: ScoredFood[], confidence: number, ask: boolea
       ).join("\n")
     : "Noch keine Futter-Daten — du brauchst erst mehr Infos über den Hund.";
 
+  const known: string[] = [];
+  if (intent.lifePhase) known.push(`Lebensphase: ${intent.lifePhase}`);
+  if (intent.foodType) known.push(`Futtertyp: ${intent.foodType}`);
+  if (intent.sensitive) known.push(`empfindlich/Allergie${intent.protein ? ` (${intent.protein})` : ""}`);
+  if (intent.breed) known.push(`Rasse: ${intent.breed}`);
+  if (intent.maxPricePerKg) known.push(`Budget: bis ${intent.maxPricePerKg} €/kg`);
+
   const mode = ask
     ? `MODUS: NACHFRAGEN (noch keine Empfehlung)
-→ Stelle GENAU EINE konkrete Frage, die dich am schnellsten zu einer guten Empfehlung bringt.
-→ Frag nach dem Wichtigsten: Alter/Lebensphase (Welpe, adult, Senior) ODER Allergie/empfindlicher Magen ODER Futtertyp (Trocken/Nass/BARF) ODER Budget.
+→ Bereits bekannt: ${known.length ? known.join(", ") : "noch nichts"}.
+→ Stelle GENAU EINE konkrete Frage zu einem noch UNBEKANNTEN Aspekt, die dich am schnellsten zu einer guten Empfehlung bringt.
+→ Frag nach dem Wichtigsten, das noch fehlt: Alter/Lebensphase (Welpe, adult, Senior) ODER Allergie/empfindlicher Magen ODER Futtertyp (Trocken/Nass/BARF) ODER Budget ODER Rasse.
 → Biete 2-3 konkrete Antwort-Optionen an, damit der Halter nur wählen muss.
 → Empfiehl JETZT noch KEIN konkretes Produkt und nenne KEINE Preise.`
     : `MODUS: EMPFEHLEN (Futter wurde analysiert)
@@ -315,7 +340,7 @@ export async function POST(request: NextRequest) {
   const intent = parseIntent(message, conversationHistory);
   const confidence = computeConfidence(intent, conversationHistory);
   const theme = classifyTheme(intent);
-  const ask = !hasEnoughIntent(intent);
+  const ask = !hasEnoughIntent(intent, conversationHistory);
 
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
