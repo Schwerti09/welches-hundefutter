@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
-import HeroLiving from "@/components/HeroLiving";
 import CostHook from "@/components/CostHook";
 import BreedGallery from "@/components/BreedGallery";
 import StructuredData from "@/components/StructuredData";
@@ -10,7 +9,8 @@ import TopFoodsTable from "@/components/TopFoodsTable";
 import { getTopFoods, getTopFoodsByScore, getFoodCount, getAvgPricePerKgDry } from "@/db/queries/foods";
 import { getBreedsSlim } from "@/lib/breeds-slim";
 import { DogInfoProvider } from "@/contexts/DogInfoContext";
-import breedGallery from "@/data/breed-gallery.json";
+import { BREEDS } from "@/data/breeds";
+import { lifetimeFoodCost, representativeWeight, lifespanYears, fmtEur } from "@/lib/dogCost";
 
 export const revalidate = 3600;
 
@@ -35,6 +35,17 @@ const SCHEMA_FAQS = [
   { question: "Wie viel sollte mein Hund pro Tag fressen?", answer: "Faustregel Trockenfutter: 1,5–2,5 % des Körpergewichts. Ein 20 kg Hund braucht ca. 300–500 g/Tag. Bei Nassfutter Faktor 3. Aktive Hunde mehr, Senioren weniger." },
 ];
 
+const NAV_TILES = [
+  { label: "Trockenfutter", sub: "Günstig, gut für die Zähne", href: "/futtertyp/trockenfutter" },
+  { label: "Nassfutter", sub: "Mehr Feuchtigkeit", href: "/futtertyp/nassfutter" },
+  { label: "BARF", sub: "Rohfütterung", href: "/futtertyp/barf" },
+  { label: "Bei Allergie", sub: "Monoprotein, getreidefrei", href: "/problem/allergie" },
+  { label: "Sensibler Magen", sub: "Leicht verdaulich", href: "/problem/sensibler-magen" },
+  { label: "Welpenfutter", sub: "Für gesundes Wachstum", href: "/lebensphase/welpen" },
+  { label: "Seniorfutter", sub: "Gelenkschonend", href: "/lebensphase/senior" },
+  { label: "Alle Vergleiche", sub: "Sorten gegenüberstellen", href: "/vergleich" },
+];
+
 export default async function HomePage() {
   const [topFoods, topFoodsByScore, foodCount, avgPricePerKgDry] = await Promise.all([
     getTopFoods(7),
@@ -43,101 +54,88 @@ export default async function HomePage() {
     getAvgPricePerKgDry(),
   ]);
   const countLabel = foodCount > 0 ? foodCount.toLocaleString("de-DE") : "11.000+";
-  const cheapest = topFoods[0]
-    ? { brand: topFoods[0].brand, name: topFoods[0].name, pricePerKg: topFoods[0].pricePerKg, affiliateUrl: topFoods[0].affiliateUrl }
-    : null;
-  const heroBreeds = (breedGallery as { name: string; slug: string; img: string }[]).slice(0, 8);
   const breedsSlim = getBreedsSlim();
+
+  // "Das hat kein anderer": Lebenszeit-Kosten-Extremwerte aus echten Preisen (serverseitig).
+  const ranked = BREEDS
+    .map((b) => ({ name: b.name, cost: lifetimeFoodCost(representativeWeight(b), lifespanYears(b), avgPricePerKgDry) }))
+    .sort((a, b) => b.cost - a.cost);
+  const most = ranked[0];
+  const least = ranked[ranked.length - 1];
+
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
       <StructuredData type="faq" faqs={SCHEMA_FAQS} />
 
       <DogInfoProvider>
-        {/* KOSTEN-HOOK — neuer Einstieg: "Was kostet dein Hund?" */}
+        {/* 1 — HERO: Kosten-Hook (einziger Hero) */}
         <CostHook breeds={breedsSlim} avgPricePerKgDry={avgPricePerKgDry} countLabel={countLabel} />
 
-        {/* HERO — lebende BELLA · Bento-Universum · Schnüffel-Scan */}
-        <div className="px-4 sm:px-5">
-          <div className="max-w-2xl mx-auto -mb-2">
-            <span className="pill">🔎 Und so findet BELLA das passende Futter</span>
+        {/* 2 — VERTRAUENS-LEISTE (absorbiert die Live-Daten des alten Heros) */}
+        <div className="px-5">
+          <div className="max-w-4xl mx-auto mt-1 mb-3 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs sm:text-sm text-[var(--muted)]">
+            <span className="inline-flex items-center gap-1.5"><span className="text-accent">🔄</span> {countLabel} Preise täglich aktualisiert</span>
+            <span className="inline-flex items-center gap-1.5"><span className="text-accent">🐾</span> 186 Rassen</span>
+            <span className="inline-flex items-center gap-1.5"><span className="text-accent">⚖️</span> unabhängig — keine gekauften Testsieger</span>
+            <span className="inline-flex items-center gap-1.5"><span className="text-accent">🇩🇪</span> für Deutschland, Österreich & Schweiz</span>
           </div>
         </div>
-        <HeroLiving foodCount={foodCount} topFood={cheapest} breeds={heroBreeds} />
 
-        {/* BELLA-Berater — Ziel des Hero-Einstiegs (Schnüffel-Scan landet hier) */}
-        <section id="bella-advisor" className="px-5 pb-10 scroll-mt-4">
+        {/* 3 — BERATER (nach oben gezogen, Hund schon aus dem Hook bekannt) */}
+        <section id="bella-advisor" className="px-5 pt-4 pb-10 scroll-mt-4">
           <BellaAdvisorWrapper />
         </section>
       </DogInfoProvider>
 
-      {/* FINDE DEINEN HUND — Rasse-Galerie mit echten Fotos */}
-      <BreedGallery />
+      {/* 4 — DAS HAT KEIN ANDERER: Lebenszeit-Daten-Teaser */}
+      <section className="px-5 py-14">
+        <div className="max-w-4xl mx-auto glass-strong rounded-3xl p-8 sm:p-10 text-center">
+          <span className="pill mb-5">✨ Das hat kein anderer</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4">
+            Was kostet dich dein Hund — <span className="text-accent">ein Leben lang?</span>
+          </h2>
+          <p className="text-[var(--muted)] leading-relaxed max-w-2xl mx-auto mb-3">
+            Aus echten, täglich aktualisierten Preisen haben wir die Lebenszeit-Futterkosten aller 186 Rassen berechnet — etwas, das kein statisches Testportal liefern kann.
+          </p>
+          <p className="text-lg sm:text-xl font-bold mb-7">
+            Ein {most.name} kostet rund <span className="text-accent">{fmtEur(most.cost)} €</span>, ein {least.name} nur <span className="text-accent">{fmtEur(least.cost)} €</span> — allein an Futter.
+          </p>
+          <div className="flex flex-wrap gap-3 justify-center">
+            <Link href="/ratgeber/was-kostet-ein-hund" className="btn-primary rounded-xl px-6 py-3 text-sm font-semibold">
+              Ganze Rangliste ansehen →
+            </Link>
+            <Link href="/tools/lebenszeit-kosten" className="rounded-xl px-6 py-3 text-sm font-semibold border border-white/15 text-[var(--honey)] hover:bg-white/5 transition-colors">
+              Eigene Rasse berechnen →
+            </Link>
+          </div>
+        </div>
+      </section>
 
-      {/* TOP 7 TABELLE — BELLA-Score / Günstigste */}
+      {/* 5 — FINDE FUTTER NACH… : visuelle Rasse-Galerie + kompaktes Bedarfs-Raster */}
+      <BreedGallery />
+      <section className="max-w-5xl mx-auto px-5 pb-16 w-full">
+        <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2 text-center">
+          … oder finde Futter nach <span className="text-accent">Bedarf</span>
+        </h2>
+        <p className="text-[var(--muted)] text-center mb-8 text-sm">
+          Futtertyp, Allergie oder Lebensphase — direkt zum passenden Bereich.
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+          {NAV_TILES.map((t) => (
+            <Link key={t.href} href={t.href} className="card card-hover p-4 sm:p-5 block">
+              <div className="font-bold tracking-tight text-[var(--ink)] flex items-center justify-between gap-2">
+                <span>{t.label}</span> <span className="text-[var(--honey)]">→</span>
+              </div>
+              <p className="text-xs text-[var(--muted)] mt-1 leading-relaxed">{t.sub}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* 6 — TOP-FUTTER (Beweis, mit Live-Preisen) */}
       <TopFoodsTable byScore={topFoodsByScore} byPrice={topFoods} countLabel={countLabel} />
 
-
-      {/* FUTTERTYPEN */}
-      <section className="px-5 py-16">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-black mb-8">Trockenfutter, Nassfutter, BARF – was ist besser?</h2>
-          <div className="grid sm:grid-cols-3 gap-6">
-            {[
-              { typ: "Trockenfutter", text: "Günstig, lange haltbar, gut für die Zähne. Achte auf einen Fleischanteil über 70 %.", href: "/futtertyp/trockenfutter" },
-              { typ: "Nassfutter", text: "Mehr Feuchtigkeit, schmackhafter. Ideal für wählerische Hunde oder bei Nierenthemen.", href: "/futtertyp/nassfutter" },
-              { typ: "BARF", text: "Rohfütterung. Sehr hochwertig, aber aufwändig und mit Expertenwissen verbunden.", href: "/futtertyp/barf" },
-            ].map((t) => (
-              <Link key={t.typ} href={t.href} className="card card-hover p-6 block">
-                <div className="text-lg font-bold tracking-tight mb-2 text-[var(--ink)]">{t.typ}</div>
-                <p className="text-sm text-[var(--muted)] leading-relaxed">{t.text}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ALLERGIE */}
-      <section className="max-w-5xl mx-auto px-5 py-16 w-full">
-        <h2 className="text-3xl font-black mb-4">Hundefutter bei Allergien & sensiblem Magen</h2>
-        <p className="text-[var(--muted)] leading-relaxed mb-6">
-          Häufigste Allergie-Auslöser: <strong>Huhn, Rind, Weizen</strong>.
-          Monoprotein-Futter mit exotischer Quelle (Ente, Wild, Insekten) als Lösung.
-          Eliminationsdiät: 8–12 Wochen eine Proteinquelle, dann testen.
-        </p>
-        <div className="flex gap-3 flex-wrap">
-          <Link href="/problem/allergie" className="px-5 py-2.5 rounded-xl btn-primary text-sm">
-            Hundefutter bei Allergie →
-          </Link>
-          <Link href="/problem/sensibler-magen" className="px-5 py-2.5 rounded-xl border border-white/15 text-[var(--honey)] text-sm font-semibold hover:bg-white/5 transition-colors">
-            Sensibler Magen →
-          </Link>
-        </div>
-      </section>
-
-      {/* WELPEN vs SENIOR */}
-      <section className="bg-white/[0.02] px-5 py-16">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-black mb-8">Welpenfutter vs. Seniorfutter: Wann umstellen?</h2>
-          <div className="grid sm:grid-cols-2 gap-6">
-            <div className="card p-6">
-              <h3 className="font-bold text-lg mb-2 tracking-tight">Welpenfutter</h3>
-              <p className="text-sm text-[var(--muted)] leading-relaxed">
-                Erhöhter Protein- und Kalziumgehalt für Wachstum. Große Rassen: Junior Large Breed – kontrolliertes Wachstum schützt Gelenke. Umstellen auf Adult: kleine Rassen ab 10 Monate, große ab 18–24 Monate.
-              </p>
-              <Link href="/lebensphase/welpen" className="mt-4 inline-block text-sm text-[var(--honey)] font-medium hover:underline">Welpenfutter →</Link>
-            </div>
-            <div className="card p-6">
-              <h3 className="font-bold text-lg mb-2 tracking-tight">Seniorfutter</h3>
-              <p className="text-sm text-[var(--muted)] leading-relaxed">
-                Weniger Kalorien, mehr Gelenkstoffe (Glucosamin, Chondroitin), leicht verdaulich. Umstellen: kleine Rassen ab 9 Jahren, große Rassen ab 7 Jahren.
-              </p>
-              <Link href="/lebensphase/senior" className="mt-4 inline-block text-sm text-[var(--honey)] font-medium hover:underline">Seniorfutter →</Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
+      {/* 7 — FAQ */}
       <section className="max-w-3xl mx-auto px-5 py-16 w-full">
         <h2 className="text-3xl font-black mb-8">Häufige Fragen zur Hundeernährung</h2>
         <div className="space-y-4">
