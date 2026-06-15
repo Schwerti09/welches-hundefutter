@@ -68,6 +68,9 @@ export default function CostHook({ breeds, avgPricePerKgDry, countLabel }: { bre
   function handleCta() {
     setDogInfo({ breedName, weightKg, dailyGrams: grams });
     document.getElementById("bella-advisor")?.scrollIntoView({ behavior: "smooth" });
+    // BELLA übernimmt direkt mit Rasse + Gewicht aus dem Kosten-Hook, statt dass
+    // der Halter alles nochmal eintippen muss — fließender Übergang in den Chat.
+    window.dispatchEvent(new CustomEvent("bella:dogIntro", { detail: { breedName, weightKg } }));
   }
 
   return (

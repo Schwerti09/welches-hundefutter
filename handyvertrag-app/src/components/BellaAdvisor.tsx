@@ -223,6 +223,21 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions }: BellaAd
     return () => window.removeEventListener("bella:ask", handler);
   }, [sendMessage]);
 
+  // Kosten-Hook ("Was kostet dein Hund?") → BELLA übernimmt direkt mit Rasse +
+  // Gewicht, damit der Übergang vom Hero in den Chat ohne erneute Eingabe klappt.
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<{ breedName: string | null; weightKg: number }>).detail;
+      if (!detail) return;
+      const msg = detail.breedName
+        ? `Ich habe einen ${detail.breedName}, ca. ${detail.weightKg} kg. Welches Futter passt am besten für ihn?`
+        : `Mein Hund wiegt ca. ${detail.weightKg} kg. Welches Futter passt am besten?`;
+      sendMessage(msg);
+    };
+    window.addEventListener("bella:dogIntro", handler);
+    return () => window.removeEventListener("bella:dogIntro", handler);
+  }, [sendMessage]);
+
   return (
     <div className="relative w-full max-w-5xl mx-auto">
       <div className="grid lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 items-start">
