@@ -56,6 +56,15 @@ const CATEGORIES = {
       "dog diet food bowl",
     ],
   },
+  allergien: {
+    file: "articles/allergien.ts",
+    queries: [
+      "dog scratching itch",
+      "dog vet skin examination",
+      "dog allergy grass",
+      "dog bath grooming",
+    ],
+  },
 };
 
 async function searchPexels(query, perPage = 6) {
