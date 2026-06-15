@@ -75,9 +75,55 @@ export type AdvisorTheme = "idle" | "budget" | "allergie" | "welpe" | "senior" |
 
 // ─── Intent Parsing ──────────────────────────────────────────────────────────
 
+// Häufigste Rassen zuerst (kurze Alltagsnamen), gefolgt von allen weiteren ~170
+// Rassen aus @/data/breeds.ts (volle Namen, lowercase) für eine vollständige
+// Rasse-Erkennung über alle 186 Rassen der Plattform.
 const BREEDS = ["labrador", "schäferhund", "chihuahua", "dackel", "golden retriever", "französische bulldogge",
   "mops", "beagle", "boxer", "border collie", "australian shepherd", "rottweiler", "husky", "pudel",
-  "jack russell", "yorkshire", "malteser", "spitz", "dobermann", "berner sennenhund"];
+  "jack russell", "yorkshire", "malteser", "spitz", "dobermann", "berner sennenhund",
+  "affenpinscher", "afghane", "airedale terrier", "akita inu",
+  "alaskan klee kai", "alaskan malamute", "american akita", "american bulldog",
+  "american bully", "american staffordshire terrier", "aussiedoodle", "australian cattle dog",
+  "australian kelpie", "azawakh", "barsoi", "basenji",
+  "basset hound", "bearded collie", "beauceron", "belgischer schäferhund groenendael",
+  "belgischer schäferhund malinois", "belgischer schäferhund tervueren", "berger blanc suisse", "bernedoodle",
+  "bernhardiner", "bichon frisé", "bluthund", "bobtail",
+  "bolonka zwetna", "bordeauxdogge", "border terrier", "boston terrier",
+  "bouvier des flandres", "bracco italiano", "briard", "brusseler griffon",
+  "bull terrier", "bullmastiff", "cairn terrier", "cane corso",
+  "cardigan welsh corgi", "cavalier king charles spaniel", "cavapoo", "chesapeake bay retriever",
+  "chiweenie", "chow-chow", "cockapoo", "cocker spaniel",
+  "corgidor", "coton de tulear", "curly coated retriever", "dalmatiner",
+  "deutsch drahthaar", "deutsch kurzhaar", "deutsche dogge", "deutscher schäferhund",
+  "dogo argentino", "drahthaar fox terrier", "englische bulldogge", "englischer mastiff",
+  "english setter", "english springer spaniel", "epagneul breton", "eurasier",
+  "finnischer lapphund", "finnischer spitz", "flat coated retriever", "galgo espanol",
+  "golden labrador", "goldendoodle", "gordon setter", "greyhound",
+  "grosser muensterlaender", "großspitz", "havaneser", "hovawart",
+  "husky mix", "irischer wasserspaniel", "irischer wolfshund", "irish setter",
+  "irish terrier", "islaendischer schaefer", "jack russell terrier", "jackabee",
+  "japanischer spitz", "japanisches chin", "jindo", "kanaan-hund",
+  "kangal", "kaukasischer owtscharka", "kleiner italienischer windhund", "kleiner münsterländer",
+  "kleinspitz", "komondor", "korthals griffon", "kuvasz",
+  "labradoodle", "labrador retriever", "lagotto romagnolo", "landseer",
+  "langhaardackel", "leonberger", "lhasa apso", "löwchen",
+  "magyar vizsla", "maltese shih tzu", "maltipoo", "miniatur bull terrier",
+  "miniature american shepherd", "miniaturschnauzer", "mischling", "morkie",
+  "mudi", "neapolitanischer mastiff", "neufundländer", "niederlaendischer schaeferhund",
+  "norsk elkhund", "nova scotia duck tolling retriever", "otterhound", "papillon",
+  "parson russell terrier", "pekinese", "petit basset griffon vendeen", "pharaonenhund",
+  "podenco ibicenco", "pointer", "pomeranian", "zwergspitz",
+  "pomsky", "portugiesischer wasserhund", "presa canario", "puggle",
+  "puli", "rauhaardackel", "rhodesian ridgeback", "riesenschnauzer",
+  "rough collie", "saarloos wolfhund", "saluki", "samojede",
+  "schnauzer", "schnoodle", "schottischer deerhound", "schwarzer russischer terrier",
+  "schwedischer lapphund", "schäferhund-labrador mix", "scottish terrier", "shetland sheepdog",
+  "shiba inu", "shih tzu", "siberian husky", "sloughi",
+  "soft coated wheaten terrier", "springador", "staffordshire bullterrier", "thai ridgeback",
+  "tibetischer mastiff", "tibetischer spaniel", "tibetischer terrier", "weimaraner",
+  "welsh corgi", "welsh springer spaniel", "welsh terrier", "west highland white terrier",
+  "whippet", "wolfsspitz", "yorkipoo", "yorkshire terrier",
+  "zwerg-dackel", "zwergpinscher"];
 
 function parseIntent(message: string, history: { role: string; content: string }[]): DogIntent {
   // NFC zuerst: iOS/macOS liefern Umlaute oft zerlegt (u + ◌̈, NFD). Ohne Normalisierung
@@ -111,7 +157,10 @@ function parseIntent(message: string, history: { role: string; content: string }
   }
 
   // Rasse
-  for (const b of BREEDS) { if (all.includes(b.replace(/ä/g, "ae").replace(/ü/g, "ue"))) { intent.breed = b; break; } }
+  for (const b of BREEDS) {
+    const bNorm = b.replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss");
+    if (all.includes(bNorm)) { intent.breed = b; break; }
+  }
 
   // Budget €/kg
   const ppk = all.match(/(?:unter|max(?:imal)?|bis zu?|hoechstens|<)\s*(\d+(?:[.,]\d+)?)\s*(?:€|eur|euro)?\s*(?:\/|pro|je)?\s*kg/);
