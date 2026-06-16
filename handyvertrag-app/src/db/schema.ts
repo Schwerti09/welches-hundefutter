@@ -209,6 +209,65 @@ export const affiliateClicks = pgTable("affiliate_clicks", {
   clickedAt: timestamp("clicked_at").defaultNow(),
 });
 
+// ─── Wissensuniversum: Themen-Hubs ───────────────────────────────────────────
+export const topicHubs = pgTable("topic_hubs", {
+  id: serial("id").primaryKey(),
+  slug: text("slug").unique().notNull(),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  icon: text("icon").notNull(),
+  studyCount: integer("study_count").default(0),
+  order: integer("order").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type TopicHub = typeof topicHubs.$inferSelect;
+export type NewTopicHub = typeof topicHubs.$inferInsert;
+
+// ─── Wissensuniversum: Peer-Reviewed-Studien ─────────────────────────────────
+export const studies = pgTable("studies", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  slug: text("slug").unique().notNull(),
+  title: text("title").notNull(),
+  authors: text("authors").array().notNull(),
+  year: integer("year").notNull(),
+  journal: text("journal").notNull(),
+  doi: text("doi"),
+  pubmedLink: text("pubmed_link"),
+  studyDesign: text("study_design").notNull(),
+  population: text("population").notNull(),
+  methodology: text("methodology").notNull(),
+  keyFindings: text("key_findings").notNull(),
+  limitations: text("limitations"),
+  bellaSummary: text("bella_summary").notNull(),
+  evidenceStrength: text("evidence_strength").notNull(), // hoch | mittel | niedrig
+  tags: text("tags").array().notNull(),
+  topicHub: text("topic_hub").notNull(),
+  relatedProducts: text("related_products").array().default([]), // dog_foods slugs
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => ({
+  hubIdx: index("studies_hub_idx").on(table.topicHub),
+  yearIdx: index("studies_year_idx").on(table.year),
+}));
+
+export type Study = typeof studies.$inferSelect;
+export type NewStudy = typeof studies.$inferInsert;
+
+// ─── Wissensuniversum: Glossar ────────────────────────────────────────────────
+export const glossaryTerms = pgTable("glossary_terms", {
+  id: serial("id").primaryKey(),
+  slug: text("slug").unique().notNull(),
+  term: text("term").notNull(),
+  definition: text("definition").notNull(),
+  explanation: text("explanation").notNull(),
+  category: text("category").notNull(), // Methodik | Ernährung | Gesundheit | Standards
+  relatedSlugs: text("related_slugs").array().default([]),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type GlossaryTerm = typeof glossaryTerms.$inferSelect;
+export type NewGlossaryTerm = typeof glossaryTerms.$inferInsert;
+
 // ─── BELLA Chat-Sessions ──────────────────────────────────────────────────────
 export const advisorSessions = pgTable("advisor_sessions", {
   id: uuid("id").defaultRandom().primaryKey(),
