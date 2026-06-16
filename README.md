@@ -1,4 +1,4 @@
-# 🐕 welches-hundefutter.today
+# 🐕
 
 **BELLA** — Deutschlands KI-Ernährungsberaterin für Hunde.
 
