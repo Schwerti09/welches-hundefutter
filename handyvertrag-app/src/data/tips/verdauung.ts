@@ -1,4 +1,5 @@
 import type { TipCategory } from "./types";
+import { verdauungArticles } from "./articles/verdauung";
 
 export const verdauung: TipCategory = {
   slug: "verdauung",
@@ -112,4 +113,5 @@ export const verdauung: TipCategory = {
     [99, "Veränderungen früh ernst nehmen", "Je früher Verdauungsprobleme erkannt werden, desto leichter sind sie zu beheben. Tägliche Beobachtung ist die beste Vorsorge.", 1, ["kontrolle", "praevention"]],
     [100, "Gesunde Verdauung als Fundament", "Ein gut funktionierender Darm bedeutet gutes Fell, starkes Immunsystem und Wohlbefinden. Die Verdauung ist das Fundament der Gesundheit.", 0, ["grundlagen", "motivation"]],
   ],
+  articles: verdauungArticles,
 };

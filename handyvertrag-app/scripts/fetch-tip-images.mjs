@@ -65,6 +65,15 @@ const CATEGORIES = {
       "dog bath grooming",
     ],
   },
+  verdauung: {
+    file: "articles/verdauung.ts",
+    queries: [
+      "dog eating food bowl",
+      "dog stomach digestive health",
+      "dog vet examination belly",
+      "dog drinking water bowl",
+    ],
+  },
 };
 
 async function searchPexels(query, perPage = 6) {
