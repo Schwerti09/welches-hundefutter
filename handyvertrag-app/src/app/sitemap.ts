@@ -104,5 +104,35 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
   )
 
-  return [...statisch, ...alleRassen, ...staedte, ...probleme, ...phasen, ...typen, ...tipps, ...tippArtikel]
+  const WISSENS_HUBS = [
+    'allergien', 'barf', 'trockenfutter', 'welpen',
+    'senioren', 'uebergewicht', 'verdauung', 'nachhaltigkeit',
+  ]
+
+  const GLOSSAR_SLUGS = [
+    'rct', 'meta-analyse', 'mikrobiom', 'dha', 'epa', 'aafco', 'fediaf',
+    'oxidativer-stress', 'praebiotika', 'probiotika', 'hydrolysiertes-protein',
+    'eliminationsdiat', 'eubiosis', 'dysbiosis', 'k9pbn', 'rmbd',
+    'arachidonsaeure', 'fructosamin', 'verdaulichkeit', 'in-vitro', 'in-vivo',
+    'cafr', 'cds', 'mct',
+  ]
+
+  const wissensuniversum: MetadataRoute.Sitemap = [
+    { url: `${BASE}/studien`, lastModified: now, changeFrequency: 'monthly', priority: 0.85 },
+    { url: `${BASE}/glossar`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
+    ...WISSENS_HUBS.map((slug) => ({
+      url: `${BASE}/studien/${slug}`,
+      lastModified: now,
+      changeFrequency: 'monthly' as const,
+      priority: 0.78,
+    })),
+    ...GLOSSAR_SLUGS.map((slug) => ({
+      url: `${BASE}/glossar/${slug}`,
+      lastModified: now,
+      changeFrequency: 'monthly' as const,
+      priority: 0.65,
+    })),
+  ]
+
+  return [...statisch, ...alleRassen, ...staedte, ...probleme, ...phasen, ...typen, ...tipps, ...tippArtikel, ...wissensuniversum]
 }
