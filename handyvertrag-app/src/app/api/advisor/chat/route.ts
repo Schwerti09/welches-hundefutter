@@ -212,6 +212,49 @@ function classifyTheme(i: DogIntent): AdvisorTheme {
   return "idle";
 }
 
+// ─── DB-Abfrage: relevante Studien ────────────────────────────────────────────
+
+interface StudyCitation {
+  slug: string;
+  title: string;
+  authors: string[];
+  year: number;
+  journal: string;
+  bella_summary: string;
+  evidence_strength: string;
+  topic_hub: string;
+}
+
+function intentToHubs(intent: DogIntent): string[] {
+  const hubs: string[] = [];
+  if (intent.sensitive) hubs.push("allergien");
+  if (intent.lifePhase === "welpen") hubs.push("welpen");
+  if (intent.lifePhase === "senior") hubs.push("senioren");
+  if (intent.foodType === "barf") hubs.push("barf");
+  if (intent.maxPricePerKg && intent.maxPricePerKg <= 6) hubs.push("uebergewicht");
+  return hubs.length ? hubs : ["verdauung"];
+}
+
+async function fetchRelevantStudies(intent: DogIntent): Promise<StudyCitation[]> {
+  const url = process.env.DATABASE_URL;
+  if (!url) return [];
+  try {
+    const sql = neon(url);
+    const hubs = intentToHubs(intent);
+    const rows = await sql`
+      SELECT slug, title, authors, year, journal, bella_summary, evidence_strength, topic_hub
+      FROM studies
+      WHERE topic_hub = ANY(${hubs})
+        AND evidence_strength IN ('hoch', 'mittel')
+      ORDER BY evidence_strength = 'hoch' DESC, year DESC
+      LIMIT 2
+    `;
+    return rows as StudyCitation[];
+  } catch {
+    return [];
+  }
+}
+
 // ─── DB-Abfrage: dog_foods ────────────────────────────────────────────────────
 
 async function fetchCandidates(intent: DogIntent): Promise<{ offers: ScoredFood[]; totalScanned: number; eliminated: number }> {
@@ -307,7 +350,7 @@ function scoreFood(o: DogFoodRow, intent: DogIntent): ScoredFood {
 
 // ─── System-Prompt ────────────────────────────────────────────────────────────
 
-function buildSystemPrompt(offers: ScoredFood[], confidence: number, ask: boolean, intent: DogIntent): string {
+function buildSystemPrompt(offers: ScoredFood[], confidence: number, ask: boolean, intent: DogIntent, studies: StudyCitation[] = []): string {
   const block = offers.length
     ? offers.map((o, i) =>
         `[${i + 1}] ${o.brand} ${o.name} · Typ: ${o.type}${o.protein ? ` · Protein: ${o.protein}` : ""}` +
@@ -335,6 +378,12 @@ function buildSystemPrompt(offers: ScoredFood[], confidence: number, ask: boolea
 → Nenne kurz EINE Alternative und warum sie zweite Wahl ist.
 → Optional EINE Anschlussfrage zum Verfeinern (z. B. Tagesmenge nach Gewicht).`;
 
+  const studyBlock = studies.length
+    ? `\nWISSENSCHAFT (peer-reviewed, kannst du kurz zitieren wenn passend):\n${studies.map(s =>
+        `– ${s.title} (${s.authors[0]?.split(",")[0] ?? ""} et al., ${s.year}): ${s.bella_summary.slice(0, 200)}`
+      ).join("\n")}`
+    : "";
+
   return `Du bist BELLA – Deutschlands KI-Ernährungsberaterin für Hunde. Ruhig, kompetent, ehrlich. Keine Verkäuferin.
 
 KONFIDENZ: ${confidence}%
@@ -342,11 +391,13 @@ ${mode}
 
 ANALYSIERTE FUTTER-PRODUKTE (nutze NUR diese, echte Daten):
 ${block}
+${studyBlock}
 
 REGELN:
 - Max. 2-3 Sätze. Kein Hype ("super!", "perfekt!"). Stattdessen konkrete Fakten.
 - Nutze NUR die echten Produktdaten oben. Erfinde keine Marken, Preise oder Inhaltsstoffe.
 - Du duzt. Empathisch, aber präzise.
+- Wenn eine passende Studie vorhanden ist, zitiere kurz den Kernbefund (1 Satz), aber sei nicht aufdringlich.
 ${intent.breed ? `- Der Halter hat die Rasse "${intent.breed}" erwähnt — beziehe dich darauf, wenn sinnvoll.\n` : ""}- Antworte auf Deutsch.`;
 }
 
@@ -401,11 +452,16 @@ export async function POST(request: NextRequest) {
       await new Promise(r => setTimeout(r, 120));
 
       let offers: ScoredFood[] = [];
+      let relevantStudies: StudyCitation[] = [];
       if (!ask) {
         emit(`STEP:scan:Futter-Katalog wird durchsucht…`);
         await new Promise(r => setTimeout(r, 100));
-        const result = await fetchCandidates(intent);
+        const [result, studies] = await Promise.all([
+          fetchCandidates(intent),
+          fetchRelevantStudies(intent),
+        ]);
         offers = result.offers;
+        relevantStudies = studies;
         emit(`STEP:load:${result.totalScanned} Futtersorten analysiert`);
         await new Promise(r => setTimeout(r, 80));
         emit(`STEP:elim:${result.eliminated} aussortiert`);
@@ -414,6 +470,7 @@ export async function POST(request: NextRequest) {
         await new Promise(r => setTimeout(r, 90));
         emit(`STEP:rank:Top ${offers.length} Futter bewertet`);
         if (offers.length) emit(`SCORE:${JSON.stringify(offers.map(o => ({ id: o.id, match: o.matchScore })))}`);
+        if (relevantStudies.length) emit(`STUDY:${JSON.stringify(relevantStudies.map(s => ({ slug: s.slug, title: s.title, year: s.year, journal: s.journal, evidenceStrength: s.evidence_strength, topicHub: s.topic_hub })))}`);
         await new Promise(r => setTimeout(r, 80));
       } else {
         emit(`STEP:scan:Ich brauche noch ein paar Infos…`);
@@ -424,7 +481,7 @@ export async function POST(request: NextRequest) {
 
       // ── KI-Text ──
       let fullText = "";
-      const sysPrompt = buildSystemPrompt(offers, confidence, ask, intent);
+      const sysPrompt = buildSystemPrompt(offers, confidence, ask, intent, relevantStudies);
       const history = conversationHistory.slice(-8);
       const geminiKey = process.env.GEMINI_API_KEY;
       const anthropicKey = process.env.ANTHROPIC_API_KEY;

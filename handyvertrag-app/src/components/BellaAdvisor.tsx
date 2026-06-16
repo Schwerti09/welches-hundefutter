@@ -48,6 +48,15 @@ interface ProfileData {
   currentFood: string | null;
 }
 
+interface StudyCitation {
+  slug: string;
+  title: string;
+  year: number;
+  journal: string;
+  evidenceStrength: string;
+  topicHub: string;
+}
+
 interface Message {
   id: string;
   role: "bella" | "user";
@@ -55,6 +64,7 @@ interface Message {
   offers?: FoodCard[];
   companions?: Companion[];
   profile?: ProfileData;
+  studies?: StudyCitation[];
 }
 
 type BellaMood = "idle" | "thinking" | "talking" | "happy" | "waving" | "excited";
@@ -154,6 +164,7 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions }: BellaAd
       let offers: FoodCard[] = [];
       let companions: Companion[] = [];
       let profile: ProfileData | undefined;
+      let studies: StudyCitation[] = [];
 
       const flushLine = (line: string) => {
         if (line.startsWith("TEXT:")) {
@@ -171,6 +182,8 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions }: BellaAd
           } catch { /* ignore partial */ }
         } else if (line.startsWith("PROFILE:")) {
           try { profile = JSON.parse(line.slice(8)) as ProfileData; } catch { /* ignore partial */ }
+        } else if (line.startsWith("STUDY:")) {
+          try { studies = JSON.parse(line.slice(6)) as StudyCitation[]; } catch { /* ignore partial */ }
         }
       };
 
@@ -188,7 +201,7 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions }: BellaAd
         replyText = "Erzähl mir noch ein bisschen mehr über deinen Hund — Rasse, Alter, Allergien? Dann finde ich das passende Futter.";
       }
       setMessages(prev => prev.map(m =>
-        m.id === bellaId ? { ...m, content: replyText, offers: offers.length ? offers : undefined, companions: companions.length ? companions : undefined, profile } : m
+        m.id === bellaId ? { ...m, content: replyText, offers: offers.length ? offers : undefined, companions: companions.length ? companions : undefined, profile, studies: studies.length ? studies : undefined } : m
       ));
 
       setMood(offers.length > 0 ? "excited" : "happy");
@@ -378,6 +391,31 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions }: BellaAd
                         ))}
                       </div>
                       <p className="text-[9px] text-white/25 mt-2">Werbung · Affiliate-Links (rel=sponsored) · ausgewählt nach Passung, nicht nach Provision</p>
+                    </div>
+                  )}
+
+                  {/* Wissensuniversum: Studien-Zitate */}
+                  {msg.studies && msg.studies.length > 0 && (
+                    <div className="mt-3 space-y-2">
+                      {msg.studies.map((s) => (
+                        <a
+                          key={s.slug}
+                          href={`/studien/${s.topicHub}/${s.slug}`}
+                          target="_blank"
+                          rel="noopener"
+                          className="group flex items-start gap-2.5 rounded-xl bg-purple-900/20 border border-purple-500/20 px-3 py-2.5 hover:bg-purple-900/30 hover:border-purple-500/40 transition-all"
+                        >
+                          <span className="text-base mt-0.5">🔬</span>
+                          <div className="min-w-0">
+                            <p className="text-[11px] text-purple-300 font-medium mb-0.5">
+                              Studie · {s.year} · {s.evidenceStrength === "hoch" ? "Hohe Evidenz" : "Mittlere Evidenz"}
+                            </p>
+                            <p className="text-xs text-white/70 leading-snug line-clamp-2 group-hover:text-white/90 transition-colors">
+                              {s.title}
+                            </p>
+                          </div>
+                        </a>
+                      ))}
                     </div>
                   )}
 

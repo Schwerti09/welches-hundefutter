@@ -7,6 +7,7 @@ import Link from "next/link";
 const NAV = [
   { href: "/rassen", label: "Rassen" },
   { href: "/tipps", label: "Ratgeber" },
+  { href: "/studien", label: "Studien 🔬" },
   { href: "/vergleich", label: "Vergleiche" },
   { href: "/deals", label: "Deals" },
 ];
