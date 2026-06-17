@@ -97,9 +97,10 @@ const MOOD_LABEL: Record<BellaMood, string> = {
 interface BellaAdvisorProps {
   introMessage?: string;
   pageQuickOptions?: Array<{ label: string; msg: string }>;
+  autoStart?: string;
 }
 
-export default function BellaAdvisor({ introMessage, pageQuickOptions }: BellaAdvisorProps = {}) {
+export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart }: BellaAdvisorProps = {}) {
   const activeIntro: Message = introMessage
     ? { id: "0", role: "bella", content: introMessage }
     : INTRO_MESSAGE;
@@ -111,6 +112,7 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions }: BellaAd
   const [voiceListening, setVoiceListening] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const autoStartFiredRef = useRef(false);
 
   useEffect(() => {
     const t = setTimeout(() => setMood("idle"), 2000);
@@ -235,6 +237,16 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions }: BellaAd
     window.addEventListener("bella:ask", handler);
     return () => window.removeEventListener("bella:ask", handler);
   }, [sendMessage]);
+
+  // autoStart: Rasse-Seiten feuern automatisch eine erste Nachricht, sobald
+  // BELLA geladen ist — der Nutzer muss nichts tippen. Nur einmal pro Mount.
+  useEffect(() => {
+    if (!autoStart || autoStartFiredRef.current) return;
+    autoStartFiredRef.current = true;
+    const t = setTimeout(() => sendMessage(autoStart), 900);
+    return () => clearTimeout(t);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Kosten-Hook ("Was kostet dein Hund?") → BELLA übernimmt direkt mit Rasse +
   // Gewicht, damit der Übergang vom Hero in den Chat ohne erneute Eingabe klappt.

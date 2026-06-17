@@ -17,8 +17,9 @@ const BellaAdvisor = dynamic(() => import("@/components/BellaAdvisor"), {
 interface BellaAdvisorWrapperProps {
   introMessage?: string;
   pageQuickOptions?: Array<{ label: string; msg: string }>;
+  autoStart?: string;
 }
 
-export default function BellaAdvisorWrapper({ introMessage, pageQuickOptions }: BellaAdvisorWrapperProps = {}) {
-  return <BellaAdvisor introMessage={introMessage} pageQuickOptions={pageQuickOptions} />;
+export default function BellaAdvisorWrapper({ introMessage, pageQuickOptions, autoStart }: BellaAdvisorWrapperProps = {}) {
+  return <BellaAdvisor introMessage={introMessage} pageQuickOptions={pageQuickOptions} autoStart={autoStart} />;
 }

@@ -224,8 +224,16 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
   const midWeight = Math.round((Number(breed.weightMin ?? 5) + Number(breed.weightMax ?? 30)) / 2);
   const midPortion = portions[Math.floor(portions.length / 2)];
 
-  // BELLA-Intro personalisiert
-  const bellaIntro = `Ein ${breed.name}! ${breed.isMixedBreed ? "Mischlinge sind oft besonders robust." : "Tolle Wahl."} Ich bin BELLA und helfe dir, aus 11.000+ Produkten das optimale Futter zu finden. Kurz erzählen: Wie alt ist dein ${breed.name} und was ist das aktuelle Hauptproblem?`;
+  // BELLA-Intro: persönlich, Rasse-spezifisch, mit Charakter-Beschreibung
+  const traits = (breed.characterTraits ?? []).slice(0, 3);
+  const traitText = traits.length > 0 ? ` — ${traits.join(", ")}` : "";
+  const healthHint = (breed.commonHealthIssues ?? []).length > 0
+    ? ` Ich weiß auch, dass ${breed.name} manchmal zu ${(breed.commonHealthIssues ?? []).slice(0, 2).join(" oder ")} neigen — das fließt in meine Empfehlung ein.`
+    : "";
+  const bellaIntro = `Du hast also einen ${breed.name}${traitText}! 🐕${healthHint}\n\nIch bin BELLA und finde aus 11.000+ echten Sorten das perfekte Futter für dich. Noch zwei kurze Fragen:\n\n→ Wie alt ist dein ${breed.name}? (Welpe, erwachsen oder Senior?)\n→ Gibt es Allergien, einen empfindlichen Magen oder andere Besonderheiten?`;
+
+  // autoStart: wird sofort an die API geschickt wenn BELLA lädt
+  const bellaAutoStart = `Mein Hund ist ein ${breed.name}. Was brauchst du noch von mir, um das beste Futter zu empfehlen?`;
 
   // FAQ-Daten
   const isLargeBreed = breed.size === "gross" || breed.size === "sehrgross";
@@ -374,9 +382,9 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
               ))}
             </div>
 
-            <Link href={`/#bella-advisor`} className="btn-primary text-sm">
+            <a href="#bella-advisor" className="btn-primary text-sm">
               Futter für meinen {breed.name} finden →
-            </Link>
+            </a>
           </div>
         </div>
       </section>
@@ -641,7 +649,7 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
       </section>
 
       {/* ── SEKTION 9: BELLA KI-BERATERIN ─────────────────────────────── */}
-      <section className="max-w-5xl mx-auto w-full px-5 py-6">
+      <section id="bella-advisor" className="max-w-5xl mx-auto w-full px-5 py-6 scroll-mt-20">
         <div className="card p-6 mb-5">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-lg font-bold text-black flex-shrink-0">B</div>
@@ -653,11 +661,12 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
         </div>
         <BellaAdvisorWrapper
           introMessage={bellaIntro}
+          autoStart={bellaAutoStart}
           pageQuickOptions={[
-            { label: `${breed.name}-Futter`, msg: `Ich suche das beste Futter für meinen ${breed.name}` },
-            { label: "Welpe", msg: `Mein ${breed.name} ist noch ein Welpe` },
-            { label: "Senior", msg: `Mein ${breed.name} ist ein Senior (7+ Jahre)` },
-            { label: "Allergie", msg: `Mein ${breed.name} hat eine Futtermittelallergie` },
+            { label: "Welpe (unter 1 Jahr)", msg: `Mein ${breed.name} ist noch ein Welpe, unter 1 Jahr alt` },
+            { label: "Erwachsen (1–7 Jahre)", msg: `Mein ${breed.name} ist erwachsen, ca. 3–5 Jahre alt` },
+            { label: "Senior (7+ Jahre)", msg: `Mein ${breed.name} ist ein Senior, über 7 Jahre alt` },
+            { label: "Allergie / sensibler Magen", msg: `Mein ${breed.name} hat eine Futtermittelallergie oder einen empfindlichen Magen` },
           ]}
         />
       </section>
