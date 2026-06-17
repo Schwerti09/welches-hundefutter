@@ -490,7 +490,7 @@ export async function POST(request: NextRequest) {
         try {
           const genAI = new GoogleGenerativeAI(geminiKey);
           const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash", systemInstruction: sysPrompt });
-          const chat = model.startChat({ history: history.map(h => ({ role: h.role === "assistant" ? "model" : "user", parts: [{ text: h.content }] })), generationConfig: { temperature: 0.8, maxOutputTokens: 320 } });
+          const chat = model.startChat({ history: history.map(h => ({ role: h.role === "assistant" ? "model" : "user", parts: [{ text: h.content }] })), generationConfig: { temperature: 0.8, maxOutputTokens: 600 } });
           const result = await chat.sendMessageStream(message);
           for await (const chunk of result.stream) { const t = chunk.text(); if (t) { fullText += t; emit(`TEXT:${t}`); } }
         } catch { fullText = ""; }
@@ -499,7 +499,7 @@ export async function POST(request: NextRequest) {
         try {
           const anthropic = new Anthropic({ apiKey: anthropicKey });
           const msgs = [...history.map(h => ({ role: h.role as "user" | "assistant", content: h.content })), { role: "user" as const, content: message }];
-          const resp = await anthropic.messages.create({ model: "claude-haiku-4-5", max_tokens: 320, temperature: 0.8, system: sysPrompt, messages: msgs, stream: true });
+          const resp = await anthropic.messages.create({ model: "claude-haiku-4-5", max_tokens: 600, temperature: 0.8, system: sysPrompt, messages: msgs, stream: true });
           for await (const event of resp) {
             if (event.type === "content_block_delta" && event.delta.type === "text_delta") { const t = event.delta.text; if (t) { fullText += t; emit(`TEXT:${t}`); } }
           }
