@@ -134,5 +134,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
   ]
 
-  return [...statisch, ...alleRassen, ...staedte, ...probleme, ...phasen, ...typen, ...tipps, ...tippArtikel, ...wissensuniversum]
+  const meinungsnetz: MetadataRoute.Sitemap = [
+    { url: `${BASE}/meinungen`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.82 },
+  ]
+
+  return [...statisch, ...alleRassen, ...staedte, ...probleme, ...phasen, ...typen, ...tipps, ...tippArtikel, ...wissensuniversum, ...meinungsnetz]
 }

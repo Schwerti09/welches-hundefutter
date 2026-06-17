@@ -268,6 +268,32 @@ export const glossaryTerms = pgTable("glossary_terms", {
 export type GlossaryTerm = typeof glossaryTerms.$inferSelect;
 export type NewGlossaryTerm = typeof glossaryTerms.$inferInsert;
 
+// ─── Meinungsnetz: Community-Insights ────────────────────────────────────────
+export const communityInsights = pgTable("community_insights", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  platform: text("platform").notNull(),        // reddit | zooplus | amazon | forum | youtube | google
+  sourceUrl: text("source_url").notNull(),
+  author: text("author"),                      // öffentlicher Username
+  contentExcerpt: text("content_excerpt").notNull(), // authentisches Kurz-Zitat ≤200 Zeichen
+  sentiment: text("sentiment").notNull(),      // positiv | negativ | gemischt
+  mentionedBrands: text("mentioned_brands").array().default([]),
+  mentionedTopics: text("mentioned_topics").array().default([]),
+  relatedStudySlugs: text("related_study_slugs").array().default([]),
+  relatedProductSlugs: text("related_product_slugs").array().default([]),
+  upvotes: integer("upvotes"),
+  publishedAt: timestamp("published_at"),
+  language: text("language").default("de"),
+  verified: boolean("verified").default(false), // URL manuell geprüft
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => ({
+  platformIdx: index("community_platform_idx").on(table.platform),
+  sentimentIdx: index("community_sentiment_idx").on(table.sentiment),
+  topicsIdx: index("community_topics_idx").on(table.mentionedTopics),
+}));
+
+export type CommunityInsight = typeof communityInsights.$inferSelect;
+export type NewCommunityInsight = typeof communityInsights.$inferInsert;
+
 // ─── BELLA Chat-Sessions ──────────────────────────────────────────────────────
 export const advisorSessions = pgTable("advisor_sessions", {
   id: uuid("id").defaultRandom().primaryKey(),
