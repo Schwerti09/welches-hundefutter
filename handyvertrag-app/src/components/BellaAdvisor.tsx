@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
 import PriceAlertBox from "@/components/PriceAlertBox";
+import ShopReach from "@/components/ShopReach";
 import VoiceButton from "@/components/VoiceButton";
 
 const Bella = dynamic(() => import("@/components/Bella"), { ssr: false });
@@ -429,6 +430,16 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
                         </a>
                       ))}
                     </div>
+                  )}
+
+                  {/* Schicht 1: Klick-Moment — Reichweite der Top-Empfehlung für diesen Hund */}
+                  {msg.offers && msg.offers.length > 0 && (
+                    <ShopReach
+                      name={msg.offers[0].name}
+                      pricePerKg={msg.offers[0].pricePerKg}
+                      monthlyPrice={msg.offers[0].monthlyPrice ?? msg.offers[0].effectiveMonthlyPrice}
+                      dailyGrams={msg.profile?.dailyGrams}
+                    />
                   )}
 
                   {/* Schicht 2: Preis-Wecker nach der Empfehlung */}
