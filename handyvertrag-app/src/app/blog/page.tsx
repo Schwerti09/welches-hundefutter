@@ -3,8 +3,8 @@ import Link from "next/link";
 import { blogArticles } from "@/data/blogArticles";
 
 export const metadata: Metadata = {
-  title: "Blog: Hundefutter, Allergien & Bonität | BELLA",
-  description: "Aktuelle Ratgeber zu Hundefutter für deinen Hund, Allergien-Score verbessern und Hundeernährung-Tipps für 2026.",
+  title: "Blog: Hundefutter, Ernährung & Ratgeber | BELLA",
+  description: "Aktuelle Ratgeber zu Hundefutter, Ernährung, Allergien und Gesundheit. Fundiert, ohne Werbung, auf Basis der BELLA-Datenbank.",
   alternates: {
     canonical: "https://welches-hundefutter.today/blog",
     languages: {

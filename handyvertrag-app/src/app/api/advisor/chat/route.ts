@@ -270,6 +270,11 @@ async function fetchCandidates(intent: DogIntent): Promise<{ offers: ScoredFood[
 
   if (intent.foodType) { cond.push(`type = $${p++}`); params.push(intent.foodType); }
   if (intent.maxPricePerKg) { cond.push(`(price_per_kg IS NULL OR price_per_kg <= $${p++})`); params.push(intent.maxPricePerKg); }
+  // Senior/Adult: Welpen-exklusive Produkte hart ausschließen. Produkte ohne suitable_for
+  // (null = alle Lebensphase) bleiben drin. Gemischte Tags wie ['welpen','adult'] auch OK.
+  if (intent.lifePhase === "senior" || intent.lifePhase === "adult") {
+    cond.push(`NOT (suitable_for IS NOT NULL AND suitable_for && ARRAY['welpen']::text[] AND NOT suitable_for && ARRAY['adult','senior']::text[])`);
+  }
 
   let totalScanned = 11000;
   try {
@@ -352,11 +357,12 @@ function scoreFood(o: DogFoodRow, intent: DogIntent): ScoredFood {
 
 function buildSystemPrompt(offers: ScoredFood[], confidence: number, ask: boolean, intent: DogIntent, studies: StudyCitation[] = []): string {
   const block = offers.length
-    ? offers.map((o, i) =>
-        `[${i + 1}] ${o.brand} ${o.name} · Typ: ${o.type}${o.protein ? ` · Protein: ${o.protein}` : ""}` +
-        `${o.price_per_kg ? ` · ${parseFloat(o.price_per_kg).toFixed(2)} €/kg` : o.price ? ` · ${parseFloat(o.price).toFixed(2)} €` : ""}` +
-        `${o.is_grain_free ? " · getreidefrei" : ""}${o.is_hypoallergenic ? " · hypoallergen" : ""} · Match ${o.matchScore}%`
-      ).join("\n")
+    ? offers.map((o, i) => {
+        const sf = Array.isArray(o.suitable_for) && o.suitable_for.length ? o.suitable_for.join("/") : "alle Lebensphase";
+        return `[${i + 1}] ${o.brand} ${o.name} · Typ: ${o.type}${o.protein ? ` · Protein: ${o.protein}` : ""}` +
+          `${o.price_per_kg ? ` · ${parseFloat(o.price_per_kg).toFixed(2)} €/kg` : o.price ? ` · ${parseFloat(o.price).toFixed(2)} €` : ""}` +
+          `${o.is_grain_free ? " · getreidefrei" : ""}${o.is_hypoallergenic ? " · hypoallergen" : ""} · geeignet für: ${sf} · Match ${o.matchScore}%`;
+      }).join("\n")
     : "Noch keine Futter-Daten — du brauchst erst mehr Infos über den Hund.";
 
   const known: string[] = [];
@@ -396,6 +402,7 @@ ${studyBlock}
 REGELN:
 - Max. 2-3 Sätze. Kein Hype ("super!", "perfekt!"). Stattdessen konkrete Fakten.
 - Nutze NUR die echten Produktdaten oben. Erfinde keine Marken, Preise oder Inhaltsstoffe.
+- "geeignet für: alle Lebensphase" = Produkt ist für Welpe, Adult UND Senior geeignet — nenne es NIE als "Juniorprodukt".
 - Du duzt. Empathisch, aber präzise.
 - Wenn eine passende Studie vorhanden ist, zitiere kurz den Kernbefund (1 Satz), aber sei nicht aufdringlich.
 ${intent.breed ? `- Der Halter hat die Rasse "${intent.breed}" erwähnt — beziehe dich darauf, wenn sinnvoll.\n` : ""}- Antworte auf Deutsch.`;
