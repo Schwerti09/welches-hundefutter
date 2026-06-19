@@ -72,8 +72,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="shortcut icon" href="/favicon.svg" />
 
-        {/* Preconnect zu dog.ceo (Rasse-Fotos in der Galerie, kritischer Pfad) */}
-        <link rel="preconnect" href="https://images.dog.ceo" />
+        {/* DNS-Prefetch für Breed-Galerie (kein preconnect — verhindert LCP-Regression) */}
+        <link rel="dns-prefetch" href="https://images.dog.ceo" />
 
         {/* DNS Prefetch */}
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
