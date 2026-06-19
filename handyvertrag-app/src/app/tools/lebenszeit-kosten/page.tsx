@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BREEDS } from "@/data/breeds";
 import { getAvgPricePerKgDry } from "@/db/queries/foods";
 import LifetimeCostCalculator, { type SlimBreed } from "@/components/LifetimeCostCalculator";
+import WebMcpTools from "@/components/WebMcpTools";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -83,6 +84,8 @@ export default async function LebenszeitKostenPage() {
       <section className="px-5 pb-10">
         <LifetimeCostCalculator breeds={slim} avgPricePerKg={avg} />
       </section>
+
+      <WebMcpTools breeds={slim} avgPricePerKg={avg} />
 
       <section className="max-w-3xl mx-auto w-full px-5 pb-10">
         <Link href="/ratgeber/was-kostet-ein-hund" className="glass-strong rounded-2xl p-5 flex items-center justify-between gap-4 hover:border-[var(--honey)] transition-colors group">
