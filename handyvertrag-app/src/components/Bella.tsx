@@ -81,7 +81,7 @@ export default function Bella({ mood = "idle", size = 200, className = "", track
         </defs>
 
         {/* ─── Schwanz (wedelt) ─────────────────────────────── */}
-        <g transform={`rotate(${tail} 150 150)`} style={{ transition: "transform 0.05s linear" }}>
+        <g style={{ transform: `rotate(${tail}deg)`, transformOrigin: "150px 150px", transition: "transform 0.05s linear", willChange: "transform" }}>
           <path d="M148 150 Q176 140 182 112 Q170 120 158 132 Q150 140 148 150 Z" fill="url(#furGrad)" />
         </g>
 
@@ -95,7 +95,7 @@ export default function Bella({ mood = "idle", size = 200, className = "", track
         <ellipse cx="118" cy="186" rx="8" ry="5" fill="#F6E2C2" />
 
         {/* ─── Ohren (heben sich bei excited) ───────────────── */}
-        <g style={{ transition: "transform 0.3s" }} transform={mood === "excited" || mood === "waving" ? "translate(0,-4)" : ""}>
+        <g style={{ transform: mood === "excited" || mood === "waving" ? "translateY(-4px)" : "translateY(0px)", transition: "transform 0.3s", willChange: "transform" }}>
           <path d="M46 70 Q30 96 44 124 Q60 116 62 88 Z" fill="url(#earGrad)" />
           <path d="M154 70 Q170 96 156 124 Q140 116 138 88 Z" fill="url(#earGrad)" />
         </g>
@@ -118,9 +118,9 @@ export default function Bella({ mood = "idle", size = 200, className = "", track
         )}
 
         {/* Augen (folgen dem Cursor) */}
-        <g transform={`translate(${ex} ${ey})`} style={{ transition: "transform .12s ease-out" }}>
-          <ellipse cx="80" cy="86" rx="7" ry={eyeRy} fill="#3A2417" style={{ transition: "ry 0.08s" }} />
-          <ellipse cx="120" cy="86" rx="7" ry={eyeRy} fill="#3A2417" style={{ transition: "ry 0.08s" }} />
+        <g style={{ transform: `translate(${ex}px, ${ey}px)`, transition: "transform .12s ease-out", willChange: "transform" }}>
+          <ellipse cx="80" cy="86" rx="7" ry="7" fill="#3A2417" style={{ transform: `scaleY(${eyeRy / 7})`, transformOrigin: "80px 86px", transition: "transform 0.08s" }} />
+          <ellipse cx="120" cy="86" rx="7" ry="7" fill="#3A2417" style={{ transform: `scaleY(${eyeRy / 7})`, transformOrigin: "120px 86px", transition: "transform 0.08s" }} />
           {!blink && (
             <>
               <circle cx="82" cy="83" r="2.2" fill="white" />
@@ -130,7 +130,7 @@ export default function Bella({ mood = "idle", size = 200, className = "", track
         </g>
 
         {/* Nase (folgt dem Cursor) */}
-        <g transform={`translate(${nx} ${ny})`} style={{ transition: "transform .12s ease-out" }}>
+        <g style={{ transform: `translate(${nx}px, ${ny}px)`, transition: "transform .12s ease-out", willChange: "transform" }}>
           <ellipse cx="100" cy="104" rx="9" ry="7" fill="#3A2417" />
           <ellipse cx="97" cy="101" rx="2.5" ry="1.8" fill="rgba(255,255,255,0.5)" />
         </g>
