@@ -113,4 +113,5 @@ export const diaet: TipCategory = {
     [99, "Keine Wundermittel aus dem Internet", "Vermeintliche Heilkost-Trends ohne Beleg können kranken Hunden schaden. Vertraue auf Diagnostik statt auf Foren-Tipps.", 1, ["sicherheit", "mythos"]],
     [100, "Die Diät zur Lebensqualität machen", "Eine gute therapeutische Diät lindert nicht nur Symptome, sie gibt deinem Hund Energie und Wohlbefinden zurück. Das ist das eigentliche Ziel.", 0, ["lebensqualitaet", "gesundheit"]],
   ],
+  articles: diaetArticles,
 };
