@@ -12,6 +12,7 @@ import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 import CitableStat from "@/components/CitableStat";
+import { problemDirectAnswer } from "@/lib/direct-answer";
 import type { CitableVariant } from "@/db/queries/stats";
 
 // Problem-Slug → zitierfähige Live-Statistik (nur wo fachlich passend)
@@ -87,7 +88,9 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
 
   const foods = await getFoodsForProblem(!!problem.filterGrainFree, !!problem.filterHypo);
 
+  const da = problemDirectAnswer(problem);
   const faqItems = [
+    { question: da.question, answer: da.answer },
     {
       question: `Was ist das beste Hundefutter bei ${problem.name}?`,
       answer: `${problem.description} Achte besonders auf folgende Kriterien: ${problem.recommendedCriteria.join(", ")}. BELLA filtert den Live-Katalog automatisch nach diesen Eigenschaften.`,
@@ -130,7 +133,8 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4 max-w-3xl">
           {problem.tagline}
         </h1>
-        <p className="bella-answer text-[var(--muted)] leading-relaxed max-w-2xl mb-8">{problem.description}</p>
+        <p className="bella-answer text-lg sm:text-xl font-semibold text-[var(--ink)] leading-snug max-w-2xl mb-4">{da.answer}</p>
+        <p className="text-[var(--muted)] leading-relaxed max-w-2xl mb-8">{problem.description}</p>
         {PROBLEM_STAT[slug] && <CitableStat variant={PROBLEM_STAT[slug]} />}
         <Link href="/#bella-advisor" className="btn-primary">
           BELLA fragt nach deinem Hund → passende Sorten in 60 s

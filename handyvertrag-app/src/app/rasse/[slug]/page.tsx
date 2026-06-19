@@ -10,6 +10,7 @@ import AuthorBox from "@/components/AuthorBox";
 import ProductSchemaBlock from "@/components/ProductSchemaBlock";
 import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
 import StructuredData from "@/components/StructuredData";
+import { breedDirectAnswer } from "@/lib/direct-answer";
 import SiteFooter from "@/components/SiteFooter";
 
 export const revalidate = 86400;
@@ -238,6 +239,7 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
   // FAQ-Daten
   const isLargeBreed = breed.size === "gross" || breed.size === "sehrgross";
   const jointProne = (breed.commonHealthIssues ?? []).some((i) => /gelenk|hüft|arthros|ellbogen|patell|kreuzband/i.test(i));
+  const da = breedDirectAnswer(breed);
   const faqs = [
     {
       q: `Wie viel Futter braucht ein ${breed.name} täglich?`,
@@ -362,7 +364,8 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
                 Auch bekannt als: {(breed.alternativeNames ?? []).join(", ")}
               </p>
             )}
-            <p className="bella-answer text-[var(--muted)] leading-relaxed mb-5 text-sm">{breed.description}</p>
+            <p className="bella-answer text-base sm:text-lg font-semibold text-[var(--ink)] leading-snug mb-3">{da.answer}</p>
+            <p className="text-[var(--muted)] leading-relaxed mb-5 text-sm">{breed.description}</p>
 
             {/* Key Facts Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-6">

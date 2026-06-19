@@ -12,6 +12,7 @@ import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 import CitableStat from "@/components/CitableStat";
+import { futtertypDirectAnswer } from "@/lib/direct-answer";
 import type { CitableVariant } from "@/db/queries/stats";
 
 // Futtertyp-Slug → zitierfähige Live-Statistik
@@ -102,7 +103,9 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
 
   const foods = await getFoodsByType(typ.dbType, slug === "getreidefrei", slug === "hypoallergen" || slug === "monoprotein");
 
+  const da = futtertypDirectAnswer(typ);
   const faqItems = [
+    { question: da.question, answer: da.answer },
     {
       question: `Was ist ${typ.name} für Hunde?`,
       answer: `${typ.description} BELLA prüft, ob es zu deinem Hund passt.`,
@@ -145,7 +148,8 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4 max-w-3xl">
           {typ.tagline}
         </h1>
-        <p className="bella-answer text-[var(--muted)] leading-relaxed max-w-2xl mb-8">{typ.description}</p>
+        <p className="bella-answer text-lg sm:text-xl font-semibold text-[var(--ink)] leading-snug max-w-2xl mb-4">{da.answer}</p>
+        <p className="text-[var(--muted)] leading-relaxed max-w-2xl mb-8">{typ.description}</p>
         {TYP_STAT[slug] && <CitableStat variant={TYP_STAT[slug]} />}
         <div className="flex gap-3 flex-wrap">
           <Link href="/#bella-advisor" className="btn-primary">BELLA findet das Beste für deinen Hund →</Link>
