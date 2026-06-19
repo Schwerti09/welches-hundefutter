@@ -283,7 +283,7 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
               { icon: "⚡", label: "Antwortzeit", value: "< 1 Sek." },
             ].map(s => (
               <div key={s.label} className="flex items-center justify-between">
-                <span className="text-white/40 text-xs">{s.icon} {s.label}</span>
+                <span className="text-white/60 text-xs">{s.icon} {s.label}</span>
                 <span className="text-white font-bold text-sm">{s.value}</span>
               </div>
             ))}
@@ -298,7 +298,7 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
             <span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse" />
             <div>
               <p className="text-white font-bold">BELLA – deine KI-Ernährungsberaterin</p>
-              <p className="text-white/40 text-xs">Findet das perfekte Futter für deinen Hund</p>
+              <p className="text-white/60 text-xs">Findet das perfekte Futter für deinen Hund</p>
             </div>
           </div>
 

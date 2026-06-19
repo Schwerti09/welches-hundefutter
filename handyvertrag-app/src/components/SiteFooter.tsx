@@ -58,7 +58,7 @@ function FooterItem({ l }: { l: FooterLink }) {
       >
         {l.label}
         {l.hint && (
-          <span className="text-[10px] uppercase tracking-wide text-gray-600 border border-gray-700 rounded px-1 py-px">
+          <span className="text-[10px] uppercase tracking-wide text-gray-400 border border-gray-600 rounded px-1 py-px">
             {l.hint}
           </span>
         )}
@@ -90,7 +90,7 @@ export default function SiteFooter() {
             </p>
             <div className="flex items-center gap-2 mt-4">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-xs text-gray-500">BELLA ist online</span>
+              <span className="text-xs text-gray-400">BELLA ist online</span>
             </div>
             <div className="mt-4 flex flex-wrap gap-2">
               {["Anifit", "Wolfsblut", "Futalis", "Terra Canis"].map((p) => (
@@ -113,17 +113,17 @@ export default function SiteFooter() {
         </div>
 
         <div className="border-t border-white/5 pt-8 flex flex-col gap-5">
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-gray-500">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-gray-400">
             <span className="inline-flex items-center gap-1.5"><span aria-hidden>🦴</span> 11.000+ Hundefutter im Vergleich</span>
             <span className="inline-flex items-center gap-1.5"><span aria-hidden>📈</span> Preise täglich aktualisiert</span>
             <span className="inline-flex items-center gap-1.5"><span aria-hidden>⚖️</span> neutral &amp; kostenlos</span>
           </div>
           <div className="flex flex-col md:flex-row items-center justify-between gap-3">
-            <p className="text-gray-500 text-xs text-center md:text-left">
+            <p className="text-gray-400 text-xs text-center md:text-left">
               © 2026 welches-hundefutter.today · Neutrale Hundefutter-Beratung · Deutschland
             </p>
-            <p className="text-gray-600 text-xs text-center md:text-right">
-              Affiliate-Links mit <code className="text-gray-500">rel=&quot;sponsored&quot;</code> · Preise inkl. MwSt. · keine Gewähr für Aktualität
+            <p className="text-gray-400 text-xs text-center md:text-right">
+              Affiliate-Links mit <code className="text-gray-400">rel=&quot;sponsored&quot;</code> · Preise inkl. MwSt. · keine Gewähr für Aktualität
             </p>
           </div>
         </div>

@@ -820,14 +820,6 @@ export const BREEDS: Breed[] = [
     imageUrl: '/breeds/dogo-argentino.webp',
   },
   {
-    slug: 'husky', name: 'Siberian Husky', size: 'gross',
-    weightMin: '16', weightMax: '27', lifeExpectancy: '13', activityLevel: 'sehrhoch',
-    commonHealthIssues: ['Augenprobleme', 'Hüftdysplasie', 'Empfindlicher Magen'],
-    recommendedProteinPercentage: 28,
-    feedingNotes: 'Huskys sind Ausdauer-Athleten mit erstaunlich effizientem Stoffwechsel — Qualität vor Menge. Bei viel Aktivität fettreicheres, proteinreiches Futter; viele Huskys haben empfindliche Mägen, daher gut verträgliche Sorten.',
-    description: 'Der Sibirische Husky ist ein arbeitsfreudiger Schlittenhund mit hohem Bewegungsdrang. Beim Futter zählen Qualität und Verträglichkeit.'
-  },
-  {
     slug: 'englische-bulldogge', name: 'Englische Bulldogge', size: 'mittel',
     weightMin: '18', weightMax: '25', lifeExpectancy: '9', activityLevel: 'niedrig',
     commonHealthIssues: ['Atemprobleme', 'Hautallergien', 'Gelenkprobleme', 'Übergewicht'],

@@ -67,6 +67,7 @@ export default async function HomePage() {
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
       <StructuredData type="faq" faqs={SCHEMA_FAQS} />
 
+      <main>
       <DogInfoProvider>
         {/* 1 — HERO: Kosten-Hook (einziger Hero) */}
         <CostHook breeds={breedsSlim} avgPricePerKgDry={avgPricePerKgDry} countLabel={countLabel} />
@@ -150,6 +151,7 @@ export default async function HomePage() {
           Alle Fragen ansehen →
         </Link>
       </section>
+      </main>
 
       <SiteFooter />
     </div>

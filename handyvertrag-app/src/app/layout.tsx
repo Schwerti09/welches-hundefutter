@@ -72,10 +72,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="shortcut icon" href="/favicon.svg" />
 
-        {/* Preconnect zu kritischen Third-Party Origins */}
-        <link rel="preconnect" href="https://api.anthropic.com" />
-        <link rel="preconnect" href="https://generativelanguage.googleapis.com" />
-        <link rel="preconnect" href="https://neon.tech" />
+        {/* Preconnect zu dog.ceo (Rasse-Fotos in der Galerie, kritischer Pfad) */}
+        <link rel="preconnect" href="https://images.dog.ceo" />
 
         {/* DNS Prefetch */}
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
