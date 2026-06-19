@@ -74,6 +74,78 @@ const CATEGORIES = {
       "dog drinking water bowl",
     ],
   },
+  barf: {
+    file: "articles/barf.ts",
+    queries: [
+      "dog raw meat food",
+      "raw dog food preparation",
+      "dog eating raw meat",
+      "natural dog food ingredients",
+    ],
+  },
+  diaet: {
+    file: "articles/diaet.ts",
+    queries: [
+      "dog veterinarian diet food",
+      "sick dog vet care",
+      "dog special diet bowl",
+      "dog recovery health",
+    ],
+  },
+  "fell-haut": {
+    file: "articles/fell-haut.ts",
+    queries: [
+      "dog grooming brush fur",
+      "dog coat shiny healthy",
+      "dog bath grooming salon",
+      "dog skin care brushing",
+    ],
+  },
+  hydration: {
+    file: "articles/hydration.ts",
+    queries: [
+      "dog drinking water bowl",
+      "dog water thirsty summer",
+      "dog fresh water outside",
+      "dog hydration heat",
+    ],
+  },
+  leckerlies: {
+    file: "articles/leckerlies.ts",
+    queries: [
+      "dog treat training reward",
+      "dog snack healthy treat",
+      "dog biscuit food reward",
+      "dog training treat hand",
+    ],
+  },
+  "senior-hund": {
+    file: "articles/senior-hund.ts",
+    queries: [
+      "old senior dog portrait",
+      "senior dog resting comfortable",
+      "elderly dog vet care",
+      "old dog walking slow",
+    ],
+  },
+  "sport-bewegung": {
+    file: "articles/sport-bewegung.ts",
+    queries: [
+      "dog running exercise active",
+      "dog agility sport training",
+      "dog playing fetch ball",
+      "dog swimming exercise",
+    ],
+  },
+  zaehne: {
+    file: "articles/zaehne.ts",
+    queries: [
+      "dog teeth dental care",
+      "dog toothbrush dental hygiene",
+      "dog chewing bone dental",
+      "veterinarian dog teeth check",
+    ],
+  },
 };
 
 async function searchPexels(query, perPage = 6) {

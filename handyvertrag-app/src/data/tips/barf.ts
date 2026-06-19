@@ -1,4 +1,5 @@
 import type { TipCategory } from "./types";
+import { barfArticles } from "./articles/barf";
 
 export const barf: TipCategory = {
   slug: "barf",
@@ -112,4 +113,5 @@ export const barf: TipCategory = {
     [99, "Den Hund über die Methode stellen", "BARF ist Mittel zum Zweck: ein gesunder, zufriedener Hund. Bleib flexibel, wenn dein Hund etwas anderes braucht.", 1, ["erwartung", "grundlagen"]],
     [100, "Ausgewogenheit als oberstes Ziel", "Ob roh oder gekocht — entscheidend ist eine vollständige, bedarfsdeckende Ernährung. Gut geplantes BARF kann das leisten, schlecht geplantes nicht.", 0, ["grundlagen", "motivation"]],
   ],
+  articles: barfArticles,
 };

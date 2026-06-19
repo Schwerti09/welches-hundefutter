@@ -1,4 +1,5 @@
 import type { TipCategory } from "./types";
+import { zaehneArticles } from "./articles/zaehne";
 
 export const zaehne: TipCategory = {
   slug: "zaehne",
@@ -112,4 +113,5 @@ export const zaehne: TipCategory = {
     [99, "Konsequenz schlägt Perfektion", "Lieber jeden Tag kurz als selten gründlich. Regelmäßigkeit ist der wichtigste Faktor für gesunde Zähne.", 0, ["routine", "konsequenz"]],
     [100, "Gesunde Zähne für ein schmerzfreies Leben", "Ein gepflegtes Gebiss schenkt deinem Hund Appetit, Wohlbefinden und Schmerzfreiheit bis ins Alter. Deine Mühe zahlt sich täglich aus.", 0, ["motivation", "lebensqualitaet"]],
   ],
+  articles: zaehneArticles,
 };

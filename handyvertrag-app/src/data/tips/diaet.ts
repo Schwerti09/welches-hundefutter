@@ -1,4 +1,5 @@
 import type { TipCategory } from "./types";
+import { diaetArticles } from "./articles/diaet";
 
 export const diaet: TipCategory = {
   slug: "diaet",

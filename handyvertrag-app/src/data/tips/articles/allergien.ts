@@ -2649,7 +2649,7 @@ Im Zweifel kann der Hersteller direkt kontaktiert werden, um genauere Angaben zu
 - Bei anhaltenden Beschwerden trotz hypoallergenem Futter: tierärztlich abklären lassen.`,
     seoTitle: "Hypoallergenes Hundefutter: Zutaten prüfen | BELLA",
     seoDescription:
-      "\"Hypoallergen\" ist kein geschützter Begriff. Warum du bei Hundefutter für Allergiker immer die vollständige Zutatenliste lesen solltest.",
+      "'Hypoallergen' ist kein geschützter Begriff. Warum du bei Hundefutter für Allergiker immer die vollständige Zutatenliste lesen solltest.",
     keywords: ["hypoallergenes Hundefutter", "Zutatenliste Hundefutter Allergie", "Futter für Allergiker Hund", "versteckte Allergene Hundefutter"],
     geoRelevant: false,
     internalLinks: ["/futtertyp/hypoallergen", "/problem/allergie", "/futtertyp/monoprotein"],

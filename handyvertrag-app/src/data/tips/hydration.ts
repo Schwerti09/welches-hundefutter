@@ -1,4 +1,5 @@
 import type { TipCategory } from "./types";
+import { hydrationArticles } from "./articles/hydration";
 
 export const hydration: TipCategory = {
   slug: "hydration",
@@ -112,4 +113,5 @@ export const hydration: TipCategory = {
     [99, "Hydration als tägliche Selbstverständlichkeit", "Frisches, sauberes Wasser jederzeit verfügbar zu halten ist eine der einfachsten und wichtigsten Aufgaben in der Hundehaltung.", 0, ["grundlagen", "praxis"]],
     [100, "Gute Hydration als Lebensgrundlage", "Ausreichend Wasser hält Organe, Kreislauf und Stoffwechsel deines Hundes am Laufen. Es ist die unsichtbare Grundlage seiner Gesundheit.", 0, ["grundlagen", "motivation"]],
   ],
+  articles: hydrationArticles,
 };

@@ -1,4 +1,5 @@
 import type { TipCategory } from "./types";
+import { leckerliesArticles } from "./articles/leckerlies";
 
 export const leckerlies: TipCategory = {
   slug: "leckerlies",
@@ -112,4 +113,5 @@ export const leckerlies: TipCategory = {
     [99, "Leckerlis mit Freude einsetzen", "Belohnen darf Spaß machen — für Hund und Halter. Eingesetzt mit Maß und Köpfchen stärkt es eure Beziehung.", 0, ["bindung", "motivation"]],
     [100, "Maßvoll belohnen für ein langes Leben", "Kluge, dosierte Belohnung hält deinen Hund schlank, gesund und motiviert. So bleibt das Leckerli ein Genuss ohne Reue.", 0, ["gesundheit", "motivation"]],
   ],
+  articles: leckerliesArticles,
 };

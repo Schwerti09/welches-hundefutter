@@ -1,4 +1,5 @@
 import type { TipCategory } from "./types";
+import { seniorHundArticles } from "./articles/senior-hund";
 
 export const seniorHund: TipCategory = {
   slug: "senior-hund",
@@ -112,4 +113,5 @@ export const seniorHund: TipCategory = {
     [99, "Erinnerungen schaffen", "Genieße die gemeinsame Zeit bewusst, mache Fotos und kleine Ausflüge im Rahmen seiner Kräfte. Diese Momente bleiben.", 0, ["bindung", "erinnerung"]],
     [100, "Das Alter als Geschenk sehen", "Ein alter Hund ist ein langes gemeinsames Leben. Mit angepasster Fürsorge können die goldenen Jahre die schönsten sein.", 0, ["lebensqualitaet", "motivation"]],
   ],
+  articles: seniorHundArticles,
 };

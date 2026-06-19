@@ -1,4 +1,5 @@
 import type { TipCategory } from "./types";
+import { fellHautArticles } from "./articles/fell-haut";
 
 export const fellHaut: TipCategory = {
   slug: "fell-haut",
@@ -112,4 +113,5 @@ export const fellHaut: TipCategory = {
     [99, "Die Pflege individuell gestalten", "Jeder Hund hat andere Bedürfnisse. Finde die Pflege, die zu Felltyp, Haut und Charakter deines Hundes passt.", 1, ["individuell", "pflege"]],
     [100, "Gesundes Fell als Spiegel guter Fürsorge", "Ein glänzendes Fell und eine gesunde Haut sind sichtbarer Beweis, dass es deinem Hund von innen und außen gut geht.", 0, ["motivation", "fuersorge"]],
   ],
+  articles: fellHautArticles,
 };

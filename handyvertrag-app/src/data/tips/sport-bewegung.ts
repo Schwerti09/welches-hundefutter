@@ -1,4 +1,5 @@
 import type { TipCategory } from "./types";
+import { sportBewegungArticles } from "./articles/sport-bewegung";
 
 export const sportBewegung: TipCategory = {
   slug: "sport-bewegung",
@@ -10,6 +11,7 @@ export const sportBewegung: TipCategory = {
   accent: "#a78bfa",
   intro:
     "Bewegung ist mehr als Gassi gehen — sie hält Muskeln, Gelenke, Herz und Psyche deines Hundes fit. Diese 100 Tipps reichen vom entspannten Schnüffel-Spaziergang bis zum Konditionstraining, immer mit Blick auf Sicherheit und Rasse.",
+  articles: sportBewegungArticles,
   tips: [
     [1, "Bewegung an die Rasse anpassen", "Ein Border Collie braucht ein Vielfaches der Auslastung eines Mops. Orientiere das Pensum an Energielevel und Körperbau deiner Rasse.", 0, ["rasse", "grundlagen"]],
     [2, "Schnüffeln ist Auslastung", "Zehn Minuten intensives Schnuppern lasten einen Hund stärker aus als zwanzig Minuten stures Gehen. Lass die Nase arbeiten.", 0, ["schnueffeln", "auslastung"]],
