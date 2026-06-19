@@ -231,6 +231,227 @@ export const blogArticles: BlogArticle[] = [
     ],
     relatedSlugs: ["hundefutter-test-2026", "hund-uebergewicht-futter"],
   },
+  {
+    slug: "stiftung-warentest-hundefutter",
+    title: "Stiftung Warentest Hundefutter: Was der Test zeigt – und was du wirklich brauchst",
+    description: "Stiftung Warentest testet Hundefutter auf Schadstoffe, Deklaration und Nährwerte. Was steckt hinter der Methodik, wo sind die blinden Flecken – und wie nutzt du die Ergebnisse klug für deinen Hund?",
+    keyword: "stiftung warentest hundefutter",
+    publishedAt: "2026-06-19",
+    updatedAt: "2026-06-19",
+    readingTime: 13,
+    sections: [
+      {
+        heading: "Warum Stiftung Warentest bei Hundefutter zählt",
+        content: `Stiftung Warentest ist Deutschlands bekannteste und meistvertraute Verbraucherorganisation – und das aus gutem Grund. Ihre Hundefutter-Tests sind unabhängig finanziert: keine Hersteller-Kooperationen, keine Anzeigeneinnahmen von Futtermittelherstellern, keine bezahlten Produktplatzierungen. Getestet wird im Labor, nicht am Schreibtisch.
+
+Das macht StiWa-Tests zu einer der wenigen wirklich verlässlichen Informationsquellen in einem Markt, der von Marketing-Versprechen geprägt ist. „Premium", „natürlich", „artgerecht" – diese Begriffe sind in Deutschland und der EU rechtlich nicht geschützt. Stiftung Warentest schaut hinter die Versprechen.
+
+In regelmäßigen Abständen kaufen StiWa-Testredakteure Hundefutter anonym im Handel ein und schicken die Proben an akkreditierte Laboratorien. Das Ergebnis: eine Momentaufnahme dessen, was wirklich im Napf landet – unabhängig davon, was auf der Verpackung steht.
+
+Warum das nicht alles sein kann: Stiftung Warentest testet jeweils 50 bis 100 Produkte. Der deutsche Hundefuttermarkt umfasst über 11.000 aktive Produkte. Ein Test deckt also weniger als 1 % des Marktes ab. Was das bedeutet und wie du trotzdem davon profitierst – darum geht es in diesem Artikel.`,
+      },
+      {
+        heading: "Die Testmethodik: Was im Labor passiert",
+        content: `Wenn Stiftung Warentest Hundefutter testet, durchlaufen die Proben mehrere unabhängige Analysen. Das sind die Hauptkategorien:
+
+**Schadstoffanalyse**
+Chemische Laboruntersuchungen messen Mineralölrückstände (MOSH und MOAH), Pestizide und deren Abbauprodukte, Schwermetalle wie Blei, Kadmium und Quecksilber sowie Mykotoxine (Schimmelpilzgifte). Diese Analyse ist der aufwendigste Teil und der Grund, warum StiWa-Tests mehrere Monate in Anspruch nehmen.
+
+**Nährwertanalyse**
+Das Labor misst Rohprotein, Rohfett, Rohfaser, Feuchtigkeit und Rohasche – und vergleicht diese Messwerte mit den Angaben auf der Verpackung. Abweichungen zwischen Etikett und tatsächlicher Zusammensetzung sind ein Bewertungskriterium. Besonders bei Nassfutter schwanken die Werte teils erheblich.
+
+**Deklarationsprüfung**
+Die Redaktion prüft, ob die Zutaten korrekt in absteigender Reihenfolge nach Gewicht angegeben sind, ob Fleischarten spezifisch benannt werden und ob gesundheitsbezogene Aussagen auf der Verpackung der gesetzlichen Grundlage entbehren.
+
+**Sensorik und Akzeptanz**
+In manchen Testrunden wird auch die Schmackhaftigkeit durch Hundepanels bewertet – wobei dieser Aspekt methodisch schwieriger zu standardisieren ist als chemische Analysen.
+
+Das Gesamturteil entsteht aus gewichteten Teilnoten. Ein einzelnes schwerwiegendes Ergebnis – etwa erhöhte MOAH-Werte – kann das Gesamturteil stark nach unten ziehen, auch wenn alle anderen Kriterien gut bewertet wurden.`,
+      },
+      {
+        heading: "Deklaration: Die anhaltende Schwachstelle im Markt",
+        content: `Einer der wichtigsten – und ernüchternden – Befunde aus Hundefutter-Tests generell: Ein erheblicher Teil der Produkte nutzt rechtlich zulässige, aber für den Verbraucher wenig informative Bezeichnungen wie „Fleisch und tierische Nebenerzeugnisse" oder „Fisch und Fischerzeugnisse".
+
+Diese Sammelbegriffe sind nach EU-Verordnung 767/2009 über die Kennzeichnung von Heimtierfutter erlaubt – und sie verstecken mehr als sie zeigen. Welche Tierart? Welcher Teil des Tieres? Das Etikett schweigt.
+
+Die Konsequenz für den Hundehalter ist erheblich:
+
+Erstens: Bei Futtermittelallergien oder Unverträglichkeiten ist ein Futter mit unspezifischer Deklaration nicht auf Auslöser prüfbar. „Tierische Nebenerzeugnisse" kann Huhn, Schwein, Rind oder eine Mischung aus allem enthalten – für den Hund mit Hühnerallergie ist das ein Problem.
+
+Zweitens: Der Hersteller darf Zutaten bei jeder Charge wechseln, solange er die Sammelkategorie beibehält. Der Hund frisst heute mehr Hühnerschnäbel, morgen mehr Rinderpansen – aus dem Etikett ist das nicht erkennbar.
+
+Drittens: Die Sammeldeklaration macht objektive Qualitätsvergleiche zwischen Produkten unmöglich. Du kannst „Fleisch und tierische Nebenerzeugnisse, mindestens 4 % Rind" nicht sinnvoll mit „Rindermuskelfleisch, Rinderleber, Rinderpansen" vergleichen – obwohl letzteres klar überlegene Transparenz liefert.
+
+Stiftung Warentest bewertet Produkte mit spezifischer Fleischdeklaration konsequent besser. Das ist kein Marketing-Präferenz, sondern ein vertretbarer Verbraucherschutz-Standard.`,
+      },
+      {
+        heading: "Mineralölrückstände: Das unterschätzte Risiko",
+        content: `MOSH (Mineral Oil Saturated Hydrocarbons) und MOAH (Mineral Oil Aromatic Hydrocarbons) sind Mineralölrückstände, die in verschiedenen Lebensmitteln und Heimtierfutter nachgewiesen wurden. Dieser Befund hat in der Fachpresse und Verbraucherschutzdiskussion erhebliche Aufmerksamkeit erhalten – zu Recht.
+
+Woher kommen Mineralölrückstände im Hundefutter?
+
+Die Quellen sind vielfältig: Schmiermittel in Verarbeitungsmaschinen können in Futtermittel gelangen, wenn keine lebensmitteltauglichen Schmierstoffe verwendet werden. Mineralöl-basierte Druckfarben auf Verpackungen können durch Migration ins Produkt übergehen – besonders bei recyceltem Karton. Rohstoffe wie Fischmehl oder Tiermehl können je nach Herkunft und Verarbeitung vorbelastet sein.
+
+MOSH-Verbindungen lagern sich im Fettgewebe an – ihre toxikologische Relevanz bei chronischer Aufnahme wird wissenschaftlich diskutiert. MOAH-Verbindungen, darunter polyzyklische aromatische Kohlenwasserstoffe, gelten als potenziell gentoxisch und karzinogen.
+
+Die EU-Kommission arbeitet seit Jahren an Höchstmengenregelungen für Mineralöle, auch in Heimtierfutter. Bisher gibt es für Heimtierfutter keine verbindlichen Grenzwerte – was bedeutet, dass Hersteller derzeit nur durch freiwillige Standards oder externe Labortests zur Kontrolle gezwungen werden.
+
+Produkte, die ohne nachweisbare MOAH-Belastung durch Stiftung Warentest bestehen, sind ein belastbarer Hinweis auf sorgfältige Herstellung und saubere Rohstoffe. Das ist ein Qualitätsindikator, den du aus der Verpackungsinfo allein nicht ablesen kannst.`,
+      },
+      {
+        heading: "Preis und Qualität: Was die Tests wirklich zeigen",
+        content: `Eine der häufigsten Fragen beim Thema Hundefutter: Ist teureres Futter automatisch besser? Die Antwort aus externen Tests und unserer eigenen BELLA-Datenanalyse ist dieselbe: Nein – aber der Zusammenhang ist differenzierter.
+
+Auf der untersten Preisstufe korreliert Preis mit Qualität tatsächlich: Sehr günstige Produkte unter 3 €/kg Trockenfutter haben fast immer unspezifische Deklaration und niedrige Fleischqualität. Hier ist der Preis ein Frühwarnzeichen.
+
+Ab einem mittleren Preisniveau (ca. 7–10 €/kg Trockenfutter) entkoppeln sich Preis und Qualität. Hier entscheiden:
+- Die spezifische Deklaration und Rohstoffqualität (nicht der Marken-Name)
+- Die Sorgfalt in der Verarbeitung (Mineralöl-Problem)
+- Die Nährstoffzusammensetzung für den konkreten Anwendungsfall (Welpe, Senior, Allergiker)
+
+Sehr teure Produkte (> 20 €/kg) rechtfertigen ihren Preis oft durch Premium-Positionierung, ethische Rohstoffbeschaffung oder Marketing – nicht zwingend durch messbar bessere Laborwerte. In unabhängigen Tests haben Produkte zu mittleren Preisen nicht selten gleichauf oder besser abgeschnitten als Hochpreis-Alternativen.
+
+Praktische Faustregel: Für Trockenfutter liegt die Qualitätsschwelle bei ca. 6–9 €/kg. Darunter ist Vorsicht angebracht. Darüber ist die Preis-Korrelation schwach – dann zählen Deklarationsqualität, Inhaltsstoffe und ob das Futter zu deinem Hund passt.`,
+      },
+      {
+        heading: "Die StiWa-Notenskala: Was \"Gut\" wirklich bedeutet",
+        content: `Stiftung Warentest bewertet Produkte auf einer Skala von „Sehr gut" bis „Mangelhaft". Die Schulnoten-Analogie ist gewollt und leicht verständlich – aber die Interpretation braucht etwas Kontext.
+
+| Note | Bezeichnung | Bedeutung |
+| --- | --- | --- |
+| 1,5 und besser | Sehr gut | Überdurchschnittlich in allen Kriterien |
+| 1,6 – 2,5 | Gut | Solide Leistung, geringfügige Schwächen |
+| 2,6 – 3,5 | Befriedigend | Deutliche Schwächen, aber keine schwerwiegenden Mängel |
+| 3,6 – 4,5 | Ausreichend | Erhebliche Mängel, aber nicht irreführend oder gefährlich |
+| 4,6 und schlechter | Mangelhaft | Schwerwiegende Mängel, irreführende Werbung oder Schadstoffe |
+
+Wichtig zu verstehen: Ein „Befriedigend" bedeutet nicht, dass das Futter schädlich ist. Es bedeutet, dass es in bestimmten Bereichen – oft der Deklarationsqualität oder beim Mineralölbefund – nicht überzeugt hat.
+
+Ein „Mangelhaft" ist dagegen ein ernstes Signal: Es deutet auf schwerwiegende Inhaltsstoffabweichungen, unzulässige gesundheitsbezogene Aussagen oder tatsächliche Schadstoffbelastung hin. Solche Produkte solltest du meiden.
+
+Ein „Gut" ist keine Garantie, dass das Produkt perfekt zu deinem Hund passt – es zeigt, dass es die wichtigsten Qualitätskriterien aus Verbraucherschutzsicht erfüllt. Ob es das Richtige für einen Senior-Golden-Retriever mit Gelenkproblemen ist, kann StiWa nicht beantworten.`,
+      },
+      {
+        heading: "Fünf Dinge, die Stiftung Warentest nicht beantwortet",
+        content: `Stiftung Warentest ist eine wertvolle Ressource – aber kein Allheilmittel für Futterentscheidungen. Fünf wichtige Fragen bleiben nach dem Test offen:
+
+**1. Welches Futter passt zu meinem Hund?**
+StiWa testet, ob ein Futter sicher und korrekt deklariert ist. Es bewertet nicht, ob dieses Futter für einen Labrador mit Gelenkproblemen, einen Chihuahua-Welpen oder einen älteren Dackel mit Schilddrüsenproblemen geeignet ist. Rasse, Alter, Gewicht, Aktivitätslevel und Gesundheitszustand spielen in der StiWa-Bewertung keine Rolle.
+
+**2. Schmeckt es meinem Hund?**
+Palatabilität ist individuell. Manche Hunde fressen alles, andere sind extrem wählerisch. Ein StiWa-„Sehr gut" garantiert nicht, dass dein Hund das Futter mag.
+
+**3. Wie ist der aktuelle Preis?**
+Die im Testbericht genannten Preise sind Momentaufnahmen zum Testzeitpunkt. Preise ändern sich täglich. Ein Futter, das zum Test 9 €/kg kostete, kann heute 12 €/kg oder 7 €/kg kosten.
+
+**4. Ist das Futter noch dasselbe?**
+Heimtierfutterhersteller dürfen Rezepturen ändern, ohne den Produktnamen anzupassen, solange die Kennzeichnungsvorschriften eingehalten werden. Ein Produkt, das 2023 getestet wurde, kann 2026 eine andere Zusammensetzung haben.
+
+**5. Was bieten die anderen 11.000 Produkte?**
+Ein Test umfasst typischerweise 50–100 Produkte. Von den über 11.000 aktiv im Handel erhältlichen Sorten wurde die überwiegende Mehrheit nie von StiWa untersucht. Es gibt möglicherweise günstigere, besser geeignete oder qualitativ gleichwertige Alternativen, die im Test nicht vorkamen.`,
+      },
+      {
+        heading: "BELLA und Stiftung Warentest: Zwei verschiedene Fragen",
+        content: `Stiftung Warentest und BELLA stellen fundamental verschiedene Fragen – und das ist der Grund, warum sie sich ergänzen und nicht konkurrieren:
+
+**Stiftung Warentest fragt:**
+„Ist dieses Produkt sicher, korrekt deklariert und frei von kritischen Schadstoffen?"
+
+**BELLA fragt:**
+„Welches Futter ist das richtige für genau diesen Hund – mit seiner Rasse, seinem Alter, seinem Gewicht, seinen Allergien und seinem Budget?"
+
+Die StiWa-Frage kommt zuerst: Sie filtert heraus, was grundsätzlich nicht in Frage kommen sollte. Die BELLA-Frage kommt danach: Sie filtert aus dem verbleibenden Pool das Passendste für deinen Hund.
+
+Das Beste aus beiden Welten: Nimm StiWa-Testergebnisse als Negativfilter. Produkte mit „Mangelhaft" oder schwerwiegenden Schadstoffbefunden schließt du aus. Dann lässt du BELLA aus dem Gesamtkatalog – über 11.000 Produkte, täglich aktualisiert, mit Echtzeit-Preisen – die Top-3-Empfehlung für deinen Hund zusammenstellen.
+
+BELLA kennt die BELLA-Score-Methodik: spezifische Fleischdeklaration (ähnlich wie StiWa), Monoprotein-Status, Getreidefrei-Status, Verarbeitungstyp – verknüpft mit Rassebesonderheiten, Altersbedarf und gesundheitlichen Einschränkungen. Das ist komplementär zu StiWa, nicht redundant.`,
+      },
+      {
+        heading: "Wie du StiWa-Ergebnisse heute praktisch nutzt",
+        content: `Der aktuelle Testbericht ist auf stiftung-warentest.de zugänglich – der vollständige Bericht erfordert ein Abonnement oder einen Einzelkauf. Kostenlos verfügbar ist in der Regel eine Übersicht der getesteten Produkte und eine Kurzbewertung. Das reicht für die wichtigsten Entscheidungen.
+
+**Schritt 1: Auf stiftung-warentest.de nach „Hundefutter" suchen**
+Dort findest du die aktuellsten Testergebnisse. Notiere die Namen der Produkte, die mit „Gut" oder „Sehr gut" abschneiden – oder welche Produkte du ausschließt (Mangelhaft oder Ausreichend).
+
+**Schritt 2: Das Testdatum berücksichtigen**
+Ein Test aus 2023 ist für Produkte, die seitdem neue Rezepturen erhalten haben, nur bedingt aussagekräftig. Prüfe, ob das Produkt in der Zwischenzeit Rezepturänderungen kommuniziert hat (oft in Futterforen oder Herstellerkommunikation erkennbar).
+
+**Schritt 3: StiWa als Negativfilter nutzen, nicht als alleinigen Positivfilter**
+„Kein Mangelhaft" ist ein sinnvolles Kriterium. „Nur die fünf StiWa-besten" ist eine zu enge Selektion, die den Rest des Marktes ausblendet – darunter viele hervorragende, nie getestete Produkte.
+
+**Schritt 4: BELLA aus dem validierten Pool auswählen lassen**
+Mit dem BELLA-Score und deinem Hundeprofil (Rasse, Alter, Gewicht, Allergien, Budget) findet BELLA aus über 11.000 Produkten die passenden – mit tagesaktuellen Preisen, ohne Testdatum-Problem.
+
+Dieser kombinierte Ansatz ist die klügste Nutzung beider Informationsquellen.`,
+      },
+      {
+        heading: "Was du aus allen Hundefutter-Tests lernen kannst",
+        content: `Stiftung Warentest, BELLA-Score und ähnliche Bewertungssysteme haben trotz unterschiedlicher Methodik gemeinsame Kernaussagen. Diese gelten unabhängig vom jeweiligen Test:
+
+**Deklaration ist der verlässlichste frei zugängliche Qualitätsindikator**
+Wenn du nur eine Sache auf dem Etikett prüfst: Sind Fleischarten spezifisch benannt? „Hähnchenfleisch, Putenbrust, Lachsöl" ist besser als „Fleisch und tierische Nebenerzeugnisse, Öl und Fette". Das ist kein Garant für bessere Nährwerte, aber ein starkes Signal für mehr Transparenz beim Hersteller.
+
+**Schadstoffrisiken sind real, aber handhabbar**
+Mineralölrückstände und Schwermetalle sind in vielen Produkten auf niedrigem Niveau messbar. Das bedeutet nicht, dass konventionelles Hundefutter gefährlich ist. Es bedeutet, dass du von Produkten mit nachgewiesener Schadstofffreiheit profitierst – und diese Information kommst du nur über externe Tests oder Bio-Zertifizierung.
+
+**Preis entscheidet nicht über Qualität – ab einem Mindestniveau**
+Unter ca. 5 €/kg Trockenfutter ist Vorsicht angebracht. Darüber ist Preis kein verlässlicher Indikator mehr – dann brauchst du Zusatzinformation.
+
+**Kein Test ersetzt die Beobachtung deines eigenen Hundes**
+Fell, Kotqualität, Energielevel, Körpergewicht – diese Indikatoren zeigen dir, ob ein Futter zu deinem Hund passt. Vier bis sechs Wochen Beobachtung nach jeder Futterumstellung sind unverzichtbar und kein Test der Welt kann das voraussagen.`,
+      },
+      {
+        heading: "Das Wichtigste in Kürze",
+        content: `Stiftung Warentest ist eine der wenigen wirklich unabhängigen Informationsquellen über Hundefutter – das macht ihre Tests wertvoll, auch wenn sie nur einen Bruchteil des Marktes abdecken.
+
+So nutzt du StiWa-Ergebnisse richtig:
+
+- Verwende StiWa-Bewertungen als Negativfilter: Produkte mit „Mangelhaft" oder Schadstoffbefunden meidest du konsequent.
+- Berücksichtige das Testdatum: Ein drei Jahre alter Test deckt möglicherweise geänderte Rezepturen nicht ab.
+- Kombiniere mit BELLA: Der StiWa-Test sagt „sicher"; BELLA sagt „passend für deinen Hund". Beides brauchst du.
+- Beobachte deinen Hund: Vier bis sechs Wochen Futtertest im Alltag ist die einzige Methode, die deinen spezifischen Hund bewertet.
+
+Was BELLA dir darüber hinaus bietet: Tagesaktuelle Preise, persönliche Empfehlungen nach Rasse und Gesundheitszustand, Allergie-Filterung, BARF-Optionen – aus über 11.000 Produkten, nicht aus 50–100 getesteten Sorten.
+
+Stiftung Warentest und BELLA – das ist kein Entweder-oder. Das ist der klügste Ansatz für bewusste Hundefutter-Entscheidungen.`,
+      },
+    ],
+    faqs: [
+      {
+        question: "Wie oft testet Stiftung Warentest Hundefutter?",
+        answer: "Stiftung Warentest testet Hundefutter nicht in einem festen Rhythmus. Größere Testrunden erscheinen alle 2–4 Jahre; kleinere Spot-Tests können dazwischen erscheinen. Der aktuellste Stand ist immer auf stiftung-warentest.de abrufbar. Es empfiehlt sich, vor einer Futterentscheidung den neuesten verfügbaren Test zu prüfen.",
+      },
+      {
+        question: "Kann ich den vollständigen StiWa-Hundefutter-Test kostenlos lesen?",
+        answer: "Der vollständige Testbericht mit allen Einzelbewertungen ist auf stiftung-warentest.de in der Regel kostenpflichtig (Einzelkauf oder Abonnement). Kostenlos sichtbar sind meist die Testübersicht, die Bewertungsskala und eine Zusammenfassung der wichtigsten Befunde. Diese Kurzinformation reicht oft, um die wichtigsten Entscheidungen zu treffen.",
+      },
+      {
+        question: "Was bedeuten MOSH und MOAH im Hundefuttertest?",
+        answer: "MOSH (Mineral Oil Saturated Hydrocarbons) und MOAH (Mineral Oil Aromatic Hydrocarbons) sind Mineralölrückstände, die über Verpackungen, Maschinenöle oder Rohstoffe in Futtermittel gelangen können. MOSH lagern sich im Körper an; MOAH gelten als potenziell gentoxisch. Für Heimtierfutter gibt es noch keine EU-Grenzwerte. Produkte ohne nachweisbare MOAH-Belastung sind daher vorzuziehen.",
+      },
+      {
+        question: "Gilt ein gutes StiWa-Ergebnis noch, wenn das Futter schon vor Jahren getestet wurde?",
+        answer: "Eingeschränkt. Hersteller dürfen Rezepturen ändern, ohne den Produktnamen zu ändern. Ein Produkt, das 2023 gut abschnitt, kann 2026 eine andere Zusammensetzung haben. Das StiWa-Ergebnis bleibt ein Hinweis auf Herstellerqualität und -transparenz, aber kein Garant für die aktuelle Rezeptur. Aktuelle Verbraucher-Rezensionen und Futterforen liefern Hinweise auf Rezepturänderungen.",
+      },
+      {
+        question: "Was ist besser: StiWa-Testsieger oder BELLA-Empfehlung?",
+        answer: "Das ist keine Entweder-oder-Frage. StiWa-Testsieger wurden auf Sicherheit, Schadstofffreiheit und Deklarationsqualität geprüft – aber nicht auf Eignung für deinen spezifischen Hund. BELLA filtert aus über 11.000 Produkten nach Rasse, Alter, Gewicht, Allergien und Budget – aber hat nicht jeden Futter chemisch analysiert. Das Klügste: StiWa als Negativfilter nutzen, BELLA für die personalisierte Auswahl.",
+      },
+      {
+        question: "Deckt Stiftung Warentest auch BARF-Produkte ab?",
+        answer: "Stiftung Warentest hat in verschiedenen Testrunden auch Rohfütterungsprodukte (BARF) untersucht. BARF-Produkte haben besondere Herausforderungen: mikrobiologische Belastung durch rohe Bestandteile, Nährstoffbilanz und Parasitensicherheit. Wenn du barfst, sind externe Tests für rohe Produkte besonders wertvoll, da du diese Analyse selbst nicht durchführen kannst.",
+      },
+      {
+        question: "Warum schneiden manche günstigen Sorten besser ab als teure?",
+        answer: "Weil Preis und Qualität im Mittelsegment nicht direkt korrelieren. Günstige Produkte aus Eigenmarken großer Discounter werden oft in denselben Anlagen produziert wie teurere Markenprodukte. Entscheidend sind Rohstoffqualität und Herstellungsprozess – nicht das Marketing-Budget.",
+      },
+      {
+        question: "Wie soll ich vorgehen, wenn mein aktuelles Futter schlecht getestet wurde?",
+        answer: "Nicht sofort und abrupt wechseln – das verursacht Magenbeschwerden. Zunächst bewerten: Wie schlecht? Ein \"Befriedigend\" wegen Deklarationsschwächen ist kein Notfall. Ein \"Mangelhaft\" wegen Schadstoffbelastung ist anders zu werten. Bei schwerem Befund: über 7–10 Tage schrittweise auf ein neues Futter umstellen. BELLA hilft dir dabei, aus über 11.000 Alternativen die passende zu finden.",
+      },
+    ],
+    relatedSlugs: ["hundefutter-test-2026", "hundefutter-allergie-hund", "barf-hund-anfaenger"],
+  },
 ];
 
 export function getArticleBySlug(slug: string): BlogArticle | undefined {
