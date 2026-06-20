@@ -84,6 +84,30 @@ export default async function HomePage() {
           </div>
         </div>
 
+        {/* 2b — KEIN-AFFILIATE-DISCLAIMER: Vertrauen bevor Beratung */}
+        <div className="px-5 pb-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="rounded-2xl border border-[rgba(240,167,60,0.2)] bg-[rgba(240,167,60,0.04)] px-5 py-4 flex flex-wrap items-center gap-4 justify-between">
+              <div className="flex items-start gap-3">
+                <span className="text-xl shrink-0 mt-0.5">🐾</span>
+                <div>
+                  <p className="text-sm font-bold text-white">Wir sind kein Affiliate-Vergleich. Wir sind ein Berater.</p>
+                  <p className="text-xs text-[var(--muted)] mt-0.5 leading-relaxed max-w-xl">
+                    Unsere Empfehlungen basieren auf dem BELLA Score — einem Algorithmus nach 4 messbaren Kriterien.
+                    Keine Marke kann bei uns Platz 1 kaufen. Das Einzige, was zählt: Was ist das richtige Futter für <em>deine</em> Fellnase?
+                  </p>
+                </div>
+              </div>
+              <Link
+                href="/warum-bella"
+                className="text-xs font-semibold text-[var(--honey)] hover:underline shrink-0 whitespace-nowrap"
+              >
+                Warum wir anders sind →
+              </Link>
+            </div>
+          </div>
+        </div>
+
         {/* 3 — BERATER (nach oben gezogen, Hund schon aus dem Hook bekannt) */}
         <section id="bella-advisor" className="px-5 pt-4 pb-10 scroll-mt-4">
           <BellaAdvisorWrapper />
