@@ -27,10 +27,10 @@ export default function MarketWatch({ active, onToggle }: Props) {
         <div className="flex items-start justify-between gap-3 mb-3">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-[10px] font-black text-white/50 uppercase tracking-widest">Market Watch</span>
+              <span className="text-[10px] font-black text-white/75 uppercase tracking-widest">Market Watch</span>
               {active && <span className="text-[9px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-medium animate-pulse">AKTIV</span>}
             </div>
-            <p className="text-[11px] text-white/55 leading-snug">
+            <p className="text-[11px] text-white/75 leading-snug">
               {active
                 ? "BELLA beobachtet den Futtermarkt für dich. Bei Preisrückgang oder neuen Treffern meldest du dich."
                 : "BELLA überwacht den Futtermarkt — bei besseren Preisen oder Empfehlungen wirst du informiert."}
@@ -47,7 +47,7 @@ export default function MarketWatch({ active, onToggle }: Props) {
 
         {/* Dynamic insight */}
         <div className="bg-white/[0.04] rounded-xl px-3 py-2 border border-white/5">
-          <p className="text-[10px] text-white/40 uppercase tracking-wide mb-1">Marktintelligenz</p>
+          <p className="text-[10px] text-white/65 uppercase tracking-wide mb-1">Marktintelligenz</p>
           <p className="text-[11px] text-white/70 leading-snug">
             <span className="text-amber-400/80 mr-1">◆</span>
             {INSIGHTS[insightIdx]}

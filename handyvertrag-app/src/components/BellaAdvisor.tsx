@@ -330,7 +330,7 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
               })()}
               size={90}
             />
-            <p className="text-[10px] text-white/30 tracking-widest uppercase">BELLA Robot</p>
+            <p className="text-[10px] text-white/60 tracking-widest uppercase">BELLA Robot</p>
           </div>
         </div>
 
