@@ -155,8 +155,6 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
     setInput("");
     setLoading(true);
     setMood("thinking");
-    setStormQuery(trimmed);
-    setStormActive(true);
 
     const history = messages
       .filter(m => m.id !== "0")
@@ -192,6 +190,10 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
         if (line.startsWith("TEXT:")) {
           replyText += line.slice(5);
           setMessages(prev => prev.map(m => m.id === bellaId ? { ...m, content: replyText } : m));
+        } else if (line.startsWith("STEP:scan:Futter-Katalog")) {
+          // BELLA hat genug Infos → geht in Empfehlungsmodus → Storm erst jetzt starten
+          setStormQuery(trimmed);
+          setStormActive(true);
         } else if (line.startsWith("OFFERS:")) {
           try {
             const payload = JSON.parse(line.slice(7));
