@@ -5,6 +5,11 @@ import dynamic from "next/dynamic";
 import PriceAlertBox from "@/components/PriceAlertBox";
 import ShopReach from "@/components/ShopReach";
 import VoiceButton from "@/components/VoiceButton";
+import MarketWatch from "@/components/MarketWatch";
+import AnalysisStorm from "@/components/AnalysisStorm";
+import BellaRadar from "@/components/BellaRadar";
+import BellaCharacter from "@/components/BellaCharacter";
+import type { BellaMood as CharMood } from "@/components/BellaCharacter";
 
 const Bella = dynamic(() => import("@/components/Bella"), { ssr: false });
 
@@ -111,6 +116,9 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
   const [loading, setLoading] = useState(false);
   const [sessionId] = useState(() => Math.random().toString(36).slice(2));
   const [voiceListening, setVoiceListening] = useState(false);
+  const [stormActive, setStormActive] = useState(false);
+  const [stormQuery, setStormQuery] = useState("");
+  const [marketWatchActive, setMarketWatchActive] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const autoStartFiredRef = useRef(false);
@@ -138,6 +146,8 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
     setInput("");
     setLoading(true);
     setMood("thinking");
+    setStormQuery(trimmed);
+    setStormActive(true);
 
     const history = messages
       .filter(m => m.id !== "0")
@@ -266,6 +276,13 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
 
   return (
     <div className="relative w-full max-w-5xl mx-auto">
+      {/* ─── AnalysisStorm Overlay ─────────────────────── */}
+      <AnalysisStorm
+        active={stormActive}
+        query={stormQuery}
+        onComplete={() => setStormActive(false)}
+      />
+
       <div className="grid lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 items-start">
 
         {/* ─── BELLA Column ──────────────────────────────── */}
@@ -276,17 +293,44 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
             <p className="text-white/70 text-sm font-medium">{MOOD_LABEL[mood]}</p>
           </div>
 
-          <div className="rounded-2xl p-4 w-full glass space-y-2.5">
-            {[
-              { icon: "🥘", label: "Futtersorten", value: "11.000+" },
-              { icon: "🐕", label: "Rassen-Profile", value: "50" },
-              { icon: "⚡", label: "Antwortzeit", value: "< 1 Sek." },
-            ].map(s => (
-              <div key={s.label} className="flex items-center justify-between">
-                <span className="text-white/60 text-xs">{s.icon} {s.label}</span>
-                <span className="text-white font-bold text-sm">{s.value}</span>
-              </div>
-            ))}
+          {loading ? (
+            <div className="w-full flex justify-center">
+              <BellaRadar size={240} />
+            </div>
+          ) : (
+            <div className="rounded-2xl p-4 w-full glass space-y-2.5">
+              {[
+                { icon: "🥘", label: "Futtersorten", value: "11.000+" },
+                { icon: "🐕", label: "Rassen-Profile", value: "50" },
+                { icon: "⚡", label: "Antwortzeit", value: "< 1 Sek." },
+              ].map(s => (
+                <div key={s.label} className="flex items-center justify-between">
+                  <span className="text-white/60 text-xs">{s.icon} {s.label}</span>
+                  <span className="text-white font-bold text-sm">{s.value}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="hidden lg:block w-full">
+            <MarketWatch
+              active={marketWatchActive}
+              onToggle={() => setMarketWatchActive(w => !w)}
+            />
+          </div>
+
+          <div className="hidden lg:flex flex-col items-center gap-2 pt-2">
+            <BellaCharacter
+              mood={((): CharMood => {
+                if (mood === "thinking") return "thinking";
+                if (mood === "excited") return "excited";
+                if (mood === "happy") return "happy";
+                if (mood === "talking") return "presenting";
+                return "idle";
+              })()}
+              size={90}
+            />
+            <p className="text-[10px] text-white/30 tracking-widest uppercase">BELLA Robot</p>
           </div>
         </div>
 

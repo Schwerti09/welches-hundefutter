@@ -6,6 +6,8 @@ import BreedGallery from "@/components/BreedGallery";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 import TopFoodsTable from "@/components/TopFoodsTable";
+import LiveIntel from "@/components/LiveIntel";
+import BellaMcpTools from "@/components/BellaMcpTools";
 import { getTopFoods, getTopFoodsByScore, getFoodCount, getAvgPricePerKgDry } from "@/db/queries/foods";
 import { getBreedsSlim } from "@/lib/breeds-slim";
 import { DogInfoProvider } from "@/contexts/DogInfoContext";
@@ -136,6 +138,11 @@ export default async function HomePage() {
       {/* 6 — TOP-FUTTER (Beweis, mit Live-Preisen) */}
       <TopFoodsTable byScore={topFoodsByScore} byPrice={topFoods} countLabel={countLabel} />
 
+      {/* 6b — LIVE INTELLIGENCE */}
+      <section className="max-w-5xl mx-auto px-5 pb-8 w-full">
+        <LiveIntel />
+      </section>
+
       {/* 7 — FAQ */}
       <section className="max-w-3xl mx-auto px-5 py-16 w-full">
         <h2 className="text-3xl font-black mb-8">Häufige Fragen zur Hundeernährung</h2>
@@ -153,6 +160,7 @@ export default async function HomePage() {
       </section>
       </main>
 
+      <BellaMcpTools />
       <SiteFooter />
     </div>
   );

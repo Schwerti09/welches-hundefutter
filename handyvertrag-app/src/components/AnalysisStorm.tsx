@@ -3,29 +3,29 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// ─── Contract Rain Cards ─────────────────────────────────────────────────────
+// ─── Food Rain Cards ─────────────────────────────────────────────────────────
 
 const RAIN_POOL = [
-  ["Hundefutter 17 Pro Max", "Anifit", "69,99 €", "ÜBERPRÜFT"],
-  ["Galaxy S25 Ultra", "Wolfsblut", "59,99 €", "ANALYSIERT"],
-  ["Hundefutter Air", "Anifit", "39,99 €", "KANDIDAT"],
-  ["Pixel 10 Pro", "Zooplus", "44,99 €", "BEWERTET"],
-  ["Galaxy A57 Bio", "Terra Canis", "19,99 €", "ELIMINIERT"],
-  ["Hundefutter 16 Pro", "Wolfsblut", "54,99 €", "ELIMINIERT"],
-  ["Galaxy S25", "Futalis", "29,99 €", "ANALYSIERT"],
-  ["Hundefutter 17", "Zooplus", "49,99 €", "ÜBERPRÜFT"],
-  ["Pixel 10a", "Anifit", "24,99 €", "KANDIDAT"],
-  ["Galaxy S25 FE", "Bellfor", "19,99 €", "ELIMINIERT"],
-  ["Hundefutter 17 Pro", "Anifit", "59,99 €", "ANALYSIERT"],
-  ["Galaxy Z Fold7", "Wolfsblut", "79,99 €", "ELIMINIERT"],
-  ["REDMI Note 15", "Zooplus", "14,99 €", "BEWERTET"],
-  ["Galaxy A37 Bio", "Terra Canis", "19,99 €", "ELIMINIERT"],
-  ["Hundefutter 15", "Futalis", "34,99 €", "ANALYSIERT"],
-  ["Galaxy S26 Ultra", "Anifit", "69,99 €", "ÜBERPRÜFT"],
-  ["Pixel 10 Pro XL", "Wolfsblut", "64,99 €", "KANDIDAT"],
-  ["Galaxy S26", "Zooplus", "44,99 €", "BEWERTET"],
-  ["Hundefutter 16", "Anifit", "44,99 €", "ÜBERPRÜFT"],
-  ["HONOR 600 Pro", "Terra Canis", "24,99 €", "ELIMINIERT"],
+  ["Huhn & Herz Menü", "Anifit", "4,89 €/kg", "ÜBERPRÜFT"],
+  ["Deep Sea Adult", "Wolfsblut", "5,49 €/kg", "ANALYSIERT"],
+  ["Lachs & Kartoffel", "Bellfor", "4,20 €/kg", "KANDIDAT"],
+  ["Lamm Nass Menü", "Terra Canis", "6,99 €/kg", "BEWERTET"],
+  ["Sensitive Adult", "Futalis", "3,99 €/kg", "ELIMINIERT"],
+  ["Rind & Gemüse", "Anifit", "4,79 €/kg", "ELIMINIERT"],
+  ["Island Fish", "Wolfsblut", "6,10 €/kg", "ANALYSIERT"],
+  ["Monoprotein Ente", "Luna", "5,20 €/kg", "ÜBERPRÜFT"],
+  ["Maxi Adult", "Royal Canin", "4,10 €/kg", "KANDIDAT"],
+  ["Senior Plus", "Platinum", "5,90 €/kg", "ELIMINIERT"],
+  ["Ente & Forellenfilet", "Anifit", "5,30 €/kg", "ANALYSIERT"],
+  ["Blue River Adult", "Wolfsblut", "5,80 €/kg", "ELIMINIERT"],
+  ["Pferd Pur", "Terra Canis", "7,50 €/kg", "BEWERTET"],
+  ["Insekt Hypo", "Bellfor", "6,40 €/kg", "ELIMINIERT"],
+  ["Rind Welpe", "Anifit", "5,10 €/kg", "ANALYSIERT"],
+  ["Wild Prairie", "Acana", "6,90 €/kg", "ÜBERPRÜFT"],
+  ["Sensitiv Lamm", "Bosch", "3,70 €/kg", "KANDIDAT"],
+  ["Original Grain-Free", "Orijen", "8,90 €/kg", "BEWERTET"],
+  ["BIO Adult Rind", "cdVet", "7,80 €/kg", "ÜBERPRÜFT"],
+  ["Geflügel Junior", "Mera", "3,50 €/kg", "ELIMINIERT"],
 ];
 
 const STATUS_COLOR: Record<string, string> = {
@@ -39,31 +39,31 @@ const STATUS_COLOR: Record<string, string> = {
 // ─── Feed Steps ────────────────────────────────────────────────────────────────
 
 const FEED_STEPS = [
-  "Semantischen Intent parsen...",
-  "Nutzerprofil konstruieren...",
-  "Mobilitätsmuster inferieren...",
+  "Anfrage analysieren...",
+  "Hundeprofil konstruieren...",
+  "Ernährungsbedarf berechnen...",
   "Premium-Präferenz erkannt...",
-  "6.225 Futtere geladen...",
-  "Netzkompatibilität prüfen...",
+  "11.000+ Futtersorten geladen...",
+  "Allergien & Unverträglichkeiten prüfen...",
   "Preis-Leistungs-Matrix aufbauen...",
-  "5.891 Niedrig-Fit-Futtere eliminieren...",
-  "Opportunity-Cost-Analyse...",
-  "24-Monats-Wert simulieren...",
-  "Regret-Wahrscheinlichkeit berechnen...",
-  "Satisfaction-Prediction scoring...",
-  "Dominante Empfehlung selektieren...",
-  "Konfidenz finalisieren...",
+  "Niedrig-geeignete Sorten aussieben...",
+  "Inhaltsstoffe analysieren...",
+  "Fleischanteil-Score berechnen...",
+  "Verträglichkeit validieren...",
+  "Rasse-Match finalisieren...",
+  "Beste Empfehlung selektieren...",
+  "Konfidenz bestätigen...",
 ];
 
 const MARKET_FLASHES = [
-  { label: "TELEKOM", sub: "Coverage +11%" },
-  { label: "O2", sub: "Latenz: abgelehnt" },
-  { label: "VODAFONE", sub: "Value: 82/100" },
-  { label: "APPLE", sub: "Profil-Treffer ✓" },
-  { label: "SAMSUNG", sub: "Kamera-Mismatch" },
-  { label: "GOOGLE", sub: "Akku-Fit erkannt" },
-  { label: "TELEKOM", sub: "Bio: Priorität" },
-  { label: "O2", sub: "Budget-Treffer ✓" },
+  { label: "ANIFIT", sub: "Protein: 92 %" },
+  { label: "WOLFSBLUT", sub: "Getreide: eliminiert" },
+  { label: "TERRA CANIS", sub: "Score: 94/100" },
+  { label: "BELLFOR", sub: "Profil-Treffer ✓" },
+  { label: "FUTALIS", sub: "Budget-Mismatch" },
+  { label: "ROYAL CANIN", sub: "Rasse-Fit erkannt" },
+  { label: "ANIFIT", sub: "Bio: Priorität" },
+  { label: "LUNA", sub: "Budget-Treffer ✓" },
 ];
 
 // ─── Phase timing ─────────────────────────────────────────────────────────────
@@ -230,7 +230,7 @@ export default function AnalysisStorm({ active, query, onComplete }: Props) {
         <div className="absolute top-0 left-0 right-0 px-5 py-4 border-b border-white/5 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-[10px] text-white/50 tracking-widest uppercase font-bold">BELLA Decision Intelligence</span>
+            <span className="text-[10px] text-white/50 tracking-widest uppercase font-bold">BELLA Futter-Intelligence</span>
           </div>
           <span className="text-[10px] text-white/25 font-mono">{(ms / 1000).toFixed(1)}s</span>
         </div>
@@ -260,8 +260,8 @@ export default function AnalysisStorm({ active, query, onComplete }: Props) {
 
           {/* Counters */}
           <div className="grid grid-cols-3 gap-3">
-            <Counter target={6225} ms={ms} label="Futtere geladen" />
-            <Counter target={5891} ms={ms} label="Eliminiert" />
+            <Counter target={11000} ms={ms} label="Sorten geladen" />
+            <Counter target={10341} ms={ms} label="Ausgesiebt" />
             <Counter target={Math.min(feedIdx * 3 + 8, 94)} ms={ms} label="Konfidenz %" />
           </div>
 

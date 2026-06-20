@@ -43,9 +43,9 @@ function MetricRow({ label, value, accent = false, check = false }: { label: str
 }
 
 export default function LiveIntel() {
-  const analyzed = useLiveCounter(14328, 60);
-  const matched = useLiveCounter(212, 6);
-  const filtered = useLiveCounter(14116, 55);
+  const analyzed = useLiveCounter(11284, 60);
+  const matched = useLiveCounter(247, 6);
+  const filtered = useLiveCounter(11037, 55);
 
   return (
     <div className="glass-strong glow-border rounded-2xl p-5 w-full">
@@ -56,21 +56,21 @@ export default function LiveIntel() {
           <span className="text-[10px] text-emerald-400/80 font-medium">aktiv</span>
         </span>
       </div>
-      <MetricRow label="Verträge analysiert heute" value={analyzed} />
+      <MetricRow label="Futtersorten analysiert heute" value={analyzed} />
       <MetricRow label="Passende Empfehlungen gefunden" value={matched} accent />
-      <MetricRow label="Verträge aussortiert" value={filtered} />
-      <MetricRow label="Netzqualität ausgewertet" check accent />
-      <MetricRow label="Preis-Leistungs-Modell aktiv" check accent />
+      <MetricRow label="Sorten ausgesiebt" value={filtered} />
+      <MetricRow label="Inhaltsstoffe ausgewertet" check accent />
+      <MetricRow label="Preis-Qualitäts-Modell aktiv" check accent />
     </div>
   );
 }
 
 const INSIGHTS = [
-  "87 % zahlen für Futtervolumen, das sie nie nutzen.",
-  "Die meisten Nutzer wählen das falsche Netz für ihren Wohnort.",
-  "Durchschnittliche Ersparnis durch BELLA: 18 €/Monat.",
-  "9 von 10 Verträgen sind teurer als nötig.",
-  "Cashback-Aktionen machen oft 200 € Unterschied im Jahr.",
+  "87 % der Halter zahlen für Füllstoffe, die der Hund nicht braucht.",
+  "9 von 10 Hundehaltern wählen unbewusst nährstoffarmes Futter.",
+  "Durchschnittliche Ersparnis durch BELLA: 15 €/Monat.",
+  "9 von 10 Futtersorten enthalten mehr Füllstoffe als nötig.",
+  "Preis-Wecker können über das Jahr 200 € sparen.",
 ];
 
 export function RotatingInsight() {

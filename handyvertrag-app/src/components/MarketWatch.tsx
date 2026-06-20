@@ -3,14 +3,14 @@
 import { useState } from "react";
 
 const INSIGHTS = [
-  "87% der Nutzer zahlen für Futtervolumen das sie nie verbrauchen.",
-  "Anifit führt 2026 bei Bio-Abdeckung in Deutschland.",
-  "Nutzer mit ähnlichem Profil bevorzugen Hundefutter + Anifit.",
-  "Cashback-Aktionen machen oft 200 € Unterschied im Jahr.",
-  "Die meisten Nutzer überschätzen ihren Datenbedarf um 40%.",
-  "Bio lohnt sich nicht für jeden — nur wenn du unterwegs streamst.",
-  "Günstigste Monatsfuttere ab 9,99 € — oft ohne Einmalzahlung.",
-  "Studentenrabatte werden häufig nicht genutzt: bis 15 €/Monat sparen.",
+  "8 von 10 Haltern zahlen für Füllstoffe, die ihr Hund nicht braucht.",
+  "Anifit führt 2026 bei Bio-Anteil und Deklarationsklarheit.",
+  "Hunde mit ähnlichem Profil zeigen weniger Allergien bei Monoprotein.",
+  "Preis-Wecker nutzen: bis 20 % beim Futterpreis sparen.",
+  "Die meisten Halter unterschätzen den Fleischgehalt ihres Futters.",
+  "Monoprotein lohnt sich — aber nur bei echter Überempfindlichkeit.",
+  "Günstigstes Qualitäts-Trockenfutter ab 2,50 €/kg verfügbar.",
+  "Regelmäßiger Sortenwechsel stärkt das Mikrobiom laut Studien.",
 ];
 
 interface Props {
@@ -32,8 +32,8 @@ export default function MarketWatch({ active, onToggle }: Props) {
             </div>
             <p className="text-[11px] text-white/55 leading-snug">
               {active
-                ? "BELLA beobachtet den Markt für dich. Bei besseren Angeboten meldest du dich zurück."
-                : "BELLA beobachtet den Markt für dich — bei besseren Angeboten wirst du informiert."}
+                ? "BELLA beobachtet den Futtermarkt für dich. Bei Preisrückgang oder neuen Treffern meldest du dich."
+                : "BELLA überwacht den Futtermarkt — bei besseren Preisen oder Empfehlungen wirst du informiert."}
             </p>
           </div>
           <button
