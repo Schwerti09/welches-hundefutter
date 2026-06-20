@@ -400,6 +400,7 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
                         const price = offer.pricePerKg ?? offer.effectiveMonthlyPrice ?? offer.monthlyPrice ?? null;
                         const priceUnit = offer.pricePerKg != null ? "/kg" : "";
                         const url = offer.affiliateUrl ?? offer.affiliateLink ?? "#";
+                        const cardStudies = msg.studies ?? [];
                         return (
                           <a
                             key={offer.id ?? i}
@@ -437,9 +438,44 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
                               )}
                             </div>
                             {offer.whyThis && (
-                              <p className="text-white/55 text-xs mt-2 leading-relaxed">{offer.whyThis}</p>
+                              <p className="text-white/65 text-xs mt-2 leading-relaxed">{offer.whyThis}</p>
                             )}
-                            <div className="mt-3 flex items-center justify-between">
+
+                            {/* ── Quellen & Belege je Empfehlung ── */}
+                            <div className="mt-3 pt-2.5 border-t border-white/[0.07] flex flex-wrap gap-1.5" onClick={e => e.preventDefault()}>
+                              {cardStudies.slice(0, i === 0 ? 2 : 1).map(s => (
+                                <a
+                                  key={s.slug}
+                                  href={`/studien/${s.topicHub}/${s.slug}`}
+                                  target="_blank"
+                                  rel="noopener"
+                                  onClick={e => e.stopPropagation()}
+                                  className="inline-flex items-center gap-1 text-[10px] text-purple-300/80 bg-purple-900/20 border border-purple-500/20 rounded-full px-2 py-0.5 hover:bg-purple-900/35 hover:text-purple-200 transition-colors"
+                                >
+                                  🔬 {s.year} · {s.title.length > 28 ? s.title.slice(0, 28) + "…" : s.title}
+                                </a>
+                              ))}
+                              <a
+                                href="/meinungen"
+                                target="_blank"
+                                rel="noopener"
+                                onClick={e => e.stopPropagation()}
+                                className="inline-flex items-center gap-1 text-[10px] text-sky-300/80 bg-sky-900/20 border border-sky-500/20 rounded-full px-2 py-0.5 hover:bg-sky-900/30 hover:text-sky-200 transition-colors"
+                              >
+                                💬 Meinungen
+                              </a>
+                              <a
+                                href="https://www.test.de/suche/?contentType=TEST&query=hundefutter"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={e => e.stopPropagation()}
+                                className="inline-flex items-center gap-1 text-[10px] text-amber-300/70 bg-amber-900/15 border border-amber-500/20 rounded-full px-2 py-0.5 hover:bg-amber-900/25 hover:text-amber-200 transition-colors"
+                              >
+                                🏆 Stiftung Warentest
+                              </a>
+                            </div>
+
+                            <div className="mt-2.5 flex items-center justify-between">
                               <span className="text-[10px] text-white/25">Affiliate-Link · *Werbung</span>
                               <span className="text-xs text-[var(--honey)] font-semibold group-hover:text-[var(--honey)]">Zum Futter →</span>
                             </div>
@@ -479,25 +515,19 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
                     </div>
                   )}
 
-                  {/* Wissensuniversum: Studien-Zitate */}
-                  {msg.studies && msg.studies.length > 0 && (
-                    <div className="mt-3 space-y-2">
+
+                  {/* Studien ohne Offers (z.B. wenn BELLA noch nachfragt) */}
+                  {msg.studies && msg.studies.length > 0 && (!msg.offers || msg.offers.length === 0) && (
+                    <div className="mt-3 space-y-1.5">
                       {msg.studies.map((s) => (
-                        <a
-                          key={s.slug}
-                          href={`/studien/${s.topicHub}/${s.slug}`}
-                          target="_blank"
-                          rel="noopener"
-                          className="group flex items-start gap-2.5 rounded-xl bg-purple-900/20 border border-purple-500/20 px-3 py-2.5 hover:bg-purple-900/30 hover:border-purple-500/40 transition-all"
-                        >
+                        <a key={s.slug} href={`/studien/${s.topicHub}/${s.slug}`} target="_blank" rel="noopener"
+                          className="group flex items-start gap-2.5 rounded-xl bg-purple-900/20 border border-purple-500/20 px-3 py-2.5 hover:bg-purple-900/30 transition-all">
                           <span className="text-base mt-0.5">🔬</span>
                           <div className="min-w-0">
                             <p className="text-[11px] text-purple-300 font-medium mb-0.5">
                               Studie · {s.year} · {s.evidenceStrength === "hoch" ? "Hohe Evidenz" : "Mittlere Evidenz"}
                             </p>
-                            <p className="text-xs text-white/70 leading-snug line-clamp-2 group-hover:text-white/90 transition-colors">
-                              {s.title}
-                            </p>
+                            <p className="text-xs text-white/70 leading-snug line-clamp-2 group-hover:text-white/90 transition-colors">{s.title}</p>
                           </div>
                         </a>
                       ))}
