@@ -243,6 +243,7 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
       setMood("idle");
     } finally {
       setLoading(false);
+      setStormActive(false); // Signal der Storm: API fertig → forcedReveal-Pfad → 1.2s Abschluss-Screen
     }
   }, [messages, loading, sessionId]);
 
@@ -372,7 +373,7 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
                   <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center flex-shrink-0 mt-1 text-xs font-black text-white shadow-md shadow-orange-200">B</div>
                 )}
                 <div className="max-w-[80%] space-y-3">
-                  {msg.content && (
+                  {msg.content ? (
                     <div className={`px-4 py-3 rounded-2xl text-sm whitespace-pre-wrap leading-relaxed ${
                       msg.role === "user"
                         ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-br-sm shadow-md shadow-orange-200"
@@ -380,7 +381,16 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
                     }`}>
                       {msg.content}
                     </div>
-                  )}
+                  ) : msg.role === "bella" && loading ? (
+                    <div className="px-4 py-3 rounded-2xl rounded-bl-sm bg-white/[0.06] border border-white/10 flex items-center gap-2.5">
+                      <span className="inline-flex items-center gap-1">
+                        {[0, 150, 300].map(d => (
+                          <span key={d} className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-bounce" style={{ animationDelay: `${d}ms` }} />
+                        ))}
+                      </span>
+                      <span className="text-white/40 text-xs">BELLA analysiert dein Profil…</span>
+                    </div>
+                  ) : null}
 
                   {/* Food recommendation cards */}
                   {msg.offers && msg.offers.length > 0 && (
