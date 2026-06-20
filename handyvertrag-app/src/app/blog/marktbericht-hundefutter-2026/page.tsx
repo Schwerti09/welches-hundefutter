@@ -81,7 +81,7 @@ async function getMarketData() {
     sql`
       SELECT
         DATE_TRUNC('month', recorded_at)::date as recorded_at,
-        COUNT(DISTINCT product_id)::int as products_tracked,
+        COUNT(DISTINCT food_slug)::int as products_tracked,
         ROUND(AVG(price_per_kg)::numeric, 2) as avg_price
       FROM price_history
       WHERE recorded_at >= NOW() - INTERVAL '90 days'
