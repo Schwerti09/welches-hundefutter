@@ -152,18 +152,31 @@ function ConfidenceBar({ ms }: { ms: number }) {
 
 // ─── Main component ────────────────────────────────────────────────────────────
 
+export interface StormProduct {
+  name: string;
+  brand: string;
+  pricePerKg: number | null;
+  imageUrl: string | null;
+  type: string;
+}
+
 interface Props {
   active: boolean;
   query: string;
   onComplete?: () => void;
+  previewProducts?: StormProduct[];
 }
 
-export default function AnalysisStorm({ active, query, onComplete }: Props) {
+export default function AnalysisStorm({ active, query, onComplete, previewProducts = [] }: Props) {
   const { ms, forcedReveal } = useStormPhase(active);
   const phase = phaseOf(ms, forcedReveal);
   const [feedIdx, setFeedIdx] = useState(0);
   const [flashIdx, setFlashIdx] = useState(0);
   const [done, setDone] = useState(false);
+
+  // Stable ref so the dismiss timeout never re-fires because parent re-rendered during streaming
+  const onCompleteRef = useRef(onComplete);
+  useEffect(() => { onCompleteRef.current = onComplete; }, [onComplete]);
 
   useEffect(() => {
     if (!active) { setFeedIdx(0); setFlashIdx(0); return; }
@@ -173,18 +186,21 @@ export default function AnalysisStorm({ active, query, onComplete }: Props) {
     return () => { clearInterval(fi); clearInterval(fl); };
   }, [active]);
 
-  // Signal completion: show reveal, then self-destruct + call parent
+  // Signal completion: show reveal, then self-destruct + call parent.
+  // onComplete intentionally excluded from deps — we use the ref to always call the latest version
+  // without resetting this timeout on every parent re-render (which happens ~60x/s during streaming).
   useEffect(() => {
     if (done) return;
     if (phase === "reveal" && (ms > 4200 || forcedReveal)) {
       const delay = forcedReveal ? 1200 : 100; // 1.2s reveal if forced, 0.1s if natural
       const t = setTimeout(() => {
-        setDone(true);       // self-destruct — hides immediately
-        onComplete?.();      // notify parent
+        setDone(true);
+        onCompleteRef.current?.();
       }, delay);
       return () => clearTimeout(t);
     }
-  }, [phase, ms, forcedReveal, onComplete, done]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase, ms, forcedReveal, done]);
 
   if (done || (!active && ms < 100 && !forcedReveal)) return null;
 
@@ -200,25 +216,52 @@ export default function AnalysisStorm({ active, query, onComplete }: Props) {
 
   return (
     <div className="fixed inset-0 z-50 bg-[#03030d] flex flex-col overflow-hidden">
-      {/* ── Rain column (left) ── */}
+      {/* ── Rain column (left) — real product images when available, fallback to text cards ── */}
       <div
         className="absolute left-0 top-0 w-1/3 sm:w-1/4 h-full overflow-hidden pointer-events-none border-r border-white/5"
         style={{ opacity: stormOpacity }}
       >
         <div
-          className="flex flex-col gap-1 will-change-transform"
+          className="flex flex-col gap-0 will-change-transform"
           style={{
-            transform: `translateY(${-((ms * 0.22) % 600)}px)`,
+            transform: `translateY(${-((ms * 0.22) % (previewProducts.length > 0 ? previewProducts.length * 80 : 600))}px)`,
             transition: "none",
           }}
         >
-          {[...RAIN_POOL, ...RAIN_POOL].map((item, i) => (
-            <div key={i} className="px-2 py-1.5 border-b border-white/[0.04] flex-shrink-0">
-              <p className="text-[10px] font-semibold text-white/70 truncate">{item[0]}</p>
-              <p className="text-[9px] text-white/35">{item[1]} · {item[2]}</p>
-              <p className={`text-[9px] font-bold ${STATUS_COLOR[item[3]] ?? "text-white/30"}`}>{item[3]}</p>
-            </div>
-          ))}
+          {previewProducts.length > 0
+            ? [...previewProducts, ...previewProducts, ...previewProducts].map((p, i) => {
+                const statusLabels = ["ÜBERPRÜFT", "ANALYSIERT", "ELIMINIERT", "KANDIDAT", "BEWERTET"];
+                const status = statusLabels[i % statusLabels.length];
+                return (
+                  <div key={i} className="border-b border-white/[0.06] flex-shrink-0 flex items-center gap-2 px-2 py-2">
+                    {p.imageUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={p.imageUrl}
+                        alt={p.name}
+                        loading="lazy"
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                        className="w-10 h-10 object-contain rounded-lg bg-white/5 flex-shrink-0"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0 text-base">🐾</div>
+                    )}
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[9px] font-semibold text-white/70 truncate leading-tight">{p.name}</p>
+                      <p className="text-[8px] text-white/35 truncate">{p.brand}{p.pricePerKg != null ? ` · ${p.pricePerKg.toFixed(2)} €/kg` : ""}</p>
+                      <p className={`text-[8px] font-bold ${STATUS_COLOR[status] ?? "text-white/30"}`}>{status}</p>
+                    </div>
+                  </div>
+                );
+              })
+            : [...RAIN_POOL, ...RAIN_POOL].map((item, i) => (
+              <div key={i} className="px-2 py-1.5 border-b border-white/[0.04] flex-shrink-0">
+                <p className="text-[10px] font-semibold text-white/70 truncate">{item[0]}</p>
+                <p className="text-[9px] text-white/35">{item[1]} · {item[2]}</p>
+                <p className={`text-[9px] font-bold ${STATUS_COLOR[item[3]] ?? "text-white/30"}`}>{item[3]}</p>
+              </div>
+            ))
+          }
         </div>
       </div>
 

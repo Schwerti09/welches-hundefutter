@@ -6,7 +6,7 @@ import PriceAlertBox from "@/components/PriceAlertBox";
 import ShopReach from "@/components/ShopReach";
 import VoiceButton from "@/components/VoiceButton";
 import MarketWatch from "@/components/MarketWatch";
-import AnalysisStorm from "@/components/AnalysisStorm";
+import AnalysisStorm, { type StormProduct } from "@/components/AnalysisStorm";
 import BellaRadar from "@/components/BellaRadar";
 import BellaCharacter from "@/components/BellaCharacter";
 import type { BellaMood as CharMood } from "@/components/BellaCharacter";
@@ -118,6 +118,7 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
   const [voiceListening, setVoiceListening] = useState(false);
   const [stormActive, setStormActive] = useState(false);
   const [stormQuery, setStormQuery] = useState("");
+  const [stormProducts, setStormProducts] = useState<StormProduct[]>([]);
   const [marketWatchActive, setMarketWatchActive] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -126,6 +127,14 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
   useEffect(() => {
     const t = setTimeout(() => setMood("idle"), 2000);
     return () => clearTimeout(t);
+  }, []);
+
+  // Echtprodukte für die AnalysisStorm-Visualisierung vorladen (einmalig, non-blocking)
+  useEffect(() => {
+    fetch("/api/advisor/preview")
+      .then(r => r.ok ? r.json() : { products: [] })
+      .then(d => { if (Array.isArray(d.products) && d.products.length > 0) setStormProducts(d.products as StormProduct[]); })
+      .catch(() => {/* fallback: RAIN_POOL bleibt aktiv */});
   }, []);
 
   // Nur INNERHALB des Chat-Containers scrollen (nicht die ganze Seite), und nur
@@ -289,6 +298,7 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
         active={stormActive}
         query={stormQuery}
         onComplete={() => setStormActive(false)}
+        previewProducts={stormProducts}
       />
 
       <div className="grid lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 items-start">

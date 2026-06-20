@@ -233,8 +233,10 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
     : "";
   const bellaIntro = `Du hast also einen ${breed.name}${traitText}! 🐕${healthHint}\n\nIch bin BELLA und finde aus 11.000+ echten Sorten das perfekte Futter für dich. Noch zwei kurze Fragen:\n\n→ Wie alt ist dein ${breed.name}? (Welpe, erwachsen oder Senior?)\n→ Gibt es Allergien, einen empfindlichen Magen oder andere Besonderheiten?`;
 
-  // autoStart: wird sofort an die API geschickt wenn BELLA lädt
-  const bellaAutoStart = `Mein Hund ist ein ${breed.name}. Was brauchst du noch von mir, um das beste Futter zu empfehlen?`;
+  // autoStart: 2 Signale (Rasse + Lebensphase) damit hasEnoughIntent sofort Empfehlungen auslöst
+  const bellaAutoStart = allergyProne
+    ? `Ich habe einen erwachsenen ${breed.name}. Diese Rasse kann empfindlich auf bestimmte Inhaltsstoffe reagieren. Empfiehl mir bitte direkt das passende Futter.`
+    : `Ich habe einen erwachsenen ${breed.name}. Bitte empfiehl mir direkt das beste Futter für diese Rasse.`;
 
   // FAQ-Daten
   const isLargeBreed = breed.size === "gross" || breed.size === "sehrgross";

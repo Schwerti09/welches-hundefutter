@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 
 interface Profile {
@@ -142,7 +141,6 @@ export default function MeinHundPage() {
 
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
-      <SiteHeader />
 
       <main className="flex-1 max-w-2xl mx-auto px-5 py-12 w-full">
         {loading ? (
