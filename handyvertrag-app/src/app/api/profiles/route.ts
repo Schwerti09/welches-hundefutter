@@ -16,22 +16,48 @@ function db() {
   return url ? neon(url) : null;
 }
 
-// GET — Steckbrief (nur share_enabled=true)
+// GET — Steckbrief (token) oder Dashboard (id, kein share_enabled check)
 export async function GET(req: NextRequest) {
-  const token = req.nextUrl.searchParams.get("token");
-  if (!token) return NextResponse.json({ error: "token_missing" }, { status: 400 });
+  const { searchParams } = req.nextUrl;
+  const token = searchParams.get("token");
+  const id = searchParams.get("id");
+  const full = searchParams.get("full") === "1";
+
+  if (!token && !id) return NextResponse.json({ error: "token_or_id_missing" }, { status: 400 });
   const sql = db();
   if (!sql) return NextResponse.json({ error: "no_db" }, { status: 500 });
+
   try {
-    const rows = await sql`
-      SELECT id, name, breed_slug, birth_or_age, weight_kg, activity_level,
-             allergies, health_flags, current_food_slug, est_daily_grams, est_bag_days
-      FROM dog_profiles
-      WHERE share_token = ${token} AND share_enabled = true
-      LIMIT 1`;
+    const rows = token
+      ? await sql`
+          SELECT id, name, breed_slug, birth_or_age, weight_kg, activity_level,
+                 allergies, health_flags, current_food_slug, current_package_g,
+                 last_purchase_at, est_daily_grams, est_bag_days, share_token, share_enabled
+          FROM dog_profiles
+          WHERE share_token = ${token} AND share_enabled = true
+          LIMIT 1`
+      : await sql`
+          SELECT id, name, breed_slug, birth_or_age, weight_kg, activity_level,
+                 allergies, health_flags, current_food_slug, current_package_g,
+                 last_purchase_at, est_daily_grams, est_bag_days, share_token, share_enabled
+          FROM dog_profiles
+          WHERE id = ${id!}
+          LIMIT 1`;
+
     if (!rows[0]) return NextResponse.json({ error: "not_found" }, { status: 404 });
-    return NextResponse.json({ profile: rows[0] });
-  } catch (e) {
+    const profile = rows[0];
+
+    // Food lookup for dashboard (full=1)
+    let food = null;
+    if (full && profile.current_food_slug) {
+      const f = await sql`
+        SELECT name, brand, type, price_per_kg, affiliate_url, is_grain_free
+        FROM dog_foods WHERE slug = ${profile.current_food_slug} AND is_active = true LIMIT 1`;
+      food = f[0] ?? null;
+    }
+
+    return NextResponse.json({ profile, food, shareToken: profile.share_token });
+  } catch {
     return NextResponse.json({ error: "server" }, { status: 500 });
   }
 }

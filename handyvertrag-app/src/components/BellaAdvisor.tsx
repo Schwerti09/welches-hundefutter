@@ -217,6 +217,14 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
         m.id === bellaId ? { ...m, content: replyText, offers: offers.length ? offers : undefined, companions: companions.length ? companions : undefined, profile, studies: studies.length ? studies : undefined } : m
       ));
 
+      // Persist profile to localStorage so /mein-hund can load it
+      if (profile?.id) {
+        try {
+          localStorage.setItem("bella_profile_id", profile.id);
+          if (profile.shareToken) localStorage.setItem("bella_share_token", profile.shareToken);
+        } catch { /* SSR guard */ }
+      }
+
       setMood(offers.length > 0 ? "excited" : "happy");
       setTimeout(() => setMood("idle"), 3000);
     } catch {
@@ -496,19 +504,27 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
                     <div className="mt-3 rounded-2xl bg-gradient-to-r from-orange-600/15 to-amber-600/15 border border-orange-500/25 p-4">
                       <p className="text-xs font-bold text-orange-300 mb-1">🐕 Futter-Pass für {msg.profile.name} angelegt</p>
                       {msg.profile.dailyGrams && (
-                        <p className="text-[11px] text-white/60 mb-3">
+                        <p className="text-[11px] text-white/60 mb-2">
                           Tagesbedarf ca. <span className="text-white font-semibold">{msg.profile.dailyGrams} g</span>
                           {msg.profile.currentFood && <> · empfohlen: <span className="text-white/80">{msg.profile.currentFood}</span></>}
                         </p>
                       )}
-                      <a
-                        href={`/hund/${msg.profile.shareToken}`}
-                        target="_blank"
-                        rel="noopener"
-                        className="text-xs px-3 py-1.5 rounded-xl bg-orange-500/20 border border-orange-500/40 text-orange-200 hover:bg-orange-500/30 transition-colors inline-block"
-                      >
-                        Steckbrief ansehen →
-                      </a>
+                      <div className="flex gap-2 flex-wrap">
+                        <a
+                          href="/mein-hund"
+                          className="text-xs px-3 py-1.5 rounded-xl bg-orange-500 text-white hover:bg-orange-600 transition-colors inline-block font-semibold"
+                        >
+                          ⏰ Nachschub-Wecker →
+                        </a>
+                        <a
+                          href={`/hund/${msg.profile.shareToken}`}
+                          target="_blank"
+                          rel="noopener"
+                          className="text-xs px-3 py-1.5 rounded-xl bg-orange-500/20 border border-orange-500/40 text-orange-200 hover:bg-orange-500/30 transition-colors inline-block"
+                        >
+                          Steckbrief teilen →
+                        </a>
+                      </div>
                     </div>
                   )}
                 </div>
