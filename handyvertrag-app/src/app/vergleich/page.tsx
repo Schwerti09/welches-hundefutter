@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
+import { getBrandsWithCounts } from "@/db/queries/foods";
+
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Hundefutter Vergleich 2026: Futtertypen im Direktvergleich | BELLA",
@@ -75,7 +78,18 @@ const vergleiche = [
   },
 ];
 
-export default function VergleichIndexPage() {
+export default async function VergleichIndexPage() {
+  // Top-6 Marken für beliebte Vergleichs-Paare
+  const topBrands = (await getBrandsWithCounts(3)).slice(0, 6);
+  const brandPairs: { slugA: string; slugB: string; labelA: string; labelB: string }[] = [];
+  for (let i = 0; i < topBrands.length && brandPairs.length < 9; i++) {
+    for (let j = i + 1; j < topBrands.length && brandPairs.length < 9; j++) {
+      brandPairs.push({
+        slugA: topBrands[i].slug, labelA: topBrands[i].brand,
+        slugB: topBrands[j].slug, labelB: topBrands[j].brand,
+      });
+    }
+  }
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
       <nav className="max-w-5xl mx-auto w-full px-5 pt-8 text-sm text-[var(--muted)]">
@@ -110,6 +124,31 @@ export default function VergleichIndexPage() {
           ))}
         </div>
       </section>
+
+      {brandPairs.length > 0 && (
+        <section className="max-w-5xl mx-auto w-full px-5 pb-14">
+          <h2 className="text-xl font-extrabold tracking-tight mb-2">Marken im Direktvergleich</h2>
+          <p className="text-sm text-[var(--muted)] mb-6">Mit Live-Score und aktuellen Preisen — täglich aktualisiert.</p>
+          <div className="grid sm:grid-cols-3 gap-3">
+            {brandPairs.map(({ slugA, slugB, labelA, labelB }) => (
+              <Link
+                key={`${slugA}-vs-${slugB}`}
+                href={`/vergleich/${slugA}-vs-${slugB}`}
+                className="card card-hover p-4 block group"
+              >
+                <div className="text-2xl mb-2">⚖️</div>
+                <p className="font-bold text-sm group-hover:text-[var(--honey)] transition-colors">
+                  {labelA} vs. {labelB}
+                </p>
+                <p className="text-xs text-[var(--muted)] mt-1">Score · Preis · Qualität →</p>
+              </Link>
+            ))}
+          </div>
+          <Link href="/marke" className="mt-4 text-sm text-[var(--honey)] hover:underline inline-block">
+            Alle Marken im Katalog →
+          </Link>
+        </section>
+      )}
 
       <section className="max-w-5xl mx-auto w-full px-5 pb-14">
         <div className="rounded-2xl bg-gradient-to-r from-orange-600/20 to-amber-600/20 border border-orange-500/30 p-8 text-center">
