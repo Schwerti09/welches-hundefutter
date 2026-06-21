@@ -47,6 +47,9 @@ interface DogIntent {
   protein?: string;        // bevorzugtes Protein, z. B. "Lachs"
   breed?: string;          // erwähnte Rasse (für Mengen-Hinweis)
   maxPricePerKg?: number;  // Budget €/kg
+  currentFood?: string;    // aktuelles Futter (Marke oder "bekannt")
+  wantToSwitch?: boolean;  // möchte Futter wechseln
+  switchReason?: string;   // Grund für Wechsel ("vertraegt nicht", "mag nicht", "besser", "teuer")
 }
 
 interface DogFoodRow {
@@ -172,6 +175,35 @@ function parseIntent(message: string, history: { role: string; content: string }
   if (ppk) intent.maxPricePerKg = parseFloat(ppk[1].replace(",", "."));
   else if (/guenstig|billig|sparen|preiswert|wenig geld|kleines budget/.test(all)) intent.maxPricePerKg = intent.maxPricePerKg ?? 6;
 
+  // Aktuelles Futter — erkennt ob Nutzer aktuelles Futter erwähnt (mit oder ohne Markenname)
+  const currentFoodCtx = /frisst|bekommt|gebe (ihm|ihr)|fueттere|fuettere|kriegt|hat bisher|aktuell|momentan|bisher|seit (jahren?|monaten?|wochen?)/.test(all);
+  if (currentFoodCtx) {
+    // Versuche Marke zu extrahieren
+    const FOOD_BRANDS = ["royal canin", "hills", "hill's", "animonda", "wolfsblut", "bosch", "brit", "purina", "eukanuba",
+      "acana", "orijen", "taste of the wild", "bozita", "josera", "leonardo", "belcando", "platinum", "rinti",
+      "happy dog", "julius", "granatapet", "herrmann", "luna", "grau", "tierfreund", "pedigree", "whiskas",
+      "chappi", "frolic", "almo nature", "concept for life", "farmina", "advance", "proplan", "pro plan",
+      "iams", "science diet", "specific", "mera", "bewi dog", "trixie", "defu", "kokoba", "wolkraft",
+      "fleisch", "barf", "selbst zubereitet", "rohe kost"];
+    let found = false;
+    for (const b of FOOD_BRANDS) {
+      if (all.includes(b)) { intent.currentFood = b; found = true; break; }
+    }
+    if (!found) intent.currentFood = "bekannt"; // Nutzer hat aktuelles Futter erwähnt, aber keine Marke
+  }
+
+  // Wechsel-Absicht
+  if (/wechsel|umstell|anderes? futter|andere? marke|neues? futter|besseres? futter|probier/.test(all)) {
+    intent.wantToSwitch = true;
+  }
+  if (intent.currentFood) intent.wantToSwitch = intent.wantToSwitch ?? true; // wenn aktuelles Futter bekannt, impliziert Wechsel
+
+  // Wechsel-Grund
+  if (/vertraegt (es|das|ihn) nicht|bekommt (ihm|ihr) nicht gut|kriegt davon durchfall|allergi|juckt/.test(all)) intent.switchReason = "vertraegt nicht";
+  else if (/mag (es|das|ihn) nicht|frisst (es|das) nicht|will (es|das) nicht|schmeckt ihm nicht/.test(all)) intent.switchReason = "mag nicht";
+  else if (/teuer|zu teuer|guenstig|sparen/.test(all) && intent.currentFood) intent.switchReason = "teuer";
+  else if (intent.currentFood && !intent.switchReason) intent.switchReason = "optimieren";
+
   return intent;
 }
 
@@ -182,29 +214,36 @@ function intentSignalCount(i: DogIntent): number {
   if (i.sensitive || i.protein) n++;
   if (i.maxPricePerKg) n++;
   if (i.breed) n++;
+  if (i.currentFood) n++;
   return n;
 }
 
-// Empfiehlt erst ab 2 erkannten Signalen (z. B. Lebensphase + Allergie) — bei nur
-// einem Signal stellt BELLA noch eine Rückfrage. Nach einer beantworteten
-// Rückfrage (>= 2 Nutzer-Nachrichten) reicht auch 1 Signal, um nicht endlos
-// nachzufragen.
+// BELLA fragt mindestens 2x nach, bevor sie empfiehlt:
+// - Runde 1: Lebensphase / Rasse / Allergie klären
+// - Runde 2: aktuelles Futter & Wechselgrund klären (sehr wertvoll!)
+// - Ab 4 Signalen ODER nach 3 User-Turns: empfehlen
+// Verhindert endloses Nachfragen bei langen Gesprächen (Fallback: 4 Turns).
 function hasEnoughIntent(i: DogIntent, history: { role: string; content: string }[]): boolean {
   const signals = intentSignalCount(i);
-  if (signals >= 2) return true;
   const userTurns = history.filter(h => h.role === "user").length + 1;
-  return signals >= 1 && userTurns >= 2;
+  if (signals >= 4) return true;                            // viele Infos → direkt empfehlen
+  if (signals >= 2 && i.currentFood) return true;          // Hund + aktuelles Futter bekannt → empfehlen
+  if (signals >= 3 && userTurns >= 2) return true;         // viele Signale nach min. 2 Runden
+  if (userTurns >= 4) return true;                         // nie länger als 4 Runden fragen
+  return false;
 }
 
 function computeConfidence(i: DogIntent, history: { content: string }[]): number {
   let s = 12;
   if (i.lifePhase) s += 18;
-  if (i.foodType) s += 16;
-  if (i.sensitive) s += 16;
-  if (i.protein) s += 12;
-  if (i.maxPricePerKg) s += 14;
+  if (i.foodType) s += 14;
+  if (i.sensitive) s += 14;
+  if (i.protein) s += 10;
+  if (i.maxPricePerKg) s += 12;
   if (i.breed) s += 10;
-  s += Math.min(history.length * 4, 16);
+  if (i.currentFood) s += 14;
+  if (i.wantToSwitch) s += 4;
+  s += Math.min(history.length * 3, 14);
   return Math.min(s, 98);
 }
 
@@ -368,53 +407,87 @@ function buildSystemPrompt(offers: ScoredFood[], confidence: number, ask: boolea
           `${o.price_per_kg ? ` · ${parseFloat(o.price_per_kg).toFixed(2)} €/kg` : o.price ? ` · ${parseFloat(o.price).toFixed(2)} €` : ""}` +
           `${o.is_grain_free ? " · getreidefrei" : ""}${o.is_hypoallergenic ? " · hypoallergen" : ""} · geeignet für: ${sf} · Match ${o.matchScore}%`;
       }).join("\n")
-    : "Noch keine Futter-Daten — du brauchst erst mehr Infos über den Hund.";
+    : "Noch keine Futter-Daten — weitere Infos über den Hund einholen.";
 
   const known: string[] = [];
-  if (intent.lifePhase) known.push(`Lebensphase: ${intent.lifePhase}`);
-  if (intent.foodType) known.push(`Futtertyp: ${intent.foodType}`);
-  if (intent.sensitive) known.push(`empfindlich/Allergie${intent.protein ? ` (${intent.protein})` : ""}`);
   if (intent.breed) known.push(`Rasse: ${intent.breed}`);
+  if (intent.lifePhase) known.push(`Lebensphase: ${intent.lifePhase}`);
+  if (intent.sensitive) known.push(`empfindlich/Allergie${intent.protein ? ` (auf ${intent.protein})` : ""}`);
+  if (intent.foodType) known.push(`Wunsch-Futtertyp: ${intent.foodType}`);
   if (intent.maxPricePerKg) known.push(`Budget: bis ${intent.maxPricePerKg} €/kg`);
+  if (intent.currentFood && intent.currentFood !== "bekannt") known.push(`aktuelles Futter: ${intent.currentFood}`);
+  else if (intent.currentFood === "bekannt") known.push("aktuelles Futter: erwähnt (ohne Marke)");
+  if (intent.wantToSwitch && intent.switchReason) known.push(`Wechselgrund: ${intent.switchReason}`);
+
+  // Was fehlt noch für eine gute Empfehlung?
+  const missing: string[] = [];
+  if (!intent.lifePhase) missing.push("Lebensphase (Welpe / ausgewachsen / Senior)");
+  if (!intent.currentFood) missing.push("aktuelles Futter & warum sie wechseln möchten");
+  if (!intent.sensitive && !intent.protein) missing.push("Allergien oder empfindlicher Magen");
+  if (!intent.foodType) missing.push("gewünschter Futtertyp (Trocken / Nass / BARF)");
+
+  const switchCtx = intent.wantToSwitch && intent.currentFood
+    ? `\nKONTEXT FUTTERWECHSEL: Hund frisst aktuell "${intent.currentFood}", Grund: ${intent.switchReason ?? "unbekannt"}. Beziehe dich auf diesen Wechsel in der Empfehlung.`
+    : "";
 
   const mode = ask
-    ? `MODUS: NACHFRAGEN (noch keine Empfehlung)
-→ Bereits bekannt: ${known.length ? known.join(", ") : "noch nichts"}.
-→ Stelle GENAU EINE konkrete Frage zu einem noch UNBEKANNTEN Aspekt, die dich am schnellsten zu einer guten Empfehlung bringt.
-→ Frag nach dem Wichtigsten, das noch fehlt: Alter/Lebensphase (Welpe, adult, Senior) ODER Allergie/empfindlicher Magen ODER Futtertyp (Trocken/Nass/BARF) ODER Budget ODER Rasse.
-→ Biete 2-3 konkrete Antwort-Optionen an, damit der Halter nur wählen muss.
-→ Empfiehl JETZT noch KEIN konkretes Produkt und nenne KEINE Preise.`
-    : `MODUS: EMPFEHLEN (Futter wurde analysiert)
-→ Empfiehl das beste Futter [1] konkret mit 2-3 echten Gründen aus den Daten (Typ, Protein, €/kg, getreidefrei/hypoallergen).
-→ Nenne kurz EINE Alternative und warum sie zweite Wahl ist.
-→ Optional EINE Anschlussfrage zum Verfeinern (z. B. Tagesmenge nach Gewicht).`;
+    ? `MODUS: GESPRÄCH / NACHFRAGEN (noch keine Empfehlung zeigen)
+
+Was ich bereits weiß: ${known.length ? known.join(" · ") : "noch nichts — erste Nachricht"}
+Was noch fehlt: ${missing.slice(0, 2).join("; ")}
+
+DEINE AUFGABE:
+1. ERST: Reagiere kurz und warm auf das, was der Halter gerade gesagt hat (1 kurzer Satz — zeige, dass du zuhörst und verstanden hast). Beziehe dich auf konkrete Details (Rasse, Alter, Problem). Kein generisches "Super!" — sei spezifisch.
+2. DANN: Stelle GENAU EINE natürliche Folgefrage.
+
+PRIORITÄT der Fragen (was bringt mich am schnellsten zur besten Empfehlung):
+  1. Falls Lebensphase unbekannt → frag danach: "Wie alt ist er/sie ungefähr — Welpe, ausgewachsen oder schon ein älteres Semester?"
+  2. Falls aktuelles Futter unbekannt → frag danach: "Was frisst er/sie aktuell, und was ist der Grund für den Wechsel?"
+  3. Falls Allergie/Sensibilität unklar → frag: "Gibt es Allergien oder reagiert er/sie auf bestimmte Zutaten?"
+  4. Falls Futtertyp unklar → frag: "Soll es eher Trocken-, Nassfutter oder BARF sein?"
+
+STIL: Freundlich, persönlich, wie eine kompetente Freundin die sich mit Hundeernährung auskennt. Biete 2-3 konkrete Antwort-Optionen an wenn passend. Keine Produkte nennen.`
+    : `MODUS: EMPFEHLEN
+
+Was ich weiß: ${known.length ? known.join(" · ") : "allgemeine Anfrage"}${switchCtx}
+
+DEINE AUFGABE:
+1. Empfiehl Futter [1] mit 2-3 echten, konkreten Gründen aus den Produktdaten (Typ, Protein, €/kg, getreidefrei/hypoallergen, geeignet für Lebensphase).
+2. Nenne kurz Futter [2] als Alternative und WARUM es zweite Wahl ist.
+3. Falls relevant: einen kurzen Praxis-Tipp (Tagesmenge nach Gewicht, Umstellungsdauer, Portionsgröße).
+4. Optional: EINE natürliche Anschlussfrage wenn noch was Wichtiges fehlt.
+
+STIL: Konkret und ehrlich. Nicht "Das ist perfekt für deinen Hund!" sondern "Das passt gut, weil...". 4-6 Sätze — immer vollständig beenden, nie mitten im Satz abbrechen.`;
 
   const studyBlock = studies.length
-    ? `\nWISSENSCHAFT (peer-reviewed, kannst du kurz zitieren wenn passend):\n${studies.map(s =>
+    ? `\nWISSENSCHAFT (peer-reviewed, kurz zitieren wenn wirklich passend — max. 1 Satz):\n${studies.map(s =>
         `– ${s.title} (${s.authors[0]?.split(",")[0] ?? ""} et al., ${s.year}): ${s.bella_summary.slice(0, 200)}`
       ).join("\n")}`
     : "";
 
-  return `Du bist BELLA – Deutschlands KI-Ernährungsberaterin für Hunde. Ruhig, kompetent, ehrlich. Keine Verkäuferin.
+  return `Du bist BELLA — eine erfahrene, ehrliche Hundeernährungsberaterin. Du kennst 11.000+ Futtersorten und kannst durch gute Fragen schnell herausfinden, was zu einem bestimmten Hund passt.
 
-KONFIDENZ: ${confidence}%
+Du bist KEINE Verkäuferin. Du bist wie eine kluge Freundin, die sich auskennt — warmherzig, direkt, ohne Floskeln.
+
+KONFIDENZ: ${confidence}% (wie sicher bin ich mir mit den vorliegenden Infos)
+
 ${mode}
 
-ANALYSIERTE FUTTER-PRODUKTE (nutze NUR diese, echte Daten):
+ANALYSIERTE FUTTER-PRODUKTE (NUR diese verwenden — echte Daten aus 11.000+ Katalog):
 ${block}
 ${studyBlock}
 
-REGELN:
-- ${ask ? "Max. 2-3 Sätze für die Rückfrage" : "Empfehlung: 4-6 Sätze — komplett ausführen, nie mitten im Satz abbrechen"}. Kein Hype ("super!", "perfekt!"). Stattdessen konkrete Fakten.
-- Nutze NUR die echten Produktdaten oben. Erfinde keine Marken, Preise oder Inhaltsstoffe.
-- "geeignet für: alle Lebensphase" = Produkt ist für Welpe, Adult UND Senior geeignet — nenne es NIE als "Juniorprodukt".
-- Du duzt. Empathisch, aber präzise.
-- Wenn eine passende Studie vorhanden ist, zitiere kurz den Kernbefund (1 Satz), aber sei nicht aufdringlich.
-${intent.breed ? `- Der Halter hat die Rasse "${intent.breed}" erwähnt — beziehe dich darauf, wenn sinnvoll.\n` : ""}- Antworte auf Deutsch.`;
+STRIKTE REGELN — nie brechen:
+- "geeignet für: alle Lebensphase" = für Welpe, Adult UND Senior geeignet. NIE "Juniorprodukt" nennen.
+- Nur die echten Produktdaten oben verwenden. Nie Marken, Preise oder Inhaltsstoffe erfinden.
+- Allergen-Sicherheit: Wenn Allergie auf X bekannt, empfehle NIE ein Produkt das X enthält.
+- Du duzt den Halter. Immer auf Deutsch antworten.
+- Wenn du eine Studie zitierst: nur wenn sie wirklich zur Situation passt, nie aufgezwungen.
+${intent.breed ? `- Rasse "${intent.breed}" ist bekannt — beziehe dich darauf wenn sinnvoll (rassetypische Probleme, Größe, Lebenserwartung).\n` : ""}${intent.currentFood && intent.currentFood !== "bekannt" ? `- Aktuelles Futter "${intent.currentFood}" bekannt — beziehe dich bei der Empfehlung auf den Wechsel.\n` : ""}`;
 }
 
 function fallbackQuestion(): string {
-  return "Erzähl mir kurz mehr über deinen Hund: Wie alt ist er (Welpe, erwachsen, Senior), und gibt es Allergien oder einen empfindlichen Magen? Welcher Futtertyp — Trocken, Nass oder BARF?";
+  return "Erzähl mir ein bisschen mehr über deinen Hund: Wie alt ist er oder sie ungefähr (Welpe, ausgewachsen, Senior)? Und was frisst er aktuell — soll es ein Wechsel werden oder komplett neu?";
 }
 
 function fallbackRecommend(offers: ScoredFood[]): string {
