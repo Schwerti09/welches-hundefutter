@@ -207,7 +207,7 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
 
       const flushLine = (line: string) => {
         if (line.startsWith("TEXT:")) {
-          replyText += line.slice(5);
+          replyText += line.slice(5).replace(/\\n/g, "\n");
           setMessages(prev => prev.map(m => m.id === bellaId ? { ...m, content: replyText } : m));
         } else if (line.startsWith("STEP:scan:Futter-Katalog")) {
           // BELLA hat genug Infos → geht in Empfehlungsmodus → Storm erst jetzt starten

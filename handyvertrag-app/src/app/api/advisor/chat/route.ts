@@ -129,7 +129,12 @@ function parseIntent(message: string, history: { role: string; content: string }
   // NFC zuerst: iOS/macOS liefern Umlaute oft zerlegt (u + ◌̈, NFD). Ohne Normalisierung
   // matcht /ü/ das nicht → "Hühnerallergie" würde nicht als Huhn erkannt → Allergiker
   // bekäme Huhn empfohlen. Tier-Sicherheit: NIE auf stiller Normalisierung beruhen.
-  const all = [...history.map(h => h.content), message].join(" ").normalize("NFC").toLowerCase()
+  //
+  // WICHTIG: Nur User-Nachrichten verwenden — Assistenten-Nachrichten enthalten
+  // Fragewörter wie "Ist dein Hund ein Welpe?" die den Lebensphase-Regex fälschlich
+  // triggern und die Intent-Erkennung korrumpieren.
+  const userOnly = history.filter(h => h.role === "user").map(h => h.content);
+  const all = [...userOnly, message].join(" ").normalize("NFC").toLowerCase()
     .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss");
   const intent: DogIntent = {};
 
@@ -273,7 +278,7 @@ async function fetchCandidates(intent: DogIntent): Promise<{ offers: ScoredFood[
   // Senior/Adult: Welpen-exklusive Produkte hart ausschließen. Produkte ohne suitable_for
   // (null = alle Lebensphase) bleiben drin. Gemischte Tags wie ['welpen','adult'] auch OK.
   if (intent.lifePhase === "senior" || intent.lifePhase === "adult") {
-    cond.push(`NOT (suitable_for IS NOT NULL AND suitable_for && ARRAY['welpen']::text[] AND NOT suitable_for && ARRAY['adult','senior']::text[])`);
+    cond.push(`NOT (suitable_for IS NOT NULL AND (suitable_for && ARRAY['welpen']::text[]) AND NOT (suitable_for && ARRAY['adult','senior']::text[]))`);
   }
 
   let totalScanned = 11000;
@@ -502,7 +507,7 @@ export async function POST(request: NextRequest) {
           // mittendrin ab. 1200 gibt genug Raum für vollständige Empfehlungen.
           const chat = model.startChat({ history: history.map(h => ({ role: h.role === "assistant" ? "model" : "user", parts: [{ text: h.content }] })), generationConfig: { temperature: 0.8, maxOutputTokens: 1200 } });
           const result = await chat.sendMessageStream(message);
-          for await (const chunk of result.stream) { const t = chunk.text(); if (t) { fullText += t; emit(`TEXT:${t}`); } }
+          for await (const chunk of result.stream) { const t = chunk.text(); if (t) { fullText += t; emit(`TEXT:${t.replace(/\r?\n/g, "\\n")}`); } }
         } catch { fullText = ""; }
       }
       if (!fullText && anthropicKey) {
@@ -511,13 +516,13 @@ export async function POST(request: NextRequest) {
           const msgs = [...history.map(h => ({ role: h.role as "user" | "assistant", content: h.content })), { role: "user" as const, content: message }];
           const resp = await anthropic.messages.create({ model: "claude-haiku-4-5", max_tokens: 1200, temperature: 0.8, system: sysPrompt, messages: msgs, stream: true });
           for await (const event of resp) {
-            if (event.type === "content_block_delta" && event.delta.type === "text_delta") { const t = event.delta.text; if (t) { fullText += t; emit(`TEXT:${t}`); } }
+            if (event.type === "content_block_delta" && event.delta.type === "text_delta") { const t = event.delta.text; if (t) { fullText += t; emit(`TEXT:${t.replace(/\r?\n/g, "\\n")}`); } }
           }
         } catch { fullText = ""; }
       }
       if (!fullText) {
         fullText = ask ? fallbackQuestion() : fallbackRecommend(offers);
-        for (const w of fullText.split(" ")) { emit(`TEXT:${w} `); await new Promise(r => setTimeout(r, 25)); }
+        for (const w of fullText.split(" ")) { emit(`TEXT:${w.replace(/\r?\n/g, "\\n")} `); await new Promise(r => setTimeout(r, 25)); }
       }
 
       emit(`STEP:done:${ask ? "Frage bereit" : "Analyse abgeschlossen"}`);
