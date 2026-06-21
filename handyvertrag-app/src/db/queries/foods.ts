@@ -121,11 +121,17 @@ export async function getAvgPricePerKgDry(): Promise<number> {
   const sql = db();
   if (!sql) return 5.5;
   try {
+    // Dedupliziert: pro Produktname nur der günstigste Preis (verhindert Verzerrung durch Kleinstpackungen).
+    // Preisrange 2–25 €/kg schließt Ausreißer aus (Kleinstpackungen, Luxus-Nischenprodukte).
     const r = await sql.query(
-      `SELECT AVG(price_per_kg)::numeric(8,2) AS avg
-       FROM dog_foods
-       WHERE is_active = true AND type = 'trocken'
-         AND price_per_kg IS NOT NULL AND price_per_kg BETWEEN 2 AND 60`
+      `SELECT AVG(min_price)::numeric(8,2) AS avg
+       FROM (
+         SELECT MIN(price_per_kg) AS min_price
+         FROM dog_foods
+         WHERE is_active = true AND type = 'trocken'
+           AND price_per_kg IS NOT NULL AND price_per_kg BETWEEN 2 AND 25
+         GROUP BY LOWER(TRIM(name))
+       ) deduped`
     );
     const v = rows(r)[0] as unknown as { avg: string } | undefined;
     return v?.avg ? parseFloat(v.avg) : 5.5;

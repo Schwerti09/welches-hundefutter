@@ -31,6 +31,7 @@ const LINKS: Record<string, FooterLink[]> = {
   ],
   Entdecken: [
     { label: "Aktuelle Futter-Deals", href: "/deals" },
+    { label: "Alle Marken im Katalog", href: "/marke" },
     { label: "Über uns", href: "/ueber-uns" },
     { label: "Affiliate-Hinweis", href: "/affiliate" },
     { label: "DOCTR Care", href: "https://t.adcell.com/p/click?promoId=478872&slotId=66376", external: true, sponsored: true, hint: "Werbung" },

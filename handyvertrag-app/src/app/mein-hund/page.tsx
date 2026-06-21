@@ -66,6 +66,58 @@ function ConsumptionMeter({ days, bagDays }: { days: number; bagDays: number }) 
   );
 }
 
+function RefillEmailForm({ profileId, foodSlug, foodName, lastPurchaseAt, bagDays }: {
+  profileId: string; foodSlug: string | null; foodName: string | null;
+  lastPurchaseAt: string | null; bagDays: number | null;
+}) {
+  const [email, setEmail] = useState("");
+  const [state, setState] = useState<"idle" | "saving" | "done" | "error">("idle");
+
+  const submit = async () => {
+    if (!email || state === "saving") return;
+    setState("saving");
+    // refillDueAt = lastPurchaseAt + bagDays (0 Uhr des Ablauftages)
+    const refillDueAt = lastPurchaseAt && bagDays
+      ? new Date(new Date(lastPurchaseAt).getTime() + bagDays * 86_400_000).toISOString()
+      : null;
+    try {
+      const res = await fetch("/api/alerts/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, foodSlug, foodName, mode: "refill", dogProfileId: profileId, refillDueAt }),
+      });
+      setState(res.ok ? "done" : "error");
+    } catch { setState("error"); }
+  };
+
+  if (state === "done") return (
+    <p className="mt-3 text-xs text-emerald-400">✓ Bestätigungsmail gesendet — bitte kurz bestätigen!</p>
+  );
+
+  return (
+    <div className="mt-4">
+      <p className="text-xs text-[var(--muted)] mb-2">🔔 E-Mail-Erinnerung wenn der Sack knapp wird:</p>
+      <div className="flex gap-2">
+        <input
+          type="email"
+          placeholder="deine@email.de"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          onKeyDown={e => e.key === "Enter" && submit()}
+          className="flex-1 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/50"
+        />
+        <button
+          onClick={submit}
+          disabled={!email || state === "saving"}
+          className="px-4 py-2 rounded-xl bg-orange-500 text-white text-sm font-semibold disabled:opacity-50 shrink-0"
+        >
+          {state === "saving" ? "…" : state === "error" ? "Fehler" : "Wecker"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function LastPurchaseInput({ profileId, onUpdate }: { profileId: string; onUpdate: () => void }) {
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [saving, setSaving] = useState(false);
@@ -220,6 +272,14 @@ export default function MeinHundPage() {
                 <LastPurchaseInput
                   profileId={data.profile.id}
                   onUpdate={() => setRefreshKey(k => k + 1)}
+                />
+
+                <RefillEmailForm
+                  profileId={data.profile.id}
+                  foodSlug={data.profile.current_food_slug}
+                  foodName={data.food?.name ?? null}
+                  lastPurchaseAt={data.profile.last_purchase_at}
+                  bagDays={data.profile.est_bag_days}
                 />
 
                 {days !== null && days <= 5 && data.food && (

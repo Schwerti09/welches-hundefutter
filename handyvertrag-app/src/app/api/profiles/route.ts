@@ -85,6 +85,30 @@ export async function POST(req: NextRequest) {
   try { body = await req.json(); } catch { return NextResponse.json({ error: "bad_json" }, { status: 400 }); }
 
   const name = (body.name || "").trim();
+
+  // Partial update (z.B. nur lastPurchaseAt von LastPurchaseInput) — kein name nötig
+  if (body.id && !name) {
+    try {
+      const upd = await sql`
+        UPDATE dog_profiles SET
+          last_purchase_at = ${body.lastPurchaseAt ?? null},
+          updated_at = now()
+        WHERE id = ${body.id}
+        RETURNING id, share_token, est_bag_days`;
+      if (!upd[0]) return NextResponse.json({ error: "not_found" }, { status: 404 });
+      // Refill-Wecker: refill_due_at neu setzen
+      const existingBd = upd[0].est_bag_days as number | null;
+      if (body.lastPurchaseAt && existingBd) {
+        const refillDue = new Date(new Date(body.lastPurchaseAt).getTime() + existingBd * 86_400_000).toISOString();
+        await sql`UPDATE price_alerts SET refill_due_at = ${refillDue} WHERE dog_profile_id = ${body.id} AND mode = 'refill' AND is_active = true`.catch(() => {});
+      }
+      return NextResponse.json({ ok: true, id: upd[0].id, shareToken: upd[0].share_token });
+    } catch (e) {
+      console.error("[api/profiles partial]", (e as Error).message);
+      return NextResponse.json({ error: "server" }, { status: 500 });
+    }
+  }
+
   if (!name) return NextResponse.json({ error: "name_required" }, { status: 400 });
 
   // Verbrauchsmathematik berechnen (deterministisch)
@@ -98,7 +122,7 @@ export async function POST(req: NextRequest) {
     let shareToken: string;
 
     if (body.id) {
-      // Update
+      // Full update
       const upd = await sql`
         UPDATE dog_profiles SET
           name = ${name},
@@ -120,6 +144,12 @@ export async function POST(req: NextRequest) {
       if (!upd[0]) return NextResponse.json({ error: "not_found" }, { status: 404 });
       profileId = upd[0].id;
       shareToken = upd[0].share_token;
+
+      // Refill-Wecker: refill_due_at neu berechnen wenn lastPurchaseAt gesetzt
+      if (body.lastPurchaseAt && bd) {
+        const refillDue = new Date(new Date(body.lastPurchaseAt).getTime() + bd * 86_400_000).toISOString();
+        await sql`UPDATE price_alerts SET refill_due_at = ${refillDue} WHERE dog_profile_id = ${body.id} AND mode = 'refill' AND is_active = true`.catch(() => {});
+      }
     } else {
       // Insert
       shareToken = randomBytes(18).toString("hex");
