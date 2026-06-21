@@ -116,6 +116,25 @@ export function priceAlertEmail(p: {
   };
 }
 
+export function magicLinkEmail(restoreUrl: string, dogName?: string) {
+  const ctx = dogName ? ` für <strong>${escapeHtml(dogName)}</strong>` : "";
+  return {
+    subject: "🐾 Dein BELLA-Profil-Link",
+    html: shell(`
+      <h1 style="font-size:20px;margin:0 0 12px">Hier ist dein Profil-Link 🐕</h1>
+      <p style="color:#cbd5e1;line-height:1.6;margin:0 0 20px">
+        Du möchtest dein Hunde-Profil${ctx} auf einem neuen Gerät öffnen?
+        Klick einfach auf den Button — du bist sofort drin, kein Passwort nötig.
+      </p>
+      <p style="margin:0 0 20px">${btn(restoreUrl, "Profil öffnen →")}</p>
+      <p style="color:#6b7280;font-size:13px;line-height:1.6;margin:0">
+        Dieser Link funktioniert einmalig und läuft nach 24 Stunden ab.
+        Falls du diese E-Mail nicht angefordert hast, ignoriere sie einfach.
+      </p>`),
+    text: `Dein BELLA-Profil-Link${dogName ? ` für ${dogName}` : ""}: ${restoreUrl}`,
+  };
+}
+
 function escapeHtml(s: string): string {
   return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
 }

@@ -275,6 +275,54 @@ function LifecycleCard({ profile }: { profile: { id: string; name: string; birth
   );
 }
 
+function RecoveryForm() {
+  const [email, setEmail] = useState("");
+  const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+
+  const submit = async () => {
+    if (!email || state === "sending") return;
+    setState("sending");
+    try {
+      await fetch("/api/auth/magic", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      setState("sent");
+    } catch {
+      setState("error");
+    }
+  };
+
+  if (state === "sent") return (
+    <p className="text-sm text-emerald-400 mt-2">✓ Falls ein Profil für diese E-Mail existiert, schicken wir dir gleich den Link.</p>
+  );
+
+  return (
+    <div className="mt-8 pt-8 border-t border-white/10">
+      <p className="text-sm text-[var(--muted)] mb-3">Schon ein Profil auf einem anderen Gerät erstellt?</p>
+      <div className="flex gap-2 max-w-sm mx-auto">
+        <input
+          type="email"
+          placeholder="deine@email.de"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          onKeyDown={e => e.key === "Enter" && submit()}
+          className="flex-1 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/50"
+        />
+        <button
+          onClick={submit}
+          disabled={!email || state === "sending"}
+          className="px-4 py-2 rounded-xl bg-white/10 text-white text-sm font-semibold disabled:opacity-50 shrink-0 hover:bg-white/15 transition-colors"
+        >
+          {state === "sending" ? "…" : "Link senden"}
+        </button>
+      </div>
+      {state === "error" && <p className="text-xs text-red-400 mt-2">Fehler — bitte nochmal versuchen.</p>}
+    </div>
+  );
+}
+
 export default function MeinHundPage() {
   const [data, setData] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -283,7 +331,17 @@ export default function MeinHundPage() {
 
   const load = async () => {
     setLoading(true);
-    const token = localStorage.getItem("bella_share_token");
+
+    // Check URL for ?restore=[share_token] (magic link from email)
+    const params = new URLSearchParams(window.location.search);
+    const restoreToken = params.get("restore");
+    if (restoreToken) {
+      localStorage.setItem("bella_share_token", restoreToken);
+      // Clean URL without reload
+      window.history.replaceState({}, "", "/mein-hund");
+    }
+
+    const token = restoreToken || localStorage.getItem("bella_share_token");
     const profileId = localStorage.getItem("bella_profile_id");
 
     if (!token && !profileId) {
@@ -320,18 +378,19 @@ export default function MeinHundPage() {
             <div className="w-8 h-8 border-2 border-orange-500/30 border-t-orange-500 rounded-full animate-spin" />
           </div>
         ) : noProfile ? (
-          <div className="text-center py-24">
+          <div className="text-center py-16">
             <div className="text-5xl mb-6">🐕</div>
             <h1 className="text-2xl font-black mb-3">Noch kein Hunde-Profil</h1>
             <p className="text-[var(--muted)] mb-8 max-w-md mx-auto">
               Lass BELLA ein Profil für deinen Hund anlegen — sie braucht nur Rasse, Alter und Gewicht.
             </p>
             <Link
-              href="/#bella-advisor"
+              href="/?ctx=profil#bella-advisor"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold hover:shadow-lg hover:shadow-orange-500/30 transition-all"
             >
-              🐾 BELLA fragen
+              🐾 Profil jetzt anlegen
             </Link>
+            <RecoveryForm />
           </div>
         ) : data ? (
           <div className="space-y-6">
