@@ -400,7 +400,7 @@ ${block}
 ${studyBlock}
 
 REGELN:
-- Max. 2-3 Sätze. Kein Hype ("super!", "perfekt!"). Stattdessen konkrete Fakten.
+- ${ask ? "Max. 2-3 Sätze für die Rückfrage" : "Empfehlung: 4-6 Sätze — komplett ausführen, nie mitten im Satz abbrechen"}. Kein Hype ("super!", "perfekt!"). Stattdessen konkrete Fakten.
 - Nutze NUR die echten Produktdaten oben. Erfinde keine Marken, Preise oder Inhaltsstoffe.
 - "geeignet für: alle Lebensphase" = Produkt ist für Welpe, Adult UND Senior geeignet — nenne es NIE als "Juniorprodukt".
 - Du duzt. Empathisch, aber präzise.
@@ -497,7 +497,10 @@ export async function POST(request: NextRequest) {
         try {
           const genAI = new GoogleGenerativeAI(geminiKey);
           const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash", systemInstruction: sysPrompt });
-          const chat = model.startChat({ history: history.map(h => ({ role: h.role === "assistant" ? "model" : "user", parts: [{ text: h.content }] })), generationConfig: { temperature: 0.8, maxOutputTokens: 600 } });
+          // maxOutputTokens 600→1200: Gemini 2.5 Flash verbraucht bei kurzen Antworten
+          // teils Thinking-Tokens aus demselben Budget — bei 600 bricht die Antwort
+          // mittendrin ab. 1200 gibt genug Raum für vollständige Empfehlungen.
+          const chat = model.startChat({ history: history.map(h => ({ role: h.role === "assistant" ? "model" : "user", parts: [{ text: h.content }] })), generationConfig: { temperature: 0.8, maxOutputTokens: 1200 } });
           const result = await chat.sendMessageStream(message);
           for await (const chunk of result.stream) { const t = chunk.text(); if (t) { fullText += t; emit(`TEXT:${t}`); } }
         } catch { fullText = ""; }
@@ -506,7 +509,7 @@ export async function POST(request: NextRequest) {
         try {
           const anthropic = new Anthropic({ apiKey: anthropicKey });
           const msgs = [...history.map(h => ({ role: h.role as "user" | "assistant", content: h.content })), { role: "user" as const, content: message }];
-          const resp = await anthropic.messages.create({ model: "claude-haiku-4-5", max_tokens: 600, temperature: 0.8, system: sysPrompt, messages: msgs, stream: true });
+          const resp = await anthropic.messages.create({ model: "claude-haiku-4-5", max_tokens: 1200, temperature: 0.8, system: sysPrompt, messages: msgs, stream: true });
           for await (const event of resp) {
             if (event.type === "content_block_delta" && event.delta.type === "text_delta") { const t = event.delta.text; if (t) { fullText += t; emit(`TEXT:${t}`); } }
           }
