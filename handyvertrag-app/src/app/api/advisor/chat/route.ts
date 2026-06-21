@@ -578,7 +578,17 @@ export async function POST(request: NextRequest) {
           // maxOutputTokens 600→1200: Gemini 2.5 Flash verbraucht bei kurzen Antworten
           // teils Thinking-Tokens aus demselben Budget — bei 600 bricht die Antwort
           // mittendrin ab. 1200 gibt genug Raum für vollständige Empfehlungen.
-          const chat = model.startChat({ history: history.map(h => ({ role: h.role === "assistant" ? "model" : "user", parts: [{ text: h.content }] })), generationConfig: { temperature: 0.8, maxOutputTokens: 1200 } });
+          // thinkingBudget: 0 → Thinking deaktiviert: konversationelle Beratung braucht kein
+          // Chain-of-Thought — spart Tokens und verhindert dass Thinking-Tokens das sichtbare
+          // Output-Budget auffressen (Gemini 2.5 Flash verrechnet Thinking gegen maxOutputTokens).
+          // maxOutputTokens 2048: Empfehlung + Kontext + Tipp + Folgefrage ~400-600 Tokens,
+          // Frage mit Acknowledgment + Optionen ~200-300 Tokens — 2048 gibt sicheren Puffer.
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const genConfig: any = { temperature: 0.8, maxOutputTokens: 2048, thinkingConfig: { thinkingBudget: 0 } };
+          const chat = model.startChat({
+            history: history.map(h => ({ role: h.role === "assistant" ? "model" : "user", parts: [{ text: h.content }] })),
+            generationConfig: genConfig,
+          });
           const result = await chat.sendMessageStream(message);
           for await (const chunk of result.stream) { const t = chunk.text(); if (t) { fullText += t; emit(`TEXT:${t.replace(/\r?\n/g, "\\n")}`); } }
         } catch { fullText = ""; }
@@ -587,7 +597,7 @@ export async function POST(request: NextRequest) {
         try {
           const anthropic = new Anthropic({ apiKey: anthropicKey });
           const msgs = [...history.map(h => ({ role: h.role as "user" | "assistant", content: h.content })), { role: "user" as const, content: message }];
-          const resp = await anthropic.messages.create({ model: "claude-haiku-4-5", max_tokens: 1200, temperature: 0.8, system: sysPrompt, messages: msgs, stream: true });
+          const resp = await anthropic.messages.create({ model: "claude-haiku-4-5", max_tokens: 1536, temperature: 0.8, system: sysPrompt, messages: msgs, stream: true });
           for await (const event of resp) {
             if (event.type === "content_block_delta" && event.delta.type === "text_delta") { const t = event.delta.text; if (t) { fullText += t; emit(`TEXT:${t.replace(/\r?\n/g, "\\n")}`); } }
           }
