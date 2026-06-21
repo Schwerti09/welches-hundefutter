@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
   const url = process.env.DATABASE_URL;
   if (!url) return NextResponse.json({ ok: false, error: "no_db" }, { status: 500 });
 
-  let body: { email?: string; foodSlug?: string; foodName?: string; dogProfile?: unknown; mode?: string; dogProfileId?: string; refillDueAt?: string; };
+  let body: { email?: string; foodSlug?: string; foodName?: string; dogProfile?: unknown; mode?: string; dogProfileId?: string; refillDueAt?: string; lifecycleDueAt?: string; };
   try { body = await req.json(); } catch { return NextResponse.json({ ok: false, error: "bad_json" }, { status: 400 }); }
 
   const email = (body.email || "").trim().toLowerCase();
@@ -67,16 +67,26 @@ export async function POST(req: NextRequest) {
     }
 
     // Wecker setzen (idempotent)
-    const mode = body.mode === "refill" ? "refill" : "price";
+    const mode = body.mode === "refill" ? "refill" : body.mode === "lifecycle" ? "lifecycle" : "price";
     if (mode === "refill" && body.dogProfileId) {
-      // Nachschub-Wecker: idempotent auf (subscriber_id, dog_profile_id)
-      const existing = await sql`SELECT id FROM price_alerts WHERE subscriber_id = ${subId} AND dog_profile_id = ${body.dogProfileId} LIMIT 1`;
+      // Nachschub-Wecker: idempotent auf (subscriber_id, dog_profile_id) + mode
+      const existing = await sql`SELECT id FROM price_alerts WHERE subscriber_id = ${subId} AND dog_profile_id = ${body.dogProfileId} AND mode = 'refill' LIMIT 1`;
       const refillDue = body.refillDueAt ?? null;
       if (existing[0]) {
         await sql`UPDATE price_alerts SET food_slug = ${foodSlug}, food_name = ${foodName}, refill_due_at = ${refillDue}, is_active = true, mode = 'refill' WHERE id = ${existing[0].id}`;
       } else if (foodSlug) {
         await sql`INSERT INTO price_alerts (subscriber_id, food_slug, food_name, baseline_price_per_kg, mode, dog_profile_id, refill_due_at)
           VALUES (${subId}, ${foodSlug}, ${foodName}, ${baseline}, 'refill', ${body.dogProfileId}, ${refillDue})`;
+      }
+    } else if (mode === "lifecycle" && body.dogProfileId) {
+      // Lebensphasen-Wecker: idempotent auf (subscriber_id, dog_profile_id) + mode='lifecycle'
+      const existing = await sql`SELECT id FROM price_alerts WHERE subscriber_id = ${subId} AND dog_profile_id = ${body.dogProfileId} AND mode = 'lifecycle' LIMIT 1`;
+      const lcDue = body.lifecycleDueAt ?? null;
+      if (existing[0]) {
+        await sql`UPDATE price_alerts SET refill_due_at = ${lcDue}, is_active = true WHERE id = ${existing[0].id}`;
+      } else {
+        await sql`INSERT INTO price_alerts (subscriber_id, food_slug, food_name, baseline_price_per_kg, mode, dog_profile_id, refill_due_at)
+          VALUES (${subId}, ${foodSlug}, ${foodName}, ${baseline}, 'lifecycle', ${body.dogProfileId}, ${lcDue})`;
       }
     } else if (foodSlug) {
       // Preis-Wecker: idempotent auf (subscriber_id, food_slug)

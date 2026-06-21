@@ -188,6 +188,75 @@ export async function runPriceAlerts({ dryRun = false } = {}) {
     } else skipped++;
   }
 
+  // ─── Lebensphasen-Wecker (mode='lifecycle') — Stufe 4 ────────────────────────
+  // Sendet 30 Tage VOR der Transition, damit der Halter Zeit hat, umzustellen.
+  const LIFECYCLE_LEAD_DAYS = 30;
+  const lifecycleRowsRaw = await sql.query(
+    `SELECT a.id, a.food_slug, a.food_name, a.refill_due_at AS transition_at,
+            a.last_notified_at,
+            s.email, s.unsubscribe_token,
+            p.name AS dog_name, p.weight_kg,
+            d.affiliate_url, d.is_active AS food_active
+     FROM price_alerts a
+     JOIN subscribers s ON s.id = a.subscriber_id
+     LEFT JOIN dog_profiles p ON p.id = a.dog_profile_id
+     LEFT JOIN dog_foods d ON d.slug = a.food_slug
+     WHERE a.is_active = true AND a.mode = 'lifecycle'
+       AND a.refill_due_at IS NOT NULL
+       AND a.refill_due_at <= now() + interval '${LIFECYCLE_LEAD_DAYS} days'
+       AND a.refill_due_at > now()
+       AND s.doi_confirmed_at IS NOT NULL AND s.unsubscribed_at IS NULL`,
+    []
+  );
+  const lifecycleRows = lifecycleRowsRaw.rows ?? lifecycleRowsRaw;
+
+  console.log(`🐾 Lebensphasen-Wecker: ${lifecycleRows.length} fällig${dryRun ? " (DRY-RUN)" : ""}`);
+
+  for (const a of lifecycleRows) {
+    // Cooldown: max. 1 Lebensphasen-Mail, nie doppelt senden
+    const cooled = !a.last_notified_at;
+    if (!cooled) { skipped++; continue; }
+
+    const dogName = a.dog_name || "dein Hund";
+    const transitionDate = new Date(a.transition_at).toLocaleDateString("de-DE", { day: "numeric", month: "long", year: "numeric" });
+    const daysLeft = Math.max(1, Math.ceil((new Date(a.transition_at) - Date.now()) / 864e5));
+    const isLarge = a.weight_kg && parseFloat(a.weight_kg) >= 25;
+    const unsubUrl = `${SITE_URL}/api/alerts/unsubscribe?token=${a.unsubscribe_token}`;
+    const affiliateUrl = a.affiliate_url || `${SITE_URL}/#bella-advisor`;
+
+    const subject = `🐾 ${dogName} wird bald Senior — jetzt vorbereiten`;
+    const html = `<!doctype html><html lang="de"><body style="margin:0;background:#0b0b10;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#f4f1ea">
+  <div style="max-width:560px;margin:0 auto;padding:32px 24px">
+    <p style="font-size:18px;font-weight:700;margin:0 0 20px">welches-hundefutter<span style="color:#fb923c">.today</span></p>
+    <div style="background:#15151c;border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:28px">
+      <h1 style="font-size:20px;margin:0 0 12px">🐾 ${dogName} wird Senior</h1>
+      <p style="color:#cbd5e1;line-height:1.6;margin:0 0 16px">
+        In <strong>${daysLeft} Tagen</strong> (ca. ${transitionDate}) erreicht ${dogName} die Senior-Phase.
+        Jetzt ist der richtige Moment, das Futter anzupassen — bevor die Gelenke es verlangen.
+      </p>
+      <div style="background:#0f172a;border-radius:12px;padding:16px;margin:0 0 20px">
+        <p style="margin:0 0 8px;font-size:14px;color:#94a3b8">Was Senior-Futter können sollte:</p>
+        <ul style="margin:0;padding:0 0 0 18px;color:#cbd5e1;font-size:14px;line-height:1.8">
+          <li>Omega-3 (EPA/DHA) für die Gelenke</li>
+          <li>Reduzierter Phosphorgehalt (schont die Nieren)</li>
+          <li>Leicht verdauliches Protein${isLarge ? " — besonders wichtig bei großen Rassen" : ""}</li>
+          <li>L-Carnitin für Muskelmasse im Alter</li>
+        </ul>
+      </div>
+      <a href="${affiliateUrl}" style="display:inline-block;background:linear-gradient(135deg,#fb923c,#ea580c);color:#fff;text-decoration:none;font-weight:700;padding:13px 22px;border-radius:12px">Senior-Futter von BELLA empfehlen lassen →</a>
+      <p style="color:#6b7280;font-size:12px;line-height:1.6;margin:16px 0 0">Affiliate-Link · BELLA-Empfehlung basiert auf echten Produktdaten · keine Heilversprechen · Tierarzt bei Fragen hinzuziehen.</p>
+    </div>
+    <p style="color:#6b7280;font-size:12px;margin-top:20px;text-align:center"><a href="${unsubUrl}" style="color:#9ca3af">Abmelden</a> · <a href="${SITE_URL}/impressum" style="color:#9ca3af">Impressum</a></p>
+  </div></body></html>`;
+
+    const ok = await send(a.email, subject, html);
+    if (ok) {
+      if (!dryRun) await sql`UPDATE price_alerts SET last_notified_at = now() WHERE id = ${a.id}`;
+      sent++;
+      console.log(`   ✅ ${a.email} :: ${dogName} Senior in ${daysLeft}d (${transitionDate})`);
+    } else skipped++;
+  }
+
   console.log(`\n📊 Gesamt: ${sent} gesendet, ${skipped} übersprungen.`);
   return { sent, skipped };
 }

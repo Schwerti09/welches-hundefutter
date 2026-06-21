@@ -579,6 +579,10 @@ export async function POST(request: NextRequest) {
           const allNorm = allConv.toLowerCase().normalize("NFC").replace(/ü/g, "ue").replace(/ä/g, "ae").replace(/ö/g, "oe");
           const wMatch = allNorm.match(/(\d+(?:[.,]\d+)?)\s*(?:kg|kilo)/);
           const weightKg = wMatch ? parseFloat(wMatch[1].replace(",", ".")) : null;
+          // Alter: "3 jahre", "8 monate", "6 wochen" — sonst lifePhase als Fallback
+          const ageRaw = allNorm.match(/\b(\d+)\s*(?:jahre?|monate?|wochen?)\b/);
+          const lifePhaseFallback = intent.lifePhase === "welpen" ? "Welpe" : intent.lifePhase === "senior" ? "Senior" : null;
+          const birthOrAge = ageRaw ? ageRaw[0].trim() : lifePhaseFallback;
           const actLevel: ActivityLevel = intent.lifePhase === "welpen" ? "niedrig" : intent.lifePhase === "senior" ? "niedrig" : "mittel";
           const dg = weightKg ? dailyGrams(weightKg, actLevel) : null;
           const shareToken = randomBytes(18).toString("hex");
@@ -586,7 +590,7 @@ export async function POST(request: NextRequest) {
           const [row] = await profileSql`
             INSERT INTO dog_profiles (
               name, breed_slug, weight_kg, activity_level, allergies, health_flags,
-              current_food_slug, est_daily_grams, share_token, share_enabled
+              current_food_slug, est_daily_grams, share_token, share_enabled, birth_or_age
             ) VALUES (
               ${dogName},
               ${intent.breed ? intent.breed.toLowerCase().replace(/\s+/g, "-") : null},
@@ -597,7 +601,8 @@ export async function POST(request: NextRequest) {
               ${offers[0].slug ?? null},
               ${dg ?? null},
               ${shareToken},
-              true
+              true,
+              ${birthOrAge ?? null}
             ) RETURNING id, share_token`;
           const topPricePerKg = offers[0].price_per_kg != null ? parseFloat(offers[0].price_per_kg) : null;
           const monthlyEuro = dg && topPricePerKg ? parseFloat(((dg / 1000) * 30 * topPricePerKg).toFixed(2)) : null;

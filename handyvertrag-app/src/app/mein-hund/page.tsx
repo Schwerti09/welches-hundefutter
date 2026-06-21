@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
+import { calcLifecycle, fmtDate, stageLabelDe } from "@/lib/lifecycle";
 
 interface Profile {
   id: string;
@@ -151,6 +152,120 @@ function LastPurchaseInput({ profileId, onUpdate }: { profileId: string; onUpdat
       >
         {saving ? "…" : "Speichern"}
       </button>
+    </div>
+  );
+}
+
+function LifecycleEmailForm({ profileId, transitionAt, dogName }: {
+  profileId: string; transitionAt: Date; dogName: string;
+}) {
+  const [email, setEmail] = useState("");
+  const [state, setState] = useState<"idle" | "saving" | "done" | "error">("idle");
+
+  const submit = async () => {
+    if (!email || state === "saving") return;
+    setState("saving");
+    try {
+      const res = await fetch("/api/alerts/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email, mode: "lifecycle", dogProfileId: profileId,
+          lifecycleDueAt: transitionAt.toISOString(),
+          foodName: `Senior-Futter für ${dogName}`,
+        }),
+      });
+      setState(res.ok ? "done" : "error");
+    } catch { setState("error"); }
+  };
+
+  if (state === "done") return (
+    <p className="mt-3 text-xs text-emerald-400">✓ Bestätigungsmail gesendet — bitte kurz bestätigen!</p>
+  );
+
+  return (
+    <div className="mt-4">
+      <p className="text-xs text-[var(--muted)] mb-2">🔔 Erinnere mich rechtzeitig vor der Senior-Phase:</p>
+      <div className="flex gap-2">
+        <input
+          type="email"
+          placeholder="deine@email.de"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          onKeyDown={e => e.key === "Enter" && submit()}
+          className="flex-1 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/50"
+        />
+        <button
+          onClick={submit}
+          disabled={!email || state === "saving"}
+          className="px-4 py-2 rounded-xl bg-orange-500 text-white text-sm font-semibold disabled:opacity-50 shrink-0"
+        >
+          {state === "saving" ? "…" : state === "error" ? "Fehler" : "Wecker"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function LifecycleCard({ profile }: { profile: { id: string; name: string; birth_or_age: string | null; weight_kg: string | null } }) {
+  const lc = calcLifecycle(profile.birth_or_age, profile.weight_kg);
+  const stageLabel = stageLabelDe(lc.stage);
+
+  if (!profile.birth_or_age) return null;
+
+  if (lc.stage === "senior") {
+    return (
+      <div className="card p-6">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-xl">🐾</span>
+          <h2 className="font-bold text-lg">Lebensphase: Senior</h2>
+          <span className="ml-auto text-xs bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full font-medium">SENIOR</span>
+        </div>
+        <p className="text-sm text-[var(--muted)] mb-3">
+          {profile.name} ist in der Senior-Phase — jetzt zahlt sich gelenk-schonendes Futter mit Omega-3 und reduziertem Phosphor aus.
+        </p>
+        <Link href="/#bella-advisor" className="text-xs text-[var(--honey)] hover:underline">
+          Senior-Futter von BELLA empfehlen lassen →
+        </Link>
+      </div>
+    );
+  }
+
+  if (!lc.nextStageAt) return null;
+
+  const isImminentSenior = lc.nextStage === "senior" && lc.daysUntilTransition !== null && lc.daysUntilTransition <= 180;
+
+  return (
+    <div className={`card p-6 ${isImminentSenior ? "ring-2 ring-amber-500/40" : ""}`}>
+      <div className="flex items-center gap-2 mb-4">
+        <span className="text-xl">🗓</span>
+        <h2 className="font-bold text-lg">Lebensphase</h2>
+        <span className="ml-auto text-xs bg-white/10 text-white/60 px-2 py-0.5 rounded-full">{stageLabel}</span>
+      </div>
+
+      <div className="p-4 rounded-xl bg-white/5 mb-4">
+        <p className="text-xs text-[var(--muted)] mb-1">Nächster Meilenstein</p>
+        <p className="font-semibold text-white">{lc.nextStageName}</p>
+        <p className="text-sm text-[var(--honey)] mt-0.5">
+          ca. {fmtDate(lc.nextStageAt)}
+          {lc.daysUntilTransition !== null && (
+            <span className="text-[var(--muted)] ml-2">(noch {lc.daysUntilTransition} Tage)</span>
+          )}
+        </p>
+      </div>
+
+      {lc.nextStage === "senior" && (
+        <p className="text-xs text-[var(--muted)] mb-3">
+          Ab dem {lc.nextStageName ? lc.nextStageName.replace("-Hund", "") : "Senior"} empfiehlt sich
+          ein Wechsel auf gelenk-schonendes Futter mit höherem Omega-3-Anteil — BELLA erinnert dich rechtzeitig.
+        </p>
+      )}
+
+      <LifecycleEmailForm
+        profileId={profile.id}
+        transitionAt={lc.nextStageAt}
+        dogName={profile.name}
+      />
     </div>
   );
 }
@@ -309,6 +424,9 @@ export default function MeinHundPage() {
                 </p>
               </div>
             )}
+
+            {/* Lebensphasen-Trigger — Stufe 4 */}
+            <LifecycleCard profile={data.profile} />
 
             {/* Aktuelles Futter */}
             {data.food && (
