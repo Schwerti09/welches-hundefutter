@@ -244,6 +244,11 @@ export async function runPriceAlerts({ dryRun = false } = {}) {
         </ul>
       </div>
       <a href="${affiliateUrl}" style="display:inline-block;background:linear-gradient(135deg,#fb923c,#ea580c);color:#fff;text-decoration:none;font-weight:700;padding:13px 22px;border-radius:12px">Senior-Futter von BELLA empfehlen lassen →</a>
+      <div style="background:#1a1a24;border:1px solid rgba(251,146,60,.25);border-radius:12px;padding:16px;margin:20px 0 0">
+        <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#fbbf24">🛡️ Noch kein Versicherungsschutz?</p>
+        <p style="margin:0 0 12px;font-size:13px;color:#94a3b8;line-height:1.6">Die meisten Tierversicherer nehmen keine Neukunden mehr ab dem 8. Lebensjahr an. Jetzt ist der letzte gute Zeitpunkt, ${dogName} zu versichern — bevor Vorerkrankungen entstehen, die ausgeschlossen werden.</p>
+        <a href="${SITE_URL}/versicherung" style="display:inline-block;background:rgba(251,146,60,.15);border:1px solid rgba(251,146,60,.3);color:#fbbf24;text-decoration:none;font-size:13px;font-weight:600;padding:8px 16px;border-radius:8px">Hunde-Krankenversicherung vergleichen →</a>
+      </div>
       <p style="color:#6b7280;font-size:12px;line-height:1.6;margin:16px 0 0">Affiliate-Link · BELLA-Empfehlung basiert auf echten Produktdaten · keine Heilversprechen · Tierarzt bei Fragen hinzuziehen.</p>
     </div>
     <p style="color:#6b7280;font-size:12px;margin-top:20px;text-align:center"><a href="${unsubUrl}" style="color:#9ca3af">Abmelden</a> · <a href="${SITE_URL}/impressum" style="color:#9ca3af">Impressum</a></p>

@@ -224,9 +224,14 @@ function LifecycleCard({ profile }: { profile: { id: string; name: string; birth
         <p className="text-sm text-[var(--muted)] mb-3">
           {profile.name} ist in der Senior-Phase — jetzt zahlt sich gelenk-schonendes Futter mit Omega-3 und reduziertem Phosphor aus.
         </p>
-        <Link href="/#bella-advisor" className="text-xs text-[var(--honey)] hover:underline">
-          Senior-Futter von BELLA empfehlen lassen →
-        </Link>
+        <div className="flex flex-col gap-2">
+          <Link href="/#bella-advisor" className="text-xs text-[var(--honey)] hover:underline">
+            Senior-Futter von BELLA empfehlen lassen →
+          </Link>
+          <Link href="/versicherung" className="text-xs text-amber-400 hover:underline">
+            🛡️ Noch keine Versicherung? Jetzt informieren →
+          </Link>
+        </div>
       </div>
     );
   }

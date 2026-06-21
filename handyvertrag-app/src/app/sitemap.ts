@@ -56,6 +56,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/blog/barf-hund-anfaenger`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${BASE}/blog/hund-uebergewicht-futter`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${BASE}/blog/hundefutter-allergie-hund`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${BASE}/versicherung`, lastModified: now, changeFrequency: 'monthly', priority: 0.85 },
     { url: `${BASE}/ueber-uns`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/quellen`, lastModified: now, changeFrequency: 'monthly', priority: 0.75 },
     { url: `${BASE}/impressum`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
@@ -163,5 +164,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   ]
 
-  return [...statisch, ...alleRassen, ...staedte, ...probleme, ...phasen, ...typen, ...tipps, ...tippArtikel, ...wissensuniversum, ...meinungsnetz, ...marken]
+  // Marken-Direktvergleiche: Top-15-Marken × (n-1)/2 = 105 Paare
+  const top15 = brandData.slice(0, 15)
+  const markenVergleiche: MetadataRoute.Sitemap = []
+  for (let i = 0; i < top15.length; i++) {
+    for (let j = i + 1; j < top15.length; j++) {
+      markenVergleiche.push({
+        url: `${BASE}/vergleich/${top15[i].slug}-vs-${top15[j].slug}`,
+        lastModified: now,
+        changeFrequency: 'weekly' as const,
+        priority: 0.72,
+      })
+    }
+  }
+
+  return [...statisch, ...alleRassen, ...staedte, ...probleme, ...phasen, ...typen, ...tipps, ...tippArtikel, ...wissensuniversum, ...meinungsnetz, ...marken, ...markenVergleiche]
 }
