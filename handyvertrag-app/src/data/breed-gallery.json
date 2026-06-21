@@ -264,12 +264,6 @@
     "dogCeoBreed": "cockapoo"
   },
   {
-    "slug": "husky",
-    "name": "Siberian Husky",
-    "img": "https://images.dog.ceo/breeds/husky/n02110185_11635.jpg",
-    "dogCeoBreed": "husky"
-  },
-  {
     "slug": "englische-bulldogge",
     "name": "Englische Bulldogge",
     "img": "https://images.dog.ceo/breeds/bulldog-english/mami.jpg",

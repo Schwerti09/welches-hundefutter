@@ -77,7 +77,7 @@ export default function SiteFooter() {
   return (
     <footer className="bg-gray-950 text-white border-t border-white/5">
       <div className="max-w-7xl mx-auto px-5 py-14">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-8 mb-12">
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4 group">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shadow-lg shadow-orange-500/25 group-hover:shadow-orange-500/40 transition-shadow">
@@ -114,7 +114,7 @@ export default function SiteFooter() {
         </div>
 
         <div className="border-t border-white/5 pt-8 flex flex-col gap-5">
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-gray-400">
+          <div className="flex flex-wrap items-center justify-center gap-x-3 sm:gap-x-6 gap-y-2 text-xs text-gray-400">
             <span className="inline-flex items-center gap-1.5"><span aria-hidden>🦴</span> 11.000+ Hundefutter im Vergleich</span>
             <span className="inline-flex items-center gap-1.5"><span aria-hidden>📈</span> Preise täglich aktualisiert</span>
             <span className="inline-flex items-center gap-1.5"><span aria-hidden>⚖️</span> neutral &amp; kostenlos</span>
@@ -123,7 +123,7 @@ export default function SiteFooter() {
             <p className="text-gray-400 text-xs text-center md:text-left">
               © 2026 welches-hundefutter.today · Neutrale Hundefutter-Beratung · Deutschland
             </p>
-            <p className="text-gray-400 text-xs text-center md:text-right">
+            <p className="text-gray-400 text-xs text-center md:text-right max-w-xs sm:max-w-none">
               Affiliate-Links mit <code className="text-gray-400">rel=&quot;sponsored&quot;</code> · Preise inkl. MwSt. · keine Gewähr für Aktualität
             </p>
           </div>

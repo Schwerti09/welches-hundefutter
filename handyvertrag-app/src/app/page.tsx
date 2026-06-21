@@ -90,7 +90,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
 
         {/* 2 — VERTRAUENS-LEISTE (absorbiert die Live-Daten des alten Heros) */}
         <div className="px-5">
-          <div className="max-w-4xl mx-auto mt-1 mb-3 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs sm:text-sm text-[var(--muted)]">
+          <div className="max-w-4xl mx-auto mt-1 mb-3 flex flex-wrap items-center justify-center gap-x-3 sm:gap-x-6 gap-y-2 text-xs sm:text-sm text-[var(--muted)]">
             <span className="inline-flex items-center gap-1.5"><span className="text-accent">🔄</span> {countLabel} Preise täglich aktualisiert</span>
             <span className="inline-flex items-center gap-1.5"><span className="text-accent">🐾</span> 186 Rassen</span>
             <span className="inline-flex items-center gap-1.5"><span className="text-accent">⚖️</span> unabhängig — keine gekauften Testsieger</span>

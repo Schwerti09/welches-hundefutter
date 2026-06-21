@@ -47,13 +47,13 @@ export default function LiveStatusBar({ countLabel }: { countLabel: string }) {
 
         {/* Produkt-Zähler */}
         <div className="shrink-0 text-right hidden sm:block">
-          <span className="text-xs text-white/40">
-            <span className="text-white/70 font-semibold">{countLabel}</span> Sorten geprüft
+          <span className="text-xs text-white/60">
+            <span className="text-white/80 font-semibold">{countLabel}</span> Sorten geprüft
           </span>
         </div>
 
         {/* Made in Germany */}
-        <div className="shrink-0 hidden md:flex items-center gap-1.5 text-xs text-white/40 border-l border-white/10 pl-3">
+        <div className="shrink-0 hidden md:flex items-center gap-1.5 text-xs text-white/60 border-l border-white/10 pl-3">
           🇩🇪 <span>Made in Germany · KI-Power</span>
         </div>
       </div>

@@ -23,7 +23,7 @@ export default function TopFoodsTable({ byScore, byPrice, countLabel }: Props) {
         Aus {countLabel} echten Sorten im Live-Katalog · Affiliate-Links (rel=sponsored)
       </p>
 
-      <div className="flex justify-center gap-2 mb-6">
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-2 mb-6">
         <button
           type="button"
           onClick={() => setTab("score")}
