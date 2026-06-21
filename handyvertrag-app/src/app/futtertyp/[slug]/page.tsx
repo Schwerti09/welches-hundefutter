@@ -14,6 +14,7 @@ import SiteFooter from "@/components/SiteFooter";
 import CitableStat from "@/components/CitableStat";
 import { futtertypDirectAnswer } from "@/lib/direct-answer";
 import type { CitableVariant } from "@/db/queries/stats";
+import { brandToSlug } from "@/db/queries/foods";
 
 // Futtertyp-Slug → zitierfähige Live-Statistik
 const TYP_STAT: Record<string, CitableVariant> = {
@@ -275,7 +276,11 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
                   {f.score != null && <ScoreBadge score={f.score} />}
                 </div>
                 <p className="font-semibold text-sm leading-tight">{f.name}</p>
-                <p className="text-[var(--muted)] text-xs mt-0.5">{f.brand}</p>
+                <Link href={`/marke/${brandToSlug(f.brand)}`}
+                  onClick={(e) => e.stopPropagation()}
+                  className="text-[var(--muted)] text-xs mt-0.5 hover:text-[var(--honey)] transition-colors">
+                  {f.brand}
+                </Link>
                 <div className="flex items-center justify-between mt-3">
                   <span className="text-lg font-black">
                     {f.price_per_kg ? `${parseFloat(f.price_per_kg).toFixed(2)} €` : ""}

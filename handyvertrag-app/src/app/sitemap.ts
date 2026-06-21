@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next'
 import { CITIES } from '@/data/cities'
 import { BREEDS } from '@/data/breeds'
 import { TIP_CATEGORIES } from '@/data/tips'
+import { getBrandsWithCounts } from '@/db/queries/foods'
 
 const BASE = 'https://welches-hundefutter.today'
 
@@ -18,7 +19,7 @@ const FUTTERTYPEN = [
   'hypoallergen', 'monoprotein', 'insekten', 'vegetarisch', 'vegan',
 ]
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date()
 
   const statisch: MetadataRoute.Sitemap = [
@@ -151,5 +152,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/meinungen`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.82 },
   ]
 
-  return [...statisch, ...alleRassen, ...staedte, ...probleme, ...phasen, ...typen, ...tipps, ...tippArtikel, ...wissensuniversum, ...meinungsnetz]
+  const brandData = await getBrandsWithCounts(3)
+  const marken: MetadataRoute.Sitemap = [
+    { url: `${BASE}/marke`, lastModified: now, changeFrequency: 'daily' as const, priority: 0.85 },
+    ...brandData.map((b) => ({
+      url: `${BASE}/marke/${b.slug}`,
+      lastModified: now,
+      changeFrequency: 'daily' as const,
+      priority: 0.7,
+    })),
+  ]
+
+  return [...statisch, ...alleRassen, ...staedte, ...probleme, ...phasen, ...typen, ...tipps, ...tippArtikel, ...wissensuniversum, ...meinungsnetz, ...marken]
 }

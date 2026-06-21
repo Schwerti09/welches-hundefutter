@@ -141,3 +141,59 @@ export async function getFoodBySlug(slug: string): Promise<DogFood | null> {
     return list[0] ? toFood(list[0]) : null;
   } catch { return null; }
 }
+
+export function brandToSlug(brand: string): string {
+  return brand.toLowerCase().trim()
+    .replace(/&/g, "und").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
+
+export interface BrandSummary {
+  brand: string;
+  slug: string;
+  count: number;
+  avgScore: number | null;
+  minPricePerKg: number | null;
+}
+
+export async function getBrandsWithCounts(minProducts = 3): Promise<BrandSummary[]> {
+  const sql = db();
+  if (!sql) return [];
+  try {
+    const r = await sql.query(
+      `SELECT brand, COUNT(*)::int AS count,
+              ROUND(AVG(score))::int AS avg_score,
+              ROUND(MIN(price_per_kg)::numeric, 2)::float8 AS min_ppk
+       FROM dog_foods
+       WHERE ${BASE} AND brand <> '' AND price_per_kg BETWEEN 2 AND 60
+       GROUP BY brand
+       HAVING COUNT(*) >= $1
+       ORDER BY COUNT(*) DESC`,
+      [minProducts]
+    );
+    return (rows(r) as unknown as Array<{ brand: string; count: number; avg_score: string | null; min_ppk: string | null }>)
+      .map(row => ({
+        brand: row.brand,
+        slug: brandToSlug(row.brand),
+        count: row.count,
+        avgScore: row.avg_score != null ? Number(row.avg_score) : null,
+        minPricePerKg: row.min_ppk != null ? parseFloat(row.min_ppk) : null,
+      }));
+  } catch { return []; }
+}
+
+export async function getFoodsByBrand(brand: string, limit = 40): Promise<DogFood[]> {
+  const sql = db();
+  if (!sql) return [];
+  try {
+    const r = await sql.query(
+      `SELECT ${COLS} FROM (
+         SELECT DISTINCT ON (${NAME_KEY}) ${COLS}
+         FROM dog_foods
+         WHERE ${BASE} AND brand = $1 AND price_per_kg BETWEEN 2 AND 60
+         ORDER BY ${NAME_KEY}, price_per_kg ASC
+       ) d ORDER BY score DESC NULLS LAST, price_per_kg ASC LIMIT $2`,
+      [brand, Math.max(1, Math.min(60, limit))]
+    );
+    return rows(r).map(toFood);
+  } catch { return []; }
+}
