@@ -125,6 +125,23 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const autoStartFiredRef = useRef(false);
+  const [profileEmail, setProfileEmail] = useState("");
+  const [profileEmailState, setProfileEmailState] = useState<"idle" | "saving" | "done" | "error">("idle");
+
+  const saveProfileLink = useCallback(async (shareToken: string, dogName: string) => {
+    if (!profileEmail || profileEmailState === "saving") return;
+    setProfileEmailState("saving");
+    try {
+      const r = await fetch("/api/auth/profile-link", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: profileEmail, shareToken, dogName }),
+      });
+      setProfileEmailState(r.ok ? "done" : "error");
+    } catch {
+      setProfileEmailState("error");
+    }
+  }, [profileEmail, profileEmailState]);
 
   useEffect(() => {
     const t = setTimeout(() => setMood("idle"), 2000);
@@ -580,7 +597,7 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
                         )}
                       </div>
                       {/* CTAs */}
-                      <div className="px-4 pb-4 flex gap-2 flex-wrap">
+                      <div className="px-4 pb-3 flex gap-2 flex-wrap">
                         <a
                           href={`/hund/${msg.profile.shareToken}`}
                           target="_blank"
@@ -595,6 +612,33 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
                         >
                           ⏰ Nachschub-Wecker
                         </a>
+                      </div>
+                      {/* E-Mail: Profil-Link sichern */}
+                      <div className="px-4 pb-4 border-t border-white/5 pt-3">
+                        {profileEmailState === "done" ? (
+                          <p className="text-[11px] text-emerald-400">✓ Profil-Link gesendet — schau kurz in dein Postfach!</p>
+                        ) : (
+                          <>
+                            <p className="text-[10px] text-white/40 mb-2">🔗 Profil-Link per E-Mail sichern — damit du ihn auf jedem Gerät öffnen kannst:</p>
+                            <div className="flex gap-2">
+                              <input
+                                type="email"
+                                placeholder="deine@email.de"
+                                value={profileEmail}
+                                onChange={e => setProfileEmail(e.target.value)}
+                                onKeyDown={e => e.key === "Enter" && saveProfileLink(msg.profile!.shareToken, msg.profile!.name)}
+                                className="flex-1 min-w-0 px-2.5 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:ring-1 focus:ring-orange-500/50"
+                              />
+                              <button
+                                disabled={!profileEmail || profileEmailState === "saving"}
+                                onClick={() => saveProfileLink(msg.profile!.shareToken, msg.profile!.name)}
+                                className="px-3 py-1.5 rounded-lg bg-orange-500/80 text-white text-xs font-semibold disabled:opacity-40 shrink-0"
+                              >
+                                {profileEmailState === "saving" ? "…" : profileEmailState === "error" ? "Fehler" : "Senden"}
+                              </button>
+                            </div>
+                          </>
+                        )}
                       </div>
                     </div>
                   )}
