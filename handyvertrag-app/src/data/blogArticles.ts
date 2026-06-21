@@ -6,6 +6,8 @@ export interface BlogArticle {
   publishedAt: string;
   updatedAt: string;
   readingTime: number;
+  imageUrl?: string;
+  imageAlt?: string;
   sections: {
     heading: string;
     content: string;
@@ -23,6 +25,8 @@ export const blogArticles: BlogArticle[] = [
     publishedAt: "2026-05-15",
     updatedAt: "2026-06-01",
     readingTime: 9,
+    imageUrl: "/images/content/blog/hundefutter-test-2026.jpg",
+    imageAlt: "Hundefutter-Sorten im Vergleich: Schüsseln mit Trocken-, Nass- und BARF-Futter",
     sections: [
       {
         heading: "Wie wir getestet haben",
@@ -77,6 +81,8 @@ export const blogArticles: BlogArticle[] = [
     publishedAt: "2026-05-20",
     updatedAt: "2026-06-01",
     readingTime: 11,
+    imageUrl: "/images/content/blog/barf-hund-anfaenger.jpg",
+    imageAlt: "Frisches Fleisch und Gemüse für die BARF-Ernährung eines Hundes",
     sections: [
       {
         heading: "Was ist BARF?",
@@ -135,6 +141,8 @@ export const blogArticles: BlogArticle[] = [
     publishedAt: "2026-05-25",
     updatedAt: "2026-06-01",
     readingTime: 10,
+    imageUrl: "/images/content/blog/hund-uebergewicht-futter.jpg",
+    imageAlt: "Übergewichtiger Hund beim Tierarzt auf der Waage",
     sections: [
       {
         heading: "Wie häufig ist Übergewicht bei Hunden?",
@@ -189,6 +197,8 @@ export const blogArticles: BlogArticle[] = [
     publishedAt: "2026-06-01",
     updatedAt: "2026-06-01",
     readingTime: 9,
+    imageUrl: "/images/content/blog/hundefutter-allergie-hund.jpg",
+    imageAlt: "Hund kratzt sich — Anzeichen einer Futtermittelallergie",
     sections: [
       {
         heading: "Allergie vs. Unverträglichkeit: Der wichtigste Unterschied",
@@ -239,6 +249,8 @@ export const blogArticles: BlogArticle[] = [
     publishedAt: "2026-06-19",
     updatedAt: "2026-06-19",
     readingTime: 13,
+    imageUrl: "/images/content/blog/hundefutter-test-stiftung.jpg",
+    imageAlt: "Hundefutter-Produkttest: Verpackungen und Testergebnisse im Vergleich",
     sections: [
       {
         heading: "Warum Stiftung Warentest bei Hundefutter zählt",

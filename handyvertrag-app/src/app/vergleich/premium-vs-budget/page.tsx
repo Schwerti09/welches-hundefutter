@@ -3,6 +3,8 @@ import Link from "next/link";
 import AuthorBox from "@/components/AuthorBox";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
+import VergleichHeroImage from "@/components/VergleichHeroImage";
+import UmstellungsPlaner from "@/components/tools/UmstellungsPlaner";
 
 export const metadata: Metadata = {
   title: "Premium vs. Budget Hundefutter 2026: Lohnt sich der Aufpreis?",
@@ -59,6 +61,8 @@ export default function PremiumVsBudget() {
         <span className="mx-2">·</span>
         <span className="text-[var(--ink)]">Premium vs. Budget</span>
       </nav>
+
+      <VergleichHeroImage slug="premium-vs-budget" alt="Premium vs. Budget Hundefutter – Direktvergleich" />
 
       <section className="hero-glow max-w-5xl mx-auto w-full px-5 pt-8 pb-14">
         <span className="pill mb-4">⚖️ Direktvergleich</span>
@@ -134,6 +138,10 @@ export default function PremiumVsBudget() {
             In unserem Katalog mit 11.000+ Produkten filtern wir nach Fleischanteil, Deklarationsklarheit und Preis-pro-kg. BELLA findet die besten Kandidaten für deinen Hund — ohne Marken-Bias.
           </p>
         </div>
+      </section>
+
+      <section className="max-w-5xl mx-auto w-full px-5 pb-10">
+        <UmstellungsPlaner />
       </section>
 
       <section className="max-w-5xl mx-auto w-full px-5 pb-14">

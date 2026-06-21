@@ -3,6 +3,8 @@ import Link from "next/link";
 import AuthorBox from "@/components/AuthorBox";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
+import VergleichHeroImage from "@/components/VergleichHeroImage";
+import UmstellungsPlaner from "@/components/tools/UmstellungsPlaner";
 
 export const metadata: Metadata = {
   title: "Monoprotein vs. Mehrkomponenten Hundefutter 2026: Für wen ist was besser?",
@@ -59,6 +61,8 @@ export default function MonoproteinVsMehrkomponenten() {
         <span className="mx-2">·</span>
         <span className="text-[var(--ink)]">Monoprotein vs. Mehrkomponenten</span>
       </nav>
+
+      <VergleichHeroImage slug="monoprotein-vs-mehrkomponenten" alt="Monoprotein vs. Mehrkomponenten Hundefutter – Vergleich" />
 
       <section className="hero-glow max-w-5xl mx-auto w-full px-5 pt-8 pb-14">
         <span className="pill mb-4">⚖️ Direktvergleich</span>
@@ -143,6 +147,10 @@ export default function MonoproteinVsMehrkomponenten() {
             </ul>
           </div>
         </div>
+      </section>
+
+      <section className="max-w-5xl mx-auto w-full px-5 pb-10">
+        <UmstellungsPlaner />
       </section>
 
       <section className="max-w-5xl mx-auto w-full px-5 pb-14">

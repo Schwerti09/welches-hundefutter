@@ -119,6 +119,7 @@ function InsightCard({
 }) {
   const plat = PLATFORM_LABELS[insight.platform] ?? { label: insight.platform, color: "bg-white/10 text-white/60 border-white/10", icon: "💬" };
   const sent = SENTIMENT_STYLES[insight.sentiment as keyof typeof SENTIMENT_STYLES] ?? SENTIMENT_STYLES.gemischt;
+  const portraitNum = ((insight.id.charCodeAt(0) + (insight.id.charCodeAt(2) ?? 0)) % 4) + 1;
 
   return (
     <div className={`relative bg-white/4 border border-white/8 border-l-4 ${sent.border} rounded-2xl p-5 flex flex-col gap-3 hover:bg-white/7 transition-colors`}>
@@ -147,6 +148,11 @@ function InsightCard({
 
       {/* Author + Date */}
       <div className="flex items-center gap-2 text-xs text-white/40">
+        <img
+          src={`/images/content/meinungen/dog-portrait-${portraitNum}.jpg`}
+          alt="Hund"
+          className="w-7 h-7 rounded-full object-cover border border-white/10 shrink-0"
+        />
         {insight.author && (
           <span className="font-medium text-white/60">{insight.author}</span>
         )}

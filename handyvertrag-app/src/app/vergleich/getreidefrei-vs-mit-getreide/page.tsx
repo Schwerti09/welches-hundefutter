@@ -3,6 +3,8 @@ import Link from "next/link";
 import AuthorBox from "@/components/AuthorBox";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
+import VergleichHeroImage from "@/components/VergleichHeroImage";
+import UmstellungsPlaner from "@/components/tools/UmstellungsPlaner";
 
 export const metadata: Metadata = {
   title: "Getreidefrei vs. Getreide im Hundefutter 2026: Was ist wirklich besser?",
@@ -59,6 +61,8 @@ export default function GetreidefeiVsMitGetreide() {
         <span className="mx-2">·</span>
         <span className="text-[var(--ink)]">Getreidefrei vs. Mit Getreide</span>
       </nav>
+
+      <VergleichHeroImage slug="getreidefrei-vs-mit-getreide" alt="Getreidefrei vs. Hundefutter mit Getreide – Vergleich" />
 
       <section className="hero-glow max-w-5xl mx-auto w-full px-5 pt-8 pb-14">
         <span className="pill mb-4">⚖️ Direktvergleich</span>
@@ -124,6 +128,10 @@ export default function GetreidefeiVsMitGetreide() {
             Das bedeutet: Getreide in moderaten Mengen ist für Hunde biologisch kein Problem. Was ein Problem ist, sind minderwertige Futter mit Getreide als Hauptzutat, die günstige Kohlenhydrate nutzen, um teure Proteine zu ersetzen. Das ist eine Qualitätsfrage — keine Getreide-Frage.
           </p>
         </div>
+      </section>
+
+      <section className="max-w-5xl mx-auto w-full px-5 pb-10">
+        <UmstellungsPlaner />
       </section>
 
       <section className="max-w-5xl mx-auto w-full px-5 pb-14">

@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { blogArticles, getArticleBySlug } from "@/data/blogArticles";
 import StructuredData from "@/components/StructuredData";
+import BCSChecker from "@/components/tools/BCSChecker";
+import RationsRechner from "@/components/tools/RationsRechner";
 
 export async function generateStaticParams() {
   return blogArticles.map((a) => ({ slug: a.slug }));
@@ -101,7 +103,17 @@ export default async function BlogArticlePage({
         </div>
 
         <h1 className="text-3xl font-bold text-white mb-4 leading-tight">{article.title}</h1>
-        <p className="bella-answer text-gray-400 text-lg mb-8 leading-relaxed">{article.description}</p>
+        <p className="bella-answer text-gray-400 text-lg mb-6 leading-relaxed">{article.description}</p>
+
+        {article.imageUrl && (
+          <div className="rounded-2xl overflow-hidden mb-8 aspect-[16/7]">
+            <img
+              src={article.imageUrl}
+              alt={article.imageAlt ?? article.title}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        )}
 
         {/* Artikel-Inhalt */}
         <div className="space-y-8">
@@ -156,6 +168,19 @@ export default async function BlogArticlePage({
             </section>
           ))}
         </div>
+
+        {slug === "hund-uebergewicht-futter" && (
+          <div className="mt-10">
+            <h2 className="text-xl font-bold text-white mb-3">Body-Condition-Score prüfen</h2>
+            <BCSChecker />
+          </div>
+        )}
+        {(slug === "barf-hund-anfaenger" || slug === "hundefutter-test-2026") && (
+          <div className="mt-10">
+            <h2 className="text-xl font-bold text-white mb-3">Tagesration berechnen</h2>
+            <RationsRechner />
+          </div>
+        )}
 
         {/* FAQ */}
         <div className="mt-10">

@@ -115,43 +115,50 @@ export default function BlogPage() {
           {blogArticles.map((article) => (
             <article
               key={article.slug}
-              className="card p-5 hover:border-[rgba(240,167,60,0.3)] transition-colors"
+              className="card overflow-hidden hover:border-[rgba(240,167,60,0.3)] transition-colors"
             >
-              <div className="flex items-center gap-2 text-xs text-[var(--muted)] mb-2">
-                <span>
-                  Von{" "}
-                  <Link href="/ueber-uns" className="text-[var(--honey)] hover:underline">
-                    R. Schwertfechter
-                  </Link>
-                </span>
-                <span>·</span>
-                <time dateTime={article.updatedAt}>
-                  {new Date(article.updatedAt).toLocaleDateString("de-DE", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </time>
-                <span>·</span>
-                <span>{article.readingTime} Min.</span>
-              </div>
-              <h2 className="text-base font-semibold text-white mb-2 leading-snug">
-                <Link
-                  href={`/blog/${article.slug}`}
-                  className="hover:text-[var(--honey)] transition-colors"
-                >
-                  {article.title}
+              {article.imageUrl && (
+                <Link href={`/blog/${article.slug}`}>
+                  <div className="relative h-44 sm:h-52 overflow-hidden">
+                    <img
+                      src={article.imageUrl}
+                      alt={article.imageAlt ?? article.title}
+                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#08080c]/80 via-transparent to-transparent" />
+                    <span className="absolute bottom-3 right-3 text-xs bg-black/60 text-white/70 px-2 py-0.5 rounded-full">
+                      {article.readingTime} Min.
+                    </span>
+                  </div>
                 </Link>
-              </h2>
-              <p className="text-[var(--muted)] text-sm leading-relaxed mb-3">
-                {article.description}
-              </p>
-              <Link
-                href={`/blog/${article.slug}`}
-                className="text-[var(--honey)] text-sm font-medium hover:underline"
-              >
-                Artikel lesen →
-              </Link>
+              )}
+              <div className="p-5">
+                <div className="flex items-center gap-2 text-xs text-[var(--muted)] mb-2">
+                  <span>
+                    Von{" "}
+                    <Link href="/ueber-uns" className="text-[var(--honey)] hover:underline">
+                      R. Schwertfechter
+                    </Link>
+                  </span>
+                  <span>·</span>
+                  <time dateTime={article.updatedAt}>
+                    {new Date(article.updatedAt).toLocaleDateString("de-DE", {
+                      day: "numeric", month: "long", year: "numeric",
+                    })}
+                  </time>
+                  {!article.imageUrl && <><span>·</span><span>{article.readingTime} Min.</span></>}
+                </div>
+                <h2 className="text-base font-semibold text-white mb-2 leading-snug">
+                  <Link href={`/blog/${article.slug}`} className="hover:text-[var(--honey)] transition-colors">
+                    {article.title}
+                  </Link>
+                </h2>
+                <p className="text-[var(--muted)] text-sm leading-relaxed mb-3">{article.description}</p>
+                <Link href={`/blog/${article.slug}`} className="text-[var(--honey)] text-sm font-medium hover:underline">
+                  Artikel lesen →
+                </Link>
+              </div>
             </article>
           ))}
         </div>

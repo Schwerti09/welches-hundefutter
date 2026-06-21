@@ -3,6 +3,8 @@ import Link from "next/link";
 import AuthorBox from "@/components/AuthorBox";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
+import VergleichHeroImage from "@/components/VergleichHeroImage";
+import UmstellungsPlaner from "@/components/tools/UmstellungsPlaner";
 
 export const metadata: Metadata = {
   title: "Nassfutter vs. BARF 2026: Was ist besser für deinen Hund?",
@@ -59,6 +61,8 @@ export default function NassfutterVsBarf() {
         <span className="mx-2">·</span>
         <span className="text-[var(--ink)]">Nassfutter vs. BARF</span>
       </nav>
+
+      <VergleichHeroImage slug="nassfutter-vs-barf" alt="Nassfutter vs. BARF – Vergleich Hundefutter" />
 
       <section className="hero-glow max-w-5xl mx-auto w-full px-5 pt-8 pb-14">
         <span className="pill mb-4">⚖️ Direktvergleich</span>
@@ -160,6 +164,10 @@ export default function NassfutterVsBarf() {
             Für Hunde mit bestimmten Erkrankungen (Nierenprobleme, Pankreatitis, Diabetes) ist der direkte Vergleich noch wichtiger: Dort gelten spezifische Nährstoffgrenzen, die im Fertigfutter bereits eingehalten werden — im selbst gemischten BARF muss man sie selbst berechnen.
           </p>
         </div>
+      </section>
+
+      <section className="max-w-5xl mx-auto w-full px-5 pb-10">
+        <UmstellungsPlaner />
       </section>
 
       <section className="max-w-5xl mx-auto w-full px-5 pb-14">

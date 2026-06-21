@@ -3,6 +3,8 @@ import Link from "next/link";
 import AuthorBox from "@/components/AuthorBox";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
+import VergleichHeroImage from "@/components/VergleichHeroImage";
+import UmstellungsPlaner from "@/components/tools/UmstellungsPlaner";
 
 export const metadata: Metadata = {
   title: "Insektenfutter vs. Hühnchen für Hunde 2026: Wann Insekt sinnvoller ist",
@@ -59,6 +61,8 @@ export default function InsektenfutterVsHuehnchen() {
         <span className="mx-2">·</span>
         <span className="text-[var(--ink)]">Insektenfutter vs. Hühnchen</span>
       </nav>
+
+      <VergleichHeroImage slug="insektenfutter-vs-huehnchen" alt="Insektenfutter vs. Hühnchen als Proteinquelle im Hundefutter" />
 
       <section className="hero-glow max-w-5xl mx-auto w-full px-5 pt-8 pb-14">
         <span className="pill mb-4">⚖️ Direktvergleich</span>
@@ -155,6 +159,10 @@ export default function InsektenfutterVsHuehnchen() {
           </p>
           <Link href="/studien" className="text-sm text-[var(--honey)] hover:underline mt-3 inline-block">Studien-Datenbank ansehen →</Link>
         </div>
+      </section>
+
+      <section className="max-w-5xl mx-auto w-full px-5 pb-10">
+        <UmstellungsPlaner />
       </section>
 
       <section className="max-w-5xl mx-auto w-full px-5 pb-14">

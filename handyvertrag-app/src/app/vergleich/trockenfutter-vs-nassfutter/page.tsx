@@ -3,6 +3,9 @@ import Link from "next/link";
 import AuthorBox from "@/components/AuthorBox";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
+import VergleichHeroImage from "@/components/VergleichHeroImage";
+import UmstellungsPlaner from "@/components/tools/UmstellungsPlaner";
+import RationsRechner from "@/components/tools/RationsRechner";
 
 export const metadata: Metadata = {
   title: "Trockenfutter vs. Nassfutter: Der ehrliche Vergleich 2026",
@@ -90,6 +93,8 @@ export default function VergleichTrockenNassPage() {
         <span className="mx-2">·</span>
         <span className="text-[var(--ink)]">Trockenfutter vs. Nassfutter</span>
       </nav>
+
+      <VergleichHeroImage slug="trockenfutter-vs-nassfutter" alt="Trockenfutter vs. Nassfutter – Vergleich Hundefutter" />
 
       <section className="hero-glow max-w-5xl mx-auto w-full px-5 pt-8 pb-14">
         <span className="pill mb-4">⚖️ Direktvergleich</span>
@@ -247,6 +252,14 @@ export default function VergleichTrockenNassPage() {
             Wichtig bei Mischfütterung: Gesamtkalorien im Auge behalten. Beide Futtersorten haben
             unterschiedliche Energiedichten – BELLA rechnet das automatisch wenn du Rasse, Gewicht und Aktivität eingibst.
           </p>
+        </div>
+      </section>
+
+      {/* Interactive Tools */}
+      <section className="max-w-5xl mx-auto w-full px-5 pb-10">
+        <div className="grid sm:grid-cols-2 gap-4">
+          <UmstellungsPlaner />
+          <RationsRechner />
         </div>
       </section>
 

@@ -1,0 +1,35 @@
+{
+  "blog": {
+    "hundefutter-test-2026": "/images/content/blog/hundefutter-test-2026.jpg",
+    "barf-hund-anfaenger": "/images/content/blog/barf-hund-anfaenger.jpg",
+    "hund-uebergewicht-futter": "/images/content/blog/hund-uebergewicht-futter.jpg",
+    "hundefutter-allergie-hund": "/images/content/blog/hundefutter-allergie-hund.jpg",
+    "hundefutter-test-stiftung": "/images/content/blog/hundefutter-test-stiftung.jpg"
+  },
+  "vergleich": {
+    "barf-vs-trockenfutter": "/images/content/vergleich/barf-vs-trockenfutter.jpg",
+    "trockenfutter-vs-nassfutter": "/images/content/vergleich/trockenfutter-vs-nassfutter.jpg",
+    "nassfutter-vs-barf": "/images/content/vergleich/nassfutter-vs-barf.jpg",
+    "getreidefrei-vs-mit-getreide": "/images/content/vergleich/getreidefrei-vs-mit-getreide.jpg",
+    "monoprotein-vs-mehrkomponenten": "/images/content/vergleich/monoprotein-vs-mehrkomponenten.jpg",
+    "insektenfutter-vs-huehnchen": "/images/content/vergleich/insektenfutter-vs-huehnchen.jpg",
+    "kaltgepresst-vs-extrudiert": "/images/content/vergleich/kaltgepresst-vs-extrudiert.jpg",
+    "premium-vs-budget": "/images/content/vergleich/premium-vs-budget.jpg"
+  },
+  "studien": {
+    "allergien": "/images/content/studien/allergien.jpg",
+    "barf": "/images/content/studien/barf.jpg",
+    "trockenfutter": "/images/content/studien/trockenfutter.jpg",
+    "welpen": "/images/content/studien/welpen.jpg",
+    "senioren": "/images/content/studien/senioren.jpg",
+    "uebergewicht": "/images/content/studien/uebergewicht.jpg",
+    "verdauung": "/images/content/studien/verdauung.jpg",
+    "nachhaltigkeit": "/images/content/studien/nachhaltigkeit.jpg"
+  },
+  "meinungen": {
+    "dog-portrait-1": "/images/content/meinungen/dog-portrait-1.jpg",
+    "dog-portrait-2": "/images/content/meinungen/dog-portrait-2.jpg",
+    "dog-portrait-3": "/images/content/meinungen/dog-portrait-3.jpg",
+    "dog-portrait-4": "/images/content/meinungen/dog-portrait-4.jpg"
+  }
+}

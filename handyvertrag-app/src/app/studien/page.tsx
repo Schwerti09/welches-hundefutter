@@ -112,22 +112,34 @@ export default async function StudienPage() {
               <Link
                 key={hub.slug}
                 href={`/studien/${hub.slug}`}
-                className="group relative bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-white/20 transition-all duration-200 card-hover"
+                className="group relative bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 hover:border-white/20 transition-all duration-200 card-hover"
               >
-                <div className="text-4xl mb-3">{hub.icon}</div>
-                <h2 className="text-lg font-semibold text-white mb-2 group-hover:text-accent transition-colors">
-                  {hub.name}
-                </h2>
-                <p className="text-sm text-white/50 leading-relaxed mb-4">
-                  {hub.description}
-                </p>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs bg-white/10 rounded-full px-3 py-1 text-white/60">
-                    {hub.study_count} {hub.study_count === 1 ? "Studie" : "Studien"}
-                  </span>
-                  <span className="text-xs text-white/40 group-hover:text-accent transition-colors">
-                    Studien ansehen →
-                  </span>
+                {/* Hub image */}
+                <div className="relative h-32 overflow-hidden">
+                  <img
+                    src={`/images/content/studien/${hub.slug}.jpg`}
+                    alt={hub.name}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f1e] via-[#0a0f1e]/50 to-transparent" />
+                  <span className="absolute top-3 left-3 text-2xl">{hub.icon}</span>
+                </div>
+                <div className="p-5">
+                  <h2 className="text-base font-semibold text-white mb-2 group-hover:text-accent transition-colors">
+                    {hub.name}
+                  </h2>
+                  <p className="text-sm text-white/50 leading-relaxed mb-4">
+                    {hub.description}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs bg-white/10 rounded-full px-3 py-1 text-white/60">
+                      {hub.study_count} {hub.study_count === 1 ? "Studie" : "Studien"}
+                    </span>
+                    <span className="text-xs text-white/40 group-hover:text-accent transition-colors">
+                      Studien ansehen →
+                    </span>
+                  </div>
                 </div>
               </Link>
             ))}

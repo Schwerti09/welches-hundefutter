@@ -3,6 +3,8 @@ import Link from "next/link";
 import AuthorBox from "@/components/AuthorBox";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
+import VergleichHeroImage from "@/components/VergleichHeroImage";
+import UmstellungsPlaner from "@/components/tools/UmstellungsPlaner";
 
 export const metadata: Metadata = {
   title: "Kaltgepresstes Hundefutter vs. Extrudiert 2026: Der echte Unterschied",
@@ -59,6 +61,8 @@ export default function KaltgepresstvExtrudiert() {
         <span className="mx-2">·</span>
         <span className="text-[var(--ink)]">Kaltgepresst vs. Extrudiert</span>
       </nav>
+
+      <VergleichHeroImage slug="kaltgepresst-vs-extrudiert" alt="Kaltgepresstes vs. Extrudiertes Hundefutter – Vergleich" />
 
       <section className="hero-glow max-w-5xl mx-auto w-full px-5 pt-8 pb-14">
         <span className="pill mb-4">⚖️ Direktvergleich</span>
@@ -133,6 +137,10 @@ export default function KaltgepresstvExtrudiert() {
             Der echte Vorteil des Kaltpressens liegt in der Transparenz: Wer bei niedrigen Temperaturen presst, kann keine minderwertigen Rohstoffe durch Hochtemperatur kaschieren. Das ist ein indirekter Qualitätsindikator — aber kein Garant für bessere Nährstoffversorgung.
           </p>
         </div>
+      </section>
+
+      <section className="max-w-5xl mx-auto w-full px-5 pb-10">
+        <UmstellungsPlaner />
       </section>
 
       <section className="max-w-5xl mx-auto w-full px-5 pb-14">

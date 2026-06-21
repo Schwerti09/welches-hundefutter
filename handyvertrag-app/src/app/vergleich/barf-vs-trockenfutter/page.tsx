@@ -3,6 +3,9 @@ import Link from "next/link";
 import AuthorBox from "@/components/AuthorBox";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
+import VergleichHeroImage from "@/components/VergleichHeroImage";
+import UmstellungsPlaner from "@/components/tools/UmstellungsPlaner";
+import RationsRechner from "@/components/tools/RationsRechner";
 
 export const metadata: Metadata = {
   title: "BARF vs. Trockenfutter: Direktvergleich 2026",
@@ -59,6 +62,8 @@ export default function VergleichBarfTrockenPage() {
         <span className="mx-2">·</span>
         <span className="text-[var(--ink)]">BARF vs. Trockenfutter</span>
       </nav>
+
+      <VergleichHeroImage slug="barf-vs-trockenfutter" alt="BARF vs. Trockenfutter – Direktvergleich Hundefutter" />
 
       <section className="hero-glow max-w-5xl mx-auto w-full px-5 pt-8 pb-14">
         <span className="pill mb-4">⚖️ Direktvergleich</span>
@@ -164,6 +169,14 @@ export default function VergleichBarfTrockenPage() {
             Wichtig: Separate Mahlzeiten statt Mischen in einer Portion — Rohfleisch und Trockenfutter
             haben unterschiedliche Verdauungsgeschwindigkeiten.
           </p>
+        </div>
+      </section>
+
+      {/* Interactive Tools */}
+      <section className="max-w-5xl mx-auto w-full px-5 pb-10">
+        <div className="grid sm:grid-cols-2 gap-4">
+          <UmstellungsPlaner />
+          <RationsRechner />
         </div>
       </section>
 
