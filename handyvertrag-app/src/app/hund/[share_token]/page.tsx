@@ -308,7 +308,7 @@ export default async function HundSteckbriefPage({ params }: { params: Promise<{
             BELLA fragt 5 Dinge über deinen Hund und findet das passende Futter aus 11.000+ Sorten.
           </p>
           <Link
-            href="/#bella-advisor"
+            href="/?ctx=profil#bella-advisor"
             className="text-xs px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold hover:shadow-lg hover:shadow-orange-500/25 transition-all inline-block"
           >
             🐕 BELLA fragen — kostenlos
