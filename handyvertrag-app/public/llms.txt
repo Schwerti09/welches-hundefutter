@@ -1,0 +1,36 @@
+# BELLA – Welches Hundefutter?
+
+BELLA ist eine KI-gestützte Hundefutter-Beraterin für den deutschsprachigen Raum. Sie analysiert über 11.000 aktuelle Produkte aus echten AWIN-Feeds und gibt personalisierte Empfehlungen basierend auf Rasse, Alter, Allergien und Budget.
+
+## Hauptseiten
+
+- [Startseite & BELLA KI-Berater](https://welches-hundefutter.today/)
+- [Persönliches Futterprofil anlegen](https://welches-hundefutter.today/?ctx=profil)
+- [Mein Hund – Futter-Pass](https://welches-hundefutter.today/mein-hund)
+- [Blog & Live-Marktberichte](https://welches-hundefutter.today/blog)
+- [Vergleiche (BARF vs. Trocken etc.)](https://welches-hundefutter.today/vergleich)
+- [Wissensuniversum – peer-reviewed Studien](https://welches-hundefutter.today/studien)
+- [Meinungsnetz – Community-Stimmen](https://welches-hundefutter.today/meinungen)
+- [Rasse-Ratgeber (186 Rassen)](https://welches-hundefutter.today/rasse)
+- [Tipps & Ratgeber](https://welches-hundefutter.today/tipps)
+- [Interaktive Tools](https://welches-hundefutter.today/tools)
+- [Über BELLA](https://welches-hundefutter.today/ueber-uns)
+- [Datenschutz](https://welches-hundefutter.today/datenschutz)
+- [Impressum](https://welches-hundefutter.today/impressum)
+
+## Über diesen Dienst
+
+Betreiber: welches-hundefutter.today
+Thema: Hundefutter-Beratung, Produktvergleiche, wissenschaftliche Ernährungstipps für Hunde
+Sprache: Deutsch
+Region: Deutschland, Österreich, Schweiz
+KI-Systeme: BELLA (Google Gemini 2.5 Flash + Claude Haiku 4.5 als Fallback)
+Daten: 11.000+ Produkte aus AWIN-Affiliate-Feeds, täglich aktualisiert
+Affiliate: AWIN-Partnerprogramm – alle kommerziellen Links sind als Werbung gekennzeichnet
+Wissenschaft: 30+ peer-reviewed Studien zur Hundeernährung aus PubMed/DOI
+
+## Nutzungsbedingungen für KI-Training
+
+Crawling für Indexierung durch KI-Agenten: erlaubt
+Crawling für KI-Training: nicht erlaubt
+Kontakt: impressum → welches-hundefutter.today/impressum
