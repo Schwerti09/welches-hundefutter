@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { neon } from "@neondatabase/serverless";
 import StructuredData from "@/components/StructuredData";
 import AuthorBox from "@/components/AuthorBox";
+import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
 import SiteFooter from "@/components/SiteFooter";
 import { brandToSlug } from "@/db/queries/foods";
 
@@ -179,7 +180,7 @@ export default async function LebensphaseePage({ params }: { params: Promise<{ s
         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4 max-w-3xl">{phase.tagline}</h1>
         <p className="bella-answer text-[var(--muted)] leading-relaxed max-w-2xl mb-4">{phase.description}</p>
         <p className="text-sm text-[var(--muted)] mb-8"><span className="font-semibold text-[var(--ink)]">Altersbereich:</span> {phase.ageRange}</p>
-        <Link href="/#bella-advisor" className="btn-primary">BELLA fragt nach deinem Hund — Empfehlung in 60 s →</Link>
+        <Link href="#bella-advisor" className="btn-primary">BELLA fragt nach deinem Hund — Empfehlung in 60 s →</Link>
       </section>
 
       <section className="max-w-5xl mx-auto w-full px-5 py-10">
@@ -226,13 +227,32 @@ export default async function LebensphaseePage({ params }: { params: Promise<{ s
         )}
       </section>
 
+      {/* BELLA CHAT — personalisierte Beratung */}
+      <section id="bella-advisor" className="max-w-5xl mx-auto w-full px-5 py-10 scroll-mt-4">
+        <h2 className="text-2xl font-extrabold tracking-tight mb-2">
+          BELLA findet das beste Futter für deinen {phase.name}
+        </h2>
+        <p className="text-[var(--muted)] text-sm mb-7">
+          Erzähl BELLA von deinem Hund — sie empfiehlt sofort passende Sorten aus 11.000+ Produkten.
+        </p>
+        <BellaAdvisorWrapper
+          introMessage={`Hallo! Ich bin BELLA 🐕 — deine KI-Ernährungsberaterin.\n\nDu suchst Futter für einen ${phase.name}. Um die besten Sorten aus 11.000+ Produkten zu finden:\n\n• Welche Rasse ist dein Hund?\n• Wie alt und wie schwer ist er?\n• Gibt es Allergien oder Gesundheitsthemen?\n\nDann empfehle ich dir sofort die passenden Sorten!`}
+          pageQuickOptions={[
+            { label: `${phase.emoji} Bestes ${phase.name}-Futter`, msg: `Welches Futter ist das beste für meinen ${phase.name}?` },
+            { label: "🐶 Rasse + Alter nennen", msg: `Ich habe einen [Rasse], [Alter] Jahre alt — was empfiehlst du für ${phase.name}?` },
+            { label: "💰 Günstig & gut", msg: `Welches ${phase.name}-Futter ist günstig aber trotzdem hochwertig?` },
+            { label: "🍽️ Wie viel pro Tag?", msg: `Wie viel Futter braucht mein ${phase.name} pro Tag?` },
+          ]}
+        />
+      </section>
+
       <section className="max-w-5xl mx-auto w-full px-5 pb-16">
         <div className="rounded-2xl bg-gradient-to-r from-orange-600/20 to-amber-600/20 border border-orange-500/30 p-8 text-center">
           <h2 className="text-2xl font-extrabold tracking-tight mb-3">Futterplan für deinen {phase.name} erstellen</h2>
           <p className="text-[var(--muted)] mb-6 max-w-xl mx-auto">
             BELLA fragt nach Rasse, Gewicht und Allergien — und findet die optimale Sorte + Tagesmenge für diese Lebensphase.
           </p>
-          <Link href="/#bella-advisor" className="btn-primary">🐕 BELLA jetzt fragen →</Link>
+          <Link href="#bella-advisor" className="btn-primary">🐕 BELLA jetzt fragen →</Link>
         </div>
         <div className="flex flex-wrap gap-2 mt-8">
           {Object.entries(PHASEN).filter(([s]) => s !== slug).map(([s, p]) => (

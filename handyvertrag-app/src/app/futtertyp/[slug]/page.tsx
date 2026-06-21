@@ -153,7 +153,7 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
         <p className="text-[var(--muted)] leading-relaxed max-w-2xl mb-8">{typ.description}</p>
         {TYP_STAT[slug] && <CitableStat variant={TYP_STAT[slug]} />}
         <div className="flex gap-3 flex-wrap">
-          <Link href="/#bella-advisor" className="btn-primary">BELLA findet das Beste für deinen Hund →</Link>
+          <Link href="#bella-advisor" className="btn-primary">BELLA findet das Beste für deinen Hund →</Link>
           <span className="self-center text-xs text-[var(--muted)]">{typ.priceRange} typisch</span>
         </div>
       </section>
@@ -238,7 +238,7 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
       <ProductSchemaBlock foods={foods} listName={`${typ.name} Hundefutter im Vergleich`} />
 
       {/* BELLA CHAT — personalisierte Beratung */}
-      <section className="max-w-5xl mx-auto w-full px-5 py-10">
+      <section id="bella-advisor" className="max-w-5xl mx-auto w-full px-5 py-10 scroll-mt-4">
         <h2 className="text-2xl font-extrabold tracking-tight mb-2">
           BELLA findet die besten {typ.name}-Sorten für deinen Hund
         </h2>
@@ -308,7 +308,7 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
             BELLA fragt nach Rasse, Alter, Gewicht und Allergien und empfiehlt
             in 60 Sekunden die optimale Sorte — kostenlos.
           </p>
-          <Link href="/#bella-advisor" className="btn-primary">🐕 BELLA fragen — Profil + Empfehlung →</Link>
+          <Link href="#bella-advisor" className="btn-primary">🐕 BELLA fragen — Profil + Empfehlung →</Link>
         </div>
       </section>
 

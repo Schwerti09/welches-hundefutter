@@ -137,7 +137,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
         <p className="bella-answer text-lg sm:text-xl font-semibold text-[var(--ink)] leading-snug max-w-2xl mb-4">{da.answer}</p>
         <p className="text-[var(--muted)] leading-relaxed max-w-2xl mb-8">{problem.description}</p>
         {PROBLEM_STAT[slug] && <CitableStat variant={PROBLEM_STAT[slug]} />}
-        <Link href="/#bella-advisor" className="btn-primary">
+        <Link href="#bella-advisor" className="btn-primary">
           BELLA fragt nach deinem Hund → passende Sorten in 60 s
         </Link>
       </section>
@@ -731,7 +731,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
       <ProductSchemaBlock foods={foods} listName={`Hundefutter bei ${problem.name}`} />
 
       {/* BELLA CHAT — personalisierte Beratung */}
-      <section className="max-w-5xl mx-auto w-full px-5 py-10">
+      <section id="bella-advisor" className="max-w-5xl mx-auto w-full px-5 py-10 scroll-mt-4">
         <h2 className="text-2xl font-extrabold tracking-tight mb-2">
           BELLA findet das passende Futter für deinen Hund
         </h2>
@@ -802,7 +802,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
             BELLA fragt nach Rasse, Alter, Gewicht und Allergien — und empfiehlt in 60 Sekunden
             die passenden Sorten. Kostenlos, ohne Anmeldung.
           </p>
-          <Link href="/#bella-advisor" className="btn-primary">
+          <Link href="#bella-advisor" className="btn-primary">
             🐕 BELLA jetzt fragen — Futterplan erstellen →
           </Link>
         </div>
