@@ -47,6 +47,7 @@ export default function BreedGallery() {
               src={b.img}
               alt={b.name}
               fill
+              quality={65}
               sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 17vw"
               className="object-cover transition-transform duration-500 group-hover:scale-110"
             />

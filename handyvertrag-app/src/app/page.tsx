@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
 import CostHook from "@/components/CostHook";
-import BreedGallery from "@/components/BreedGallery";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 import TopFoodsTable from "@/components/TopFoodsTable";
-import LiveIntel from "@/components/LiveIntel";
 import BellaMcpTools from "@/components/BellaMcpTools";
+import LiveStatusBar from "@/components/LiveStatusBar";
+
+// Below-fold components — code-split to keep initial JS bundle lean
+const BreedGallery = dynamic(() => import("@/components/BreedGallery"));
+const LiveIntel = dynamic(() => import("@/components/LiveIntel"));
 import { getTopFoods, getTopFoodsByScore, getFoodCount, getAvgPricePerKgDry } from "@/db/queries/foods";
 import { getBreedsSlim } from "@/lib/breeds-slim";
 import { DogInfoProvider } from "@/contexts/DogInfoContext";
@@ -117,6 +121,9 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
             </div>
           </div>
         </div>
+
+        {/* 2c — LIVE STATUS BAR */}
+        <LiveStatusBar countLabel={countLabel} />
 
         {/* 3 — BERATER (nach oben gezogen, Hund schon aus dem Hook bekannt) */}
         <section id="bella-advisor" className="px-5 pt-4 pb-10 scroll-mt-4">
