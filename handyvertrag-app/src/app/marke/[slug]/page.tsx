@@ -243,7 +243,7 @@ export default async function MarkePage({
             in 60 Sekunden die optimale Sorte aus {entry.count} {entry.brand}-Produkten — kostenlos.
           </p>
           <Link href="/#bella-advisor" className="btn-primary">
-            🐕 BELLA fragen — Profil + Empfehlung →
+            🐕 BELLA jetzt fragen — Empfehlung in 60 s →
           </Link>
         </div>
       </section>

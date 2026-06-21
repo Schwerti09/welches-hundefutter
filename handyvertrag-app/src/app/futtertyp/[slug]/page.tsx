@@ -308,7 +308,7 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
             BELLA fragt nach Rasse, Alter, Gewicht und Allergien und empfiehlt
             in 60 Sekunden die optimale Sorte — kostenlos.
           </p>
-          <Link href="#bella-advisor" className="btn-primary">🐕 BELLA fragen — Profil + Empfehlung →</Link>
+          <Link href="#bella-advisor" className="btn-primary">🐕 BELLA jetzt fragen — Empfehlung in 60 s →</Link>
         </div>
       </section>
 

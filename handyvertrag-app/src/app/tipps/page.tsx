@@ -124,7 +124,7 @@ export default function TippsOverviewPage() {
             BELLA fragt nach Rasse, Alter, Gewicht und Gesundheit und empfiehlt in 60 Sekunden
             die optimale Sorte aus über 11.000 Produkten — kostenlos.
           </p>
-          <Link href="/#bella-advisor" className="btn-primary">🐕 BELLA fragen — Profil + Empfehlung →</Link>
+          <Link href="/#bella-advisor" className="btn-primary">🐕 BELLA jetzt fragen — Empfehlung in 60 s →</Link>
         </div>
       </section>
 

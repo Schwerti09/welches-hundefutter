@@ -32,14 +32,16 @@ export async function GET(req: NextRequest) {
       ? await sql`
           SELECT id, name, breed_slug, birth_or_age, weight_kg, activity_level,
                  allergies, health_flags, current_food_slug, current_package_g,
-                 last_purchase_at, est_daily_grams, est_bag_days, share_token, share_enabled
+                 last_purchase_at, est_daily_grams, est_bag_days, share_token, share_enabled,
+                 gender, photo_data
           FROM dog_profiles
           WHERE share_token = ${token} AND share_enabled = true
           LIMIT 1`
       : await sql`
           SELECT id, name, breed_slug, birth_or_age, weight_kg, activity_level,
                  allergies, health_flags, current_food_slug, current_package_g,
-                 last_purchase_at, est_daily_grams, est_bag_days, share_token, share_enabled
+                 last_purchase_at, est_daily_grams, est_bag_days, share_token, share_enabled,
+                 gender, photo_data
           FROM dog_profiles
           WHERE id = ${id!}
           LIMIT 1`;
@@ -81,17 +83,22 @@ export async function POST(req: NextRequest) {
     lastPurchaseAt?: string;
     shareEnabled?: boolean;
     subscriberId?: string;
+    gender?: string;
+    photoData?: string;
   };
   try { body = await req.json(); } catch { return NextResponse.json({ error: "bad_json" }, { status: 400 }); }
 
   const name = (body.name || "").trim();
 
-  // Partial update (z.B. nur lastPurchaseAt von LastPurchaseInput) — kein name nötig
-  if (body.id && !name) {
+  // Partial update (lastPurchaseAt, gender, photo_data, name-only) — kein vollständiger Profil-Save
+  if (body.id && !body.breedSlug && !body.weightKg) {
     try {
       const upd = await sql`
         UPDATE dog_profiles SET
-          last_purchase_at = ${body.lastPurchaseAt ?? null},
+          last_purchase_at = COALESCE(${body.lastPurchaseAt ?? null}::timestamptz, last_purchase_at),
+          gender = COALESCE(${body.gender ?? null}, gender),
+          photo_data = COALESCE(${body.photoData ?? null}, photo_data),
+          name = CASE WHEN ${name || null} IS NOT NULL THEN ${name || null} ELSE name END,
           updated_at = now()
         WHERE id = ${body.id}
         RETURNING id, share_token, est_bag_days`;
@@ -138,6 +145,8 @@ export async function POST(req: NextRequest) {
           est_daily_grams = ${dg},
           est_bag_days = ${bd},
           share_enabled = ${body.shareEnabled ?? false},
+          gender = COALESCE(${body.gender ?? null}, gender),
+          photo_data = COALESCE(${body.photoData ?? null}, photo_data),
           updated_at = now()
         WHERE id = ${body.id}
         RETURNING id, share_token`;

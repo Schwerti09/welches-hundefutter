@@ -19,6 +19,8 @@ interface Profile {
   est_bag_days: number | null;
   last_purchase_at: string | null;
   share_enabled: boolean;
+  gender: string | null;
+  photo_data: string | null;
 }
 
 interface Food {
@@ -323,11 +325,33 @@ function RecoveryForm() {
   );
 }
 
+async function compressToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const size = 200;
+      const canvas = document.createElement("canvas");
+      const scale = Math.min(size / img.width, size / img.height);
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+      canvas.getContext("2d")!.drawImage(img, 0, 0, canvas.width, canvas.height);
+      URL.revokeObjectURL(url);
+      resolve(canvas.toDataURL("image/jpeg", 0.8));
+    };
+    img.onerror = reject;
+    img.src = url;
+  });
+}
+
 export default function MeinHundPage() {
   const [data, setData] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
   const [noProfile, setNoProfile] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [editingName, setEditingName] = useState(false);
+  const [nameInput, setNameInput] = useState("");
+  const [savingField, setSavingField] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -369,6 +393,32 @@ export default function MeinHundPage() {
 
   const days = data ? daysRemaining(data.profile.last_purchase_at, data.profile.est_bag_days) : null;
 
+  const saveField = async (fields: Record<string, string | null>) => {
+    if (!data) return;
+    const key = Object.keys(fields)[0];
+    setSavingField(key);
+    await fetch("/api/profiles", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: data.profile.id, ...fields }),
+    });
+    setSavingField(null);
+    setRefreshKey(k => k + 1);
+  };
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const photoData = await compressToBase64(file);
+    await saveField({ photoData });
+  };
+
+  const handleNameSave = async () => {
+    if (!nameInput.trim()) return;
+    await saveField({ name: nameInput.trim() });
+    setEditingName(false);
+  };
+
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
 
@@ -394,16 +444,73 @@ export default function MeinHundPage() {
           </div>
         ) : data ? (
           <div className="space-y-6">
-            {/* Header */}
+            {/* Header — Foto, Name, Geschlecht */}
             <div className="text-center">
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center mx-auto mb-4 text-3xl">
-                🐕
-              </div>
-              <h1 className="text-3xl font-black mb-1">{data.profile.name}</h1>
-              {data.profile.breed_slug && (
-                <p className="text-[var(--muted)] capitalize">{data.profile.breed_slug.replace(/-/g, " ")}</p>
+              {/* Foto-Upload */}
+              <label className="relative inline-block cursor-pointer group mb-4">
+                <div className="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center mx-auto text-3xl ring-2 ring-white/10 group-hover:ring-orange-500/50 transition-all">
+                  {data.profile.photo_data
+                    ? <img src={data.profile.photo_data} alt={data.profile.name} className="w-full h-full object-cover" />
+                    : "🐕"}
+                </div>
+                <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-white text-xs font-semibold">📷 Foto</span>
+                </div>
+                <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
+                {savingField === "photoData" && (
+                  <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/60">
+                    <div className="w-5 h-5 border-2 border-orange-500/30 border-t-orange-500 rounded-full animate-spin" />
+                  </div>
+                )}
+              </label>
+
+              {/* Editierbarer Name */}
+              {editingName ? (
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  <input
+                    autoFocus
+                    value={nameInput}
+                    onChange={e => setNameInput(e.target.value)}
+                    onKeyDown={e => { if (e.key === "Enter") handleNameSave(); if (e.key === "Escape") setEditingName(false); }}
+                    className="text-2xl font-black bg-transparent border-b-2 border-orange-500 text-white text-center focus:outline-none w-40"
+                  />
+                  <button onClick={handleNameSave} disabled={savingField === "name"} className="text-orange-400 text-sm font-semibold hover:text-orange-300">
+                    {savingField === "name" ? "…" : "✓"}
+                  </button>
+                  <button onClick={() => setEditingName(false)} className="text-white/40 text-sm">✕</button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => { setNameInput(data.profile.name); setEditingName(true); }}
+                  className="group flex items-center gap-2 mx-auto mb-1"
+                >
+                  <h1 className="text-3xl font-black">{data.profile.name}</h1>
+                  <span className="text-white/30 group-hover:text-orange-400 transition-colors text-base">✏️</span>
+                </button>
               )}
-              <div className="flex flex-wrap gap-2 justify-center mt-3">
+
+              {data.profile.breed_slug && (
+                <p className="text-[var(--muted)] capitalize mb-3">{data.profile.breed_slug.replace(/-/g, " ")}</p>
+              )}
+
+              {/* Geschlecht-Toggle */}
+              <div className="flex items-center justify-center gap-2 mb-3">
+                {(["m", "f"] as const).map((g) => (
+                  <button
+                    key={g}
+                    onClick={() => saveField({ gender: data.profile.gender === g ? null : g })}
+                    className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all border ${
+                      data.profile.gender === g
+                        ? g === "m" ? "bg-blue-500/25 border-blue-400/50 text-blue-300" : "bg-rose-500/25 border-rose-400/50 text-rose-300"
+                        : "bg-white/5 border-white/10 text-white/40 hover:text-white/70"
+                    }`}
+                  >
+                    {g === "m" ? "♂ Rüde" : "♀ Hündin"}
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex flex-wrap gap-2 justify-center">
                 {data.profile.weight_kg && (
                   <span className="px-3 py-1 rounded-full bg-white/10 text-white/70 text-sm">{parseFloat(data.profile.weight_kg)} kg</span>
                 )}
