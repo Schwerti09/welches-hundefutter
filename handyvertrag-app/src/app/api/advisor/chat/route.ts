@@ -599,7 +599,9 @@ export async function POST(request: NextRequest) {
               ${shareToken},
               true
             ) RETURNING id, share_token`;
-          emit(`PROFILE:${JSON.stringify({ id: row.id, shareToken: row.share_token, name: dogName, dailyGrams: dg, currentFood: offers[0].name })}`);
+          const topPricePerKg = offers[0].price_per_kg != null ? parseFloat(offers[0].price_per_kg) : null;
+          const monthlyEuro = dg && topPricePerKg ? parseFloat(((dg / 1000) * 30 * topPricePerKg).toFixed(2)) : null;
+          emit(`PROFILE:${JSON.stringify({ id: row.id, shareToken: row.share_token, name: dogName, dailyGrams: dg, currentFood: offers[0].name, pricePerKg: topPricePerKg, monthlyEuro })}`);
         } catch { /* never block the stream */ }
       }
 

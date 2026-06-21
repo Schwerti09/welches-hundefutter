@@ -209,11 +209,11 @@ export default async function LebensphaseePage({ params }: { params: Promise<{ s
                   {f.is_grain_free && <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300">getreidefrei</span>}
                 </div>
                 <p className="font-semibold text-sm leading-tight">{f.name}</p>
-                <Link href={`/marke/${brandToSlug(f.brand)}`}
-                  onClick={(e) => e.stopPropagation()}
-                  className="text-[var(--muted)] text-xs mt-0.5 hover:text-[var(--honey)] transition-colors">
-                  {f.brand}
-                </Link>
+                <p className="text-[var(--muted)] text-xs mt-0.5">
+                  <Link href={`/marke/${brandToSlug(f.brand)}`} className="hover:text-[var(--honey)] transition-colors">
+                    {f.brand}
+                  </Link>
+                </p>
                 <div className="flex items-center justify-between mt-3">
                   <span className="text-lg font-black">{f.price_per_kg ? `${parseFloat(f.price_per_kg).toFixed(2)} €` : ""}<span className="text-xs font-medium text-[var(--muted)]">/kg</span></span>
                   <span className="text-xs text-[var(--honey)] font-semibold">Ansehen →</span>

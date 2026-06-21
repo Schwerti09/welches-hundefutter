@@ -52,6 +52,8 @@ interface ProfileData {
   name: string;
   dailyGrams: number | null;
   currentFood: string | null;
+  pricePerKg: number | null;
+  monthlyEuro: number | null;
 }
 
 interface StudyCitation {
@@ -553,28 +555,45 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
 
                   {/* Futter-Pass CTA (erscheint sobald Profil angelegt) */}
                   {msg.profile && (
-                    <div className="mt-3 rounded-2xl bg-gradient-to-r from-orange-600/15 to-amber-600/15 border border-orange-500/25 p-4">
-                      <p className="text-xs font-bold text-orange-300 mb-1">🐕 Futter-Pass für {msg.profile.name} angelegt</p>
-                      {msg.profile.dailyGrams && (
-                        <p className="text-[11px] text-white/60 mb-2">
-                          Tagesbedarf ca. <span className="text-white font-semibold">{msg.profile.dailyGrams} g</span>
-                          {msg.profile.currentFood && <> · empfohlen: <span className="text-white/80">{msg.profile.currentFood}</span></>}
-                        </p>
-                      )}
-                      <div className="flex gap-2 flex-wrap">
-                        <a
-                          href="/mein-hund"
-                          className="text-xs px-3 py-1.5 rounded-xl bg-orange-500 text-white hover:bg-orange-600 transition-colors inline-block font-semibold"
-                        >
-                          ⏰ Nachschub-Wecker →
-                        </a>
+                    <div className="mt-3 rounded-2xl bg-gradient-to-br from-orange-900/30 via-amber-900/20 to-orange-900/30 border border-orange-500/30 overflow-hidden">
+                      {/* Header */}
+                      <div className="px-4 pt-4 pb-3 border-b border-orange-500/15">
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <span className="text-base">🐾</span>
+                          <p className="text-sm font-bold text-orange-300">Ich passe jetzt auf {msg.profile.name} auf!</p>
+                        </div>
+                        <p className="text-[10px] text-white/40 pl-6">Futter-Pass angelegt · BELLA erinnert dich</p>
+                      </div>
+                      {/* Stats */}
+                      <div className="px-4 py-3 grid grid-cols-2 gap-3">
+                        {msg.profile.dailyGrams && (
+                          <div>
+                            <p className="text-[10px] text-white/40 uppercase tracking-wide mb-0.5">Tagesbedarf</p>
+                            <p className="text-lg font-black text-white">{msg.profile.dailyGrams} <span className="text-sm font-normal text-white/50">g</span></p>
+                          </div>
+                        )}
+                        {msg.profile.monthlyEuro && (
+                          <div>
+                            <p className="text-[10px] text-white/40 uppercase tracking-wide mb-0.5">Kosten / Monat</p>
+                            <p className="text-lg font-black text-amber-400">~{msg.profile.monthlyEuro.toFixed(0)} <span className="text-sm font-normal text-white/50">€</span></p>
+                          </div>
+                        )}
+                      </div>
+                      {/* CTAs */}
+                      <div className="px-4 pb-4 flex gap-2 flex-wrap">
                         <a
                           href={`/hund/${msg.profile.shareToken}`}
                           target="_blank"
                           rel="noopener"
-                          className="text-xs px-3 py-1.5 rounded-xl bg-orange-500/20 border border-orange-500/40 text-orange-200 hover:bg-orange-500/30 transition-colors inline-block"
+                          className="text-xs px-3 py-2 rounded-xl bg-orange-500 text-white hover:bg-orange-400 transition-colors inline-block font-semibold"
                         >
-                          Steckbrief teilen →
+                          Steckbrief anzeigen →
+                        </a>
+                        <a
+                          href="/mein-hund"
+                          className="text-xs px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white/70 hover:text-white hover:bg-white/10 transition-colors inline-block"
+                        >
+                          ⏰ Nachschub-Wecker
                         </a>
                       </div>
                     </div>
