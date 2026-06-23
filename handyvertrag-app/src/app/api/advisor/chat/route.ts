@@ -663,8 +663,10 @@ export async function POST(request: NextRequest) {
           const allConv = [...conversationHistory.map(h => h.content), message].join(" ");
           // Hundename erkennen: "heißt Bello", "mein Hund Bello", "meine Hündin Luna"
           const nameMatch = allConv.match(/hei[ßs]t\s+([A-Za-zÀ-ž]{2,14})/u)
-            || allConv.match(/(?:hund|hündin|rüde|welpe)[^A-Za-z]+([A-ZÀ-ž][a-zÀ-ž]{1,13})/ui);
-          const rawName = nameMatch?.[1] || null;
+            || allConv.match(/(?:[Hh]und|[Hh]ündin|[Rr]üde|[Ww]elpe)[^A-Za-z]+([A-ZÀ-ž][a-zÀ-ž]{1,13})/u);
+          // Stoppwörter: häufige groß geschriebene Wörter am Satzanfang/nach Komma, keine echten Namen.
+          const NAME_STOPWORDS = new Set(["Er", "Sie", "Es", "Mein", "Meine", "Unser", "Unsere", "Der", "Die", "Das", "Und", "Aber", "Hat", "Ist", "War", "Frisst", "Wir", "Ich"]);
+          const rawName = nameMatch?.[1] && !NAME_STOPWORDS.has(nameMatch[1]) ? nameMatch[1] : null;
           const breedName = intent.breed
             ? intent.breed.split(/[\s-]/)[0].replace(/^./, (c) => c.toUpperCase()) + "-Hund"
             : null;
