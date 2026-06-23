@@ -20,6 +20,7 @@ import { getCompanions, containsAllergen } from "@/db/queries/crosssell";
 import { dailyGrams } from "@/lib/consumption-math";
 import type { ActivityLevel } from "@/lib/consumption-math";
 import { getVoucherForUrl } from "@/data/partners";
+import { findGlossaryLinks } from "@/lib/glossary-links";
 
 export const runtime = "nodejs";
 export const maxDuration = 45;
@@ -615,6 +616,10 @@ export async function POST(request: NextRequest) {
       }
 
       emit(`STEP:done:${ask ? "Frage bereit" : "Analyse abgeschlossen"}`);
+
+      // ── Begriffserklärung → Vertiefungs-Link auf bestehende Ratgeber-Seiten ──
+      const glossaryLinks = findGlossaryLinks(`${message} ${fullText}`, 2);
+      if (glossaryLinks.length) emit(`LINKS:${JSON.stringify(glossaryLinks)}`);
 
       const offerPayload = ask ? [] : offers.map(o => ({
         id: o.id,

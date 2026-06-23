@@ -66,6 +66,11 @@ interface StudyCitation {
   topicHub: string;
 }
 
+interface GlossaryLink {
+  label: string;
+  url: string;
+}
+
 interface Message {
   id: string;
   role: "bella" | "user";
@@ -74,6 +79,7 @@ interface Message {
   companions?: Companion[];
   profile?: ProfileData;
   studies?: StudyCitation[];
+  glossaryLinks?: GlossaryLink[];
 }
 
 type BellaMood = "idle" | "thinking" | "talking" | "happy" | "waving" | "excited";
@@ -205,6 +211,7 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
       let companions: Companion[] = [];
       let profile: ProfileData | undefined;
       let studies: StudyCitation[] = [];
+      let glossaryLinks: GlossaryLink[] = [];
 
       const flushLine = (line: string) => {
         if (line.startsWith("TEXT:")) {
@@ -228,6 +235,8 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
           try { profile = JSON.parse(line.slice(8)) as ProfileData; } catch { /* ignore partial */ }
         } else if (line.startsWith("STUDY:")) {
           try { studies = JSON.parse(line.slice(6)) as StudyCitation[]; } catch { /* ignore partial */ }
+        } else if (line.startsWith("LINKS:")) {
+          try { glossaryLinks = JSON.parse(line.slice(6)) as GlossaryLink[]; } catch { /* ignore partial */ }
         }
       };
 
@@ -245,7 +254,7 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
         replyText = "Erzähl mir noch ein bisschen mehr über deinen Hund — Rasse, Alter, Allergien? Dann finde ich das passende Futter.";
       }
       setMessages(prev => prev.map(m =>
-        m.id === bellaId ? { ...m, content: replyText, offers: offers.length ? offers : undefined, companions: companions.length ? companions : undefined, profile, studies: studies.length ? studies : undefined } : m
+        m.id === bellaId ? { ...m, content: replyText, offers: offers.length ? offers : undefined, companions: companions.length ? companions : undefined, profile, studies: studies.length ? studies : undefined, glossaryLinks: glossaryLinks.length ? glossaryLinks : undefined } : m
       ));
 
       // Persist profile to localStorage so /mein-hund can load it
@@ -413,6 +422,22 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
                       <span className="text-white/40 text-xs">BELLA analysiert dein Profil…</span>
                     </div>
                   ) : null}
+
+                  {msg.glossaryLinks && msg.glossaryLinks.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5">
+                      {msg.glossaryLinks.map((l) => (
+                        <a
+                          key={l.url}
+                          href={l.url}
+                          target="_blank"
+                          rel="noopener"
+                          className="inline-flex items-center gap-1 text-[11px] text-orange-300/80 bg-orange-900/15 border border-orange-500/20 rounded-full px-2.5 py-1 hover:bg-orange-900/30 hover:text-orange-200 transition-colors"
+                        >
+                          📖 {l.label}
+                        </a>
+                      ))}
+                    </div>
+                  )}
 
                   {/* Food recommendation cards */}
                   {msg.offers && msg.offers.length > 0 && (
