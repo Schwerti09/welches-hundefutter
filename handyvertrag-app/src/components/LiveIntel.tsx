@@ -33,11 +33,15 @@ function MetricRow({ label, value, accent = false, check = false }: { label: str
         <span className={`text-xs ${accent ? "text-emerald-400" : "text-indigo-400"}`}>{check ? "✓" : "›"}</span>
         {label}
       </span>
-      {value && (
+      {value ? (
         <span className={`font-mono font-semibold tabular-nums ${accent ? "text-emerald-300" : "text-white"}`}>
           {value}
         </span>
-      )}
+      ) : check ? (
+        <span className="text-[10px] font-semibold tracking-[0.15em] uppercase text-emerald-300/90">
+          Aktiv
+        </span>
+      ) : null}
     </div>
   );
 }
