@@ -27,13 +27,18 @@ if _awin or _adcell:
 else:
     AWIN_FEEDS = [os.path.join(DL, "11703-23513-de_DE-Default.csv.gz"),
                   os.path.join(DL, "56633-107909-de_DE-Default.csv.gz")]
-    ADCELL_FEEDS = [os.path.join(DL, "419197-66376.csv"), os.path.join(DL, "521034-66376.csv"),
-                    os.path.join(DL, "496158-66376.csv"), os.path.join(DL, "376594-66376.csv"),  # amberdog
-                    os.path.join(DL, "402766-66376.csv"),  # Canosept Hunde-Pflege (Augen/Fell/Haut/Zahn/Gelenk/Darmflora)
+    ADCELL_FEEDS = [os.path.join(DL, "419197-66376 (1).csv"), os.path.join(DL, "521034-66376 (1).csv"),
+                    os.path.join(DL, "496158-66376 (2).csv"), os.path.join(DL, "376594-66376 (1).csv"),  # amberdog
+                    os.path.join(DL, "402766-66376 (2).csv"),  # Canosept Hunde-Pflege (Augen/Fell/Haut/Zahn/Gelenk/Darmflora)
                     os.path.join(DL, "356592-66376 (4).csv"),  # SAUERLAND Zwinger/Hütten (überwiegend Equipment → Kurator filtert)
-                    os.path.join(DL, "372775-66376.csv"),  # PAWZLOVE Print-Merch (Apparel → Kurator filtert)
+                    os.path.join(DL, "372775-66376 (1).csv"),  # PAWZLOVE Print-Merch (Apparel → Kurator filtert)
                     os.path.join(DL, "633778-66376.csv"),  # pfoten-boutique.de — Spielzeug, Halsbänder, Zubehör
-                    os.path.join(DL, "630262-66376.csv")]  # petshop24.de — Zubehör, NEM, Pflege
+                    os.path.join(DL, "630262-66376 (3).csv"),  # petshop24.de — Zubehör, NEM, Pflege
+                    os.path.join(DL, "238116-66376 (3).csv"),  # Tractive — GPS-Tracker
+                    os.path.join(DL, "484520-66376.csv"),  # mainzoo.de — Zubehör/Pflege
+                    os.path.join(DL, "641701-66376 (1).csv"),  # mczoo.de — Zubehör
+                    os.path.join(DL, "490796-66376.csv"),  # powerpets.de — Gesundheit/Pflege
+                    os.path.join(DL, "258112-66376.csv")]  # kleinmetall.de — überwiegend Auto-Zubehör (Kurator filtert Nicht-Hund)
 
 DOG_RE = re.compile(r"hund|dog|welpe|barf|doggy", re.I)
 OTHER_PET_RE = re.compile(r"katz|\bcat\b|nager|\bvogel\b|aquarium|pferd|reitsport", re.I)

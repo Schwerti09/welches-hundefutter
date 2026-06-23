@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { DogFood } from "@/lib/types";
 import ScoreBadge from "@/components/ScoreBadge";
+import VoucherBadge from "@/components/VoucherBadge";
 
 interface Props {
   byScore: DogFood[];
@@ -63,6 +64,7 @@ export default function TopFoodsTable({ byScore, byPrice, countLabel }: Props) {
                   <div className="font-semibold text-[var(--ink)] flex items-center gap-2 flex-wrap">
                     {f.brand}
                     {f.score != null && <ScoreBadge score={f.score} />}
+                    <VoucherBadge affiliateUrl={f.affiliateUrl} />
                   </div>
                   <div className="text-xs text-[var(--muted)]">{f.name}</div>
                 </td>

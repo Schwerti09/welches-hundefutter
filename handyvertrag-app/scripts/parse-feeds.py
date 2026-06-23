@@ -29,7 +29,7 @@ _adcell_urls = [u.strip() for u in os.environ.get("ADCELL_FEED_URLS", "").split(
 if _awin_urls or _adcell_urls:
     _tmp = tempfile.mkdtemp(prefix="bella-feeds-")
     AWIN_FEEDS = [(_download(u, _tmp, f"awin{i}"), "default") for i, u in enumerate(_awin_urls)]
-    ADCELL_FEEDS = [_download(u, _tmp, f"adcell{i}") for i, u in enumerate(_adcell_urls)]
+    ADCELL_FEEDS = [(_download(u, _tmp, f"adcell{i}"), False) for i, u in enumerate(_adcell_urls)]
     AWIN_SHOPPING_FEEDS = []
 else:
     AWIN_FEEDS = [
@@ -39,13 +39,17 @@ else:
         (os.path.join(DL, "datafeed_615299 (24).csv.gz"), "mixed_shop"),          # Haustierkost DE (BARF/Nass/Trocken/Snacks)
     ]
     ADCELL_FEEDS = [
-        os.path.join(DL, "419197-66376.csv"),
-        os.path.join(DL, "521034-66376.csv"),
-        os.path.join(DL, "496158-66376.csv"),
-        os.path.join(DL, "630262-66376.csv"),  # petshop24.de
+        (os.path.join(DL, "419197-66376 (1).csv"), False),
+        (os.path.join(DL, "521034-66376 (1).csv"), False),
+        (os.path.join(DL, "496158-66376 (2).csv"), False),
+        (os.path.join(DL, "630262-66376 (3).csv"), False),  # petshop24.de
+        (os.path.join(DL, "540252-66376.csv"), True),        # SALiNGO (salingo.de) — reine Hundefutter-Marke
+        (os.path.join(DL, "372544-66376.csv"), True),        # milo-mia.de — reine Hundefutter-Marke
+        (os.path.join(DL, "434708-66376.csv"), True),        # paulis-petfood.de — reine Hundefutter-Marke
     ]
     AWIN_SHOPPING_FEEDS = [
         os.path.join(DL, "116601-retail-de_DE.csv.gz"),  # fidelis.dog / goodmoodpetfood (Kauartikel)
+        os.path.join(DL, "115623-retail-de_DE.csv.gz"),  # Mera Tiernahrung DE
     ]
 
 # ── Filter-Heuristiken ───────────────────────────────────────────────────────
@@ -197,12 +201,12 @@ def parse_awin(path, mode="default"):
         n += 1
     return n
 
-def parse_adcell(path):
+def parse_adcell(path, dog_merchant=False):
     n = 0
     for row in csv.DictReader(smart_open(path), delimiter=";"):
         title = row.get("Produkt-Titel") or ""
         cat = row.get("Produktkategorie") or ""
-        if not is_dog_food(title, cat):
+        if not is_dog_food(title, cat, merchant_is_dog=dog_merchant):
             continue
         price = num(row.get("Preis (Brutto)"))
         gp_unit = (row.get("Grundpreiseinheit") or "").lower()
@@ -262,8 +266,8 @@ def parse_awin_shopping(path):
 print("BELLA Feed-Parser")
 for p, mode in AWIN_FEEDS:
     if os.path.exists(p): print(f"  AWIN {os.path.basename(p)} [{mode}]: {parse_awin(p, mode)} Futter")
-for p in ADCELL_FEEDS:
-    if os.path.exists(p): print(f"  AdCell {os.path.basename(p)}: {parse_adcell(p)} Futter")
+for p, dog_merchant in ADCELL_FEEDS:
+    if os.path.exists(p): print(f"  AdCell {os.path.basename(p)}: {parse_adcell(p, dog_merchant)} Futter")
 for p in AWIN_SHOPPING_FEEDS:
     if os.path.exists(p): print(f"  AWIN-Shopping {os.path.basename(p)}: {parse_awin_shopping(p)} Futter")
 

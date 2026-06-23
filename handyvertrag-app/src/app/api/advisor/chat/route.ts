@@ -19,6 +19,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { getCompanions, containsAllergen } from "@/db/queries/crosssell";
 import { dailyGrams } from "@/lib/consumption-math";
 import type { ActivityLevel } from "@/lib/consumption-math";
+import { getVoucherForUrl } from "@/data/partners";
 
 export const runtime = "nodejs";
 export const maxDuration = 45;
@@ -403,9 +404,13 @@ function buildSystemPrompt(offers: ScoredFood[], confidence: number, ask: boolea
   const block = offers.length
     ? offers.map((o, i) => {
         const sf = Array.isArray(o.suitable_for) && o.suitable_for.length ? o.suitable_for.join("/") : "alle Lebensphase";
+        const voucher = getVoucherForUrl(o.affiliate_url);
+        const voucherNote = voucher
+          ? ` · 🎁 GUTSCHEIN VERFÜGBAR bei ${voucher.shopName}: ${voucher.discount}${voucher.code ? ` (Code ${voucher.code})` : " (kein Code nötig, automatisch über den Link)"}`
+          : "";
         return `[${i + 1}] ${o.brand} ${o.name} · Typ: ${o.type}${o.protein ? ` · Protein: ${o.protein}` : ""}` +
           `${o.price_per_kg ? ` · ${parseFloat(o.price_per_kg).toFixed(2)} €/kg` : o.price ? ` · ${parseFloat(o.price).toFixed(2)} €` : ""}` +
-          `${o.is_grain_free ? " · getreidefrei" : ""}${o.is_hypoallergenic ? " · hypoallergen" : ""} · geeignet für: ${sf} · Match ${o.matchScore}%`;
+          `${o.is_grain_free ? " · getreidefrei" : ""}${o.is_hypoallergenic ? " · hypoallergen" : ""} · geeignet für: ${sf} · Match ${o.matchScore}%${voucherNote}`;
       }).join("\n")
     : "Noch keine Futter-Daten — weitere Infos über den Hund einholen.";
 
@@ -483,6 +488,7 @@ STRIKTE REGELN — nie brechen:
 - Allergen-Sicherheit: Wenn Allergie auf X bekannt, empfehle NIE ein Produkt das X enthält.
 - Du duzt den Halter. Immer auf Deutsch antworten.
 - Wenn du eine Studie zitierst: nur wenn sie wirklich zur Situation passt, nie aufgezwungen.
+- Steht bei einem der Futter "🎁 GUTSCHEIN VERFÜGBAR" dabei: erwähne den Rabatt kurz und beiläufig (1 halber Satz), wenn du genau dieses Futter empfiehlst. Nie erfinden, nie für Futter ohne diesen Hinweis erwähnen.
 ${intent.breed ? `- Rasse "${intent.breed}" ist bekannt — beziehe dich darauf wenn sinnvoll (rassetypische Probleme, Größe, Lebenserwartung).\n` : ""}${intent.currentFood && intent.currentFood !== "bekannt" ? `- Aktuelles Futter "${intent.currentFood}" bekannt — beziehe dich bei der Empfehlung auf den Wechsel.\n` : ""}`;
 }
 

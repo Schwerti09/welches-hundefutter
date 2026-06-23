@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
 import PriceAlertBox from "@/components/PriceAlertBox";
+import VoucherBadge from "@/components/VoucherBadge";
 import ShopReach from "@/components/ShopReach";
 import VoiceButton from "@/components/VoiceButton";
 import MarketWatch from "@/components/MarketWatch";
@@ -443,6 +444,7 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
                               {(offer.suitableFor ?? []).slice(0, 2).map(s => (
                                 <span key={s} className="text-xs bg-emerald-500/15 text-emerald-300 px-2 py-0.5 rounded-full capitalize">{s}</span>
                               ))}
+                              <VoucherBadge affiliateUrl={url} />
                             </div>
                             <div className="flex items-center justify-between gap-3">
                               <div className="min-w-0">
