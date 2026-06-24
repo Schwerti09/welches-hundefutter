@@ -21,12 +21,12 @@ interface DogFoodDeal {
   id: number;
   brand: string;
   name: string;
-  food_type: string;
+  type: string;
   price_per_kg: number | null;
   affiliate_url: string;
   image_url: string | null;
   protein: string | null;
-  grain_free: boolean;
+  is_grain_free: boolean;
   score: number | null;
 }
 
@@ -49,7 +49,7 @@ async function getDeals(): Promise<DogFoodDeal[]> {
   try {
     const sql = neon(url);
     const rows = await sql`
-      SELECT id, brand, name, food_type, price_per_kg, affiliate_url, image_url, protein, grain_free, score
+      SELECT id, brand, name, type, price_per_kg, affiliate_url, image_url, protein, is_grain_free, score
       FROM dog_foods
       WHERE is_active = true
         AND affiliate_url IS NOT NULL
@@ -59,7 +59,7 @@ async function getDeals(): Promise<DogFoodDeal[]> {
       LIMIT 12
     `;
     return rows as unknown as DogFoodDeal[];
-  } catch { return []; }
+  } catch (e) { console.error("[deals]", (e as Error).message); return []; }
 }
 
 export default async function DealsPage() {
@@ -128,13 +128,13 @@ export default async function DealsPage() {
                         <span className={`text-[9px] font-bold text-white px-2 py-0.5 rounded bg-gradient-to-r ${brandColor(deal.brand)}`}>
                           {deal.brand}
                         </span>
-                        {deal.grain_free && (
+                        {deal.is_grain_free && (
                           <span className="text-[9px] text-emerald-300 bg-emerald-500/15 px-1.5 py-0.5 rounded">getreidefrei</span>
                         )}
                       </div>
                       <p className="font-bold text-base text-[var(--ink)] leading-tight truncate">{deal.name}</p>
                       <p className="text-xs text-[var(--muted)] mt-0.5 capitalize">
-                        {deal.food_type}{deal.protein ? ` · ${deal.protein}` : ""}
+                        {deal.type}{deal.protein ? ` · ${deal.protein}` : ""}
                       </p>
                     </div>
                     <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center shrink-0 overflow-hidden ml-2">
