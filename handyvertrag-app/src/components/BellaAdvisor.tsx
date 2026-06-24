@@ -4,6 +4,8 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
 import PriceAlertBox from "@/components/PriceAlertBox";
 import VoucherBadge from "@/components/VoucherBadge";
+import SavingsBanner from "@/components/SavingsBanner";
+import RefillSetup from "@/components/RefillSetup";
 import ShopReach from "@/components/ShopReach";
 import VoiceButton from "@/components/VoiceButton";
 import MarketWatch from "@/components/MarketWatch";
@@ -53,8 +55,11 @@ interface ProfileData {
   name: string;
   dailyGrams: number | null;
   currentFood: string | null;
+  foodSlug?: string | null;
+  affiliateUrl?: string | null;
   pricePerKg: number | null;
   monthlyEuro: number | null;
+  estBagDays?: number | null;
 }
 
 interface StudyCitation {
@@ -563,6 +568,14 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
                     </div>
                   )}
 
+                  {((msg.offers?.length ?? 0) > 0 || (msg.companions?.length ?? 0) > 0) && (
+                    <SavingsBanner
+                      items={[
+                        ...(msg.offers ?? []).map(o => ({ price: o.pricePerKg, affiliateUrl: o.affiliateUrl ?? o.affiliateLink })),
+                        ...(msg.companions ?? []).map(c => ({ price: c.price, affiliateUrl: c.affiliateUrl })),
+                      ]}
+                    />
+                  )}
 
                   {/* Studien ohne Offers (z.B. wenn BELLA noch nachfragt) */}
                   {msg.studies && msg.studies.length > 0 && (!msg.offers || msg.offers.length === 0) && (
@@ -637,9 +650,22 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
                           href="/mein-hund"
                           className="text-xs px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white/70 hover:text-white hover:bg-white/10 transition-colors inline-block"
                         >
-                          ⏰ Nachschub-Wecker
+                          Steckbrief verwalten →
                         </a>
                       </div>
+
+                      {msg.profile.estBagDays && (
+                        <div className="px-4 pb-3">
+                          <RefillSetup
+                            dogProfileId={msg.profile.id}
+                            dogName={msg.profile.name}
+                            foodSlug={msg.profile.foodSlug}
+                            foodName={msg.profile.currentFood}
+                            estBagDays={msg.profile.estBagDays}
+                          />
+                        </div>
+                      )}
+
                       {/* E-Mail: Profil-Link sichern */}
                       <div className="px-4 pb-4 border-t border-white/5 pt-3">
                         {profileEmailState === "done" ? (

@@ -686,12 +686,16 @@ export async function POST(request: NextRequest) {
           const birthOrAge = ageRaw ? ageRaw[0].trim() : lifePhaseFallback;
           const actLevel: ActivityLevel = intent.lifePhase === "welpen" ? "niedrig" : intent.lifePhase === "senior" ? "niedrig" : "mittel";
           const dg = weightKg ? dailyGrams(weightKg, actLevel) : null;
+          // Packungsgröße aus dem Produktnamen schätzen (z.B. "Paket Hund Allergie 9 kg") für den Nachschub-Wecker.
+          const pkgMatch = offers[0].name?.match(/(\d+(?:[.,]\d+)?)\s*kg\b/i);
+          const packageKg = pkgMatch ? parseFloat(pkgMatch[1].replace(",", ".")) : null;
+          const estBagDays = dg && packageKg ? Math.round((packageKg * 1000) / dg) : null;
           const shareToken = randomBytes(18).toString("hex");
           const profileSql = neon(process.env.DATABASE_URL);
           const [row] = await profileSql`
             INSERT INTO dog_profiles (
               name, breed_slug, weight_kg, activity_level, allergies, health_flags,
-              current_food_slug, est_daily_grams, share_token, share_enabled, birth_or_age
+              current_food_slug, est_daily_grams, est_bag_days, share_token, share_enabled, birth_or_age
             ) VALUES (
               ${dogName},
               ${intent.breed ? intent.breed.toLowerCase().replace(/\s+/g, "-") : null},
@@ -701,13 +705,18 @@ export async function POST(request: NextRequest) {
               ${intent.lifePhase ? [intent.lifePhase] : null},
               ${offers[0].slug ?? null},
               ${dg ?? null},
+              ${estBagDays ?? null},
               ${shareToken},
               true,
               ${birthOrAge ?? null}
             ) RETURNING id, share_token`;
           const topPricePerKg = offers[0].price_per_kg != null ? parseFloat(offers[0].price_per_kg) : null;
           const monthlyEuro = dg && topPricePerKg ? parseFloat(((dg / 1000) * 30 * topPricePerKg).toFixed(2)) : null;
-          emit(`PROFILE:${JSON.stringify({ id: row.id, shareToken: row.share_token, name: dogName, dailyGrams: dg, currentFood: offers[0].name, pricePerKg: topPricePerKg, monthlyEuro })}`);
+          emit(`PROFILE:${JSON.stringify({
+            id: row.id, shareToken: row.share_token, name: dogName, dailyGrams: dg,
+            currentFood: offers[0].name, foodSlug: offers[0].slug ?? null, affiliateUrl: offers[0].affiliate_url ?? null,
+            pricePerKg: topPricePerKg, monthlyEuro, estBagDays,
+          })}`);
         } catch { /* never block the stream */ }
       }
 

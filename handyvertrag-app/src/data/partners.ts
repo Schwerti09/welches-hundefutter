@@ -12,6 +12,8 @@ export interface PartnerVoucher {
   /** null = kein Code nötig, Rabatt greift automatisch über den Link (z.B. AWIN-Tracking) */
   code: string | null;
   discount: string;
+  /** Nur gesetzt wenn der Shop einen klaren %-Rabatt nennt — Basis für die kombinierte Ersparnis-Anzeige. */
+  discountPercent?: number;
   terms?: string;
   /** true = Shop hat auch echte Produkte in dog_foods/cross_sell (Badge-Matching lohnt sich) */
   hasFeed: boolean;
@@ -27,6 +29,7 @@ export const PARTNER_VOUCHERS: PartnerVoucher[] = [
     category: "ernaehrung",
     code: "ZKJTH862",
     discount: "7% auf alle Produkte",
+    discountPercent: 7,
     terms: "Ausgenommen reduzierte Artikel. Pro Kunde einmal einlösbar.",
     hasFeed: false,
   },
@@ -39,6 +42,7 @@ export const PARTNER_VOUCHERS: PartnerVoucher[] = [
     category: "pflege",
     code: "amberdog5",
     discount: "5% Rabatt",
+    discountPercent: 5,
     hasFeed: true,
   },
   {
@@ -72,6 +76,7 @@ export const PARTNER_VOUCHERS: PartnerVoucher[] = [
     category: "ernaehrung",
     code: "happy10",
     discount: "10% Rabatt",
+    discountPercent: 10,
     hasFeed: true,
   },
   {
@@ -83,6 +88,7 @@ export const PARTNER_VOUCHERS: PartnerVoucher[] = [
     category: "zubehoer",
     code: "neu10",
     discount: "10% Neukundenrabatt",
+    discountPercent: 10,
     hasFeed: true,
   },
   {
@@ -127,6 +133,7 @@ export const PARTNER_VOUCHERS: PartnerVoucher[] = [
     category: "zubehoer",
     code: "PFOTE15",
     discount: "15% Rabatt auf Hunde-Merch",
+    discountPercent: 15,
     hasFeed: true,
   },
   {
@@ -138,6 +145,7 @@ export const PARTNER_VOUCHERS: PartnerVoucher[] = [
     category: "pflege",
     code: "ADC10",
     discount: "10% Rabatt auf Pflegeprodukte",
+    discountPercent: 10,
     hasFeed: true,
   },
   {
@@ -160,6 +168,7 @@ export const PARTNER_VOUCHERS: PartnerVoucher[] = [
     category: "zubehoer",
     code: "lokilux5",
     discount: "5% Rabatt",
+    discountPercent: 5,
     hasFeed: false,
   },
   {
@@ -182,6 +191,7 @@ export const PARTNER_VOUCHERS: PartnerVoucher[] = [
     category: "ernaehrung",
     code: null,
     discount: "25% Neukundenrabatt auf die erste Bestellung",
+    discountPercent: 25,
     terms: "Rabatt wird automatisch über den Link aktiviert, kein Code nötig.",
     hasFeed: false,
   },
@@ -239,4 +249,42 @@ export function getVoucherForUrl(affiliateUrl: string | null | undefined): Partn
   const domain = extractDomain(affiliateUrl);
   if (!domain) return null;
   return PARTNER_VOUCHERS.find((v) => domain === v.domain || domain.endsWith(`.${v.domain}`)) ?? null;
+}
+
+export interface CombinedSavings {
+  /** Summe der exakt berechenbaren Ersparnis in € (nur Items mit price + discountPercent). */
+  euroSavings: number;
+  /** Anzahl Items mit exakt berechneter Ersparnis. */
+  itemsWithExactSavings: number;
+  /** Anzahl Items mit Gutschein, aber ohne bekannten %-Satz (z.B. "Rabatt im Shop"). */
+  itemsWithVagueDiscount: number;
+  /** true wenn mindestens 2 unterschiedliche Shops im Warenkorb einen Gutschein haben — erst dann lohnt der Banner. */
+  worthShowing: boolean;
+}
+
+/** Aggregates voucher savings across the primary recommendation + its cross-sell companions. */
+export function computeCombinedSavings(items: { price: number | null | undefined; affiliateUrl: string | null | undefined }[]): CombinedSavings {
+  let euroSavings = 0;
+  let itemsWithExactSavings = 0;
+  let itemsWithVagueDiscount = 0;
+  const shopsWithVoucher = new Set<string>();
+
+  for (const item of items) {
+    const voucher = getVoucherForUrl(item.affiliateUrl);
+    if (!voucher) continue;
+    shopsWithVoucher.add(voucher.domain);
+    if (voucher.discountPercent && item.price) {
+      euroSavings += item.price * (voucher.discountPercent / 100);
+      itemsWithExactSavings++;
+    } else {
+      itemsWithVagueDiscount++;
+    }
+  }
+
+  return {
+    euroSavings: Math.round(euroSavings * 100) / 100,
+    itemsWithExactSavings,
+    itemsWithVagueDiscount,
+    worthShowing: shopsWithVoucher.size >= 1 && (itemsWithExactSavings + itemsWithVagueDiscount) >= 1,
+  };
 }
