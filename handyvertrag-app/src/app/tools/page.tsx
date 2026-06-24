@@ -59,6 +59,13 @@ const tools = [
     description: "Der komplette aktive Katalog als JSON/CSV unter CC-BY-4.0 — frei nutzbar für eigene Auswertungen, Tools oder Recherchen.",
     cta: "Datensatz öffnen →",
   },
+  {
+    href: "/widget",
+    emoji: "🎁",
+    title: "Hundekosten-Widget zum Einbetten",
+    description: "Kostenloser Lebenszeit-Kosten-Rechner für deine eigene Website — Tierheim, Blog oder Ratgeberseite. Eine Zeile Code, kein Tracking.",
+    cta: "Widget holen →",
+  },
 ];
 
 export default function ToolsPage() {

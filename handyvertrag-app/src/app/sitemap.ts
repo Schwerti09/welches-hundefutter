@@ -60,6 +60,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/ueber-uns`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/quellen`, lastModified: now, changeFrequency: 'monthly', priority: 0.75 },
     { url: `${BASE}/gutscheine`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE}/widget`, lastModified: now, changeFrequency: 'monthly', priority: 0.75 },
     { url: `${BASE}/impressum`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
     { url: `${BASE}/datenschutz`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
     { url: `${BASE}/affiliate`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },

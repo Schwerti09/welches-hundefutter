@@ -32,6 +32,7 @@ const LINKS: Record<string, FooterLink[]> = {
   Entdecken: [
     { label: "Aktuelle Futter-Deals", href: "/deals" },
     { label: "Gutscheine & Rabattcodes", href: "/gutscheine" },
+    { label: "Widget zum Einbetten", href: "/widget" },
     { label: "Alle Marken im Katalog", href: "/marke" },
     { label: "Über uns", href: "/ueber-uns" },
     { label: "Affiliate-Hinweis", href: "/affiliate" },
