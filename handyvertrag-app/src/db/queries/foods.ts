@@ -48,6 +48,16 @@ export async function getFoodCount(): Promise<number> {
   } catch { return 0; }
 }
 
+/** Anzahl aktiver Cross-Sell-Begleitprodukte (für ehrliche Zahlen). */
+export async function getCrossSellCount(): Promise<number> {
+  const sql = db();
+  if (!sql) return 0;
+  try {
+    const r = await sql.query(`SELECT COUNT(*)::int c FROM cross_sell WHERE is_active = true`);
+    return rows(r)[0] ? Number((rows(r)[0] as unknown as { c: number }).c) : 0;
+  } catch { return 0; }
+}
+
 /** Günstigste, dedupte Top-Sorten (echtes Futter mit €/kg) für die Startseite. */
 export async function getTopFoods(limit = 7): Promise<DogFood[]> {
   const sql = db();

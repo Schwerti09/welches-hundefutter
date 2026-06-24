@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
+import LiveProofTicker from "@/components/LiveProofTicker";
+import { getFoodCount, getCrossSellCount } from "@/db/queries/foods";
+import { PARTNER_VOUCHERS } from "@/data/partners";
 
 export const metadata: Metadata = {
   title: "Warum BELLA anders ist: Kein Affiliate-Vergleich. Ein Berater.",
@@ -87,7 +90,7 @@ const BELLA_PRINZIPIEN = [
   {
     icon: "🐕",
     title: "Dein Hund ist die Einheit — nicht das Produkt",
-    text: "BELLA beginnt nicht mit dem Produktkatalog. Sie beginnt mit deinem Hund. Rasse, Alter, Gewicht, Allergien, Aktivitätslevel. Dann erst sucht sie im 11.065-Produkte-Katalog — gefiltert auf das, was passt.",
+    text: "BELLA beginnt nicht mit dem Produktkatalog. Sie beginnt mit deinem Hund. Rasse, Alter, Gewicht, Allergien, Aktivitätslevel. Dann erst sucht sie im 11.000+-Produkte-Katalog — gefiltert auf das, was passt.",
   },
   {
     icon: "🔍",
@@ -111,7 +114,9 @@ const BELLA_PRINZIPIEN = [
   },
 ];
 
-export default function WarumBellaPage() {
+export default async function WarumBellaPage() {
+  const [foodCount, crossSellCount] = await Promise.all([getFoodCount(), getCrossSellCount()]);
+
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
       <StructuredData
@@ -148,7 +153,7 @@ export default function WarumBellaPage() {
           das für uns entscheidet.{" "}
           <strong className="text-white">Das Einzige, was zählt: Hat deine Fellnase das richtige Futter gefunden?</strong>
         </p>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-3 mb-8">
           <Link href="/#bella-advisor" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold hover:shadow-lg hover:shadow-orange-500/30 transition-all text-sm">
             🐕 BELLA fragen — kostenlos
           </Link>
@@ -156,6 +161,7 @@ export default function WarumBellaPage() {
             Methodik ansehen →
           </Link>
         </div>
+        <LiveProofTicker foodCount={foodCount} crossSellCount={crossSellCount} voucherCount={PARTNER_VOUCHERS.length} />
       </section>
 
       {/* Exposé — wie der Markt funktioniert */}
@@ -272,12 +278,15 @@ export default function WarumBellaPage() {
               {[
                 ["Reihenfolge der Produkte", "Provision des Herstellers", "BELLA Score (Algorithmus)"],
                 ["Personalisierung", "Keine — gleiche Liste für alle", "Profil deines Hundes (Rasse, Alter, Allergien)"],
-                ["Anzahl bewerteter Produkte", "10–50 handgepickte Produkte", "11.065 aktive Produkte, täglich"],
+                ["Anzahl bewerteter Produkte", "10–50 handgepickte Produkte", `${foodCount.toLocaleString("de-DE")} aktive Produkte, täglich`],
                 ["Preis-Aktualität", "Oft Monate alt", "Täglich via AWIN-Feed"],
                 ["Score-Transparenz", "Keine Methodik veröffentlicht", "Vollständig transparent (/analyse/methodik)"],
                 ["Was verdient der Betreiber?", "Höchste Provision pro Klick", "Provision nur wenn Empfehlung stimmt"],
                 ["Hundefutter-Test", "Meist SEO-Artikel ohne Labor", "Algorithmische Bewertung, erklärbar"],
                 ["Wohl des Hundes", "Kein Bewertungskriterium", "Das einzige Ziel"],
+                ["Gutscheincodes", "Versteckt oder gar nicht erwähnt", `${PARTNER_VOUCHERS.length} echte Codes offen gelistet (/gutscheine)`],
+                ["Begleitprodukte (Snacks, Zubehör)", "Wahllos eingeblendete Werbung", "Kuratiert, max. 3, nie als Komplett-Futter getarnt"],
+                ["Nach der Empfehlung", "Interessiert niemanden mehr", "Wirkungs-Tracker fragt nach: hat's geholfen?"],
               ].map(([k, aff, bella], i) => (
                 <tr key={k} className={`border-b border-white/5 ${i % 2 === 0 ? "bg-white/[0.015]" : ""}`}>
                   <td className="p-3 font-medium text-[var(--muted)] text-xs">{k}</td>
@@ -346,7 +355,7 @@ export default function WarumBellaPage() {
             Jetzt BELLA fragen — kostenlos
           </Link>
           <p className="text-xs text-[var(--muted)] mt-4">
-            Über 11.065 Produkte. Kein Account nötig. Keine E-Mail-Pflicht.
+            Über {foodCount.toLocaleString("de-DE")} Produkte. Kein Account nötig. Keine E-Mail-Pflicht.
           </p>
         </div>
       </section>
