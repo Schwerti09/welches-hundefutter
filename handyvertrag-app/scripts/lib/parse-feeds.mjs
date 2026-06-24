@@ -120,6 +120,24 @@ function csvRows(content, delimiter) {
 const GRAIN_FREE_RE = /getreidefrei|grain.?free/i;
 const HYPOALLERGENIC_RE = /hypoallergen|sensitiv|monoprotein|allergie/i;
 
+// Reine Hundefutter-Marken im AdCell-Netzwerk — Titel enthält oft kein Wort wie "Hund"
+// (z.B. "Geflügel, Reis & Gemüse"), daher würde isDogFood() sie sonst verwerfen.
+// Domain-Erkennung statt Modus-Parameter, damit das für ENV-URLs UND den lokalen
+// Fallback gleich funktioniert, ohne das ENV-Variablen-Format ändern zu müssen.
+const DOG_MERCHANT_DOMAINS = ["milo-mia.de", "salingo.de", "paulis-petfood.de"];
+function isDogMerchantDeeplink(deeplink) {
+  if (!deeplink) return false;
+  try {
+    const url = new URL(deeplink);
+    const target = url.hostname.endsWith("adcell.com") ? url.searchParams.get("param0") : deeplink;
+    if (!target) return false;
+    const host = new URL(target).hostname.replace(/^www\./, "");
+    return DOG_MERCHANT_DOMAINS.some((d) => host === d || host.endsWith(`.${d}`));
+  } catch {
+    return false;
+  }
+}
+
 /**
  * mode:
  * - "schecker": Hunde-Shop, Top-Kategorie muss Hundefutter/Hundesnacks sein + isDogFood
@@ -178,7 +196,8 @@ function parseAdcell(content, out) {
   for (const row of csvRows(content, ";")) {
     const title = row["Produkt-Titel"] || "";
     const cat = row["Produktkategorie"] || "";
-    if (!isDogFood(title, cat)) continue;
+    const dogMerchant = isDogMerchantDeeplink(row["Deeplink"]);
+    if (!isDogFood(title, cat, dogMerchant)) continue;
     const price = num(row["Preis (Brutto)"]);
     const gpUnit = (row["Grundpreiseinheit"] || "").toLowerCase();
     let ppk = gpUnit.includes("kg") ? num(row["Grundpreis"]) : null;
@@ -241,6 +260,18 @@ function parseAwinShopping(content, out) {
   return n;
 }
 
+/**
+ * AWIN liefert zwei unterschiedliche CSV-Layouts unter demselben "AWIN_FEED_URLS":
+ * das Standard-Produktfeed (product_name/merchant_category/search_price) und das
+ * Google-Shopping-Format (title/price/brand, z.B. Mera Tiernahrung). Header-Zeile
+ * prüfen statt einen festen Modus zu erzwingen, sonst landen Shopping-Feeds als
+ * 0-Treffer-Fehlschlag (Spalten existieren schlicht nicht).
+ */
+function detectAwinFormat(content) {
+  const header = content.slice(0, content.indexOf("\n"));
+  return header.includes("product_name") ? "default" : "shopping";
+}
+
 async function downloadFeed(url) {
   const res = await fetch(url, {
     headers: { "User-Agent": "BELLA-FeedBot/1.0" },
@@ -261,7 +292,9 @@ export async function parseFeeds() {
     for (const [i, url] of awinUrls.entries()) {
       console.log(`  ⬇ AWIN ${i}: ${url.slice(0, 70)}…`);
       const content = smartOpen(await downloadFeed(url));
-      console.log(`  AWIN feed ${i} [default]: ${parseAwin(content, "default", out)} Futter`);
+      const format = detectAwinFormat(content);
+      const n = format === "shopping" ? parseAwinShopping(content, out) : parseAwin(content, "default", out);
+      console.log(`  AWIN feed ${i} [${format}]: ${n} Futter`);
     }
     for (const [i, url] of adcellUrls.entries()) {
       console.log(`  ⬇ AdCell ${i}: ${url.slice(0, 70)}…`);
@@ -277,8 +310,14 @@ export async function parseFeeds() {
       [path.join(dl, "84955-99728-de_DE-Produktdatenfeed.csv.gz"), "petfood_brand"],
       [path.join(dl, "datafeed_615299 (24).csv.gz"), "mixed_shop"],
     ];
-    const ADCELL_FEEDS = ["419197-66376.csv", "521034-66376.csv", "496158-66376.csv", "630262-66376.csv"].map((f) => path.join(dl, f));
-    const AWIN_SHOPPING_FEEDS = [path.join(dl, "116601-retail-de_DE.csv.gz")];
+    const ADCELL_FEEDS = [
+      "419197-66376.csv", "521034-66376.csv", "496158-66376.csv", "630262-66376.csv",
+      "540252-66376.csv", "372544-66376.csv", "434708-66376.csv",
+    ].map((f) => path.join(dl, f));
+    const AWIN_SHOPPING_FEEDS = [
+      path.join(dl, "116601-retail-de_DE.csv.gz"),
+      path.join(dl, "115623-retail-de_DE.csv.gz"),
+    ];
 
     for (const [p, mode] of AWIN_FEEDS) {
       if (existsSync(p)) {
