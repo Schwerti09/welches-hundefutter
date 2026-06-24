@@ -58,7 +58,12 @@ async function getDeals(): Promise<DogFoodDeal[]> {
       ORDER BY score DESC NULLS LAST, price_per_kg ASC
       LIMIT 12
     `;
-    return rows as unknown as DogFoodDeal[];
+    // Neon liefert numeric-Spalten als String, nicht als number.
+    return (rows as unknown as DogFoodDeal[]).map((r) => ({
+      ...r,
+      price_per_kg: r.price_per_kg != null ? parseFloat(String(r.price_per_kg)) : null,
+      score: r.score != null ? parseFloat(String(r.score)) : null,
+    }));
   } catch (e) { console.error("[deals]", (e as Error).message); return []; }
 }
 
