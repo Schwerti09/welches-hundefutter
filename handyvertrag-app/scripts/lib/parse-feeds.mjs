@@ -285,8 +285,14 @@ export async function parseFeeds() {
   const out = {};
   console.log("BELLA Feed-Parser (Node)");
 
-  const awinUrls = (process.env.AWIN_FEED_URLS || "").split(",").map((s) => s.trim()).filter(Boolean);
-  const adcellUrls = (process.env.ADCELL_FEED_URLS || "").split(",").map((s) => s.trim()).filter(Boolean);
+  // AWIN_FEED_URLS/ADCELL_FEED_URLS sind in Netlify als "sensitive" markiert — der
+  // bestehende Wert lässt sich nicht mehr auslesen (auch nicht per CLI/Dashboard für
+  // den Account-Owner), Anhängen würde also blind den unbekannten Altwert riskieren.
+  // Neue Feeds kommen stattdessen über _EXTRA-Variablen, die mit dem Hauptwert
+  // zusammengeführt werden — nicht-destruktiv, alter Wert bleibt unberührt.
+  const splitUrls = (v) => (v || "").split(",").map((s) => s.trim()).filter(Boolean);
+  const awinUrls = [...splitUrls(process.env.AWIN_FEED_URLS), ...splitUrls(process.env.AWIN_FEED_URLS_EXTRA)];
+  const adcellUrls = [...splitUrls(process.env.ADCELL_FEED_URLS), ...splitUrls(process.env.ADCELL_FEED_URLS_EXTRA)];
 
   if (awinUrls.length || adcellUrls.length) {
     for (const [i, url] of awinUrls.entries()) {
