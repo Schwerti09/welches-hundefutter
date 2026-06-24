@@ -69,6 +69,7 @@ interface DogFoodRow {
   image_url: string | null;
   affiliate_url: string;
   rating: string | null;
+  score: number | null;
 }
 
 interface ScoredFood extends DogFoodRow {
@@ -346,7 +347,7 @@ async function fetchCandidates(intent: DogIntent): Promise<{ offers: ScoredFood[
     `SELECT * FROM (
        SELECT DISTINCT ON (${nameKey})
          id, slug, brand, name, type, protein, is_grain_free, is_hypoallergenic,
-         price_per_kg, price, suitable_for, image_url, affiliate_url, rating
+         price_per_kg, price, suitable_for, image_url, affiliate_url, rating, score
        FROM dog_foods WHERE ${cond.join(" AND ")}
        ORDER BY ${nameKey}, price_per_kg ASC NULLS LAST
      ) d ORDER BY ${outerOrder} LIMIT 40`,
@@ -409,9 +410,11 @@ function buildSystemPrompt(offers: ScoredFood[], confidence: number, ask: boolea
         const voucherNote = voucher
           ? ` · 🎁 GUTSCHEIN VERFÜGBAR bei ${voucher.shopName}: ${voucher.discount}${voucher.code ? ` (Code ${voucher.code})` : " (kein Code nötig, automatisch über den Link)"}`
           : "";
-        return `[${i + 1}] ${o.brand} ${o.name} · Typ: ${o.type}${o.protein ? ` · Protein: ${o.protein}` : ""}` +
+        const scoreNote = o.score != null ? ` · BELLA-Score ${o.score}/100${o.score < 40 ? " ⚠️ NIEDRIG" : ""}` : "";
+        const vagueProtein = !o.protein || /tierisch|nebenerzeugnis/i.test(o.protein);
+        return `[${i + 1}] ${o.brand} ${o.name} · Typ: ${o.type}${o.protein ? ` · Protein: ${o.protein}` : " · Protein: nicht klar benannt ⚠️"}` +
           `${o.price_per_kg ? ` · ${parseFloat(o.price_per_kg).toFixed(2)} €/kg` : o.price ? ` · ${parseFloat(o.price).toFixed(2)} €` : ""}` +
-          `${o.is_grain_free ? " · getreidefrei" : ""}${o.is_hypoallergenic ? " · hypoallergen" : ""} · geeignet für: ${sf} · Match ${o.matchScore}%${voucherNote}`;
+          `${o.is_grain_free ? " · getreidefrei" : ""}${o.is_hypoallergenic ? " · hypoallergen" : ""} · geeignet für: ${sf} · Match ${o.matchScore}%${scoreNote}${vagueProtein ? " · ⚠️ vage Proteinquelle" : ""}${voucherNote}`;
       }).join("\n")
     : "Noch keine Futter-Daten — weitere Infos über den Hund einholen.";
 
@@ -490,6 +493,7 @@ STRIKTE REGELN — nie brechen:
 - Du duzt den Halter. Immer auf Deutsch antworten.
 - Wenn du eine Studie zitierst: nur wenn sie wirklich zur Situation passt, nie aufgezwungen.
 - Steht bei einem der Futter "🎁 GUTSCHEIN VERFÜGBAR" dabei: erwähne den Rabatt kurz und beiläufig (1 halber Satz), wenn du genau dieses Futter empfiehlst. Nie erfinden, nie für Futter ohne diesen Hinweis erwähnen.
+- Du darfst und sollst NEIN sagen: Steht bei Futter [1] "⚠️ NIEDRIG" (Score <40) oder "⚠️ vage Proteinquelle", sag das offen — "Lass [1] lieber, der Score ist niedrig" oder "die Proteinquelle ist hier nicht klar benannt, das würde ich bei einem Allergiker nicht riskieren" — und empfiehl stattdessen [2] oder [3], wenn die besser sind. Erfinde NIEMALS eine Zutatenliste, die nicht in den Produktdaten steht — bewerte nur anhand von Score, Protein-Klarheit, getreidefrei/hypoallergen und Preis/kg.
 ${intent.breed ? `- Rasse "${intent.breed}" ist bekannt — beziehe dich darauf wenn sinnvoll (rassetypische Probleme, Größe, Lebenserwartung).\n` : ""}${intent.currentFood && intent.currentFood !== "bekannt" ? `- Aktuelles Futter "${intent.currentFood}" bekannt — beziehe dich bei der Empfehlung auf den Wechsel.\n` : ""}`;
 }
 

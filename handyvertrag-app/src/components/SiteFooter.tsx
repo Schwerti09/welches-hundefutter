@@ -33,6 +33,7 @@ const LINKS: Record<string, FooterLink[]> = {
     { label: "Aktuelle Futter-Deals", href: "/deals" },
     { label: "Gutscheine & Rabattcodes", href: "/gutscheine" },
     { label: "Widget zum Einbetten", href: "/widget" },
+    { label: "Zutaten-Lexikon", href: "/glossar" },
     { label: "Alle Marken im Katalog", href: "/marke" },
     { label: "Über uns", href: "/ueber-uns" },
     { label: "Affiliate-Hinweis", href: "/affiliate" },

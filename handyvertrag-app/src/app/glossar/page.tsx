@@ -21,7 +21,7 @@ interface GlossaryRow {
   category: string;
 }
 
-const CATEGORY_ORDER = ["Methodik", "Ernährung", "Gesundheit", "Standards"];
+const CATEGORY_ORDER = ["Zutaten", "Methodik", "Ernährung", "Gesundheit", "Standards"];
 
 async function getGlossaryTerms(): Promise<GlossaryRow[]> {
   const url = process.env.DATABASE_URL;
@@ -40,6 +40,7 @@ async function getGlossaryTerms(): Promise<GlossaryRow[]> {
 }
 
 const CATEGORY_ICON: Record<string, string> = {
+  Zutaten: "🔍",
   Methodik: "🔬",
   Ernährung: "🥩",
   Gesundheit: "🏥",
