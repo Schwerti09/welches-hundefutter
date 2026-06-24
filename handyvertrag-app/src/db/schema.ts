@@ -197,6 +197,38 @@ export const dogProfiles = pgTable("dog_profiles", {
 export type DogProfile = typeof dogProfiles.$inferSelect;
 export type NewDogProfile = typeof dogProfiles.$inferInsert;
 
+// ─── Wirkungs-Tracker ─────────────────────────────────────────────────────────
+// Fragt 3 Wochen nach einer Futter-Empfehlung nach, ob es geholfen hat (bei
+// Allergie/empfindlichem Magen etc.). Einziger Datenpunkt, den KEIN Vergleichsportal
+// hat — entsteht nur, weil BELLA echte Beratungsgespräche führt und schon E-Mail-
+// Kontakt zum Halter hat. Strikt als Nutzer-Erfahrung gekennzeichnet, nie als
+// medizinische Aussage (gleiches No-Fake-Health-Claims-Prinzip wie REVIEWER=null).
+export const outcomeChecks = pgTable("outcome_checks", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  dogProfileId: uuid("dog_profile_id").notNull(),
+  subscriberId: uuid("subscriber_id"),
+  email: text("email").notNull(),
+  dogName: text("dog_name"),
+  foodSlug: text("food_slug"),
+  foodName: text("food_name"),
+  problemTags: text("problem_tags").array(),      // z.B. ['allergie','magen'] — aus dog_profiles.allergies/health_flags
+  scheduledAt: timestamp("scheduled_at").notNull(), // wann die Frage raus soll (createdAt + 21 Tage)
+  sentAt: timestamp("sent_at"),
+  respondedAt: timestamp("responded_at"),
+  outcome: text("outcome"),                        // 'besser' | 'gleich' | 'schlechter'
+  comment: text("comment"),
+  responseToken: text("response_token").unique().notNull(),
+  unsubscribeToken: text("unsubscribe_token"),
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => ({
+  scheduledIdx: index("outcome_checks_scheduled_idx").on(table.scheduledAt, table.sentAt),
+  profileIdx: index("outcome_checks_profile_idx").on(table.dogProfileId),
+  foodIdx: index("outcome_checks_food_idx").on(table.foodSlug),
+}));
+
+export type OutcomeCheck = typeof outcomeChecks.$inferSelect;
+export type NewOutcomeCheck = typeof outcomeChecks.$inferInsert;
+
 // ─── Klick-Tracking ───────────────────────────────────────────────────────────
 export const affiliateClicks = pgTable("affiliate_clicks", {
   id: uuid("id").defaultRandom().primaryKey(),

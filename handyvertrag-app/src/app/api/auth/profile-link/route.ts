@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { neon } from "@neondatabase/serverless";
 import { randomBytes } from "node:crypto";
 import { sendEmail, magicLinkEmail, SITE_URL } from "@/lib/email";
+import { scheduleOutcomeCheck } from "@/lib/outcome-tracker";
 
 const token = () => randomBytes(24).toString("hex");
 
@@ -43,6 +44,10 @@ export async function POST(req: NextRequest) {
     const tpl = magicLinkEmail(restoreUrl, dogName);
 
     await sendEmail({ to: email, subject: tpl.subject, html: tpl.html, text: tpl.text });
+
+    // Wirkungs-Tracker: nur wenn die Empfehlung einen echten Problem-Kontext hatte
+    // (Allergie/empfindlicher Magen) — sonst gibt's nichts Sinnvolles zu fragen.
+    scheduleOutcomeCheck(sql, { shareToken, email }).catch(() => {});
 
     return NextResponse.json({ ok: true });
   } catch (e) {
