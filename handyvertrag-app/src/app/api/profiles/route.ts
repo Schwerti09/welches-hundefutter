@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
           SELECT id, name, breed_slug, birth_or_age, weight_kg, activity_level,
                  allergies, health_flags, current_food_slug, current_package_g,
                  last_purchase_at, est_daily_grams, est_bag_days, share_token, share_enabled,
-                 gender, photo_data
+                 gender, photo_data, food_preferences, conditions
           FROM dog_profiles
           WHERE share_token = ${token} AND share_enabled = true
           LIMIT 1`
@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
           SELECT id, name, breed_slug, birth_or_age, weight_kg, activity_level,
                  allergies, health_flags, current_food_slug, current_package_g,
                  last_purchase_at, est_daily_grams, est_bag_days, share_token, share_enabled,
-                 gender, photo_data
+                 gender, photo_data, food_preferences, conditions
           FROM dog_profiles
           WHERE id = ${id!}
           LIMIT 1`;
@@ -85,6 +85,8 @@ export async function POST(req: NextRequest) {
     subscriberId?: string;
     gender?: string;
     photoData?: string;
+    foodPreferences?: string;
+    conditions?: string;
   };
   try { body = await req.json(); } catch { return NextResponse.json({ error: "bad_json" }, { status: 400 }); }
 
@@ -98,6 +100,8 @@ export async function POST(req: NextRequest) {
           last_purchase_at = COALESCE(${body.lastPurchaseAt ?? null}::timestamptz, last_purchase_at),
           gender = COALESCE(${body.gender ?? null}, gender),
           photo_data = COALESCE(${body.photoData ?? null}, photo_data),
+          food_preferences = COALESCE(${body.foodPreferences ?? null}, food_preferences),
+          conditions = COALESCE(${body.conditions ?? null}, conditions),
           name = CASE WHEN ${name || null} IS NOT NULL THEN ${name || null} ELSE name END,
           updated_at = now()
         WHERE id = ${body.id}
@@ -147,6 +151,8 @@ export async function POST(req: NextRequest) {
           share_enabled = ${body.shareEnabled ?? false},
           gender = COALESCE(${body.gender ?? null}, gender),
           photo_data = COALESCE(${body.photoData ?? null}, photo_data),
+          food_preferences = COALESCE(${body.foodPreferences ?? null}, food_preferences),
+          conditions = COALESCE(${body.conditions ?? null}, conditions),
           updated_at = now()
         WHERE id = ${body.id}
         RETURNING id, share_token`;
@@ -167,7 +173,7 @@ export async function POST(req: NextRequest) {
           name, breed_slug, birth_or_age, weight_kg, activity_level,
           allergies, health_flags, current_food_slug, current_package_g,
           last_purchase_at, est_daily_grams, est_bag_days,
-          share_token, share_enabled, subscriber_id
+          share_token, share_enabled, subscriber_id, food_preferences, conditions
         ) VALUES (
           ${name}, ${body.breedSlug ?? null}, ${body.birthOrAge ?? null},
           ${wkg}, ${body.activityLevel ?? null},
@@ -175,7 +181,7 @@ export async function POST(req: NextRequest) {
           ${body.currentFoodSlug ?? null}, ${body.currentPackageG ?? null},
           ${body.lastPurchaseAt ?? null}, ${dg}, ${bd},
           ${shareToken}, ${body.shareEnabled ?? false},
-          ${body.subscriberId ?? null}
+          ${body.subscriberId ?? null}, ${body.foodPreferences ?? null}, ${body.conditions ?? null}
         ) RETURNING id`;
       profileId = ins[0].id;
     }

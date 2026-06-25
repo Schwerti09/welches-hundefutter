@@ -4,6 +4,7 @@ import Link from "next/link";
 import { neon } from "@neondatabase/serverless";
 import SiteFooter from "@/components/SiteFooter";
 import ShareButton from "./ShareButton";
+import { getBreedImage } from "@/lib/breed-image";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -19,6 +20,10 @@ interface Profile {
   current_food_slug: string | null;
   est_daily_grams: number | null;
   est_bag_days: number | null;
+  gender: string | null;
+  photo_data: string | null;
+  food_preferences: string | null;
+  conditions: string | null;
 }
 
 interface Food {
@@ -40,7 +45,8 @@ async function getProfile(token: string): Promise<{ profile: Profile; food: Food
     const sql = neon(url);
     const rows = await sql`
       SELECT id, name, breed_slug, birth_or_age, weight_kg, activity_level,
-             allergies, health_flags, current_food_slug, est_daily_grams, est_bag_days
+             allergies, health_flags, current_food_slug, est_daily_grams, est_bag_days,
+             gender, photo_data, food_preferences, conditions
       FROM dog_profiles
       WHERE share_token = ${token} AND share_enabled = true
       LIMIT 1`;
@@ -139,13 +145,24 @@ export default async function HundSteckbriefPage({ params }: { params: Promise<{
         <div className="rounded-3xl bg-gradient-to-br from-orange-900/40 via-amber-900/20 to-orange-900/30 border border-orange-500/30 p-7 text-center relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(251,146,60,0.08),transparent_60%)]" />
           <div className="relative">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center mx-auto mb-4 text-3xl shadow-lg shadow-orange-500/25">
-              🐕
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center mx-auto mb-4 text-3xl shadow-lg shadow-orange-500/25 overflow-hidden">
+              {profile.photo_data ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={profile.photo_data} alt={profile.name} className="w-full h-full object-cover" />
+              ) : getBreedImage(profile.breed_slug) ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={getBreedImage(profile.breed_slug)!} alt={profile.breed_slug ?? profile.name} className="w-full h-full object-cover" />
+              ) : (
+                "🐕"
+              )}
             </div>
-            <h1 className="text-3xl font-black mb-1 tracking-tight">{profile.name}</h1>
+            <h1 className="text-3xl font-black mb-1 tracking-tight">
+              {profile.name}
+              {profile.gender && <span className="ml-1.5 text-xl">{profile.gender === "m" ? "♂" : "♀"}</span>}
+            </h1>
             {profile.breed_slug && (
               <p className="text-orange-300/80 text-sm capitalize mb-5">
-                {profile.breed_slug.replace(/-/g, " ")}
+                {profile.breed_slug.replace(/-/g, " ")}{profile.birth_or_age ? ` · ${profile.birth_or_age}` : ""}
               </p>
             )}
             <div className="flex flex-wrap gap-2 justify-center mb-5">
@@ -220,6 +237,24 @@ export default async function HundSteckbriefPage({ params }: { params: Promise<{
                 </span>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* ── Vorlieben & Krankheiten ─────────────────────────────────────── */}
+        {(profile.food_preferences || profile.conditions) && (
+          <div className="card p-5 space-y-3">
+            {profile.food_preferences && (
+              <div>
+                <p className="text-xs text-[var(--muted)] uppercase tracking-wide mb-1.5">🍖 Vorlieben beim Essen</p>
+                <p className="text-sm text-white/80 leading-relaxed">{profile.food_preferences}</p>
+              </div>
+            )}
+            {profile.conditions && (
+              <div>
+                <p className="text-xs text-[var(--muted)] uppercase tracking-wide mb-1.5">🩺 Krankheiten & Besonderheiten</p>
+                <p className="text-sm text-white/80 leading-relaxed">{profile.conditions}</p>
+              </div>
+            )}
           </div>
         )}
 

@@ -180,6 +180,10 @@ export const dogProfiles = pgTable("dog_profiles", {
   activityLevel: text("activity_level"),         // niedrig | mittel | hoch | sehr_hoch
   allergies: text("allergies").array(),          // ['huhn', 'rind', 'weizen']
   healthFlags: text("health_flags").array(),     // ['gelenke', 'nieren', 'uebergewicht']
+  foodPreferences: text("food_preferences"),     // Freitext: "mag kein Huhn", "liebt BARF"
+  conditions: text("conditions"),                // Freitext-Krankheiten, getrennt von den healthFlags-Tags
+  gender: text("gender"),                        // 'm' | 'f'
+  photoData: text("photo_data"),                 // Base64-Foto, vom Halter hochgeladen
   currentFoodSlug: text("current_food_slug"),
   currentPackageG: integer("current_package_g"),
   lastPurchaseAt: timestamp("last_purchase_at"),

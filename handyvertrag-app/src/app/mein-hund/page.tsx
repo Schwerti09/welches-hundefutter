@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import { calcLifecycle, fmtDate, stageLabelDe } from "@/lib/lifecycle";
+import { getBreedImage } from "@/lib/breed-image";
+import { getVoucherForUrl, PARTNER_VOUCHERS } from "@/data/partners";
 
 interface Profile {
   id: string;
@@ -21,6 +23,8 @@ interface Profile {
   share_enabled: boolean;
   gender: string | null;
   photo_data: string | null;
+  food_preferences: string | null;
+  conditions: string | null;
 }
 
 interface Food {
@@ -449,9 +453,14 @@ export default function MeinHundPage() {
               {/* Foto-Upload */}
               <label className="relative inline-block cursor-pointer group mb-4">
                 <div className="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center mx-auto text-3xl ring-2 ring-white/10 group-hover:ring-orange-500/50 transition-all">
-                  {data.profile.photo_data
-                    ? <img src={data.profile.photo_data} alt={data.profile.name} className="w-full h-full object-cover" />
-                    : "🐕"}
+                  {data.profile.photo_data ? (
+                    <img src={data.profile.photo_data} alt={data.profile.name} className="w-full h-full object-cover" />
+                  ) : getBreedImage(data.profile.breed_slug) ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={getBreedImage(data.profile.breed_slug)!} alt={data.profile.breed_slug ?? data.profile.name} className="w-full h-full object-cover" />
+                  ) : (
+                    "🐕"
+                  )}
                 </div>
                 <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
                   <span className="text-white text-xs font-semibold">📷 Foto</span>
@@ -632,6 +641,8 @@ export default function MeinHundPage() {
               </div>
             )}
 
+            <VoucherTip currentFoodUrl={data.food?.affiliate_url} />
+
             {/* Allergien */}
             {((data.profile.allergies?.length ?? 0) > 0 || (data.profile.health_flags?.length ?? 0) > 0) && (
               <div className="card p-6">
@@ -658,6 +669,29 @@ export default function MeinHundPage() {
                 )}
               </div>
             )}
+
+            {/* Vorlieben & Krankheiten — Freitext, macht den Steckbrief erst wirklich nützlich */}
+            <div className="card p-6 space-y-5">
+              <h2 className="font-bold text-lg">Mehr Details für einen echten Steckbrief</h2>
+              <EditableTextField
+                label="🍖 Vorlieben beim Essen"
+                placeholder="z.B. mag kein Huhn, liebt alles mit Lachs, frisst nur langsam aus dem Schlecknapf …"
+                value={data.profile.food_preferences}
+                onSave={(v) => saveField({ foodPreferences: v })}
+                saving={savingField === "foodPreferences"}
+              />
+              <EditableTextField
+                label="🩺 Krankheiten & Besonderheiten"
+                placeholder="z.B. leichte Hüftdysplasie seit 2024, nimmt täglich Glucosamin …"
+                value={data.profile.conditions}
+                onSave={(v) => saveField({ conditions: v })}
+                saving={savingField === "conditions"}
+              />
+              <p className="text-[11px] text-white/30">
+                Sichtbar für alle, die den Steckbrief-Link bekommen (z.B. dein Tierarzt) — keine
+                medizinische Beratung, nur deine eigenen Notizen.
+              </p>
+            </div>
 
             {/* Steckbrief teilen */}
             {data.shareToken && (
@@ -708,5 +742,96 @@ export default function MeinHundPage() {
 
       <SiteFooter />
     </div>
+  );
+}
+
+function VoucherTip({ currentFoodUrl }: { currentFoodUrl: string | undefined }) {
+  const matched = getVoucherForUrl(currentFoodUrl);
+  const fallback = PARTNER_VOUCHERS.filter((v) => v.code).slice(0, 2);
+  const show = matched ? [matched] : fallback;
+  if (show.length === 0) return null;
+
+  return (
+    <div className="card p-6">
+      <h2 className="font-bold text-lg mb-1 flex items-center gap-2">
+        💡 {matched ? `Gutschein für ${matched.shopName}` : "Tipp: aktive Gutscheine"}
+      </h2>
+      <p className="text-xs text-[var(--muted)] mb-4">
+        {matched ? "Passt zu deinem aktuellen Futter-Shop." : "Gilt nicht direkt für dein Futter, aber lohnt sich vielleicht."}
+      </p>
+      <div className="space-y-2">
+        {show.map((v) => (
+          <div key={v.slug} className="flex items-center justify-between gap-3 bg-white/5 rounded-xl p-3">
+            <div>
+              <p className="text-sm font-semibold">{v.shopName}</p>
+              <p className="text-xs text-[var(--muted)]">{v.discount}</p>
+            </div>
+            {v.code ? (
+              <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-300 border border-dashed border-emerald-500/40 shrink-0">
+                {v.code}
+              </span>
+            ) : (
+              <a href={v.affiliateUrl} target="_blank" rel="sponsored nofollow noopener noreferrer" className="text-xs px-3 py-1.5 rounded-lg btn-primary shrink-0">
+                Ansehen →
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+      <Link href="/gutscheine" className="text-xs text-[var(--honey)] hover:underline mt-3 inline-block">
+        Alle Gutscheine ansehen →
+      </Link>
+    </div>
+  );
+}
+
+function EditableTextField({ label, placeholder, value, onSave, saving }: {
+  label: string;
+  placeholder: string;
+  value: string | null;
+  onSave: (v: string) => void;
+  saving: boolean;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(value ?? "");
+
+  if (editing) {
+    return (
+      <div>
+        <p className="text-xs text-[var(--muted)] mb-2 uppercase tracking-wide">{label}</p>
+        <textarea
+          autoFocus
+          rows={2}
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          placeholder={placeholder}
+          className="w-full px-3 py-2 rounded-xl bg-white/5 border border-orange-500/40 text-white text-sm focus:outline-none resize-none"
+        />
+        <div className="flex gap-2 mt-2">
+          <button
+            onClick={() => { onSave(draft.trim()); setEditing(false); }}
+            disabled={saving}
+            className="text-xs px-3 py-1.5 rounded-lg bg-orange-500 text-white font-semibold disabled:opacity-50"
+          >
+            {saving ? "…" : "Speichern"}
+          </button>
+          <button onClick={() => { setDraft(value ?? ""); setEditing(false); }} className="text-xs px-3 py-1.5 rounded-lg bg-white/5 text-white/50">
+            Abbrechen
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <button onClick={() => { setDraft(value ?? ""); setEditing(true); }} className="w-full text-left group">
+      <p className="text-xs text-[var(--muted)] mb-1.5 uppercase tracking-wide flex items-center gap-2">
+        {label}
+        <span className="text-white/20 group-hover:text-orange-400 transition-colors">✏️</span>
+      </p>
+      <p className={`text-sm leading-relaxed ${value ? "text-white/80" : "text-white/30 italic"}`}>
+        {value || placeholder}
+      </p>
+    </button>
   );
 }
