@@ -38,6 +38,25 @@ function db() {
   return neon(url);
 }
 
+/**
+ * Ein echtes Produktbild passend zu einem Kriterium (Typ/Protein/Preislage) —
+ * für visuelle Vergleichs-Karten statt nur Emoji. Nimmt das Bild des Produkts
+ * mit dem höchsten Score, das wirklich ein Bild hat (kein Platzhalter/Fake).
+ */
+export async function getComparisonImage(condition: string): Promise<string | null> {
+  const sql = db();
+  if (!sql) return null;
+  try {
+    const r = await sql.query(
+      `SELECT image_url FROM dog_foods
+       WHERE ${BASE} AND image_url IS NOT NULL AND image_url <> '' AND (${condition})
+       ORDER BY score DESC NULLS LAST LIMIT 1`
+    );
+    const row = rows(r)[0];
+    return row?.image_url ?? null;
+  } catch { return null; }
+}
+
 /** Anzahl aktiver Futter im Katalog (für ehrliche Zahlen, keine Fake-„8.000"). */
 export async function getFoodCount(): Promise<number> {
   const sql = db();
