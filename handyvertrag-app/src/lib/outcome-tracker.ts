@@ -1,5 +1,5 @@
 import { randomBytes } from "node:crypto";
-import type { NeonQueryFunction } from "@neondatabase/serverless";
+import { neon } from "@neondatabase/serverless";
 
 const DAYS_UNTIL_FOLLOWUP = 21;
 const token = () => randomBytes(20).toString("hex");
@@ -11,10 +11,10 @@ const token = () => randomBytes(20).toString("hex");
  * Idempotent: ein zweiter Aufruf für dasselbe Profil legt keinen zweiten Eintrag an.
  */
 export async function scheduleOutcomeCheck(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  sql: NeonQueryFunction<any, any>,
+  dbUrl: string,
   { shareToken, email }: { shareToken: string; email: string },
 ): Promise<void> {
+  const sql = neon(dbUrl);
   const [profile] = await sql`
     SELECT id, name, allergies, health_flags, current_food_slug
     FROM dog_profiles WHERE share_token = ${shareToken} LIMIT 1

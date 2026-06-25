@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
 
     // Wirkungs-Tracker: nur wenn die Empfehlung einen echten Problem-Kontext hatte
     // (Allergie/empfindlicher Magen) — sonst gibt's nichts Sinnvolles zu fragen.
-    scheduleOutcomeCheck(sql, { shareToken, email }).catch(() => {});
+    scheduleOutcomeCheck(dbUrl, { shareToken, email }).catch(() => {});
 
     return NextResponse.json({ ok: true });
   } catch (e) {
