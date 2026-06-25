@@ -101,8 +101,9 @@ def companion_for(category, title):
     # Zahn & Maul
     if re.search(r"zahn|dental|mundgeruch|zahnfleisch|plaque|mundpflege", t):
         issue += ["zahn"]
-    # Magen & Darm
-    if re.search(r"magen|darm|verdau|probiotik|darmflora|prebiotik|preb|ibs|sensitiv|ballaststoff|inulin", t):
+    # Magen & Darm — "sensitiv" bewusst NICHT allein als Treffer: zu generisch, matcht auch
+    # Reinigungstücher/Shampoos ("Sensitiv-Reinigungstücher") ohne jeden Magen-Bezug.
+    if re.search(r"magen|darm|verdau|probiotik|darmflora|prebiotik|preb|ibs|ballaststoff|inulin|sensitiv.{0,15}magen|magen.{0,15}sensitiv|sensible verdauung", t):
         issue += ["magen", "verdauung"]
     # Niere & Leber
     if re.search(r"niere|renal|harnweg|blasen", t): issue += ["niere"]
