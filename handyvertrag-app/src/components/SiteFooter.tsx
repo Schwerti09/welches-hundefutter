@@ -31,6 +31,7 @@ const LINKS: Record<string, FooterLink[]> = {
   ],
   Entdecken: [
     { label: "Aktuelle Futter-Deals", href: "/deals" },
+    { label: "Hundefutter online kaufen", href: "/hundefutter-online-kaufen" },
     { label: "Gutscheine & Rabattcodes", href: "/gutscheine" },
     { label: "Widget zum Einbetten", href: "/widget" },
     { label: "Zutaten-Lexikon", href: "/glossar" },

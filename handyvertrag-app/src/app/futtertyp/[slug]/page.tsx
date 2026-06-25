@@ -105,8 +105,13 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
   const foods = await getFoodsByType(typ.dbType, slug === "getreidefrei", slug === "hypoallergen" || slug === "monoprotein");
 
   const da = futtertypDirectAnswer(typ);
+  const bestFood = foods[0];
   const faqItems = [
     { question: da.question, answer: da.answer },
+    ...(bestFood ? [{
+      question: `Welches ${typ.name} für Hunde ist das beste?`,
+      answer: `Nach BELLA-Score aktuell vorne: ${bestFood.brand} ${bestFood.name}${bestFood.score != null ? ` mit ${bestFood.score}/100 Punkten` : ""}. "Das beste" gibt es aber nicht pauschal — Proteinquelle, Allergien und Budget deines Hundes entscheiden mit. BELLA fragt danach und filtert aus dem Live-Katalog die wirklich passenden Sorten.`,
+    }] : []),
     {
       question: `Was ist ${typ.name} für Hunde?`,
       answer: `${typ.description} BELLA prüft, ob es zu deinem Hund passt.`,

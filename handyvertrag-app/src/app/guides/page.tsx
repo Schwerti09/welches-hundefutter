@@ -88,6 +88,32 @@ export default function GuidesPage() {
       </section>
 
       <section className="max-w-5xl mx-auto w-full px-5 pb-12">
+        <h2 className="text-xl font-extrabold tracking-tight mb-5">Kaufen & Bestellen</h2>
+        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <Link href="/hundefutter-online-kaufen" className="card card-hover p-5 block">
+            <div className="text-2xl mb-2">🛒</div>
+            <h3 className="font-bold text-sm mb-1">Online kaufen</h3>
+            <p className="text-xs text-[var(--muted)] leading-relaxed">Günstig bestellen, ohne Abo-Zwang</p>
+          </Link>
+          <Link href="/hundefutter-abo" className="card card-hover p-5 block">
+            <div className="text-2xl mb-2">📦</div>
+            <h3 className="font-bold text-sm mb-1">Abo-Modelle</h3>
+            <p className="text-xs text-[var(--muted)] leading-relaxed">Lohnt sich das wirklich? Ehrliche Einordnung</p>
+          </Link>
+          <Link href="/probierpakete-hundefutter" className="card card-hover p-5 block">
+            <div className="text-2xl mb-2">🎁</div>
+            <h3 className="font-bold text-sm mb-1">Probierpakete</h3>
+            <p className="text-xs text-[var(--muted)] leading-relaxed">Testen, bevor der große Sack kommt</p>
+          </Link>
+          <Link href="/hochwertiges-hundefutter" className="card card-hover p-5 block">
+            <div className="text-2xl mb-2">🎯</div>
+            <h3 className="font-bold text-sm mb-1">Hochwertig erkennen</h3>
+            <p className="text-xs text-[var(--muted)] leading-relaxed">4 messbare Kriterien, nicht der Preis</p>
+          </Link>
+        </div>
+      </section>
+
+      <section className="max-w-5xl mx-auto w-full px-5 pb-12">
         <div className="card p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h2 className="text-lg font-extrabold tracking-tight mb-1">Über 1.400 Tipps</h2>

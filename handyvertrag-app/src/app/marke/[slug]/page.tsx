@@ -86,6 +86,10 @@ export default async function MarkePage({
         ? `Nach BELLA-Score ist „${topFood.name}" die beste ${entry.brand}-Sorte${topFood.score != null ? ` mit ${topFood.score}/100 Punkten` : ""}${topFood.pricePerKg != null ? ` zu ${topFood.pricePerKg.toFixed(2)} €/kg` : ""}. BELLA empfiehlt das optimale Produkt auf Basis von Rasse, Alter und Gesundheitsprofil deines Hundes.`
         : `BELLA wählt die passende ${entry.brand}-Sorte anhand des Profils deines Hundes aus — Rasse, Alter, Gewicht und Gesundheitsthemen fließen in die Empfehlung ein.`,
     },
+    ...(entry.brand === "Mera" ? [{
+      question: "Ist Mera dasselbe wie FRESSNAPF-Hundefutter?",
+      answer: "Mera ist die Tiernahrungs-Eigenmarke der FRESSNAPF-Gruppe — wer online oder im Laden nach \"FRESSNAPF-Hundefutter\" sucht, landet meist bei Mera. BELLA bewertet Mera nach denselben Kriterien wie jede andere Marke, unabhängig vom Vertriebsweg.",
+    }] : []),
   ];
 
   return (
