@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ContactFooterButton from "./ContactFooterButton";
 
 type FooterLink = {
   label: string;
@@ -6,6 +7,7 @@ type FooterLink = {
   external?: boolean;   // http(s) oder mailto → <a> statt <Link>
   sponsored?: boolean;  // Affiliate → rel="sponsored", nur Klick-Tracking (kein On-Load-Pixel!)
   hint?: string;        // kleiner Badge, z. B. "Werbung"
+  supportChat?: boolean; // öffnet das BELLA-Support-Widget statt zu navigieren
 };
 
 // Nur Links, die wirklich existieren (geprüft gegen src/app/**). Keine toten /empfehlung-,
@@ -39,7 +41,7 @@ const LINKS: Record<string, FooterLink[]> = {
     { label: "Über uns", href: "/ueber-uns" },
     { label: "Affiliate-Hinweis", href: "/affiliate" },
     { label: "DOCTR Care", href: "https://t.adcell.com/p/click?promoId=478872&slotId=66376", external: true, sponsored: true, hint: "Werbung" },
-    { label: "Kontakt", href: "mailto:support@welches-hundefutter.today", external: true },
+    { label: "Kontakt", href: "mailto:support@welches-hundefutter.today", external: true, supportChat: true },
   ],
   Rechtliches: [
     { label: "Impressum", href: "/impressum" },
@@ -52,6 +54,9 @@ const LINKS: Record<string, FooterLink[]> = {
 const ITEM_CLS = "text-sm text-gray-400 hover:text-white transition-colors leading-relaxed inline-flex items-center gap-1.5";
 
 function FooterItem({ l }: { l: FooterLink }) {
+  if (l.supportChat) {
+    return <ContactFooterButton label={l.label} className={ITEM_CLS} />;
+  }
   if (l.external) {
     const isMail = l.href.startsWith("mailto:");
     return (

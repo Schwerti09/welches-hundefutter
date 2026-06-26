@@ -7,6 +7,7 @@ import StickyMobileCTA from "@/components/StickyMobileCTA";
 import ExitIntent from "@/components/ExitIntent";
 import WebVitals from "@/components/WebVitals";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import SupportChatWidget from "@/components/SupportChatWidget";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 
@@ -98,6 +99,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <ExitIntent />
         <WebVitals />
         <GoogleAnalytics />
+        <SupportChatWidget />
       </body>
     </html>
   );
