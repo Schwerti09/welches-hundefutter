@@ -6,6 +6,7 @@ import SiteHeader from "@/components/SiteHeader";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
 import ExitIntent from "@/components/ExitIntent";
 import WebVitals from "@/components/WebVitals";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 
@@ -96,6 +97,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <StickyMobileCTA />
         <ExitIntent />
         <WebVitals />
+        <GoogleAnalytics />
       </body>
     </html>
   );

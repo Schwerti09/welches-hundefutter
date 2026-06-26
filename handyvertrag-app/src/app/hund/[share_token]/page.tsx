@@ -1,68 +1,13 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { neon } from "@neondatabase/serverless";
 import SiteFooter from "@/components/SiteFooter";
 import ShareButton from "./ShareButton";
 import { getBreedImage } from "@/lib/breed-image";
+import { getSharedDogProfile, buildCardNumber } from "@/lib/dog-profile";
+import { BREED_BY_SLUG } from "@/data/breeds";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-interface Profile {
-  id: string;
-  name: string;
-  breed_slug: string | null;
-  birth_or_age: string | null;
-  weight_kg: string | null;
-  activity_level: string | null;
-  allergies: string[] | null;
-  health_flags: string[] | null;
-  current_food_slug: string | null;
-  est_daily_grams: number | null;
-  est_bag_days: number | null;
-  gender: string | null;
-  photo_data: string | null;
-  food_preferences: string | null;
-  conditions: string | null;
-}
-
-interface Food {
-  name: string;
-  brand: string;
-  type: string;
-  price_per_kg: string | null;
-  affiliate_url: string;
-  is_grain_free: boolean;
-  image_url: string | null;
-}
-
-// ─── Data ─────────────────────────────────────────────────────────────────────
-
-async function getProfile(token: string): Promise<{ profile: Profile; food: Food | null } | null> {
-  const url = process.env.DATABASE_URL;
-  if (!url) return null;
-  try {
-    const sql = neon(url);
-    const rows = await sql`
-      SELECT id, name, breed_slug, birth_or_age, weight_kg, activity_level,
-             allergies, health_flags, current_food_slug, est_daily_grams, est_bag_days,
-             gender, photo_data, food_preferences, conditions
-      FROM dog_profiles
-      WHERE share_token = ${token} AND share_enabled = true
-      LIMIT 1`;
-    if (!rows[0]) return null;
-    const profile = rows[0] as unknown as Profile;
-
-    let food: Food | null = null;
-    if (profile.current_food_slug) {
-      const f = await sql`
-        SELECT name, brand, type, price_per_kg, affiliate_url, is_grain_free, image_url
-        FROM dog_foods WHERE slug = ${profile.current_food_slug} AND is_active = true LIMIT 1`;
-      food = (f[0] as unknown as Food) ?? null;
-    }
-    return { profile, food };
-  } catch { return null; }
-}
+const getProfile = getSharedDogProfile;
 
 // ─── Metadata ─────────────────────────────────────────────────────────────────
 
@@ -107,6 +52,32 @@ function bagColor(days: number): string {
   return "bg-emerald-500";
 }
 
+const SUITABILITY_LABELS: { key: "suitabilityFamily" | "suitabilityApartment" | "suitabilityBeginner" | "suitabilityChildren" | "suitabilityDogs"; label: string; icon: string }[] = [
+  { key: "suitabilityFamily", label: "Familientauglich", icon: "👨‍👩‍👧" },
+  { key: "suitabilityChildren", label: "Kinderfreundlich", icon: "🧒" },
+  { key: "suitabilityBeginner", label: "Anfänger-geeignet", icon: "🎓" },
+  { key: "suitabilityApartment", label: "Wohnungstauglich", icon: "🏠" },
+  { key: "suitabilityDogs", label: "Verträglich mit Hunden", icon: "🐕‍🦺" },
+];
+
+function toNum(v: string | number | undefined | null): number | null {
+  if (v == null) return null;
+  const n = typeof v === "number" ? v : parseFloat(v);
+  return Number.isFinite(n) ? n : null;
+}
+
+function weightRangeCheck(weightKg: number, min: number, max: number) {
+  const span = max - min;
+  const lo = min - span * 0.6;
+  const hi = max + span * 0.6;
+  const pct = Math.min(100, Math.max(0, ((weightKg - lo) / (hi - lo)) * 100));
+  const minPct = ((min - lo) / (hi - lo)) * 100;
+  const maxPct = ((max - lo) / (hi - lo)) * 100;
+  const status: "unter" | "im" | "ueber" =
+    weightKg < min ? "unter" : weightKg > max ? "ueber" : "im";
+  return { pct, minPct, maxPct, status };
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default async function HundSteckbriefPage({ params }: { params: Promise<{ share_token: string }> }) {
@@ -123,6 +94,34 @@ export default async function HundSteckbriefPage({ params }: { params: Promise<{
     : null;
   const bagDaysLeft = profile.est_bag_days;
   const shareUrl = `https://welches-hundefutter.today/hund/${share_token}`;
+
+  const breed = profile.breed_slug ? BREED_BY_SLUG[profile.breed_slug] : undefined;
+  const cardNumber = buildCardNumber(profile.id);
+  const issueDate = profile.created_at
+    ? new Date(profile.created_at).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" })
+    : null;
+
+  const suitabilityRows = breed
+    ? SUITABILITY_LABELS.filter((s) => toNum(breed[s.key]) != null)
+    : [];
+
+  const weightKgNum = toNum(profile.weight_kg);
+  const breedMin = breed ? toNum(breed.weightMin) : null;
+  const breedMax = breed ? toNum(breed.weightMax) : null;
+  const weightCheck =
+    weightKgNum != null && breedMin != null && breedMax != null
+      ? weightRangeCheck(weightKgNum, breedMin, breedMax)
+      : null;
+
+  const achievements = [
+    { icon: "📸", label: "Eigenes Foto", done: !!profile.photo_data },
+    { icon: "🚫", label: "Allergie-Profi", done: (profile.allergies?.length ?? 0) > 0 },
+    { icon: "🩺", label: "Gesundheits-Check", done: !!profile.conditions || (profile.health_flags?.length ?? 0) > 0 },
+    { icon: "🍖", label: "Vorlieben bekannt", done: !!profile.food_preferences },
+    { icon: "🥣", label: "Futter gefunden", done: !!food },
+    { icon: "📦", label: "Vorrat im Blick", done: bagDaysLeft != null },
+  ];
+  const achievementsDone = achievements.filter((a) => a.done).length;
 
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col bg-[var(--bg)]">
@@ -141,65 +140,179 @@ export default async function HundSteckbriefPage({ params }: { params: Promise<{
 
       <main className="flex-1 max-w-lg mx-auto px-4 py-10 w-full space-y-4">
 
-        {/* ── Hero-Karte ─────────────────────────────────────────────────── */}
-        <div className="rounded-3xl bg-gradient-to-br from-orange-900/40 via-amber-900/20 to-orange-900/30 border border-orange-500/30 p-7 text-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(251,146,60,0.08),transparent_60%)]" />
-          <div className="relative">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center mx-auto mb-4 text-3xl shadow-lg shadow-orange-500/25 overflow-hidden">
-              {profile.photo_data ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={profile.photo_data} alt={profile.name} className="w-full h-full object-cover" />
-              ) : getBreedImage(profile.breed_slug) ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={getBreedImage(profile.breed_slug)!} alt={profile.breed_slug ?? profile.name} className="w-full h-full object-cover" />
-              ) : (
-                "🐕"
-              )}
+        {/* ── Hundepass / ID-Karte ──────────────────────────────────────────
+            Optik wie ein echter Pass: Holo-Rahmen, Kartennummer, Ausstellungsdatum.
+            Soll als Screenshot/Share-Bild für sich stehen. */}
+        <div className="rounded-[26px] p-[2px] bg-[linear-gradient(135deg,#f0a73c,#ff8a4c,#a855f7,#f0a73c)] shadow-[0_30px_70px_-30px_rgba(240,167,60,0.45)]">
+          <div className="rounded-[24px] bg-gradient-to-br from-[#1a1410] via-[#15110f] to-[#1a1410] relative overflow-hidden p-6">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(251,146,60,0.12),transparent_55%)]" />
+            <div className="absolute -right-10 -bottom-10 w-44 h-44 rounded-full bg-purple-500/10 blur-2xl" />
+
+            {/* Pass-Kopfzeile */}
+            <div className="relative flex items-center justify-between mb-5">
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-md bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center">
+                  <span className="text-white font-black text-[10px]">B</span>
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/50">BELLA Hundepass</span>
+              </div>
+              <span className="text-[10px] font-mono text-orange-300/70 tracking-wider">{cardNumber}</span>
             </div>
-            <h1 className="text-3xl font-black mb-1 tracking-tight">
-              {profile.name}
-              {profile.gender && <span className="ml-1.5 text-xl">{profile.gender === "m" ? "♂" : "♀"}</span>}
-            </h1>
-            {profile.breed_slug && (
-              <p className="text-orange-300/80 text-sm capitalize mb-5">
-                {profile.breed_slug.replace(/-/g, " ")}{profile.birth_or_age ? ` · ${profile.birth_or_age}` : ""}
-              </p>
-            )}
-            <div className="flex flex-wrap gap-2 justify-center mb-5">
-              {profile.weight_kg && (
-                <span className="px-3 py-1 rounded-full bg-white/10 text-white/70 text-sm font-medium">
-                  {profile.weight_kg} kg
-                </span>
-              )}
+
+            <div className="relative flex items-center gap-4">
+              <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center text-3xl shadow-lg shadow-orange-500/25 overflow-hidden flex-shrink-0 ring-2 ring-white/10">
+                {profile.photo_data ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={profile.photo_data} alt={profile.name} className="w-full h-full object-cover" />
+                ) : getBreedImage(profile.breed_slug) ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={getBreedImage(profile.breed_slug)!} alt={profile.breed_slug ?? profile.name} className="w-full h-full object-cover" />
+                ) : (
+                  "🐕"
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <h1 className="text-2xl font-black tracking-tight leading-tight truncate">
+                  {profile.name}
+                  {profile.gender && <span className="ml-1.5 text-lg">{profile.gender === "m" ? "♂" : "♀"}</span>}
+                </h1>
+                {profile.breed_slug && (
+                  <p className="text-orange-300/80 text-sm capitalize truncate">
+                    {profile.breed_slug.replace(/-/g, " ")}
+                  </p>
+                )}
+                <p className="text-white/40 text-xs mt-1">
+                  {profile.birth_or_age ? `${profile.birth_or_age} · ` : ""}
+                  {profile.weight_kg ? `${profile.weight_kg} kg` : ""}
+                </p>
+              </div>
+            </div>
+
+            <div className="relative flex flex-wrap gap-2 mt-4">
               {profile.activity_level && (
-                <span className="px-3 py-1 rounded-full bg-white/10 text-white/70 text-sm">
+                <span className="px-3 py-1 rounded-full bg-white/10 text-white/70 text-xs">
                   {ACTIVITY_LABELS[profile.activity_level] ?? profile.activity_level}
                 </span>
               )}
               {profile.health_flags?.map(f => (
-                <span key={f} className="px-3 py-1 rounded-full bg-amber-500/15 text-amber-300 text-sm capitalize">{f}</span>
+                <span key={f} className="px-3 py-1 rounded-full bg-amber-500/15 text-amber-300 text-xs capitalize">{f}</span>
               ))}
             </div>
 
-            {/* Monatskosten-Highlight */}
-            {monthlyEuro && (
-              <div className="inline-block rounded-2xl bg-black/30 border border-orange-500/30 px-5 py-3">
-                <p className="text-[10px] text-white/40 uppercase tracking-widest mb-0.5">Futter · Monat</p>
-                <p className="text-4xl font-black text-amber-400">~{monthlyEuro.toFixed(0)} €</p>
-                <p className="text-[11px] text-white/35 mt-0.5">
-                  {dailyG} g/Tag · {pricePerKg?.toFixed(2)} €/kg
-                </p>
+            {/* Monatskosten / Tagesbedarf */}
+            {(monthlyEuro || dailyG) && (
+              <div className="relative mt-5 rounded-2xl bg-black/30 border border-orange-500/20 px-5 py-3 flex items-center justify-between">
+                <div>
+                  <p className="text-[10px] text-white/40 uppercase tracking-widest mb-0.5">
+                    {monthlyEuro ? "Futter · Monat" : "Tagesbedarf"}
+                  </p>
+                  {monthlyEuro ? (
+                    <>
+                      <p className="text-3xl font-black text-amber-400">~{monthlyEuro.toFixed(0)} €</p>
+                      <p className="text-[11px] text-white/35 mt-0.5">{dailyG} g/Tag · {pricePerKg?.toFixed(2)} €/kg</p>
+                    </>
+                  ) : (
+                    <p className="text-3xl font-black text-white">{dailyG} <span className="text-lg text-white/40">g/Tag</span></p>
+                  )}
+                </div>
+                <span className="text-3xl">🥣</span>
               </div>
             )}
-            {!monthlyEuro && dailyG && (
-              <div className="inline-block rounded-2xl bg-black/30 border border-white/10 px-5 py-3">
-                <p className="text-[10px] text-white/40 uppercase tracking-widest mb-0.5">Tagesbedarf</p>
-                <p className="text-4xl font-black text-white">{dailyG} <span className="text-xl text-white/40">g</span></p>
-                <p className="text-[11px] text-white/35 mt-0.5">Trockenfutter · Orientierungswert</p>
+
+            {/* Mikroprint-Fußzeile wie auf einem echten Ausweis */}
+            <div className="relative flex items-center justify-between mt-5 pt-3 border-t border-dashed border-white/10">
+              <p className="text-[9px] text-white/30 uppercase tracking-wider">
+                {issueDate ? `Ausgestellt am ${issueDate}` : "Ausgestellt"} · welches-hundefutter.today
+              </p>
+              <p className="text-[9px] text-white/30">✓ verifiziert</p>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Achievement-Badges ────────────────────────────────────────── */}
+        <div className="card p-5">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-xs text-[var(--muted)] uppercase tracking-wide">Profil-Fortschritt</p>
+            <span className="text-xs font-semibold text-amber-400">{achievementsDone}/{achievements.length}</span>
+          </div>
+          <div className="grid grid-cols-3 gap-2">
+            {achievements.map((a) => (
+              <div
+                key={a.label}
+                className={`flex flex-col items-center gap-1 rounded-xl py-2.5 px-1 text-center ${
+                  a.done ? "bg-amber-500/10 border border-amber-500/25" : "bg-white/[0.02] border border-white/5"
+                }`}
+              >
+                <span className={`text-lg ${a.done ? "" : "opacity-25"}`}>{a.icon}</span>
+                <span className={`text-[10px] leading-tight ${a.done ? "text-white/80" : "text-white/30"}`}>{a.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Charakter-Werte (Rasse-Eigenschaften) ────────────────────────── */}
+        {suitabilityRows.length > 0 && (
+          <div className="card p-5">
+            <p className="text-xs text-[var(--muted)] uppercase tracking-wide mb-4">
+              Charakter-Werte {breed?.name ? `· ${breed.name}` : ""}
+            </p>
+            <div className="space-y-3">
+              {suitabilityRows.map((s) => {
+                const val = toNum(breed![s.key]) ?? 0;
+                return (
+                  <div key={s.key}>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs text-white/70">{s.icon} {s.label}</span>
+                      <span className="text-[10px] text-white/30">{val}/5</span>
+                    </div>
+                    <div className="flex gap-1">
+                      {[1, 2, 3, 4, 5].map((i) => (
+                        <div
+                          key={i}
+                          className={`h-2 flex-1 rounded-full ${i <= val ? "bg-gradient-to-r from-orange-400 to-amber-500" : "bg-white/5"}`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            {breed?.characterTraits && breed.characterTraits.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mt-4 pt-4 border-t border-white/5">
+                {breed.characterTraits.map((t) => (
+                  <span key={t} className="text-[10px] px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-300 capitalize">{t}</span>
+                ))}
               </div>
             )}
           </div>
-        </div>
+        )}
+
+        {/* ── Gewicht-Check vs. Rasse-Normbereich ──────────────────────────── */}
+        {weightCheck && weightKgNum != null && (
+          <div className="card p-5">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-xs text-[var(--muted)] uppercase tracking-wide">Gewicht-Check</p>
+              <span className={`text-xs px-2.5 py-0.5 rounded-full font-semibold ${
+                weightCheck.status === "im" ? "bg-emerald-500/20 text-emerald-300" : "bg-amber-500/20 text-amber-300"
+              }`}>
+                {weightCheck.status === "im" ? "im Normbereich" : weightCheck.status === "unter" ? "unter Norm" : "über Norm"}
+              </span>
+            </div>
+            <div className="relative h-2.5 rounded-full bg-white/5 overflow-hidden">
+              <div
+                className="absolute inset-y-0 bg-emerald-500/25"
+                style={{ left: `${weightCheck.minPct}%`, width: `${weightCheck.maxPct - weightCheck.minPct}%` }}
+              />
+              <div
+                className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-amber-400 shadow shadow-amber-400/50 border-2 border-[var(--bg)]"
+                style={{ left: `calc(${weightCheck.pct}% - 6px)` }}
+              />
+            </div>
+            <p className="text-[11px] text-white/35 mt-2">
+              {profile.name}: {weightKgNum} kg · Normbereich {breed?.name ?? "Rasse"}: {breedMin}–{breedMax} kg
+            </p>
+          </div>
+        )}
 
         {/* ── Sack-Countdown ─────────────────────────────────────────────── */}
         {bagDaysLeft != null && bagDaysLeft > 0 && (
