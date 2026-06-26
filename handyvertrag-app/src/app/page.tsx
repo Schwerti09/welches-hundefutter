@@ -52,17 +52,26 @@ const NAV_TILES = [
   { label: "Alle Vergleiche", sub: "Sorten gegenüberstellen", href: "/vergleich" },
 ];
 
-const PROFIL_INTRO = `Hallo! Ich bin BELLA 🐕
+function buildProfilIntro(name?: string): string {
+  const greeting = name
+    ? `Hallo! Schön, ${name} kennenzulernen — ich bin BELLA 🐕`
+    : `Hallo! Ich bin BELLA 🐕`;
+  const question = name
+    ? `Los geht's: Was ist die **Rasse** von ${name}?`
+    : `Los geht's: Was ist die **Rasse** deines Hundes?`;
+  return `${greeting}
 
 Du möchtest ein persönliches Futterprofil anlegen — super! Ich stelle dir 5 kurze Fragen, dann:
 ✅ bekommst du 3 passende Futter-Empfehlungen aus 11.000+ Sorten
 ✅ legst du ein Profil für deinen Hund an
 ✅ kannst du den Nachschub-Wecker aktivieren
 
-Los geht's: Was ist die **Rasse** deines Hundes?`;
+${question}`;
+}
 
-export default async function HomePage({ searchParams }: { searchParams: Promise<{ ctx?: string }> }) {
-  const { ctx } = await searchParams;
+export default async function HomePage({ searchParams }: { searchParams: Promise<{ ctx?: string; name?: string }> }) {
+  const { ctx, name: rawName } = await searchParams;
+  const name = rawName?.replace(/[^\p{L}\p{N}\s-]/gu, "").trim().slice(0, 24) || undefined;
   const [topFoods, topFoodsByScore, foodCount, avgPricePerKgDry] = await Promise.all([
     getTopFoods(7),
     getTopFoodsByScore(7),
@@ -127,7 +136,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
 
         {/* 3 — BERATER (nach oben gezogen, Hund schon aus dem Hook bekannt) */}
         <section id="bella-advisor" className="px-5 pt-4 pb-10 scroll-mt-4">
-          <BellaAdvisorWrapper introMessage={ctx === "profil" ? PROFIL_INTRO : undefined} />
+          <BellaAdvisorWrapper introMessage={ctx === "profil" ? buildProfilIntro(name) : undefined} />
         </section>
       </DogInfoProvider>
 

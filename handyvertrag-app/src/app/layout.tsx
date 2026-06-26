@@ -8,6 +8,7 @@ import ExitIntent from "@/components/ExitIntent";
 import WebVitals from "@/components/WebVitals";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import SupportChatWidget from "@/components/SupportChatWidget";
+import DogPassPopup from "@/components/DogPassPopup";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 
@@ -100,6 +101,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <WebVitals />
         <GoogleAnalytics />
         <SupportChatWidget />
+        <DogPassPopup />
       </body>
     </html>
   );
