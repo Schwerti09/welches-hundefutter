@@ -50,6 +50,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Labradore neigen zu Übergewicht. Strikte Portionskontrolle, gelenkschonende Futter mit Glucosamin/Chondroitin empfohlen. Tagesmenge: 350-500g Trockenfutter, aufgeteilt auf 2 Mahlzeiten.',
     description: 'Der Labrador Retriever ist Deutschlands beliebteste Hunderasse. Freundlich, intelligent und arbeitsfreudig – aber leider auch mit Hang zur Verfressenheit. Beim Futter ist Qualität wichtiger als Menge.',
     imageUrl: '/breeds/labrador-retriever.webp',
+    characterTraits: ['freundlich', 'verspielt', 'intelligent', 'verfressen', 'sanft'], suitabilityFamily: 5, suitabilityApartment: 2, suitabilityBeginner: 4, suitabilityChildren: 5, suitabilityDogs: 5,
   },
   {
     slug: 'golden-retriever',
@@ -66,6 +67,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Goldies brauchen hochwertiges Futter mit Omega-3 für Fell und Haut. Bei Allergien Monoprotein-Futter wählen.',
     description: 'Sanft, kinderlieb, anhänglich – der Golden Retriever ist ein Familienliebling. Häufige Hautprobleme und Allergien machen die Futterwahl besonders wichtig.',
     imageUrl: '/breeds/golden-retriever.webp',
+    characterTraits: ['freundlich', 'sanft', 'intelligent', 'verspielt', 'loyal'], suitabilityFamily: 5, suitabilityApartment: 2, suitabilityBeginner: 4, suitabilityChildren: 5, suitabilityDogs: 5,
   },
   {
     slug: 'franzoesische-bulldogge',
@@ -82,6 +84,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Frenchies haben oft empfindliche Mägen. Leicht verdauliches Futter, kleine Portionen, ggf. Anti-Schling-Napf. Bei Allergien Hypoallergen-Futter.',
     description: 'Die Französische Bulldogge ist charmant, verschmust und ein wahrer Wohnungshund. Die Kehrseite: Häufige Atem- und Hautprobleme erfordern angepasste Ernährung.',
     imageUrl: '/breeds/franzoesische-bulldogge.webp',
+    characterTraits: ['verschmust', 'stur', 'ruhig', 'gesellig'], suitabilityFamily: 5, suitabilityApartment: 5, suitabilityBeginner: 4, suitabilityChildren: 4, suitabilityDogs: 3,
   },
   {
     slug: 'deutscher-schaeferhund',
@@ -98,6 +101,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Schäferhunde brauchen viel Energie. 2-3 kleine Mahlzeiten täglich (Magendrehung-Risiko!). Auf erhöhtem Magen füttern lassen, nach dem Fressen Ruhe.',
     description: 'Der Deutsche Schäferhund ist arbeitsfreudig, loyal und hochintelligent. Anspruchsvolle Rasse mit speziellen Gesundheitsanfälligkeiten – die richtige Ernährung kann viel bewirken.',
     imageUrl: '/breeds/deutscher-schaeferhund.webp',
+    characterTraits: ['loyal', 'intelligent', 'wachsam', 'selbstbewusst', 'arbeitsfreudig'], suitabilityFamily: 4, suitabilityApartment: 2, suitabilityBeginner: 2, suitabilityChildren: 4, suitabilityDogs: 3,
   },
   {
     slug: 'jack-russell-terrier',
@@ -114,6 +118,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'JRTs verbrennen viel Energie. Hochkalorisches Futter, kleine Pellets. Tagesmenge: 80-120g Trockenfutter.',
     description: 'Kleine Größe, riesige Persönlichkeit. Der Jack Russell ist ein Energiebündel – das Futter muss diesem Lebensstil gerecht werden.',
     imageUrl: '/breeds/jack-russell-terrier.webp',
+    characterTraits: ['lebhaft', 'mutig', 'eigenstaendig', 'jagdfreudig'], suitabilityFamily: 3, suitabilityApartment: 2, suitabilityBeginner: 2, suitabilityChildren: 3, suitabilityDogs: 2,
   },
   {
     slug: 'chihuahua',
@@ -130,6 +135,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Mini-Pellets für kleines Maul. 3-4 kleine Mahlzeiten täglich (Unterzuckerungsrisiko). Tagesmenge: 30-50g.',
     description: 'Der kleinste Hund der Welt ist temperamentvoll und liebevoll. Wegen der Mini-Statur sind regelmäßige kleine Mahlzeiten Pflicht.',
     imageUrl: '/breeds/chihuahua.webp',
+    characterTraits: ['selbstbewusst', 'anhaenglich', 'wachsam', 'temperamentvoll'], suitabilityFamily: 3, suitabilityApartment: 5, suitabilityBeginner: 4, suitabilityChildren: 2, suitabilityDogs: 2,
   },
   {
     slug: 'beagle',
@@ -146,6 +152,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Beagles fressen ALLES und neigen extrem zu Übergewicht. Strikte Portionskontrolle, Light-Futter bei Tendenz zu Pfunden.',
     description: 'Freundlich, gesellig, dauerhaft hungrig. Beim Beagle ist Disziplin bei der Fütterung entscheidend für ein langes, gesundes Leben.',
     imageUrl: '/breeds/beagle.webp',
+    characterTraits: ['freundlich', 'neugierig', 'verspielt', 'sturkoepfig'], suitabilityFamily: 5, suitabilityApartment: 2, suitabilityBeginner: 3, suitabilityChildren: 5, suitabilityDogs: 5,
   },
   {
     slug: 'mops',
@@ -162,6 +169,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Möpse neigen zu Übergewicht. Reduzierte Kalorien, hochwertige Proteine. Wegen Brachycephalie: Wassernapf erhöht aufstellen.',
     description: 'Der Mops ist verschmust und gemütlich. Wegen der Kurzschnauze und Tendenz zu Übergewicht braucht er besondere Aufmerksamkeit beim Futter.',
     imageUrl: '/breeds/mops.webp',
+    characterTraits: ['anhaenglich', 'verschmust', 'ruhig', 'gesellig'], suitabilityFamily: 5, suitabilityApartment: 5, suitabilityBeginner: 5, suitabilityChildren: 4, suitabilityDogs: 4,
   },
   {
     slug: 'dackel',
@@ -178,6 +186,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Dackel sind besonders rückenanfällig – Übergewicht muss VERMIEDEN werden. Light-Futter, kleine Portionen.',
     description: 'Der Dackel ist mutig, ausdauernd und stur. Sein langer Rücken erfordert ein optimales Gewicht – die Ernährung ist hier Gesundheitsvorsorge.',
     imageUrl: '/breeds/dackel.webp',
+    characterTraits: ['eigenstaendig', 'mutig', 'wachsam', 'verschmust'], suitabilityFamily: 4, suitabilityApartment: 4, suitabilityBeginner: 3, suitabilityChildren: 3, suitabilityDogs: 3,
   },
   {
     slug: 'border-collie',
@@ -194,6 +203,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Hochaktive Rasse, braucht energiereiches Futter. Bei MDR1-Defekt bestimmte Wirkstoffe vermeiden – im Zweifel Tierarzt fragen.',
     description: 'Wahrscheinlich der intelligenteste Hund der Welt. Border Collies brauchen körperliche UND geistige Auslastung – und Energie aus hochwertigem Futter.',
     imageUrl: '/breeds/border-collie.webp',
+    characterTraits: ['hochintelligent', 'arbeitsfreudig', 'energiegeladen', 'sensibel'], suitabilityFamily: 4, suitabilityApartment: 1, suitabilityBeginner: 2, suitabilityChildren: 3, suitabilityDogs: 4,
   },
   {
     slug: 'australian-shepherd',
@@ -210,6 +220,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Aussies brauchen viel Bewegung und entsprechend energiereiches Futter. Bei MDR1-Defekt Hersteller-Liste beachten.',
     description: 'Aussies sind temperamentvoll, klug und arbeitsfreudig. Für die richtige Ernährung muss die hohe Energie ausgeglichen werden.',
     imageUrl: '/breeds/australian-shepherd.webp',
+    characterTraits: ['intelligent', 'energiegeladen', 'loyal', 'wachsam'], suitabilityFamily: 4, suitabilityApartment: 1, suitabilityBeginner: 2, suitabilityChildren: 3, suitabilityDogs: 4,
   },
   {
     slug: 'cocker-spaniel',
@@ -226,6 +237,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Cocker neigen zu Übergewicht. Hochwertige Proteine, Omega-3 für das Fell.',
     description: 'Der Cocker Spaniel ist sanftmütig und gesellig. Pflegeintensives Fell und Anfälligkeit für Ohrenentzündungen erfordern gezielte Ernährung.',
     imageUrl: '/breeds/cocker-spaniel.webp',
+    characterTraits: ['freundlich', 'sanft', 'verspielt', 'anhaenglich'], suitabilityFamily: 5, suitabilityApartment: 3, suitabilityBeginner: 4, suitabilityChildren: 5, suitabilityDogs: 4,
   },
   {
     slug: 'malteser',
@@ -242,6 +254,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Mini-Pellets. Hochwertiges Futter für das prachtvolle weiße Fell. Kleine, häufige Mahlzeiten.',
     description: 'Der Malteser ist ein eleganter Begleithund mit langem, weißem Fell. Spezielles Futter für Fell und Zähne ist empfehlenswert.',
     imageUrl: '/breeds/malteser.webp',
+    characterTraits: ['anhaenglich', 'verschmust', 'lebhaft', 'sanft'], suitabilityFamily: 5, suitabilityApartment: 5, suitabilityBeginner: 5, suitabilityChildren: 4, suitabilityDogs: 4,
   },
   {
     slug: 'rottweiler',
@@ -258,6 +271,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Große Rasse, langsame Reife. Welpen NICHT überfüttern (Gelenke!). 2 Mahlzeiten täglich, Magendrehung-Risiko beachten.',
     description: 'Der Rottweiler ist kräftig und ausgeglichen. Wegen Größe und Gelenkanfälligkeit ist die Ernährung – besonders im Welpenalter – kritisch.',
     imageUrl: '/breeds/rottweiler.webp',
+    characterTraits: ['selbstbewusst', 'loyal', 'wachsam', 'ruhig', 'mutig'], suitabilityFamily: 3, suitabilityApartment: 2, suitabilityBeginner: 1, suitabilityChildren: 3, suitabilityDogs: 2,
   },
   {
     slug: 'boxer',
@@ -274,6 +288,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Boxer haben oft Allergien. Monoprotein-Futter erwägen. 2 Mahlzeiten, Magendrehung-Risiko.',
     description: 'Verspielt, treu und ausdauernd. Boxer brauchen wegen Allergieneigung und Herzproblemen besonders hochwertige Ernährung.',
     imageUrl: '/breeds/boxer.webp',
+    characterTraits: ['verspielt', 'energisch', 'loyal', 'beschuetzend'], suitabilityFamily: 5, suitabilityApartment: 2, suitabilityBeginner: 3, suitabilityChildren: 5, suitabilityDogs: 4,
   },
   {
     slug: 'yorkshire-terrier',
@@ -290,6 +305,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Mini-Größe braucht kleine Pellets und häufige Mahlzeiten (3-4x täglich). Zahngesundheit fördern.',
     description: 'Klein aber selbstbewusst – der Yorkie ist ein temperamentvoller Begleiter. Spezial-Futter für kleine Rassen ist Pflicht.',
     imageUrl: '/breeds/yorkshire-terrier.webp',
+    characterTraits: ['selbstbewusst', 'lebhaft', 'anhaenglich', 'mutig'], suitabilityFamily: 4, suitabilityApartment: 5, suitabilityBeginner: 4, suitabilityChildren: 3, suitabilityDogs: 3,
   },
   {
     slug: 'shih-tzu',
@@ -306,6 +322,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Niedrig-aktive Rasse, weniger Kalorien. Hypoallergen-Futter bei Allergien sinnvoll.',
     description: 'Der Shih Tzu ist ein gemütlicher Begleithund. Wegen Atemproblemen und Allergieneigung sollte das Futter sorgfältig gewählt werden.',
     imageUrl: '/breeds/shih-tzu.webp',
+    characterTraits: ['anhaenglich', 'verschmust', 'ruhig', 'freundlich'], suitabilityFamily: 5, suitabilityApartment: 5, suitabilityBeginner: 5, suitabilityChildren: 4, suitabilityDogs: 4,
   },
   {
     slug: 'havaneser',
@@ -322,6 +339,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Familienhund mit gutem Appetit. Hochwertiges Futter für das gepflegte Fell, Omega-Fettsäuren.',
     description: 'Lebhaft und kinderlieb. Havaneser brauchen ein qualitatives Futter, das Fell und Energie unterstützt.',
     imageUrl: '/breeds/havaneser.webp',
+    characterTraits: ['freundlich', 'verspielt', 'anhaenglich', 'intelligent'], suitabilityFamily: 5, suitabilityApartment: 5, suitabilityBeginner: 5, suitabilityChildren: 5, suitabilityDogs: 5,
   },
   {
     slug: 'pudel',
@@ -338,6 +356,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Größe variiert stark (Toy bis Großpudel). Tagesmenge an Größe anpassen. Hochwertiges Futter für das Fell.',
     description: 'Intelligent, elegant, vielseitig. Der Pudel kommt in vier Größen – die Ernährung muss entsprechend dimensioniert werden.',
     imageUrl: '/breeds/pudel.webp',
+    characterTraits: ['intelligent', 'verspielt', 'anhaenglich', 'lernwillig'], suitabilityFamily: 5, suitabilityApartment: 4, suitabilityBeginner: 4, suitabilityChildren: 4, suitabilityDogs: 4,
   },
   {
     slug: 'zwergpinscher',
@@ -354,6 +373,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Aktiver kleiner Hund. Hochwertige Proteine, Diabetes-Risiko beachten – keine Zuckerzusätze.',
     description: 'Klein, schnell, selbstbewusst. Der Zwergpinscher braucht qualitatives Futter ohne Füllstoffe.',
     imageUrl: '/breeds/zwergpinscher.webp',
+    characterTraits: ['selbstbewusst', 'lebhaft', 'eigenstaendig', 'wachsam'], suitabilityFamily: 3, suitabilityApartment: 4, suitabilityBeginner: 3, suitabilityChildren: 2, suitabilityDogs: 3,
   },
   {
     slug: 'cavalier-king-charles',
@@ -370,6 +390,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Wegen Herzerkrankungsrisiko: Taurin und L-Carnitin-haltiges Futter wählen. Natriumarm bei Herzproblemen.',
     description: 'Sanft, freundlich, ein Familienhund par excellence. Wegen der Herzanfälligkeit der Rasse ist die Futterwahl besonders wichtig.',
     imageUrl: '/breeds/cavalier-king-charles.webp',
+    characterTraits: ['anhaenglich', 'sanft', 'freundlich', 'verschmust'], suitabilityFamily: 5, suitabilityApartment: 5, suitabilityBeginner: 5, suitabilityChildren: 5, suitabilityDogs: 5,
   },
   {
     slug: 'berner-sennenhund',
@@ -386,6 +407,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Große Rasse, langsame Reife. Welpenfutter mit kontrolliertem Calcium für gesunde Gelenke. 2-3 Mahlzeiten.',
     description: 'Liebevoll und ruhig, leider mit kurzer Lebenserwartung. Hochwertige Ernährung kann viel zur Lebensqualität beitragen.',
     imageUrl: '/breeds/berner-sennenhund.webp',
+    characterTraits: ['sanft', 'gelassen', 'loyal', 'geduldig'], suitabilityFamily: 5, suitabilityApartment: 1, suitabilityBeginner: 3, suitabilityChildren: 5, suitabilityDogs: 4,
   },
   {
     slug: 'dobermann',
@@ -402,6 +424,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Hohes DCM-Risiko: Taurin und L-Carnitin im Futter wichtig. Hochwertige Proteine.',
     description: 'Elegant, schnell, intelligent. Der Dobermann braucht hochwertiges Futter mit herzschützenden Nährstoffen.',
     imageUrl: '/breeds/dobermann.webp',
+    characterTraits: ['wachsam', 'loyal', 'selbstbewusst', 'intelligent'], suitabilityFamily: 4, suitabilityApartment: 2, suitabilityBeginner: 1, suitabilityChildren: 3, suitabilityDogs: 2,
   },
   {
     slug: 'bordeauxdogge',
@@ -418,6 +441,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Sehr großer Hund. Welpenphase besonders kritisch (langsames Wachstum fördern). 2-3 Mahlzeiten täglich.',
     description: 'Massiv und gutmütig. Bordeauxdoggen brauchen wegen ihrer Größe und Anfälligkeiten eine besonders durchdachte Ernährung.',
     imageUrl: '/breeds/bordeauxdogge.webp',
+    characterTraits: ['ruhig', 'loyal', 'beschuetzend', 'gelassen'], suitabilityFamily: 4, suitabilityApartment: 2, suitabilityBeginner: 2, suitabilityChildren: 3, suitabilityDogs: 2,
   },
   {
     slug: 'rhodesian-ridgeback',
@@ -434,6 +458,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Aktive Rasse mit gutem Appetit. Hochwertige Proteine, 2 Mahlzeiten gegen Magendrehung.',
     description: 'Athletisch, mutig, unabhängig. Der Ridgeback braucht ein energiereiches, qualitatives Futter.',
     imageUrl: '/breeds/rhodesian-ridgeback.webp',
+    characterTraits: ['eigenstaendig', 'loyal', 'ruhig', 'mutig'], suitabilityFamily: 4, suitabilityApartment: 2, suitabilityBeginner: 2, suitabilityChildren: 3, suitabilityDogs: 3,
   },
   {
     slug: 'weimaraner',
@@ -450,6 +475,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Sehr aktive Rasse. 2-3 Mahlzeiten (Magendrehung-Risiko!), nach dem Fressen Ruhepause.',
     description: 'Eleganter, vielseitiger Jagdhund. Weimaraner brauchen viel Bewegung und entsprechend energiereiches Futter.',
     imageUrl: '/breeds/weimaraner.webp',
+    characterTraits: ['energisch', 'anhaenglich', 'intelligent', 'jagdfreudig'], suitabilityFamily: 4, suitabilityApartment: 1, suitabilityBeginner: 2, suitabilityChildren: 3, suitabilityDogs: 3,
   },
   {
     slug: 'dalmatiner',
@@ -466,6 +492,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'BESONDERHEIT: Purinarme Ernährung wegen Harnsteine-Risiko. Spezial-Futter für Dalmatiner verfügbar.',
     description: 'Die schwarzen Punkte machen ihn unverwechselbar. Wegen der Urat-Stoffwechselbesonderheit ist die Ernährung speziell.',
     imageUrl: '/breeds/dalmatiner.webp',
+    characterTraits: ['energisch', 'wachsam', 'eigenstaendig', 'verspielt'], suitabilityFamily: 4, suitabilityApartment: 1, suitabilityBeginner: 2, suitabilityChildren: 3, suitabilityDogs: 3,
   },
   {
     slug: 'siberian-husky',
@@ -482,6 +509,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Sehr effizienter Stoffwechsel – braucht weniger Futter als andere große Hunde! Hochfettig, hochproteinhaltig.',
     description: 'Wölfischer Schlittenhund mit unerschöpflicher Energie. Huskies brauchen energiereiches Futter trotz geringer Gesamtmenge.',
     imageUrl: '/breeds/siberian-husky.webp',
+    characterTraits: ['eigenstaendig', 'energisch', 'gesellig', 'freiheitsliebend'], suitabilityFamily: 4, suitabilityApartment: 1, suitabilityBeginner: 1, suitabilityChildren: 4, suitabilityDogs: 4,
   },
   {
     slug: 'alaskan-malamute',
@@ -498,6 +526,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Großer Arbeitshund. Hochkalorisches Futter, kontrollierte Wachstumsphase bei Welpen.',
     description: 'Der größere Verwandte des Huskies. Eine majestätische Erscheinung mit echtem Arbeitscharakter und entsprechendem Energiebedarf.',
     imageUrl: '/breeds/alaskan-malamute.webp',
+    characterTraits: ['eigenstaendig', 'kraftvoll', 'freundlich', 'dominant'], suitabilityFamily: 4, suitabilityApartment: 1, suitabilityBeginner: 1, suitabilityChildren: 4, suitabilityDogs: 3,
   },
   {
     slug: 'shiba-inu',
@@ -514,6 +543,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Allergie-anfällig – Monoprotein-Futter, getreidefrei oft sinnvoll. Hochwertige Zutaten.',
     description: 'Selbstbewusst, intelligent, fast katzenartig. Der Shiba Inu ist Japans beliebteste Rasse mit ausgeprägter Allergieneigung.',
     imageUrl: '/breeds/shiba-inu.webp',
+    characterTraits: ['eigenstaendig', 'reinlich', 'wachsam', 'stur'], suitabilityFamily: 3, suitabilityApartment: 3, suitabilityBeginner: 2, suitabilityChildren: 3, suitabilityDogs: 2,
   },
   {
     slug: 'akita-inu',
@@ -530,6 +560,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Anfälligkeit für Autoimmunerkrankungen – hochwertiges Futter ohne unnötige Zusätze. Fischbasis oft gut verträglich.',
     description: 'Würdevoll, loyal, japanisches Nationalsymbol. Der Akita braucht qualitatives Futter, das das Immunsystem nicht überlastet.',
     imageUrl: '/breeds/akita-inu.webp',
+    characterTraits: ['loyal', 'wuerdevoll', 'eigenstaendig', 'dominant'], suitabilityFamily: 3, suitabilityApartment: 2, suitabilityBeginner: 1, suitabilityChildren: 3, suitabilityDogs: 1,
   },
   {
     slug: 'chow-chow',
@@ -546,6 +577,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Wenig aktiv, weniger Kalorien. Hochwertiges Futter für das dichte Fell.',
     description: 'Stolz und distanziert mit löwenartiger Mähne. Der Chow-Chow braucht keine großen Mengen, aber Qualität.',
     imageUrl: '/breeds/chow-chow.webp',
+    characterTraits: ['eigenstaendig', 'wuerdevoll', 'reserviert', 'ruhig'], suitabilityFamily: 3, suitabilityApartment: 4, suitabilityBeginner: 2, suitabilityChildren: 2, suitabilityDogs: 2,
   },
   {
     slug: 'pekinese',
@@ -562,6 +594,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Sehr wenig Bewegungsbedarf – Kalorien niedrig halten. Mini-Pellets wegen Kurzschnauze.',
     description: 'Würdevoll, eigensinnig, fast katzenhaft. Der Pekinese braucht angepasstes Futter wegen seiner Kurzschnauze.',
     imageUrl: '/breeds/pekinese.webp',
+    characterTraits: ['selbstbewusst', 'wuerdevoll', 'anhaenglich', 'stur'], suitabilityFamily: 4, suitabilityApartment: 5, suitabilityBeginner: 3, suitabilityChildren: 2, suitabilityDogs: 3,
   },
   {
     slug: 'lhasa-apso',
@@ -578,6 +611,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Hochwertiges Futter für das prachtvolle Fell. Bei Nierenanfälligkeit phosphatarmes Futter ggf. sinnvoll.',
     description: 'Tibetischer Wächterhund mit langem Fell. Der Lhasa Apso braucht qualitative Ernährung für sein eindrucksvolles Haar.',
     imageUrl: '/breeds/lhasa-apso.webp',
+    characterTraits: ['eigenstaendig', 'wachsam', 'selbstbewusst', 'anhaenglich'], suitabilityFamily: 3, suitabilityApartment: 5, suitabilityBeginner: 3, suitabilityChildren: 2, suitabilityDogs: 3,
   },
   {
     slug: 'bichon-frise',
@@ -594,6 +628,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Allergie-anfällig: Hypoallergen-Futter oft besser. Hochwertige Zutaten für das weiße Fell.',
     description: 'Fröhlich, verspielt, das weiße Pulver-Puff. Bichon Frisés haben oft Hautprobleme – das richtige Futter hilft.',
     imageUrl: '/breeds/bichon-frise.webp',
+    characterTraits: ['froehlich', 'verspielt', 'anhaenglich', 'freundlich'], suitabilityFamily: 5, suitabilityApartment: 5, suitabilityBeginner: 5, suitabilityChildren: 5, suitabilityDogs: 5,
   },
   {
     slug: 'whippet',
@@ -610,6 +645,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Schlanker Athlet – nicht überfüttern. Hochwertige Proteine für die Muskulatur.',
     description: 'Eleganter Sprinter, sanft und genügsam. Der Whippet braucht hochwertiges, nicht zu kalorienreiches Futter.',
     imageUrl: '/breeds/whippet.webp',
+    characterTraits: ['sanft', 'ruhig', 'sensibel', 'schnell'], suitabilityFamily: 5, suitabilityApartment: 3, suitabilityBeginner: 3, suitabilityChildren: 4, suitabilityDogs: 4,
   },
   {
     slug: 'greyhound',
@@ -626,6 +662,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Trotz Größe relativ wenig Energiebedarf außerhalb des Trainings. Hochwertige Proteine, 2 Mahlzeiten.',
     description: 'Der schnellste Hund der Welt – im Alltag jedoch ruhig. Die Ernährung muss zur Aktivität passen, nicht zur Größe.',
     imageUrl: '/breeds/greyhound.webp',
+    characterTraits: ['ruhig', 'sanft', 'elegant', 'zurueckhaltend'], suitabilityFamily: 5, suitabilityApartment: 3, suitabilityBeginner: 3, suitabilityChildren: 4, suitabilityDogs: 3,
   },
   {
     slug: 'irish-setter',
@@ -642,6 +679,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Sehr aktive Rasse – hoher Energiebedarf. 2-3 Mahlzeiten, Magendrehung beachten.',
     description: 'Rot-glänzend, energiegeladen, gesellig. Der Irish Setter braucht ein hochwertiges, energiereiches Futter.',
     imageUrl: '/breeds/irish-setter.webp',
+    characterTraits: ['freundlich', 'energisch', 'verspielt', 'sanft'], suitabilityFamily: 5, suitabilityApartment: 1, suitabilityBeginner: 3, suitabilityChildren: 5, suitabilityDogs: 5,
   },
   {
     slug: 'magyar-vizsla',
@@ -658,6 +696,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Hochaktiv, braucht energiereiches Futter. Eher schlanker Typ – Übergewicht vermeiden.',
     description: 'Vielseitiger Jagdhund mit goldenem Fell. Vizslas brauchen Auslastung und entsprechendes Futter.',
     imageUrl: '/breeds/magyar-vizsla.webp',
+    characterTraits: ['anhaenglich', 'energisch', 'sensibel', 'intelligent'], suitabilityFamily: 4, suitabilityApartment: 1, suitabilityBeginner: 2, suitabilityChildren: 4, suitabilityDogs: 4,
   },
   {
     slug: 'samojede',
@@ -674,6 +713,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Dichtes Fell braucht Omega-Fettsäuren. Bei Diabetes-Risiko Zucker meiden.',
     description: 'Strahlend weiß mit dem typischen „Samojeden-Lächeln". Eine arbeitsfreudige Rasse mit speziellen Pflegeansprüchen.',
     imageUrl: '/breeds/samojede.webp',
+    characterTraits: ['freundlich', 'froehlich', 'gesellig', 'wachsam'], suitabilityFamily: 5, suitabilityApartment: 2, suitabilityBeginner: 2, suitabilityChildren: 5, suitabilityDogs: 5,
   },
   {
     slug: 'english-setter',
@@ -690,6 +730,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Anfällig für Allergien – Monoprotein oft sinnvoll. Aktive Rasse, hoher Energiebedarf.',
     description: 'Elegant und arbeitsfreudig, der English Setter ist ein klassischer Jagdhund mit ruhigem Temperament.',
     imageUrl: '/breeds/english-setter.webp',
+    characterTraits: ['freundlich', 'sanft', 'ruhig', 'verspielt'], suitabilityFamily: 5, suitabilityApartment: 1, suitabilityBeginner: 3, suitabilityChildren: 5, suitabilityDogs: 5,
   },
   {
     slug: 'pointer',
@@ -706,6 +747,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Sehr aktiv – energiereiches Futter. Hochwertige Proteine für Muskelaufbau.',
     description: 'Athletisch, schnell, ausdauernd. Der Pointer braucht qualitatives Futter, das mit seiner Energie mithält.',
     imageUrl: '/breeds/pointer.webp',
+    characterTraits: ['energisch', 'intelligent', 'freundlich', 'jagdfreudig'], suitabilityFamily: 4, suitabilityApartment: 1, suitabilityBeginner: 2, suitabilityChildren: 4, suitabilityDogs: 4,
   },
   {
     slug: 'labradoodle',
@@ -722,6 +764,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Mix-Rasse: Eigenschaften variieren. Hochwertiges Futter, bei Allergien anpassen.',
     description: 'Labrador × Pudel: Familienfreundlich, intelligent, oft hypoallergen. Ein Designer-Hund mit echten Qualitäten.',
     imageUrl: '/breeds/labradoodle.webp',
+    characterTraits: ['freundlich', 'intelligent', 'verspielt', 'anhaenglich'], suitabilityFamily: 5, suitabilityApartment: 3, suitabilityBeginner: 4, suitabilityChildren: 5, suitabilityDogs: 5,
   },
   {
     slug: 'goldendoodle',
@@ -738,6 +781,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Allergiefreundliche Sorten oft gut. Hochwertiges Futter für Energie und Fell.',
     description: 'Golden Retriever × Pudel: Verspielt, anhänglich, familientauglich. Beliebter Hybrid mit treuen Charakter.',
     imageUrl: '/breeds/goldendoodle.webp',
+    characterTraits: ['freundlich', 'sanft', 'intelligent', 'verspielt'], suitabilityFamily: 5, suitabilityApartment: 3, suitabilityBeginner: 4, suitabilityChildren: 5, suitabilityDogs: 5,
   },
   {
     slug: 'maltipoo',
@@ -754,6 +798,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Kleiner Hybrid – Mini-Pellets. Häufige kleine Mahlzeiten.',
     description: 'Malteser × Pudel: Klein, anhänglich, hypoallergen. Perfekt für Wohnungen und Allergiker.',
     imageUrl: '/breeds/maltipoo.webp',
+    characterTraits: ['anhaenglich', 'verspielt', 'freundlich', 'intelligent'], suitabilityFamily: 5, suitabilityApartment: 5, suitabilityBeginner: 5, suitabilityChildren: 4, suitabilityDogs: 4,
   },
   {
     slug: 'cavapoo',
@@ -770,6 +815,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Hybrid aus Cavalier × Pudel. Wegen Herzanfälligkeit Taurin-haltiges Futter.',
     description: 'Cavalier × Pudel: Sanft, verspielt, familienfreundlich. Ein anhänglicher Designer-Hund.',
     imageUrl: '/breeds/cavapoo.webp',
+    characterTraits: ['anhaenglich', 'sanft', 'verspielt', 'freundlich'], suitabilityFamily: 5, suitabilityApartment: 5, suitabilityBeginner: 5, suitabilityChildren: 5, suitabilityDogs: 5,
   },
   {
     slug: 'cockapoo',
@@ -786,6 +832,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Cocker × Pudel: aktive Rasse. Hochwertiges Futter, Omega-3 für das gewellte Fell.',
     description: 'Cocker Spaniel × Pudel: Verspielt, sozial, lernfreudig. Ein vielseitiger Begleithund.',
     imageUrl: '/breeds/cockapoo.webp',
+    characterTraits: ['freundlich', 'verspielt', 'anhaenglich', 'intelligent'], suitabilityFamily: 5, suitabilityApartment: 4, suitabilityBeginner: 4, suitabilityChildren: 5, suitabilityDogs: 5,
   },
   {
     slug: 'bernedoodle',
@@ -802,6 +849,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Berner × Pudel-Hybrid. Hochwertiges Futter, Gelenkstoffe für die Größe.',
     description: 'Berner Sennenhund × Pudel: Sanft, verspielt, mit den besten Eigenschaften beider Rassen.',
     imageUrl: '/breeds/bernedoodle.webp',
+    characterTraits: ['sanft', 'intelligent', 'verspielt', 'anhaenglich'], suitabilityFamily: 5, suitabilityApartment: 2, suitabilityBeginner: 3, suitabilityChildren: 5, suitabilityDogs: 4,
   },
   {
     slug: 'dogo-argentino',
@@ -818,6 +866,7 @@ export const BREEDS: Breed[] = [
     feedingNotes: 'Kräftige, muskulöse Rasse. Hochwertige Proteine, kontrolliertes Welpenwachstum.',
     description: 'Mutig, athletisch, treu. Eine Listenhund-Rasse, die hochwertige Ernährung braucht.',
     imageUrl: '/breeds/dogo-argentino.webp',
+    characterTraits: ['mutig', 'loyal', 'selbstbewusst', 'beschuetzend'], suitabilityFamily: 3, suitabilityApartment: 1, suitabilityBeginner: 1, suitabilityChildren: 3, suitabilityDogs: 1,
   },
   {
     slug: 'englische-bulldogge', name: 'Englische Bulldogge', size: 'mittel',
@@ -826,6 +875,8 @@ export const BREEDS: Breed[] = [
     recommendedProteinPercentage: 22,
     feedingNotes: 'Bulldoggen neigen zu Übergewicht und Allergien. Leicht verdauliches, kalorienkontrolliertes — oft getreidefreies — Futter, mit Omega-3 für die Hautgesundheit.',
     description: 'Die Englische Bulldogge ist gemütlich und anhänglich, aber gesundheitlich anspruchsvoll. Verträglichkeit und Gewichtskontrolle sind entscheidend.'
+,
+    characterTraits: ['gelassen', 'anhaenglich', 'stur', 'verschmust'], suitabilityFamily: 5, suitabilityApartment: 5, suitabilityBeginner: 4, suitabilityChildren: 5, suitabilityDogs: 3,
   },
   {
     slug: 'corgi', name: 'Welsh Corgi', size: 'klein',
@@ -834,6 +885,8 @@ export const BREEDS: Breed[] = [
     recommendedProteinPercentage: 24,
     feedingNotes: 'Corgis neigen stark zu Übergewicht, was den langen Rücken belastet. Strikte Portionskontrolle und rücken-/gelenkschonendes Futter.',
     description: 'Der Welsh Corgi ist ein lebhafter kleiner Hütehund mit langem Rücken. Gewichtsmanagement ist beim Futter das A und O.'
+,
+    characterTraits: ['intelligent', 'lebhaft', 'wachsam', 'freundlich'], suitabilityFamily: 5, suitabilityApartment: 3, suitabilityBeginner: 3, suitabilityChildren: 4, suitabilityDogs: 4,
   },
   {
     slug: 'pomeranian', name: 'Pomeranian (Zwergspitz)', size: 'klein',
@@ -842,6 +895,8 @@ export const BREEDS: Breed[] = [
     recommendedProteinPercentage: 26,
     feedingNotes: 'Kleine Rassen brauchen energiedichtes Futter in kleiner Krokettengröße. Besonders auf Zahngesundheit achten.',
     description: 'Der Pomeranian ist ein quirliger Begleithund. Kleine Kroketten und hochwertige, energiedichte Nahrung passen am besten.'
+,
+    characterTraits: ['lebhaft', 'selbstbewusst', 'anhaenglich', 'wachsam'], suitabilityFamily: 4, suitabilityApartment: 5, suitabilityBeginner: 4, suitabilityChildren: 3, suitabilityDogs: 3,
   },
   {
     slug: 'mischling', name: 'Mischling', size: 'mittel',
