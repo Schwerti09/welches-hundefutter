@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { neon } from "@neondatabase/serverless";
-import { BREEDS, BREED_BY_SLUG } from "@/data/breeds";
+import { BREEDS, BREED_BY_SLUG, BREED_SLUG_ALIASES } from "@/data/breeds";
 import type { Breed } from "@/data/breeds";
 import gallery from "@/data/breed-gallery.json";
 import { issueToProblemSlug } from "@/lib/issue-to-problem";
@@ -205,7 +205,11 @@ const DIFF_LABEL: Record<string, string> = { leicht: "Anfängergeeignet", mittel
 export default async function BreedPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const breed = BREED_BY_SLUG[slug];
-  if (!breed) notFound();
+  if (!breed) {
+    const canonicalSlug = BREED_SLUG_ALIASES[slug];
+    if (canonicalSlug) permanentRedirect(`/rasse/${canonicalSlug}`);
+    notFound();
+  }
 
   const allergyProne = (breed.commonHealthIssues ?? []).some((i) => /allergi|haut|magen|darm|verdau/i.test(i));
   const foods = await getBreedFoods(breed.slug, allergyProne);

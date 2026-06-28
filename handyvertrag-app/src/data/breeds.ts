@@ -2872,3 +2872,25 @@ export const BREEDS: Breed[] = [
 ];
 
 export const BREED_BY_SLUG: Record<string, Breed> = Object.fromEntries(BREEDS.map(b => [b.slug, b]));
+
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+/**
+ * Slug-Alias → kanonischer Slug, aus alternativeNames generiert (z. B. "maltese" → "malteser").
+ * Fängt Google/Nutzer ab, die über den englischen oder umgangssprachlichen Namen landen,
+ * statt sie auf eine 404 laufen zu lassen.
+ */
+export const BREED_SLUG_ALIASES: Record<string, string> = Object.fromEntries(
+  BREEDS.flatMap((b) =>
+    (b.alternativeNames ?? [])
+      .map((alt) => slugify(alt))
+      .filter((aliasSlug) => aliasSlug && aliasSlug !== b.slug && !BREED_BY_SLUG[aliasSlug])
+      .map((aliasSlug) => [aliasSlug, b.slug])
+  )
+);
