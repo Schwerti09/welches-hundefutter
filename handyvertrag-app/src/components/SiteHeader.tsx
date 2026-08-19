@@ -5,6 +5,7 @@ import Link from "next/link";
 // interne Verlinkung und CWV). Auf Mobil scrollt die Linkzeile horizontal,
 // damit jeder Link erreichbar bleibt, ohne ein JS-Menü.
 const NAV = [
+  { href: "/handwerkerservice", label: "Handwerkerservice" },
   { href: "/mein-hund", label: "Mein Hund 🐾" },
   { href: "/rassen", label: "Rassen" },
   { href: "/tipps", label: "Ratgeber" },
