@@ -12,6 +12,7 @@ import breeds from "@/data/breed-gallery.json";
  */
 export default function BreedGallery() {
   const [q, setQ] = useState("");
+  const [broken, setBroken] = useState<Record<string, boolean>>({});
   const list = breeds.filter((b) => b.name.toLowerCase().includes(q.toLowerCase().trim()));
 
   return (
@@ -43,14 +44,25 @@ export default function BreedGallery() {
             href={`/rasse/${b.slug}`}
             className="group relative aspect-square rounded-2xl overflow-hidden border border-white/10 hover:border-[rgba(240,167,60,0.5)] transition-all block focus:outline-none focus:ring-2 focus:ring-[rgba(240,167,60,0.5)]"
           >
-            <Image
-              src={b.img}
-              alt={b.name}
-              fill
-              quality={65}
-              sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 17vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-110"
-            />
+            {broken[b.slug] ? (
+              <div
+                role="img"
+                aria-label={b.name}
+                className="w-full h-full flex items-center justify-center text-4xl bg-gradient-to-br from-amber-500/10 to-orange-500/5"
+              >
+                🐕
+              </div>
+            ) : (
+              <Image
+                src={b.img}
+                alt={b.name}
+                fill
+                quality={65}
+                sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 17vw"
+                className="object-cover transition-transform duration-500 group-hover:scale-110"
+                onError={() => setBroken((prev) => ({ ...prev, [b.slug]: true }))}
+              />
+            )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-3 text-left">
               <p className="text-white font-semibold text-sm leading-tight drop-shadow">{b.name}</p>
