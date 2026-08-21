@@ -16,7 +16,7 @@ import SiteFooter from "@/components/SiteFooter";
 export const revalidate = 86400;
 
 const PHOTO: Record<string, string> = Object.fromEntries(
-  (gallery as { slug: string; img: string }[]).map((g) => [g.slug, g.img])
+  (gallery as { slug: string; img: string; localImg?: string }[]).map((g) => [g.slug, g.localImg ?? g.img])
 );
 
 export function generateStaticParams() {

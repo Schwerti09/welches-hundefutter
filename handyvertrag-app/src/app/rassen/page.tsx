@@ -10,7 +10,7 @@ export const revalidate = 86400;
 const BASE = "https://welches-hundefutter.today";
 
 const PHOTO: Record<string, string> = Object.fromEntries(
-  (gallery as { slug: string; img: string }[]).map((g) => [g.slug, g.img])
+  (gallery as { slug: string; img: string; localImg?: string }[]).map((g) => [g.slug, g.localImg ?? g.img])
 );
 
 export const metadata: Metadata = {
