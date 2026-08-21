@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import StructuredData from "@/components/StructuredData";
 import SiteHeader from "@/components/SiteHeader";
@@ -9,8 +8,6 @@ import WebVitals from "@/components/WebVitals";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import SupportChatWidget from "@/components/SupportChatWidget";
 import DogPassPopup from "@/components/DogPassPopup";
-
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://welches-hundefutter.today"),
@@ -69,7 +66,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="de" className={`h-full antialiased ${inter.variable}`}>
+    <html lang="de" className="h-full antialiased">
       <head>
         {/* Favicon + PWA */}
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
