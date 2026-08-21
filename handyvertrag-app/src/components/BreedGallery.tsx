@@ -5,15 +5,50 @@ import Link from "next/link";
 import Image from "next/image";
 import breeds from "@/data/breed-gallery.json";
 
+type BreedEntry = {
+  slug: string;
+  name: string;
+  /** Externe URL (images.dog.ceo) — Fallback wenn localImg noch nicht vorhanden */
+  img: string;
+  /** Lokaler Pfad (public/breeds/[slug].jpg) — bevorzugt nach npm run download-breed-images */
+  localImg?: string;
+  dogCeoBreed?: string;
+};
+
+/** Gibt die beste verfügbare Bild-URL zurück: lokal > dog.ceo */
+function getImageSrc(b: BreedEntry): string {
+  return b.localImg ?? b.img;
+}
+
 /**
- * "Finde deinen Hund" — Galerie mit echten Rasse-Fotos. Klick auf eine Rasse
- * startet BELLA mit genau dieser Rasse (CustomEvent → BellaAdvisor hört zu)
- * und scrollt nach oben zum Berater.
+ * "Finde deinen Hund" — Galerie mit echten Rasse-Fotos.
+ * Bilder werden bevorzugt lokal aus public/breeds/ geladen (kein externer Dienst),
+ * bei fehlendem lokalem Bild als Fallback von images.dog.ceo.
  */
 export default function BreedGallery() {
   const [q, setQ] = useState("");
+  // Zwei-stufiger Fallback: local → dog.ceo → Emoji
+  const [triedLocal, setTriedLocal] = useState<Record<string, boolean>>({});
   const [broken, setBroken] = useState<Record<string, boolean>>({});
-  const list = breeds.filter((b) => b.name.toLowerCase().includes(q.toLowerCase().trim()));
+
+  const list = (breeds as BreedEntry[]).filter((b) =>
+    b.name.toLowerCase().includes(q.toLowerCase().trim()),
+  );
+
+  function handleError(b: BreedEntry) {
+    if (!triedLocal[b.slug] && b.localImg) {
+      // Lokales Bild fehlgeschlagen → dog.ceo versuchen
+      setTriedLocal((prev) => ({ ...prev, [b.slug]: true }));
+    } else {
+      // Auch dog.ceo fehlgeschlagen → Emoji-Fallback
+      setBroken((prev) => ({ ...prev, [b.slug]: true }));
+    }
+  }
+
+  function currentSrc(b: BreedEntry): string {
+    if (triedLocal[b.slug]) return b.img; // dog.ceo Fallback
+    return getImageSrc(b);
+  }
 
   return (
     <section className="relative max-w-6xl mx-auto px-5 py-20 w-full">
@@ -54,13 +89,13 @@ export default function BreedGallery() {
               </div>
             ) : (
               <Image
-                src={b.img}
+                src={currentSrc(b)}
                 alt={b.name}
                 fill
                 quality={65}
                 sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 17vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-110"
-                onError={() => setBroken((prev) => ({ ...prev, [b.slug]: true }))}
+                onError={() => handleError(b)}
               />
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
