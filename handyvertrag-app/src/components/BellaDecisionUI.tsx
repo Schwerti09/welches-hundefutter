@@ -246,7 +246,7 @@ export default function BellaDecisionUI() {
   const [marketWatch, setMarketWatch] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const sessionId = useRef(Math.random().toString(36).slice(2));
+  const sessionIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -265,8 +265,14 @@ export default function BellaDecisionUI() {
   const send = useCallback(async (text: string) => {
     const trimmed = text.trim();
     if (!trimmed || busy) return;
-
     if (!started) setStarted(true);
+    if (!sessionIdRef.current) {
+      const bytes = new Uint8Array(16);
+      globalThis.crypto?.getRandomValues?.(bytes);
+      const fallbackId = `${Date.now()}-${Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("")}`;
+      sessionIdRef.current = globalThis.crypto?.randomUUID?.() ?? fallbackId;
+    }
+    const sessionId = sessionIdRef.current;
     setInput("");
     setBusy(true);
     setMood("thinking");
@@ -284,7 +290,7 @@ export default function BellaDecisionUI() {
       const res = await fetch("/api/advisor/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: trimmed, sessionId: sessionId.current, conversationHistory: history }),
+        body: JSON.stringify({ message: trimmed, sessionId, conversationHistory: history }),
       });
       if (!res.body) throw new Error("no stream");
 
@@ -374,7 +380,7 @@ export default function BellaDecisionUI() {
       // Storm deactivates via onComplete callback, but safety-stop here too
       setTimeout(() => setStormActive(false), 200);
     }
-  }, [busy, messages, started]);
+  }, [busy, messages, started, userProfile]);
 
   const startAnalysis = useCallback(() => {
     if (started) return;

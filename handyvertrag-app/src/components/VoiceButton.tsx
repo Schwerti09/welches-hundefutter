@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 
 interface Props {
   onResult: (text: string) => void;
@@ -22,9 +22,12 @@ export default function VoiceButton({ onResult, onListening, disabled }: Props) 
   const streamRef = useRef<MediaStream | null>(null);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    setSupported(!!SR);
+    const t = setTimeout(() => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      setSupported(!!SR);
+    }, 0);
+    return () => clearTimeout(t);
   }, []);
 
   const stopListening = useCallback(() => {

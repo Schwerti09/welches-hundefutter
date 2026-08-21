@@ -393,7 +393,10 @@ export default function MeinHundPage() {
     }
   };
 
-  useEffect(() => { load(); }, [refreshKey]);
+  useEffect(() => {
+    const t = setTimeout(() => { void load(); }, 0);
+    return () => clearTimeout(t);
+  }, [refreshKey]);
 
   const days = data ? daysRemaining(data.profile.last_purchase_at, data.profile.est_bag_days) : null;
 

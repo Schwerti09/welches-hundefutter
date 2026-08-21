@@ -17,9 +17,12 @@ export default function LiveStatusBar({ countLabel }: { countLabel: string }) {
   const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
-    setNow(new Date());
+    const boot = setTimeout(() => setNow(new Date()), 0);
     const id = setInterval(() => setNow(new Date()), 30_000);
-    return () => clearInterval(id);
+    return () => {
+      clearTimeout(boot);
+      clearInterval(id);
+    };
   }, []);
 
   return (
