@@ -207,7 +207,6 @@ export default function AnalysisStorm({ active, query, onComplete, previewProduc
       }, delay);
       return () => clearTimeout(t);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase, ms, forcedReveal, done]);
 
   if (done || (!active && ms < 100 && !forcedReveal)) return null;

@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState, useRef, useEffect, useCallback, useId } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import BellaCharacter, { type BellaMood } from "@/components/BellaCharacter";
 import BellaBackground, { type Theme } from "@/components/BellaBackground";
@@ -59,7 +59,7 @@ export default function BellaExperience() {
   const [busy, setBusy] = useState(false);
   const [started, setStarted] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const sessionId = useId();
+  const sessionIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -68,6 +68,13 @@ export default function BellaExperience() {
   const send = useCallback(async (text: string) => {
     const trimmed = text.trim();
     if (!trimmed || busy) return;
+    if (!sessionIdRef.current) {
+      const bytes = new Uint8Array(16);
+      globalThis.crypto?.getRandomValues?.(bytes);
+      const fallbackId = `${Date.now()}-${Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("")}`;
+      sessionIdRef.current = globalThis.crypto?.randomUUID?.() ?? fallbackId;
+    }
+    const sessionId = sessionIdRef.current;
 
     if (!started) setStarted(true);
     setInput("");
