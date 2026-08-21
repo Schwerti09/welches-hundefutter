@@ -1,19 +1,9 @@
 import { ImageResponse } from "next/og";
-import { TIP_CATEGORIES, TIP_CATEGORY_BY_SLUG } from "@/data/tips";
+import { TIP_CATEGORY_BY_SLUG } from "@/data/tips";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const alt = "BELLA Hunde-Tipp";
-
-export function generateStaticParams() {
-  const params: { category: string; "tip-slug": string }[] = [];
-  for (const c of TIP_CATEGORIES) {
-    for (const a of c.articles ?? []) {
-      params.push({ category: c.slug, "tip-slug": a.slug });
-    }
-  }
-  return params;
-}
 
 export default async function OgImage({
   params,
