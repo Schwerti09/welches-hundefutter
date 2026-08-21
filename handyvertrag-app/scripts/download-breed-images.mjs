@@ -32,15 +32,14 @@ if (!existsSync(OUT_DIR)) {
 const gallery = JSON.parse(readFileSync(GALLERY_PATH, "utf-8"));
 console.log(`🐾 ${gallery.length} Rassen in der Gallery`);
 
-function getLocalPath(slug, imgUrl) {
-  const ext = imgUrl.split(".").pop().split("?")[0] || "jpg";
-  return `${OUT_DIR}/${slug}.${ext}`;
+function getLocalPath(slug) {
+  // Immer .jpg — passend zu den localImg-Pfaden in breed-gallery.json
+  return `${OUT_DIR}/${slug}.jpg`;
 }
 
 function downloadFile(url, dest) {
   return new Promise((resolve, reject) => {
     if (existsSync(dest) && !FORCE) return resolve("skip");
-    const file = require ? null : null; // suppress
     const chunks = [];
     const req = https.get(url, { timeout: TIMEOUT_MS }, (res) => {
       if (res.statusCode === 301 || res.statusCode === 302) {
@@ -68,7 +67,7 @@ async function downloadAll() {
   async function worker() {
     while (queue.length > 0) {
       const b = queue.shift();
-      const dest = getLocalPath(b.slug, b.img);
+      const dest = getLocalPath(b.slug);
       try {
         const result = await downloadFile(b.img, dest);
         if (result === "skip") { skipped++; process.stdout.write("·"); }
