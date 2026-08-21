@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 
 interface Props {
   onResult: (text: string) => void;
@@ -13,19 +13,18 @@ type AnyRecognition = any;
 
 export default function VoiceButton({ onResult, onListening, disabled }: Props) {
   const [listening, setListening] = useState(false);
-  const [supported, setSupported] = useState(false);
+  const [supported] = useState(() => {
+    if (typeof window === "undefined") return false;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    return !!SR;
+  });
   const [permissionDenied, setPermissionDenied] = useState(false);
   const [volume, setVolume] = useState(0);
   const recRef = useRef<AnyRecognition | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const animFrameRef = useRef<number>(0);
   const streamRef = useRef<MediaStream | null>(null);
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    setSupported(!!SR);
-  }, []);
 
   const stopListening = useCallback(() => {
     recRef.current?.stop();

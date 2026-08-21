@@ -17,14 +17,13 @@ export default function DogPassPopup() {
   const pathname = usePathname();
   const [show, setShow] = useState(false);
   const [name, setName] = useState("");
-  const [cardSuffix, setCardSuffix] = useState("••••-••••");
+  const [cardSuffix] = useState(randomCardSuffix);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (sessionStorage.getItem(STORAGE_KEY)) return;
     if (pathname?.startsWith("/hund/")) return;
-    setCardSuffix(randomCardSuffix());
     const t = setTimeout(() => setShow(true), SHOW_DELAY_MS);
     return () => clearTimeout(t);
     // nur beim ersten Mount auswerten — die Sperre gilt für die ganze Session

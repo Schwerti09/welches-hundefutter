@@ -60,7 +60,8 @@ export default function BellaBackground({ theme }: Props) {
     if (!ctx) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let W = 0, H = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let W = 0, H = 0;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const COUNT = reduced ? 0 : (window.innerWidth < 640 ? 70 : 140);
     const particles: P[] = [];
 

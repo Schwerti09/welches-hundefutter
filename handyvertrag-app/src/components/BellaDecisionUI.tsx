@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, useId } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import BellaCharacter, { type BellaMood } from "@/components/BellaCharacter";
 import BellaBackground, { type Theme } from "@/components/BellaBackground";
@@ -246,7 +246,7 @@ export default function BellaDecisionUI() {
   const [marketWatch, setMarketWatch] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const sessionId = useRef(Math.random().toString(36).slice(2));
+  const sessionId = useId();
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -284,7 +284,7 @@ export default function BellaDecisionUI() {
       const res = await fetch("/api/advisor/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: trimmed, sessionId: sessionId.current, conversationHistory: history }),
+        body: JSON.stringify({ message: trimmed, sessionId, conversationHistory: history }),
       });
       if (!res.body) throw new Error("no stream");
 

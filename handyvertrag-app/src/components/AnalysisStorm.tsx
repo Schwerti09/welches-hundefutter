@@ -89,8 +89,10 @@ function useStormPhase(active: boolean): { ms: number; forcedReveal: boolean } {
   useEffect(() => {
     if (active) {
       startRef.current = Date.now();
-      setMs(0);
-      setForcedReveal(false);
+      queueMicrotask(() => {
+        setMs(0);
+        setForcedReveal(false);
+      });
       wasActive.current = true;
       intervalRef.current = setInterval(() => setMs(Date.now() - startRef.current), 16);
     } else {
@@ -98,7 +100,7 @@ function useStormPhase(active: boolean): { ms: number; forcedReveal: boolean } {
       // API done: if storm was running, jump to reveal immediately
       if (wasActive.current) {
         wasActive.current = false;
-        setForcedReveal(true);
+        queueMicrotask(() => setForcedReveal(true));
         // Auto-call onComplete after the reveal delay
         setTimeout(() => setMs(99999), 50); // reveal phase trigger
       }
@@ -179,8 +181,14 @@ export default function AnalysisStorm({ active, query, onComplete, previewProduc
   useEffect(() => { onCompleteRef.current = onComplete; }, [onComplete]);
 
   useEffect(() => {
-    if (!active) { setFeedIdx(0); setFlashIdx(0); return; }
-    setDone(false); // reset on new activation
+    if (!active) {
+      queueMicrotask(() => {
+        setFeedIdx(0);
+        setFlashIdx(0);
+      });
+      return;
+    }
+    queueMicrotask(() => setDone(false)); // reset on new activation
     const fi = setInterval(() => setFeedIdx(i => Math.min(i + 1, FEED_STEPS.length - 1)), 220);
     const fl = setInterval(() => setFlashIdx(i => (i + 1) % MARKET_FLASHES.length), 280);
     return () => { clearInterval(fi); clearInterval(fl); };
