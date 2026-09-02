@@ -12,6 +12,7 @@ import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
 import StructuredData from "@/components/StructuredData";
 import { breedDirectAnswer } from "@/lib/direct-answer";
 import SiteFooter from "@/components/SiteFooter";
+import BreedImg from "@/components/BreedImg";
 
 export const revalidate = 86400;
 
@@ -334,16 +335,14 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
         <div className="grid md:grid-cols-[1.1fr_1fr] gap-8 items-start">
           {/* Foto */}
           <div className="relative">
-            {photo ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={photo} alt={`${breed.name} Foto`}
-                className="w-full aspect-[4/3] object-cover rounded-3xl border border-white/10 shadow-2xl" />
-            ) : (
-              <div className="w-full aspect-[4/3] rounded-3xl border border-white/10 bg-gradient-to-br from-amber-500/10 to-orange-500/5 flex flex-col items-center justify-center gap-3">
-                <span className="text-7xl">🐕</span>
-                <span className="text-sm text-[var(--muted)]">{breed.name}</span>
-              </div>
-            )}
+            <BreedImg
+              src={photo}
+              alt={`${breed.name} Foto`}
+              priority
+              wrapperClassName="w-full aspect-[4/3] rounded-3xl border border-white/10 shadow-2xl"
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 520px"
+            />
             {breed.fciGroup && (
               <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-sm text-xs px-2.5 py-1 rounded-lg text-white/80 font-medium">
                 FCI Gruppe {breed.fciGroup}
@@ -727,12 +726,13 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
               return (
                 <Link key={b.slug} href={`/rasse/${b.slug}`}
                   className="card p-4 hover:border-[var(--honey)] transition-colors text-center group">
-                  {p ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={p} alt={b.name} className="w-full h-28 object-cover rounded-xl mb-3" />
-                  ) : (
-                    <div className="w-full h-28 rounded-xl mb-3 bg-white/5 flex items-center justify-center text-3xl">🐕</div>
-                  )}
+                  <BreedImg
+                    src={p}
+                    alt={b.name}
+                    wrapperClassName="w-full h-28 rounded-xl mb-3"
+                    className="object-cover"
+                    sizes="(max-width: 640px) 50vw, 240px"
+                  />
                   <div className="text-sm font-semibold group-hover:text-[var(--honey)] transition-colors">{b.name}</div>
                   <div className="text-xs text-[var(--muted)] mt-0.5">{SIZE_LABEL[b.size]?.split(" ")[0]}</div>
                 </Link>

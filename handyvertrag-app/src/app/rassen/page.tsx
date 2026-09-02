@@ -4,6 +4,7 @@ import { BREEDS } from "@/data/breeds";
 import gallery from "@/data/breed-gallery.json";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
+import BreedImg from "@/components/BreedImg";
 
 export const revalidate = 86400;
 
@@ -104,14 +105,13 @@ export default function RassenHubPage() {
                         href={`/rasse/${b.slug}`}
                         className="glass card-hover group block rounded-xl overflow-hidden hover:border-[var(--honey)] transition-colors"
                       >
-                        {photo ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img src={photo} alt={b.name} loading="lazy" className="w-full h-24 object-cover" />
-                        ) : (
-                          <div className="w-full h-24 flex items-center justify-center text-3xl bg-gradient-to-br from-amber-500/10 to-orange-500/5">
-                            🐕
-                          </div>
-                        )}
+                        <BreedImg
+                          src={photo}
+                          alt={b.name}
+                          wrapperClassName="w-full h-24"
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 260px"
+                        />
                         <p className="px-3 py-2.5 text-sm font-medium group-hover:text-[var(--honey)] transition-colors">
                           {b.name}
                         </p>
