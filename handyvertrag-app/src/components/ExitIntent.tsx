@@ -48,7 +48,7 @@ export default function ExitIntent() {
           Allergien durchwinken. Frag in 10 Sekunden.
         </p>
         <Link
-          href="/#bella-chat"
+          href="/#bella-advisor"
           onClick={dismiss}
           className="block w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl mb-3 transition-colors"
         >

@@ -3,10 +3,9 @@ import "./globals.css";
 import StructuredData from "@/components/StructuredData";
 import SiteHeader from "@/components/SiteHeader";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
-import ExitIntent from "@/components/ExitIntent";
 import WebVitals from "@/components/WebVitals";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-import SupportChatWidget from "@/components/SupportChatWidget";
+import DeferredExtras from "@/components/DeferredExtras";
 import DogPassPopup from "@/components/DogPassPopup";
 
 export const metadata: Metadata = {
@@ -94,11 +93,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <SiteHeader />
         {children}
         <StickyMobileCTA />
-        <ExitIntent />
         <WebVitals />
         <GoogleAnalytics />
-        <SupportChatWidget />
         <DogPassPopup />
+        <DeferredExtras />
       </body>
     </html>
   );
