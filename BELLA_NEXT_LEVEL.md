@@ -555,7 +555,15 @@ ohne Default-Hub → ohne konkrete Sorge zitiert BELLA **keine** Studie; `fetchR
 - **Akzeptanz:** Absichtlich gelockerter Filter → CI rot. Normalzustand grün. Läuft < 60 s.
 - **Agent:** `bella-advisor` + `trust-compliance`. **Aufwand:** L. **Risiko:** niedrig. **Abhängt von:** 2A.1–2A.6.
 
-### Operation 2A.9 — Doku + README aktuell
+### ✅ Operation 2A.9 — Doku + README — **ERLEDIGT (2026-09-03)**
+`bella-app/ARCHITECTURE.md` Advisor-Ablauf komplett neu (Intent-Fast-Path + LLM, `avoidProtein`,
+SQL-Ausschluss, Re-Query, zwei Safety-Assertions, Garantie), „Bekannte Lücken" → „Stand & offene Punkte".
+`bella-app/README.md` Advisor-Abschnitt: Härtung nicht mehr „in Arbeit" sondern live beschrieben.
+`CLAUDE.md` §2: 2A.1–2A.7 als erledigt, 2A.8 offen. (`CLAUDE.md` §4a Allergen-Garantie stand schon.)
+
+<details><summary>ursprünglicher Plan</summary>
+
+Op 2A.9 — Doku + README aktuell
 - **Dateien:** `bella-app/README.md`, `bella-app/ARCHITECTURE.md`, `CLAUDE.md`, `.claude/agents/01-bella-advisor.md`.
 - **Vorgehen:** Advisor-Abschnitt in README auf den echten Stand + die Sicherheits-Garantie
   („kein gemiedenes Protein je in den Offers, CI-abgesichert"). ARCHITECTURE: `avoidProtein`,
@@ -564,6 +572,7 @@ ohne Default-Hub → ohne konkrete Sorge zitiert BELLA **keine** Studie; `fetchR
 - **Akzeptanz:** README behauptet nichts, was der Code nicht hält. `grep` „Allergie-Logik" in README zeigt
   die verifizierte Formulierung.
 - **Agent:** `content-engineer`. **Aufwand:** S. **Risiko:** niedrig. **Abhängt von:** 2A.1–2A.8.
+</details>
 
 ---
 
@@ -865,7 +874,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | **2A.6** | LLM-Intent im RECOMMEND immer | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | **2A.7** | Ehrliche Zahlen im Stream | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | **2A.8** | Eval-Suite Allergen (blockierend) | ⬜ offen | | |
-| **2A.9** | Doku + README | ⬜ offen | | |
+| **2A.9** | Doku + README | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 2.2 | Modell-Routing | ⬜ offen (nach 2A) | | |
 | 2.3 | Stream-Robustheit | ⬜ offen | | |
 | 2.4 | Advisor-Eval-Suite | ⬜ offen | | |

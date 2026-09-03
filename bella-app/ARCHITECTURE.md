@@ -108,16 +108,29 @@ Zeilen-Protokoll** (kein JSON-Body), das der Client (`BellaAdvisor.tsx`) parst:
 | `COMPANIONS:<json>` | kuratierte Begleitprodukte (Schicht 1) |
 | `PROFILE:<json>` | angelegter Futter-Pass (`dog_profiles`) inkl. `shareToken` |
 
-Ablauf pro Request:
-1. `parseIntent()` — regelbasiert (Regex) über die **User**-Turns: Lebensphase, Futtertyp,
-   Sensibilität/Allergen, Protein, Rasse, Budget €/kg, aktuelles Futter, Wechselgrund.
-   → **wird in Roadmap Op 2.1 durch LLM-Structured-Output + Fast-Path ersetzt.**
+Ablauf pro Request (`src/lib/advisor/*` + `route.ts`):
+1. **Intent** — `parseIntent()` (Regex-Fast-Path, 0 ms) über die **User**-Turns: Lebensphase,
+   Futtertyp, `sensitive`, Wunsch-`protein`, **`avoidProtein[]`** (Allergene, getrennt vom Wunsch —
+   siehe unten), Rasse (`matchBreed` aus `@/data/breeds.ts`), Budget, aktuelles Futter, Wechselgrund.
+   Steht eine Empfehlung an **oder** ist der Fast-Path dünn: `extractIntentLLM()` (Gemini JSON-Modus,
+   `responseSchema`, 4 s-Timeout, env-abschaltbar) ergänzt, `mergeIntent()` fügt sicher zusammen
+   (`avoidProtein` = Vereinigung, `sensitive`/`grainFree` = ODER).
 2. `hasEnoughIntent()` entscheidet: **nachfragen** (`ask`) oder **empfehlen**.
-3. Bei Empfehlung: `fetchCandidates()` — SQL gegen `dog_foods` (Hard-Filter Typ/Budget,
-   Soft-Scoring für dünn getaggte Kriterien), `DISTINCT ON` je Produktname, dann
-   `scoreFood()`-Ranking, **harter Allergen-Ausschluss** (auch namensbasiert:
-   Huhn ⇒ Geflügel/Hähnchen), Marken-Vielfalt → Top 3.
-4. `buildSystemPrompt()` mit echten Produktdaten + optional passenden Studien.
+3. Bei Empfehlung: `fetchCandidates()` — SQL gegen `dog_foods`:
+   - **🔴 Harter Allergen-Ausschluss** (`avoidProtein`): `WHERE` schließt jede Namensvariante
+     (Huhn ⇒ Geflügel/Hähnchen/Chicken/…) in `protein` **und** `name` aus.
+   - **Snack-Guard**: `type <> 'snack'`, keine Neben-Kategorien.
+   - Weiche Filter (Typ/Budget), Soft-Scoring, `DISTINCT ON` je Name, Pool `LIMIT 120`,
+     `scoreFood()`-Ranking, Marken-Vielfalt → Top 3.
+   - **Re-Query** (`{ relax }`): 0 Treffer + weiche Kriterien → zweiter Versuch ohne Typ/Budget,
+     Sicherheit bleibt hart.
+   - **Zwei Safety-Assertions** (`containsAnyAllergen`): nach der Suche **und** direkt vor
+     `emit(OFFERS)`. Garantie (CLAUDE.md §4a): kein `avoidProtein`-Produkt je in der Payload.
+     Greift eine Assertion → `logChat`-Prefix `[SAFETY_BLOCKED]`.
+   - Nichts Sicheres → leere Offers, Prompt-Modus „KEINE SICHERE EMPFEHLUNG MÖGLICH",
+     **kein** Futter-Pass / Preis-Wecker.
+4. `buildSystemPrompt()` — Katalog als *BELLAs Recherche* gerahmt (nicht „vom Halter genannt"),
+   Allergie als Pflicht-Zeile, echte Produktdaten + max. 1 passende Studie (nur bei konkreter Sorge).
 5. LLM-Stream: **Gemini 2.5 Flash** (`thinkingBudget: 0`), Fallback **Claude Haiku 4.5**,
    Fallback deterministischer Text.
 6. Non-blocking: `getCompanions()` (Cross-Sell), `dog_profiles`-Insert (Futter-Pass),
@@ -167,11 +180,17 @@ Route Handlers. Kein Connection-Pool nötig (serverless HTTP).
 
 ---
 
-## Bekannte Lücken (→ `../BELLA_NEXT_LEVEL.md`)
+## Stand & offene Punkte (→ `../BELLA_NEXT_LEVEL.md`)
 
-- Kein CSP/COOP, keine API-Rate-Limits, keine Middleware (Op 1.2 / 1.3).
-- Keine automatisierten Tests, kein CI-Gate (Op 0.4 / 1.4).
-- React 18.3 unter Next 16 (Op 1.1). Schema-Drift via Laufzeit-DDL (Op 1.5).
-- Intent-Parsing regelbasiert & mit duplizierter Rassen-Liste (Op 2.1).
-- Toter `src/lib/{environment,performance,state,validation,rendering}`-Code, aus
-  tsconfig/ESLint ausgeschlossen (Op 0.2). `--font-inter` referenziert, nie gesetzt (Op 1.6).
+**Erledigt (2026-09-03):** CI-Gate + 109 Vitest-Tests (Op 0.4/1.4), React 19 (1.1), CSP + COOP (1.2),
+Rate-Limit + Origin-Check auf den LLM-Routen (1.3), Drizzle-Migrationen (1.5), Inter-Font + ES2022 (1.6),
+toter Code raus (0.2), Doku entlügt (0.1), Ordner-Rename (0.0). Advisor-Notfall **2A.1–2A.7**:
+`avoidProtein` als hartes Konzept, SQL-Ausschluss, Snack-Guard, Re-Query, zwei Safety-Assertions,
+ehrliche Leermeldung, Prompt-Framing, LLM-Intent im RECOMMEND, ehrliche Stream-Zahlen.
+
+**Offen:** blockierende Allergen-**Eval** im CI (2A.8) · verteilter Rate-Limit-Store + `ai_usage` (1.3-Rest)
+· Playwright-Smoke (1.4-Rest) · `strict-dynamic` CSP (1.2-Rest) · Modell-Routing / Stream-Robustheit /
+Eval-Suite (2.2–2.4) · Phasen 3–6 (Design, Content, Wachstum, Betrieb).
+
+**Grenze Allergen-Ausschluss:** `dog_foods` hat keine `ingredients`-Spalte → Prüfung über `protein` +
+`name` + `category`, nicht auf Zutaten-Ebene (Feed-Pipeline-Thema).

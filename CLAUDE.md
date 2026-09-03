@@ -43,10 +43,11 @@ Preisvergleich und Cross-Selling (Snacks, Versicherung, Zubehör, alles für Hun
 
 ### 🔴 Offene Baustellen (Auszug — vollständig in `BELLA_NEXT_LEVEL.md`)
 
-- **🔴 Advisor-Notfall (Phase 2A):** allergischer Hund bekam Huhn-Futter empfohlen —
-  `sensitive`/Allergen wird nicht zuverlässig erkannt, kein SQL-Hard-Ausschluss, Snack als
-  Hauptfutter, Karten kaufbar trotz LLM-„nein". Audit: `docs/audits/2026-09-03-bella-chat-audit.md`. **Vorrang vor allem in Phase 2.**
-- **Fundament:** ✅ 0.x + 1.x weitgehend erledigt (React 19, CSP, Rate-Limit-Grundschutz, 90 Tests, Migrationen). Reste: Playwright-Smoke (1.4), verteilter Rate-Limit-Store (1.3), `strict-dynamic` CSP (1.2).
+- **Advisor-Notfall (Phase 2A):** ✅ 2A.1–2A.7 live — `avoidProtein` als hartes Konzept,
+  SQL-Allergen-Ausschluss, Snack-Guard, Re-Query, **zwei Safety-Assertions** (kein gemiedenes
+  Protein je in `OFFERS`), ehrliche Leermeldung, Prompt-Framing. **Offen: 2A.8** (blockierende
+  Allergen-Eval im CI). Audit: `docs/audits/2026-09-03-bella-chat-audit.md`.
+- **Fundament:** ✅ 0.x + 1.x weitgehend erledigt (React 19, CSP, Rate-Limit-Grundschutz, 109 Tests, Migrationen). Reste: Playwright-Smoke (1.4), verteilter Rate-Limit-Store (1.3), `strict-dynamic` CSP (1.2).
 - **BELLA:** Modell-Routing (2.2), Stream-Robustheit (2.3), Eval-Suite (2.4).
 - **Design:** nur Dark-Mode (3.1) · BELLA = Emoji (3.2) · kein OG-Bild pro Rasse (3.3) · `--font-inter` nie geladen (1.6)
 - **Content:** Thin-Content-Risiko bei 1.400 Tipps + `/stadt/*` (4.1) · kein Tierarzt-Review (4.2)

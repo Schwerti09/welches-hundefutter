@@ -9,7 +9,9 @@
 [![Deployed on Netlify](https://img.shields.io/badge/Deployed-Netlify-00C7B7?style=flat-square&logo=netlify)](https://netlify.com)
 
 > **Stand 2026-09-03.** Aktive Umbau-Roadmap: [`../BELLA_NEXT_LEVEL.md`](../BELLA_NEXT_LEVEL.md).
-> Der Advisor wird gerade gehärtet (Allergen-Sicherheit) — siehe [`../docs/audits/2026-09-03-bella-chat-audit.md`](../docs/audits/2026-09-03-bella-chat-audit.md) und Roadmap-Phase 2A.
+> Advisor-Allergen-Härtung (Phase 2A) weitgehend live — `avoidProtein` als hartes Konzept,
+> SQL-Ausschluss, Re-Query, zwei Safety-Assertions, ehrliche Leermeldung. Offen: blockierende
+> Eval im CI (2A.8). Audit: [`../docs/audits/2026-09-03-bella-chat-audit.md`](../docs/audits/2026-09-03-bella-chat-audit.md).
 
 ---
 
@@ -32,8 +34,10 @@ Das ist der strukturelle Burggraben, den Check24 oder statische Testseiten nicht
   natürlicher Sprache; sicher gemergt. Rasse-Erkennung aus `@/data/breeds.ts`
 - Echtzeit-Auswahl aus dem Live-Katalog (Neon Postgres), deterministisches Scoring im Code
   (LLM formuliert, Code entscheidet)
-- **Allergen-Sicherheit** (in Härtung, Roadmap 2A): gemiedene Proteine werden hart
-  ausgeschlossen — Ziel: kein solches Produkt je in den Offers, per CI-Test abgesichert
+- **Allergen-Sicherheit**: `avoidProtein` (getrennt vom Wunsch-Protein) wird auf SQL-Ebene
+  ausgeschlossen; zwei Runtime-Assertions garantieren, dass kein solches Produkt in die
+  `OFFERS`-Payload kommt; nichts Sicheres → ehrliche Leermeldung statt Notlösung.
+  Blockierender CI-Eval-Test: Roadmap 2A.8.
 - Cross-Selling: kuratierte Begleitprodukte (max. 3, mit Begründung, Allergen-Ausschluss)
 - BARF-Modus, Welpen-/Seniorfutter · Rasse-Autostart (Rasse-Seite → BELLA kennt den Hund)
 - Rate-Limit + Origin-Check auf der Route
