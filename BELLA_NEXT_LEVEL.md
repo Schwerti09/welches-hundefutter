@@ -286,7 +286,12 @@ für `main` „Require status checks to pass" = `ci` aktivieren, sonst blockt de
 - **Akzeptanz:** `grep -rn "CREATE TABLE" src` = 0. `drizzle/`-Ordner mit nummerierten SQL-Files committet. Advisor-Logging funktioniert weiter.
 - **Agent:** `platform-architect`. **Aufwand:** S–M. **Risiko:** niedrig. **Abhängt von:** —
 
-### Operation 1.6 — Font-Bug + tsconfig-Modernisierung
+### ✅ Operation 1.6 — Font-Bug + tsconfig — **ERLEDIGT (2026-09-03)**
+`next/font/google` Inter (`variable: "--font-inter"`, `display: "swap"`, self-hosted zur Build-Zeit →
+CSP-sicher) in `layout.tsx`, `className={inter.variable}` auf `<html>` — `globals.css` referenzierte
+`--font-inter` schon, jetzt ist es gesetzt. `tsconfig.json` `target` → `ES2022`. typecheck + build grün.
+<details><summary>ursprünglicher Plan</summary>
+
 - **Ziel:** Die Seite rendert in der Font, die das Design meint; TS-Output ist modern.
 - **Dateien:** `src/app/layout.tsx`, `src/app/globals.css`, `tsconfig.json`.
 - **Vorgehen:**
@@ -294,6 +299,8 @@ für `main` „Require status checks to pass" = `ci` aktivieren, sonst blockt de
   2. `tsconfig.json`: `target` → `ES2022`, `lib` → `["dom","dom.iterable","ES2022"]`. Build + typecheck.
 - **Akzeptanz:** DevTools „Computed → font-family" zeigt Inter (oder die bewusste Entscheidung ist im Code eindeutig). `target: "ES2022"`. Build/typecheck grün. LCP nicht schlechter (Font `swap` + Preload).
 - **Agent:** `visual-designer` + `platform-architect`. **Aufwand:** S. **Risiko:** niedrig. **Abhängt von:** —
+- **Nach-Deploy prüfen:** DevTools „Computed → font-family" auf welches-hundefutter.today zeigt „Inter"; LCP im PageSpeed nicht schlechter.
+</details>
 
 ---
 
@@ -600,7 +607,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 1.3 | API Rate-Limit | ⬜ offen | | |
 | 1.4 | Test-Fundament | ⬜ offen | | |
 | 1.5 | Drizzle-Migrationen | ⬜ offen | | |
-| 1.6 | Font-Bug + tsconfig | ⬜ offen | | |
+| 1.6 | Font-Bug + tsconfig | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 2.1 | Intent-LLM | ⬜ offen | | |
 | 2.2 | Modell-Routing | ⬜ offen | | |
 | 2.3 | Stream-Robustheit | ⬜ offen | | |

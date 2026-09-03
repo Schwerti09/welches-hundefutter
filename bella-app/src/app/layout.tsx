@@ -1,6 +1,15 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import StructuredData from "@/components/StructuredData";
+
+// Self-hosted zur Build-Zeit (kein Runtime-Request zu Google, CSP-sicher).
+// Setzt --font-inter, das globals.css bereits referenziert.
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
 import SiteHeader from "@/components/SiteHeader";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
 import WebVitals from "@/components/WebVitals";
@@ -65,7 +74,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="de" className="h-full antialiased">
+    <html lang="de" className={`h-full antialiased ${inter.variable}`}>
       <head>
         {/* Favicon + PWA */}
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
