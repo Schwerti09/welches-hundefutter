@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"(noch keine Tests — Roadmap Op 1.4)\" && exit 0",
     "download-breed-images": "node scripts/download-breed-images.mjs"
   },
   "dependencies": {

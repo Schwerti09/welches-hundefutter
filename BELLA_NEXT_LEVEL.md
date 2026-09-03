@@ -181,7 +181,13 @@ Status-Header auf verbleibende Strategie-Docs. Acceptance-Grep sauber.
 - **Akzeptanz:** `env.example` gelöscht. Jede `process.env`-Nutzung im Code taucht in `.env.example` auf. `README`/`CLAUDE.md`-Env-Absatz zeigt auf die eine Datei.
 - **Agent:** `platform-architect`. **Aufwand:** S. **Risiko:** niedrig. **Abhängt von:** —
 
-### Operation 0.4 — CI-Gate: build + lint + typecheck + test bei jedem PR
+### ✅ Operation 0.4 — CI-Gate — **TEILWEISE ERLEDIGT (2026-09-03)**
+Umgesetzt: `.github/workflows/ci.yml` (typecheck + lint + test + build, Node 22, npm-cache,
+concurrency-cancel) · `package.json` Scripts `typecheck` (`tsc --noEmit`) + `test` (Stub bis Op 1.4).
+Lokal grün. **Rest-Haken (Mensch):** auf GitHub unter *Settings → Branches → Add branch ruleset*
+für `main` „Require status checks to pass" = `ci` aktivieren, sonst blockt der rote Lauf den Merge nicht.
+<details><summary>ursprünglicher Plan</summary>
+
 - **Ziel:** Roter Code kommt nicht nach `main`.
 - **Warum:** T11. Heute schützt nur die Disziplin „ich hab lokal gebaut".
 - **Dateien:** neu `.github/workflows/ci.yml`, `bella-app/package.json` (Scripts `typecheck`, `test`).
@@ -192,6 +198,7 @@ Status-Header auf verbleibende Strategie-Docs. Acceptance-Grep sauber.
   4. Concurrency-Group pro Branch (alte Läufe canceln).
 - **Akzeptanz:** PR mit absichtlichem TS-Fehler wird rot geblockt. Grüner PR merged. Laufzeit < 8 min.
 - **Agent:** `platform-architect`. **Aufwand:** S–M. **Risiko:** niedrig. **Abhängt von:** —
+</details>
 
 ---
 
@@ -571,7 +578,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 0.1 | Doku auf eine Wahrheit | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 0.2 | Toten Code entfernen | ⬜ offen | | |
 | 0.3 | Env-Templates | ⬜ offen | | |
-| 0.4 | CI-Gate | ⬜ offen | | |
+| 0.4 | CI-Gate | 🟡 Workflow live (Branch-Protection = Mensch) | 2026-09-03 | _(dieser Batch)_ |
 | 1.1 | React 19 | ⬜ offen | | |
 | 1.2 | CSP + COOP | ⬜ offen | | |
 | 1.3 | API Rate-Limit | ⬜ offen | | |
