@@ -759,12 +759,26 @@ Check (Twitter/Slack/WhatsApp) nach Deploy.
 - **Agent:** `visual-designer` + `platform-architect`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 1.4.
 </details>
 
-### Operation 3.5 — Motion-Politur
+### Operation 3.5 — Motion-Politur — 🟡 **TEIL 1 ERLEDIGT (2026-09-03)**
 - **Ziel:** Alle Dauer-Animationen GPU-composited; `framer-motion` nur dort, wo es echten Mehrwert bringt.
 - **Dateien:** `src/app/globals.css` (`sheen`), 6 `framer-motion`-Komponenten.
 - **Vorgehen:** `sheen` von `background-position` auf `transform: translateX` einer Pseudo-Element-Ebene. `framer-motion`-Audit: triviale Fades/Slides → CSS `@starting-style` + `transition`; komplexe Sequenzen (AnalysisStorm) behalten. View Transitions API für Seitenwechsel prüfen.
 - **Akzeptanz:** Lighthouse „nicht zusammengesetzte Animationen" = 0. `framer-motion`-Bundle-Anteil messbar kleiner. Kein sichtbarer Qualitätsverlust.
 - **Agent:** `visual-designer`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 1.1.
+
+**Befund:** Die nicht-zusammengesetzten Animationen (`@keyframes sheen` = `background-position`;
+`@keyframes scan-sweep` = `top`/Layout; `.spotlight` = `transition: background-position`) waren
+**allesamt tot** — 0 Referenzen im `src` außerhalb `globals.css`. Der ganze „MEISTERWERK-HERO"-
+Block (`.tile*`, `.scan*`, `.spotlight`, `.paw-canvas`, `.live-dot`, `.count-shimmer`, `.text-sheen`)
+wurde nie gerendert. → Statt zu refactoren: **entfernt**. `globals.css` 257 → 217 Zeilen.
+Behalten: `.aurora*`, `.caret`, `.reveal` (alle `transform`/`opacity`, composited, in Benutzung).
+Reduced-Motion-Block entsprechend bereinigt. Verifiziert: Build grün, `/`, `/rassen`,
+`/rasse/[slug]`, `/hundefutter-test` → 200, 113 Vitest.
+
+**Offen (Teil 2):** `framer-motion`-Audit (6 Komponenten: `AnalysisStorm`, `BellaDecisionUI`,
+`BellaExperience`, `MemoryTimeline`, `QuickStartCards`, `UserProfilePanel`) — triviale Fades/Slides
+→ CSS, `AnalysisStorm` behalten; Bundle-Anteil messen. View Transitions API für Seitenwechsel.
+Lighthouse-Gegenprobe „nicht zusammengesetzte Animationen = 0" nach Deploy.
 
 ---
 
@@ -995,7 +1009,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 3.2 | BELLA-Maskottchen | 🟡 kanonisches `BellaMascot` (SVG, 4 Posen, server-safe) + echte 404/Loading + Popup/Avatar-Einsatz · Teil 2: off-brand `BellaCharacter` ablösen + `🐕`-CTA-Sweep offen | 2026-09-03 | _(dieser Batch)_ |
 | 3.3 | OG-Bilder pro Rasse | 🟡 Rasse-OG mit Foto + BELLA-Marke, on-demand (kein 186er-Prebuild) · Teil 2: problem/vergleich/Blog-Layout + Custom-Font offen | 2026-09-03 | _(dieser Batch)_ |
 | 3.4 | Komponenten-Katalog + VisReg | ✅ Katalog + Playwright (Smoke blockierend, Visual manuell) | 2026-09-03 | _(dieser Batch)_ |
-| 3.5 | Motion-Politur | ⬜ offen | | |
+| 3.5 | Motion-Politur | 🟡 tote nicht-composited Animationen entfernt (`sheen`/`scan-sweep`/`spotlight` + toter Hero-Block, −40 Zeilen CSS) · Teil 2: `framer-motion`-Audit + View Transitions offen | 2026-09-03 | _(dieser Batch)_ |
 | 4.1 | Thin-Content-Audit | ⬜ offen | | |
 | 4.2 | Tierarzt-Review live | ⬜ blockiert (Reviewer) | | |
 | 4.3 | Aktualitäts-Signal | ⬜ offen | | |
