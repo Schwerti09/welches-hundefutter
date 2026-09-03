@@ -26,8 +26,11 @@ import {
   hasEnoughIntent,
   computeConfidence,
   classifyTheme,
+  intentSignalCount,
 } from "@/lib/advisor/intent";
 import type { DogIntent, AdvisorTheme } from "@/lib/advisor/intent";
+import { extractIntentLLM, llmIntentEnabled } from "@/lib/advisor/intent-llm";
+import { mergeIntent } from "@/lib/advisor/merge";
 import { scoreFood } from "@/lib/advisor/scoring";
 import type { DogFoodRow, ScoredFood } from "@/lib/advisor/scoring";
 import { checkRateLimit, checkSameOrigin } from "@/lib/rate-limit";
@@ -305,7 +308,16 @@ export async function POST(request: NextRequest) {
   if (!parsed.success) return new Response("Invalid", { status: 400 });
 
   const { message, conversationHistory = [] } = parsed.data;
-  const intent = parseIntent(message, conversationHistory);
+
+  // Fast-Path (Regex, 0 ms). Bei dünnem Ergebnis + vorhandenem Verlauf: LLM-Pfad
+  // (Gemini JSON, ~1 LLM-Call) ergänzen und sicher mergen (Op 2.1).
+  const fastIntent = parseIntent(message, conversationHistory);
+  let intent: DogIntent = fastIntent;
+  if (intentSignalCount(fastIntent) < 3 && conversationHistory.length > 0 && llmIntentEnabled()) {
+    const llm = await extractIntentLLM(message, conversationHistory);
+    intent = mergeIntent(fastIntent, llm);
+  }
+
   const confidence = computeConfidence(intent, conversationHistory);
   const theme = classifyTheme(intent);
   const ask = !hasEnoughIntent(intent, conversationHistory);
@@ -474,7 +486,7 @@ export async function POST(request: NextRequest) {
               current_food_slug, est_daily_grams, est_bag_days, share_token, share_enabled, birth_or_age
             ) VALUES (
               ${dogName},
-              ${intent.breed ? intent.breed.toLowerCase().replace(/\s+/g, "-") : null},
+              ${intent.breedSlug ?? (intent.breed ? intent.breed.toLowerCase().replace(/\s+/g, "-") : null)},
               ${weightKg ?? null},
               ${actLevel},
               ${intent.sensitive && intent.protein ? [intent.protein] : null},

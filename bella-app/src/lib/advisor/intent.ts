@@ -1,9 +1,10 @@
 /**
- * Intent-Parsing für den BELLA-Berater — regelbasiert, deterministisch.
- * Aus src/app/api/advisor/chat/route.ts ausgelagert (Roadmap Op 1.4), damit
- * es testbar ist. Der LLM-gestützte Ersatz kommt in Op 2.1 — bis dahin
- * Verhalten unverändert.
+ * Intent-Parsing für den BELLA-Berater — regelbasiert (Fast-Path).
+ * Aus src/app/api/advisor/chat/route.ts ausgelagert (Roadmap Op 1.4), testbar.
+ * Op 2.1: Rasse-Erkennung über @/data/breeds.ts (matchBreed) statt Kopie-Liste;
+ * ein LLM-Pfad ergänzt bei dünnem Ergebnis (src/lib/advisor/intent-llm.ts + merge.ts).
  */
+import { matchBreed } from "./breed-match";
 
 export type FoodType = "trocken" | "nass" | "barf" | "snack" | "kaltgepresst";
 export type LifePhase = "welpen" | "adult" | "senior";
@@ -14,7 +15,8 @@ export interface DogIntent {
   sensitive?: boolean; // Allergie / empfindlicher Magen
   grainFree?: boolean;
   protein?: string; // bevorzugtes Protein, z. B. "Lachs"
-  breed?: string; // erwähnte Rasse (für Mengen-Hinweis)
+  breed?: string; // erkannte Rasse — kanonischer Name (Anzeige / Prompt)
+  breedSlug?: string; // erkannte Rasse — dog_breeds.slug (Futter-Pass-Kopplung)
   maxPricePerKg?: number; // Budget €/kg
   currentFood?: string; // aktuelles Futter (Marke oder "bekannt")
   wantToSwitch?: boolean; // möchte Futter wechseln
@@ -24,57 +26,6 @@ export interface DogIntent {
 export type AdvisorTheme = "idle" | "budget" | "allergie" | "welpe" | "senior" | "barf" | "premium";
 
 type HistoryEntry = { role: string; content: string };
-
-// Häufigste Rassen zuerst (kurze Alltagsnamen), gefolgt von allen weiteren ~170
-// Rassen aus @/data/breeds.ts (volle Namen, lowercase) für eine vollständige
-// Rasse-Erkennung über alle 186 Rassen der Plattform.
-// TODO (Op 2.1): aus @/data/breeds.ts ableiten statt Kopie.
-export const BREEDS = ["labrador", "schäferhund", "chihuahua", "dackel", "golden retriever", "französische bulldogge",
-  "mops", "beagle", "boxer", "border collie", "australian shepherd", "rottweiler", "husky", "pudel",
-  "jack russell", "yorkshire", "malteser", "spitz", "dobermann", "berner sennenhund",
-  "affenpinscher", "afghane", "airedale terrier", "akita inu",
-  "alaskan klee kai", "alaskan malamute", "american akita", "american bulldog",
-  "american bully", "american staffordshire terrier", "aussiedoodle", "australian cattle dog",
-  "australian kelpie", "azawakh", "barsoi", "basenji",
-  "basset hound", "bearded collie", "beauceron", "belgischer schäferhund groenendael",
-  "belgischer schäferhund malinois", "belgischer schäferhund tervueren", "berger blanc suisse", "bernedoodle",
-  "bernhardiner", "bichon frisé", "bluthund", "bobtail",
-  "bolonka zwetna", "bordeauxdogge", "border terrier", "boston terrier",
-  "bouvier des flandres", "bracco italiano", "briard", "brusseler griffon",
-  "bull terrier", "bullmastiff", "cairn terrier", "cane corso",
-  "cardigan welsh corgi", "cavalier king charles spaniel", "cavapoo", "chesapeake bay retriever",
-  "chiweenie", "chow-chow", "cockapoo", "cocker spaniel",
-  "corgidor", "coton de tulear", "curly coated retriever", "dalmatiner",
-  "deutsch drahthaar", "deutsch kurzhaar", "deutsche dogge", "deutscher schäferhund",
-  "dogo argentino", "drahthaar fox terrier", "englische bulldogge", "englischer mastiff",
-  "english setter", "english springer spaniel", "epagneul breton", "eurasier",
-  "finnischer lapphund", "finnischer spitz", "flat coated retriever", "galgo espanol",
-  "golden labrador", "goldendoodle", "gordon setter", "greyhound",
-  "grosser muensterlaender", "großspitz", "havaneser", "hovawart",
-  "husky mix", "irischer wasserspaniel", "irischer wolfshund", "irish setter",
-  "irish terrier", "islaendischer schaefer", "jack russell terrier", "jackabee",
-  "japanischer spitz", "japanisches chin", "jindo", "kanaan-hund",
-  "kangal", "kaukasischer owtscharka", "kleiner italienischer windhund", "kleiner münsterländer",
-  "kleinspitz", "komondor", "korthals griffon", "kuvasz",
-  "labradoodle", "labrador retriever", "lagotto romagnolo", "landseer",
-  "langhaardackel", "leonberger", "lhasa apso", "löwchen",
-  "magyar vizsla", "maltese shih tzu", "maltipoo", "miniatur bull terrier",
-  "miniature american shepherd", "miniaturschnauzer", "mischling", "morkie",
-  "mudi", "neapolitanischer mastiff", "neufundländer", "niederlaendischer schaeferhund",
-  "norsk elkhund", "nova scotia duck tolling retriever", "otterhound", "papillon",
-  "parson russell terrier", "pekinese", "petit basset griffon vendeen", "pharaonenhund",
-  "podenco ibicenco", "pointer", "pomeranian", "zwergspitz",
-  "pomsky", "portugiesischer wasserhund", "presa canario", "puggle",
-  "puli", "rauhaardackel", "rhodesian ridgeback", "riesenschnauzer",
-  "rough collie", "saarloos wolfhund", "saluki", "samojede",
-  "schnauzer", "schnoodle", "schottischer deerhound", "schwarzer russischer terrier",
-  "schwedischer lapphund", "schäferhund-labrador mix", "scottish terrier", "shetland sheepdog",
-  "shiba inu", "shih tzu", "siberian husky", "sloughi",
-  "soft coated wheaten terrier", "springador", "staffordshire bullterrier", "thai ridgeback",
-  "tibetischer mastiff", "tibetischer spaniel", "tibetischer terrier", "weimaraner",
-  "welsh corgi", "welsh springer spaniel", "welsh terrier", "west highland white terrier",
-  "whippet", "wolfsspitz", "yorkipoo", "yorkshire terrier",
-  "zwerg-dackel", "zwergpinscher"];
 
 export function parseIntent(message: string, history: HistoryEntry[]): DogIntent {
   // NFC zuerst: iOS/macOS liefern Umlaute oft zerlegt (u + ◌̈, NFD). Ohne Normalisierung
@@ -112,11 +63,10 @@ export function parseIntent(message: string, history: HistoryEntry[]): DogIntent
     if (new RegExp(`\\b${k}`).test(all)) { intent.protein = lab; break; }
   }
 
-  // Rasse
-  for (const b of BREEDS) {
-    const bNorm = b.replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss");
-    if (all.includes(bNorm)) { intent.breed = b; break; }
-  }
+  // Rasse — aus @/data/breeds.ts abgeleiteter Index (Op 2.1).
+  // `message`+User-Turns im Original (nicht das umlaut-zerstörte `all`).
+  const breedHit = matchBreed([...userOnly, message].join(" "));
+  if (breedHit) { intent.breed = breedHit.name; intent.breedSlug = breedHit.slug; }
 
   // Budget €/kg
   const ppk = all.match(/(?:unter|max(?:imal)?|bis zu?|hoechstens|<)\s*(\d+(?:[.,]\d+)?)\s*(?:€|eur|euro)?\s*(?:\/|pro|je)?\s*kg/);

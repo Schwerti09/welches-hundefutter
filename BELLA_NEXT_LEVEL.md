@@ -220,7 +220,7 @@ für `main` „Require status checks to pass" = `ci` aktivieren, sonst blockt de
 
 ## PHASE 1 — Fundament modernisieren
 
-### 🟡 Operation 1.1 — React 19 Upgrade — **CODE GRÜN (2026-09-03), Preview-Klick offen**
+### ✅ Operation 1.1 — React 19 Upgrade — **ERLEDIGT (2026-09-03, Preview bestätigt)**
 `react`/`react-dom` → 19.2.8, `@types/react*` → 19. **Kein Codemod nötig** — `tsc --noEmit`
 lief sofort mit **0 Fehlern** (Codebase nutzt keine `React.FC`/`JSX.Element`-Namespace-Altlasten,
 `useRef`-Calls haben schon Argumente). `framer-motion@12.40` deklariert React 19 explizit im peer.
@@ -243,7 +243,7 @@ Konsolen-Warnings / Hydration-Fehler achten. Dann von 🟡 auf ✅.
 - **Agent:** `platform-architect`. **Aufwand:** M–L. **Risiko:** mittel. **Abhängt von:** 0.2, 0.4.
 </details>
 
-### 🟡 Operation 1.2 — CSP + COOP — **WEG B LIVE (2026-09-03)**
+### ✅ Operation 1.2 — CSP + COOP — **WEG B ERLEDIGT (2026-09-03, Prod bestätigt)**
 `next.config.ts`: `Content-Security-Policy` für `/(.*)` — `default-src 'self'`, `object-src 'none'`,
 `base-uri 'self'`, `form-action 'self'`, `frame-ancestors 'self'`, `frame-src 'none'`,
 `upgrade-insecure-requests`; `script-src` + `style-src` mit `'unsafe-inline'` (Next/Tailwind);
@@ -356,7 +356,21 @@ CSP-sicher) in `layout.tsx`, `className={inter.variable}` auf `<html>` — `glob
 
 ## PHASE 2 — BELLA-Intelligenz auf das nächste Level
 
-### Operation 2.1 — Intent-Extraktion per LLM-Structured-Output (Regex als Fast-Path)
+### ✅ Operation 2.1 — Intent: Fast-Path + LLM-Ergänzung — **ERLEDIGT (2026-09-03)**
+- **`src/lib/advisor/breed-match.ts`** — Rasse-Erkennung aus `@/data/breeds.ts` (Name +
+  `alternativeNames` + slug-als-Worte, längster Match zuerst, + kleine Kurzform-Map für
+  „Schäferhund/Retriever/…"). Die 180-Zeilen-Kopie in `intent.ts` ist **gelöscht**.
+  `intent.breed` = kanonischer Name, neu `intent.breedSlug` → koppelt den Futter-Pass korrekt an `dog_breeds.slug`.
+- **`src/lib/advisor/schema.ts`** — Zod-`dogIntentSchema` + `coerceIntent()` (verträgliches Parsen der LLM-Ausgabe).
+- **`src/lib/advisor/intent-llm.ts`** — Gemini 2.5 Flash JSON-Modus (`responseSchema`), 4 s-Timeout,
+  env-abschaltbar (`ADVISOR_LLM_INTENT=0`), jeder Fehler → `{}`.
+- **`src/lib/advisor/merge.ts`** — `mergeIntent(fast, llm)`: Fast-Path gewinnt, LLM füllt Lücken,
+  **`sensitive`/`grainFree` = ODER** (Sicherheitssignal geht nie verloren), Budget = strengerer Wert.
+- **`route.ts`**: LLM-Pfad läuft **nur** wenn Fast-Path < 3 Signale **und** Verlauf vorhanden — sonst 0 Zusatz-Latenz.
+- **+12 Tests** (`breed-match` 6, `merge` 6). Suite 90 grün. typecheck + lint + build grün.
+- **Offen (→ Op 2.4):** Eval-Suite, die die LLM-Ergänzung gegen feste Szenarien misst; `ai_usage`-Logging (→ Op 1.3-Rest).
+<details><summary>ursprünglicher Plan</summary>
+
 - **Ziel:** Robuste, erweiterbare Intent-Erkennung; die 180-Rassen-Regex-Kopie stirbt.
 - **Warum:** T6. Regex skaliert nicht auf natürliche Formulierungen und ist nicht sauber testbar.
 - **Dateien:** `src/app/api/advisor/chat/route.ts`, neu `src/lib/advisor/intent.ts`, `src/lib/advisor/schema.ts` (Zod), Tests aus 1.4.
@@ -368,6 +382,7 @@ CSP-sicher) in `layout.tsx`, `className={inter.variable}` auf `<html>` — `glob
   5. `BREEDS`-Array aus der Route **löschen**, aus `breeds.ts` ableiten.
 - **Akzeptanz:** Alle `parseIntent`-Tests aus 1.4 grün + 10 neue „natürliche Sprache"-Fälle. Keine Rassen-Liste mehr in `route.ts`. Latenz-Budget: Fast-Path 0 ms, LLM-Path nur wenn nötig, gemessen in `ai_usage`.
 - **Agent:** `bella-advisor`. **Aufwand:** L. **Risiko:** mittel (Latenz/Kosten). **Abhängt von:** 1.4, 1.3.
+</details>
 
 ### Operation 2.2 — Modell-Routing: schnell fragen, stark empfehlen
 - **Ziel:** Frage-Turn = schnell/billig; Empfehlungs-Turn = beste Begründungsqualität.
@@ -652,13 +667,13 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 0.2 | Toten Code entfernen | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 0.3 | Env-Templates | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 0.4 | CI-Gate | 🟡 Workflow live (Branch-Protection = Mensch) | 2026-09-03 | _(dieser Batch)_ |
-| 1.1 | React 19 | 🟡 Upgrade grün (Build+Tests) · Preview-Klick offen | 2026-09-03 | _(dieser Batch)_ |
-| 1.2 | CSP + COOP | 🟡 Weg B live (unsafe-inline script) · strict-dynamic offen | 2026-09-03 | _(dieser Batch)_ |
+| 1.1 | React 19 | ✅ live, Preview bestätigt | 2026-09-03 | 79383ce |
+| 1.2 | CSP + COOP | ✅ Weg B live · strict-dynamic als Folge-Op | 2026-09-03 | 6b68152 |
 | 1.3 | API Rate-Limit | 🟡 In-Memory-Limiter live · verteilter Store + ai_usage folgen | 2026-09-03 | _(dieser Batch)_ |
 | 1.4 | Test-Fundament | 🟡 Unit (68 Tests) · Playwright folgt | 2026-09-03 | _(dieser Batch)_ |
 | 1.5 | Drizzle-Migrationen | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 1.6 | Font-Bug + tsconfig | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
-| 2.1 | Intent-LLM | ⬜ offen | | |
+| 2.1 | Intent-LLM | ✅ Fast-Path + breed-match + LLM-Ergänzung + safe merge | 2026-09-03 | _(dieser Batch)_ |
 | 2.2 | Modell-Routing | ⬜ offen | | |
 | 2.3 | Stream-Robustheit | ⬜ offen | | |
 | 2.4 | Advisor-Eval-Suite | ⬜ offen | | |
