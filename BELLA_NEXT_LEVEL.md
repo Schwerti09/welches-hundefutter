@@ -885,7 +885,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 1.1 | React 19 | ✅ live, Preview bestätigt | 2026-09-03 | 79383ce |
 | 1.2 | CSP + COOP | ✅ Weg B live · strict-dynamic als Folge-Op | 2026-09-03 | 6b68152 |
 | 1.3 | API Rate-Limit | 🟡 In-Memory-Limiter live · verteilter Store + ai_usage folgen | 2026-09-03 | _(dieser Batch)_ |
-| 1.4 | Test-Fundament | 🟡 Unit (68 Tests) · Playwright folgt | 2026-09-03 | _(dieser Batch)_ |
+| 1.4 | Test-Fundament | 🟡 116 Tests (Unit+Eval) · Playwright folgt | 2026-09-03 | _(dieser Batch)_ |
 | 1.5 | Drizzle-Migrationen | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 1.6 | Font-Bug + tsconfig | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 2.1 | Intent-LLM | ✅ Grundgerüst · ⚠️ Allergen-Fall offen → Phase 2A | 2026-09-03 | 7aa3742 |
@@ -901,7 +901,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 2.2 | Modell-Routing | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 2.3 | Stream-Robustheit | 🟡 Server (Timeout+Logging+WARN) · Client-Retry offen | 2026-09-03 | _(dieser Batch)_ |
 | 2.4 | Advisor-Eval-Suite | ⬜ offen | | |
-| 2.5 | Allergen-Gate | ⬜ offen | | |
+| 2.5 | Allergen-Gate | ✅ via 2A.8 (braucht DB-Secret) | 2026-09-03 | 334a46b |
 | 3.1 | Token-System Light/Dark | ⬜ offen | | |
 | 3.2 | BELLA-Maskottchen | ⬜ offen | | |
 | 3.3 | OG-Bilder pro Rasse | ⬜ offen | | |
@@ -922,4 +922,4 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 6.3 | Repo-Hygiene | ⬜ offen | | |
 | 6.4 | Backup + Runbook | ⬜ offen | | |
 
-_Zuletzt aktualisiert: 2026-09-03_
+_Zuletzt aktualisiert: 2026-09-03 — Phase 0 + 1 + 2 (inkl. Phase 2A) weitgehend durch; offen: 2.4 + Phasen 3–6._
