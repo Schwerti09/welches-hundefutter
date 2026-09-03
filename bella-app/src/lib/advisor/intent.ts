@@ -140,8 +140,8 @@ export function parseIntent(message: string, history: HistoryEntry[]): DogIntent
   if (intent.currentFood) intent.wantToSwitch = intent.wantToSwitch ?? true; // wenn aktuelles Futter bekannt, impliziert Wechsel
 
   // Wechsel-Grund
-  if (/vertraegt (es|das|ihn) nicht|bekommt (ihm|ihr) nicht gut|kriegt davon durchfall|allergi|juckt/.test(all)) intent.switchReason = "vertraegt nicht";
-  else if (/mag (es|das|ihn) nicht|frisst (es|das) nicht|will (es|das) nicht|schmeckt ihm nicht/.test(all)) intent.switchReason = "mag nicht";
+  if (/vertraegt (es|das|ihn|sein\w*|ihr\w*)? ?(futter )?nicht|bekommt (ihm|ihr) nicht gut|kriegt davon durchfall|reagiert (auf|allergisch)|allergi|juckt/.test(all)) intent.switchReason = "vertraegt nicht";
+  else if (/mag (es|das|ihn|sein\w*|ihr\w*)? ?(futter )?nicht|frisst.{0,25}nicht( mehr)?\b|will (es|das)? ?nicht (mehr )?fressen|schmeckt (ihm|ihr) nicht|verschmaeht|ruehrt.{0,15}nicht an|laesst.{0,15}stehen|maekelt|waehlerisch/.test(all)) intent.switchReason = "mag nicht";
   else if (/teuer|zu teuer|guenstig|sparen/.test(all) && intent.currentFood) intent.switchReason = "teuer";
   else if (intent.currentFood && !intent.switchReason) intent.switchReason = "optimieren";
 
@@ -167,9 +167,8 @@ export function intentSignalCount(i: DogIntent): number {
 export function hasEnoughIntent(i: DogIntent, history: HistoryEntry[]): boolean {
   const signals = intentSignalCount(i);
   const userTurns = history.filter(h => h.role === "user").length + 1;
-  if (signals >= 4) return true;                   // viele Infos → direkt empfehlen
+  if (signals >= 3) return true;                   // 3 konkrete Signale → keine Frage stellen, deren Antwort nichts ändert
   if (signals >= 2 && i.currentFood) return true;  // Hund + aktuelles Futter bekannt → empfehlen
-  if (signals >= 3 && userTurns >= 2) return true; // viele Signale nach min. 2 Runden
   if (userTurns >= 4) return true;                 // nie länger als 4 Runden fragen
   return false;
 }

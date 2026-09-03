@@ -609,12 +609,21 @@ Deterministischer Fallback-Text greift wie bisher — nie ein leerer Stream.
   `AbortController`, echtes Error-Tracking (→ 6.1).
 - **Agent:** `bella-advisor` + `platform-architect`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 6.1 (Tracking) — oder parallel mit `console.error`-Stub.
 
-### Operation 2.4 — Advisor-Eval-Suite (≥ 30 Szenarien)
-- **Ziel:** Änderungen am Prompt/Scoring/Modell werden gegen feste Szenarien gemessen, nicht „gefühlt".
-- **Warum:** Ohne Eval ist jede Prompt-Änderung ein Blindflug; mit 2.1/2.2 ändern wir viel.
-- **Dateien:** neu `eval/advisor/*.jsonl` (Szenario: Conversation-History → Erwartungen), `eval/run.ts`, npm-Script `eval:advisor`.
-- **Vorgehen:** Szenarien u.a.: Hühnerallergie (nie Huhn/Geflügel in Offers), Welpe große Rasse (kein reines Adult), Senior + Gelenke (Cross-Sell Gelenke), Budget 4 €/kg (alle Offers ≤ Budget), BARF-Wunsch, „mein Hund frisst X nicht" (Wechsel-Kontext genutzt), vager Protein-Hinweis (Warnung ausgesprochen), Score < 40 (BELLA sagt offen „lass den"). Assertions: strukturell (Offers-Constraints) + LLM-Judge (Rubrik: faktentreu / konkret / kein Heilversprechen / Offenlegung).
-- **Akzeptanz:** `npm run eval:advisor` läuft lokal + als **nicht-blockierender** CI-Job (Report als PR-Kommentar). Baseline dokumentiert; Regressionen sichtbar.
+### ✅ Operation 2.4 — Advisor-Eval-Suite — **ERLEDIGT (2026-09-03)**
+`buildSystemPrompt` + `fallbackQuestion`/`fallbackRecommend` → **`src/lib/advisor/prompt.ts`**
+(pure move, damit die Eval den echten Prompt nutzt).
+- **`advisor-eval.test.ts`** (strukturell, DB-gated, deterministisch → CI-blockierbar): Budget-Adherence
+  (jedes €/kg-Offer ≤ Budget), Futtertyp (BARF/Nass → nur dieser `type`), Snack-Guard, Senior ohne
+  Welpen-Only, Re-Query ≥ strict, Referenz 1–3 Offers · + Gesprächslogik ohne DB (ask/recommend-Entscheidung).
+- **`advisor-judge.test.ts`** (opt-in, `npm run eval:advisor`, braucht `DATABASE_URL` + `GEMINI_API_KEY`
+  + `EVAL_JUDGE=1`): 8 Szenarien → `parseIntent → fetchCandidates → buildSystemPrompt → Gemini` → zweiter
+  Gemini-Call bewertet gegen Rubrik (faktentreu/konkret/kein_heilversprechen/allergen_sicher/kein_falsches_zitat,
+  1–5). Harte Mindest + Ø ≥ 3,5. Strukturelle Allergen-Vorprüfung vor dem Judge.
+- **`eval/scenarios.md`**: Katalog mit 35 Szenarien für Judge-Erweiterung + manuelle Prod-QA.
+- **Bug gefunden & gefixt durch die Eval selbst:** „frisst sein Futter nicht" wurde nicht als
+  Wechselgrund erkannt (Regex zu eng) · 3 starke Signale in Turn 1 lösten keine Empfehlung aus
+  (`hasEnoughIntent`: `signals >= 3` statt `>= 3 && userTurns >= 2`).
+- **Offen (nice-to-have):** nicht-blockierender CI-Job für den Judge mit PR-Kommentar.
 - **Agent:** `bella-advisor` + `conversion-analyst`. **Aufwand:** L. **Risiko:** niedrig. **Abhängt von:** 1.4.
 
 ### ✅ Operation 2.5 — Allergen-Gate — **via Operation 2A.8 erledigt (2026-09-03)**
@@ -900,7 +909,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | **2A.9** | Doku + README | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 2.2 | Modell-Routing | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 2.3 | Stream-Robustheit | 🟡 Server (Timeout+Logging+WARN) · Client-Retry offen | 2026-09-03 | _(dieser Batch)_ |
-| 2.4 | Advisor-Eval-Suite | ⬜ offen | | |
+| 2.4 | Advisor-Eval-Suite | ✅ strukturell + LLM-Judge (opt-in) | 2026-09-03 | _(dieser Batch)_ |
 | 2.5 | Allergen-Gate | ✅ via 2A.8 (braucht DB-Secret) | 2026-09-03 | 334a46b |
 | 3.1 | Token-System Light/Dark | ⬜ offen | | |
 | 3.2 | BELLA-Maskottchen | ⬜ offen | | |
