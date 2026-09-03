@@ -220,7 +220,16 @@ für `main` „Require status checks to pass" = `ci` aktivieren, sonst blockt de
 
 ## PHASE 1 — Fundament modernisieren
 
-### Operation 1.1 — React 19 Upgrade
+### 🟡 Operation 1.1 — React 19 Upgrade — **CODE GRÜN (2026-09-03), Preview-Klick offen**
+`react`/`react-dom` → 19.2.8, `@types/react*` → 19. **Kein Codemod nötig** — `tsc --noEmit`
+lief sofort mit **0 Fehlern** (Codebase nutzt keine `React.FC`/`JSX.Element`-Namespace-Altlasten,
+`useRef`-Calls haben schon Argumente). `framer-motion@12.40` deklariert React 19 explizit im peer.
+Build + Lint + 78 Tests grün. `reactStrictMode` bleibt an.
+**Rest-Haken (Mensch):** einen Netlify-Preview-Deploy durchklicken — Advisor-Stream, DogPassPopup,
+ExitIntent, SupportChat, Preis-Wecker-Formular, `/rassen`, ein `/rasse/[slug]` — auf React-19-
+Konsolen-Warnings / Hydration-Fehler achten. Dann von 🟡 auf ✅.
+<details><summary>ursprünglicher Plan</summary>
+
 - **Ziel:** Auf die von Next 16 unterstützte Basis. React 19.2 + `react-dom` 19.2 + Typen.
 - **Warum:** T1. Supportbasis, Bugfixes, und die Tür zu `useOptimistic`/`use()`/`<form>`-Actions für den Advisor- und Preis-Wecker-Flow.
 - **Dateien:** `bella-app/package.json`, `@types/react*`, potentiell jede `"use client"`-Komponente mit veraltetem Pattern.
@@ -232,6 +241,7 @@ für `main` „Require status checks to pass" = `ci` aktivieren, sonst blockt de
   5. `reactStrictMode` bleibt an — Doppel-Effekte-Regressionen fixen statt Strict-Mode aus.
 - **Akzeptanz:** `npm run build` + `typecheck` + `lint` grün. Keine React-19-Konsolen-Warnings auf Home/`/rassen`/`/rasse/[slug]`/Advisor. Vitals nicht schlechter. Ein Preview-Deploy manuell durchgeklickt.
 - **Agent:** `platform-architect`. **Aufwand:** M–L. **Risiko:** mittel. **Abhängt von:** 0.2, 0.4.
+</details>
 
 ### 🟡 Operation 1.2 — CSP + COOP — **WEG B LIVE (2026-09-03)**
 `next.config.ts`: `Content-Security-Policy` für `/(.*)` — `default-src 'self'`, `object-src 'none'`,
@@ -642,7 +652,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 0.2 | Toten Code entfernen | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 0.3 | Env-Templates | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 0.4 | CI-Gate | 🟡 Workflow live (Branch-Protection = Mensch) | 2026-09-03 | _(dieser Batch)_ |
-| 1.1 | React 19 | ⬜ offen | | |
+| 1.1 | React 19 | 🟡 Upgrade grün (Build+Tests) · Preview-Klick offen | 2026-09-03 | _(dieser Batch)_ |
 | 1.2 | CSP + COOP | 🟡 Weg B live (unsafe-inline script) · strict-dynamic offen | 2026-09-03 | _(dieser Batch)_ |
 | 1.3 | API Rate-Limit | 🟡 In-Memory-Limiter live · verteilter Store + ai_usage folgen | 2026-09-03 | _(dieser Batch)_ |
 | 1.4 | Test-Fundament | 🟡 Unit (68 Tests) · Playwright folgt | 2026-09-03 | _(dieser Batch)_ |
