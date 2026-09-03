@@ -3,9 +3,13 @@
 > **11.000+ Sorten · 186 Rassen · Live-Preise täglich · 60 Sekunden bis zur perfekten Empfehlung**
 
 [![Live](https://img.shields.io/badge/Live-welches--hundefutter.today-orange?style=flat-square)](https://welches-hundefutter.today)
-[![Lighthouse Performance](https://img.shields.io/badge/Lighthouse-4×100-brightgreen?style=flat-square)](#performance)
-[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)](https://nextjs.org)
+[![Next.js 16](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)](https://nextjs.org)
+[![React 19](https://img.shields.io/badge/React-19-149eca?style=flat-square&logo=react)](https://react.dev)
+[![Tests](https://img.shields.io/badge/tests-90%20passing-brightgreen?style=flat-square&logo=vitest)](#qualität--sicherheit)
 [![Deployed on Netlify](https://img.shields.io/badge/Deployed-Netlify-00C7B7?style=flat-square&logo=netlify)](https://netlify.com)
+
+> **Stand 2026-09-03.** Aktive Umbau-Roadmap: [`../BELLA_NEXT_LEVEL.md`](../BELLA_NEXT_LEVEL.md).
+> Der Advisor wird gerade gehärtet (Allergen-Sicherheit) — siehe [`../docs/audits/2026-09-03-bella-chat-audit.md`](../docs/audits/2026-09-03-bella-chat-audit.md) und Roadmap-Phase 2A.
 
 ---
 
@@ -21,16 +25,21 @@ Das ist der strukturelle Burggraben, den Check24 oder statische Testseiten nicht
 
 ## Features
 
-### KI-Beraterin BELLA
-- Konversationeller 5-Fragen-Flow (Rasse → Alter → Gewicht → Probleme → Budget)
-- Echtzeit-Auswahl aus dem Live-Katalog (Neon Postgres, täglich aktualisiert)
-- Allergie-Logik: Monoprotein, getreidefrei, hypoallergen
-- Cross-Selling: passende Snacks, Nahrungsergänzung, Versicherung
-- BARF-Modus, Welpenfutter, Seniorfutter
-- Rasse-Autostart: Rasse-Seite öffnen → BELLA kennt den Hund bereits
+### KI-Beraterin BELLA (`/api/advisor/chat`)
+- Adaptiver Gesprächs-Flow (fragt nur, was die Empfehlung ändert), streamt strukturierte
+  Events (Analyse-Schritte, Scores, Text, Offers, Cross-Sell, Futter-Pass)
+- **Intent-Erkennung:** Regex-Fast-Path (0 ms) + LLM-Ergänzung (Gemini JSON-Modus) bei
+  natürlicher Sprache; sicher gemergt. Rasse-Erkennung aus `@/data/breeds.ts`
+- Echtzeit-Auswahl aus dem Live-Katalog (Neon Postgres), deterministisches Scoring im Code
+  (LLM formuliert, Code entscheidet)
+- **Allergen-Sicherheit** (in Härtung, Roadmap 2A): gemiedene Proteine werden hart
+  ausgeschlossen — Ziel: kein solches Produkt je in den Offers, per CI-Test abgesichert
+- Cross-Selling: kuratierte Begleitprodukte (max. 3, mit Begründung, Allergen-Ausschluss)
+- BARF-Modus, Welpen-/Seniorfutter · Rasse-Autostart (Rasse-Seite → BELLA kennt den Hund)
+- Rate-Limit + Origin-Check auf der Route
 
 ### Katalog & Preise
-- 11.000+ Produkte aus AWIN-Feeds (täglicher Cron, 05:00 UTC)
+- 11.000+ Produkte aus AWIN + AdCell (täglicher Cron via Netlify Scheduled Functions)
 - Preishistorie mit Snapshot-on-change (`is_active` Lifecycle)
 - Preis-Wecker: Double-Opt-In E-Mail-Audience, Preisalert bei Änderung
 - Durchschnittliche Kosten/kg nach Futtertyp, live berechnet
@@ -57,26 +66,42 @@ Das ist der strukturelle Burggraben, den Check24 oder statische Testseiten nicht
 
 | Layer | Technologie |
 |---|---|
-| Frontend | Next.js 16 (App Router), TypeScript, Tailwind v4 |
-| KI | Gemini 2.5 Flash (Berater), Claude Haiku 4.5 (Fallback) |
-| Datenbank | Neon Postgres + Drizzle ORM |
-| Feeds | AWIN Publisher API (a=615299), AdCell |
-| Deployment | Netlify (Edge Functions + ISR) |
-| E-Mail | Resend (DOI Preis-Wecker) |
-| Analytics | Web Vitals, Google Analytics |
-| Bilder | Pexels API (Tipps), dog.ceo API (Rassen-Galerie) |
+| Framework | Next.js 16 (App Router, Turbopack) · React 19 · TypeScript (ES2022) |
+| Styling | Tailwind v4 · `next/font` (Inter, self-hosted) |
+| KI | Gemini 2.5 Flash (Berater + Intent-JSON), Claude Haiku 4.5 (Fallback) |
+| Datenbank | Neon Postgres + Drizzle ORM (`drizzle/`-Migrationen) |
+| Feeds | AWIN Publisher API (a=615299) + AdCell → Python-Pipeline → Neon (Netlify Scheduled Functions) |
+| Deployment | Netlify (`base = bella-app`, Node 22, `@netlify/plugin-nextjs`, Edge + ISR) |
+| E-Mail | Resend (DOI Preis-Wecker, Outcome-Checks) |
+| Tests | Vitest (Unit) — CI-Gate: typecheck + lint + test + build je PR |
+| Sicherheit | CSP + COOP, Rate-Limit + Origin-Check auf den LLM-Routen |
+| Bilder | `next/image` · Rasse-Fotos self-hosted (`public/breeds/`) · Pexels (Tipps) |
 
 ---
 
 ## Performance
 
-Lighthouse-Score (Mobil + Desktop):
+Lighthouse mobil (PageSpeed, 2026-09):
 
-| Leistung | Barrierefreiheit | Best Practices | SEO | Agentisches Browsing |
-|:---:|:---:|:---:|:---:|:---:|
-| 100 | 100 | 100 | 100 | 3/3 |
+| Leistung | Barrierefreiheit | Best Practices | SEO |
+|:---:|:---:|:---:|:---:|
+| ~91 → Ziel 98 | 100 | 96 → Ziel 100 | 100 |
 
-Erreicht durch: Text-basierter LCP (~1,2s), `optimizeCss: true`, moderne Browserslist (Chrome 96+), kein ungenutzter Third-Party-Preconnect, Tailwind-Purge.
+Hebel schon umgesetzt: self-hosted + `next/image`-optimierte Rasse-Fotos, GA `lazyOnload`,
+below-fold-Komponenten via `next/dynamic` + Idle-Mount, `optimizeCss`, moderne Browserslist.
+Rest steht in der Roadmap (Perf-Budget im CI, Motion-Politur, first-party Analytics).
+
+---
+
+## Qualität & Sicherheit
+
+- **CI-Gate** (`.github/workflows/ci.yml`): `typecheck` + `lint` + `test` + `build` bei jedem PR.
+- **90 Unit-Tests** (Vitest) — Schwerpunkt Allergen-Sicherheit, Intent-Parsing, Scoring,
+  Verbrauchsmathematik, Rate-Limit.
+- **CSP + COOP** (`next.config.ts`), **Rate-Limit + Herkunftsprüfung** auf `/api/advisor/*`
+  und `/api/support/chat`.
+- **Drizzle-Migrationen** (`bella-app/drizzle/`) — kein DDL im Request-Pfad.
+- Bekannte Baustellen + Reihenfolge: [`../BELLA_NEXT_LEVEL.md`](../BELLA_NEXT_LEVEL.md).
 
 ---
 

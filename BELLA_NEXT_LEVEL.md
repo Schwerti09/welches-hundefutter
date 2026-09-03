@@ -384,6 +384,129 @@ CSP-sicher) in `layout.tsx`, `className={inter.variable}` auf `<html>` — `glob
 - **Agent:** `bella-advisor`. **Aufwand:** L. **Risiko:** mittel (Latenz/Kosten). **Abhängt von:** 1.4, 1.3.
 </details>
 
+> ⚠️ **2.1 hat einen kritischen Fall NICHT gelöst.** Prod-Test 2026-09-03: allergischer Hund
+> („huhn" als Antwort auf die Allergiefrage) bekam Huhn-Futter empfohlen, weil `sensitive` nie
+> gesetzt wurde und „Huhn" als *Wunsch*-Protein geboostet wurde. Vollständiges Audit:
+> `docs/audits/2026-09-03-bella-chat-audit.md`. **Phase 2A** behebt das — Vorrang vor 2.2 ff.
+
+---
+
+## PHASE 2A — ADVISOR-NOTFALL (Allergen-Sicherheit + „nichts kaufbar")
+
+> Ausgelöst durch das Audit vom 2026-09-03. Jede Operation atomar, jede mit einem
+> Eval-Szenario. **Nicht-verhandelbar: kein Produkt mit einem gemiedenen Protein darf je
+> in der `OFFERS:`-Payload landen — abgesichert per blockierendem CI-Test.**
+
+### Operation 2A.1 — Allergen als eigenes, hartes Konzept (`avoidProtein`)
+- **Ziel:** „Dieses Protein ist der Feind" ist ein von „Wunsch-Protein" getrenntes Feld.
+- **Dateien:** `src/lib/advisor/intent.ts`, `intent.test.ts`.
+- **Vorgehen:**
+  1. `DogIntent`: neu `avoidProtein?: string[]` (Allergene). `protein` bleibt = *Präferenz*.
+  2. `parseIntent`: Allergie-Kontext erkennen → `avoidProtein` + `sensitive`. Trigger stark erweitern:
+     „ohne/kein X", „allergisch auf/gegen X", „verträgt kein X", „reagiert auf X", „unverträglich",
+     **bloßes Protein, wenn der letzte Assistenten-Turn nach Allergien/Zutaten fragte**,
+     Symptome (`fell`, `haut`, `haarausfall`, `schuppen`, `juckt`, `juckreiz`, `pfoten lecken`,
+     `ohren(entzündung)`, `hotspot`, `durchfall`, `erbrechen`) → `sensitive`.
+  3. Ein Protein nie gleichzeitig in `protein` **und** `avoidProtein` — `avoidProtein` gewinnt.
+- **Akzeptanz:** Test mit der exakten Transkript-Sequenz: `avoidProtein` enthält „Huhn", `sensitive` true,
+  `protein` enthält NICHT „Huhn". `intentSignalCount` zählt `avoidProtein` als Signal.
+- **Agent:** `bella-advisor`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** —
+
+### Operation 2A.2 — Harter Allergen-Ausschluss auf SQL-Ebene + Snack-Guard
+- **Ziel:** Kein gemiedenes Protein kommt aus der DB zurück; kein Snack als Hauptfutter.
+- **Dateien:** `src/app/api/advisor/chat/route.ts` (`fetchCandidates`), `src/db/queries/crosssell.ts`, `src/lib/advisor/allergens.ts` (aus `allergenVariants` extrahiert), Tests.
+- **Vorgehen:**
+  1. `fetchCandidates`: bei `avoidProtein.length` → `WHERE`-Bedingungen mit `allergenVariants`:
+     `(protein IS NULL OR protein NOT ILIKE ALL(...))` **und** `name NOT ILIKE ALL(...)`.
+  2. `AND type <> 'snack' AND category IS DISTINCT FROM 'snack'` für Hauptfutter.
+  3. Den `protein ILIKE`-**Boost** deaktivieren, wenn dieses Protein in `avoidProtein` ist.
+  4. Pool vor JS-Dedupe/Rank vergrößern (`LIMIT 40 → 120`), damit der Ausschluss nicht aushungert.
+  5. Post-Fetch `containsAllergen` über `name + protein` bleibt als zweite Sicherung.
+  6. Cross-Sell (`getCompanions`): `OR category IN ('snack','zeckenschutz')` streichen — nur echte
+     `companion_for`-Treffer; Allergen-Ausschluss identisch.
+- **Akzeptanz:** Unit-Test der SQL-Kondition-Bauer; Integrationstest (falls `DATABASE_URL` im CI):
+  Query mit `avoidProtein:['Huhn']` liefert 0 Zeilen mit „huhn/hühn/hähnchen/geflügel/chicken/poultry"
+  in `name`/`protein`; keine `type='snack'`.
+- **Agent:** `bella-advisor` + `platform-architect`. **Aufwand:** M. **Risiko:** mittel (SQL). **Abhängt von:** 2A.1.
+
+### Operation 2A.3 — Sicherheitsnetz: kein unsicheres OFFERS, Re-Query, ehrliche Leermeldung
+- **Ziel:** Sind alle Kandidaten unsicher → BELLA empfiehlt **nichts** und sucht ehrlich neu.
+- **Dateien:** `route.ts` (Stream-Ablauf), `fallbackRecommend`, Tests.
+- **Vorgehen:**
+  1. Nach `fetchCandidates` + Ausschluss: bei `offers.length === 0` → **eine** Re-Query, die
+     weiche Kriterien (Budget, `foodType`) fallen lässt, aber Allergen-Ausschluss + Lebensphase
+     + Snack-Guard **behält**.
+  2. Immer noch 0 → `OFFERS:` mit `[]` + spezifischer Text/Fallback:
+     „Ich hab im Katalog gerade nichts Sicheres ohne {X} für einen {Rasse} gefunden. Anderer
+     Futtertyp (Nass/BARF) oder größeres Budget?" — **kein** Futter-Pass, **kein** Preis-Wecker.
+  3. **Assertion direkt vor `emit(OFFERS…)`**: kein Offer enthält ein `avoidProtein` (Variante).
+     Bricht die Assertion → `offers = []` + Leermeldung, `logChat` markiert `safety_blocked`.
+- **Akzeptanz:** Eval-Szenario „nur Huhn-Produkte im Pool" → leere Offers + ehrlicher Text, kein Profil.
+- **Agent:** `bella-advisor`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 2A.2.
+
+### Operation 2A.4 — Prompt-Framing + strukturiertes Allergie-Signal
+- **Ziel:** Der Text-LLM weiß von der Allergie und behandelt den Katalog als *seine* Recherche.
+- **Dateien:** `route.ts` `buildSystemPrompt`.
+- **Vorgehen:**
+  1. `known`: bei `avoidProtein.length` immer „**ALLERGIE — kein {X} (Pflicht)**".
+  2. Produktblock-Kopf: „KATALOG-AUSZUG, den ICH gefunden habe (der Halter hat KEINE Produkte genannt)".
+  3. Regel: „Passt keins → sag das klar, empfiehl NICHTS, biete Neu-Suche mit anderem Futtertyp/Budget an.
+     Behaupte nie, der Halter hätte Produkte genannt."
+- **Akzeptanz:** Eval: Antwort erwähnt nie „die Produkte, die du genannt hast"; bei Allergie steht
+  das Verbot im Prompt (`known`).
+- **Agent:** `bella-advisor`. **Aufwand:** S. **Risiko:** niedrig. **Abhängt von:** 2A.1.
+
+### Operation 2A.5 — Futter-Pass / Preis-Wecker nur für sichere, echte Hauptfutter
+- **Dateien:** `route.ts` (Profil-Insert), `dog_profiles.allergies`.
+- **Vorgehen:** Insert überspringen, wenn `offers.length === 0` **oder** `offers[0]` Snack ist
+  **oder** ein `avoidProtein` enthält (nach 2A.3 unmöglich → `assert`). `allergies`-Spalte aus
+  `avoidProtein` befüllen (Array), nicht aus `intent.sensitive && intent.protein`. Kein `PROFILE:` /
+  Preis-Wecker-Box für einen Snack.
+- **Akzeptanz:** Eval: kein `PROFILE:`-Event, wenn Offers leer/unsicher; `allergies` = `['Huhn']` im Happy-Path.
+- **Agent:** `bella-advisor` + `lifecycle-architect`. **Aufwand:** S. **Risiko:** niedrig. **Abhängt von:** 2A.3.
+
+### Operation 2A.6 — LLM-Intent-Pfad im RECOMMEND-Modus immer laufen lassen
+- **Dateien:** `route.ts` (Gate), `src/lib/advisor/intent-llm.ts`, `src/lib/advisor/merge.ts`, Tests.
+- **Vorgehen:**
+  1. Gate: `extractIntentLLM` läuft, wenn `ask === false` **oder** `intentSignalCount < 3` (und `llmIntentEnabled()`).
+  2. `intent-llm` Schema + Prompt: `avoidProtein: string[]` — „Allergen/Unverträglichkeit → avoidProtein, NICHT protein".
+  3. `mergeIntent`: `avoidProtein` = Vereinigung beider Quellen; jedes `protein`, das in der
+     gemergten `avoidProtein` steht, wird aus `protein` entfernt.
+- **Akzeptanz:** `merge`-Tests für `avoidProtein`-Union + Protein-Bereinigung. Latenz: Empfehlungs-Turn
+  + max. 1 zusätzlicher schneller LLM-Call (gemessen, sobald `ai_usage` da ist — Op 1.3-Rest).
+- **Agent:** `bella-advisor`. **Aufwand:** M. **Risiko:** mittel (Latenz). **Abhängt von:** 2A.1.
+
+### Operation 2A.7 — Ehrliche Zahlen im Stream
+- **Dateien:** `route.ts` (`ELIM:`-Events, Packungsgröße, Studien-Block).
+- **Vorgehen:** `ELIM:`-Splits (`* 0.4`, `* 0.25`) streichen — nur echten `eliminated`-Count zeigen.
+  Packungsgröße nur anzeigen, wenn plausibel (Hauptfutter ≥ 0,5 kg). Studie nur zitieren, wenn
+  `topic_hub` zur primären Sorge passt, max. 1, nie im „ask"-Turn.
+- **Akzeptanz:** Kein erfundener Zahlensplit mehr im Protokoll; kein „0,1 kg-Packung"-Hinweis für Snacks.
+- **Agent:** `bella-advisor` + `trust-compliance`. **Aufwand:** S. **Risiko:** niedrig. **Abhängt von:** —
+
+### Operation 2A.8 — Eval-Suite Allergen (zieht Op 2.4/2.5 vor, blockierend)
+- **Dateien:** `eval/advisor/allergen/*.jsonl`, `eval/run.ts`, `package.json` (`eval:advisor`), `ci.yml`.
+- **Vorgehen:** Szenarien: der Schäferhund+Huhn-Verlauf + ~10 Varianten („kein Rind", „verträgt
+  Lachs nicht", „allergisch gegen Getreide", nur Symptome „juckt sich ständig", „ohne Huhn bitte").
+  Assertions (strukturell, ohne LLM-Judge): `OFFERS`-Payload hat **0** Produkte mit Avoid-Protein-Variante
+  in `name`/`protein`; `type` nie `snack`; nichts Sicheres → leere Offers + ehrlicher Text + kein `PROFILE:`.
+  Als **blockierender** CI-Job (`npm run eval:advisor`), braucht `DATABASE_URL` + `GEMINI_API_KEY` als GH-Secrets
+  ODER läuft gegen einen fixen Fixture-Katalog (bevorzugt — deterministisch, kein Netz).
+- **Akzeptanz:** Absichtlich gelockerter Filter → CI rot. Normalzustand grün. Läuft < 60 s.
+- **Agent:** `bella-advisor` + `trust-compliance`. **Aufwand:** L. **Risiko:** niedrig. **Abhängt von:** 2A.1–2A.6.
+
+### Operation 2A.9 — Doku + README aktuell
+- **Dateien:** `bella-app/README.md`, `bella-app/ARCHITECTURE.md`, `CLAUDE.md`, `.claude/agents/01-bella-advisor.md`.
+- **Vorgehen:** Advisor-Abschnitt in README auf den echten Stand + die Sicherheits-Garantie
+  („kein gemiedenes Protein je in den Offers, CI-abgesichert"). ARCHITECTURE: `avoidProtein`,
+  SQL-Hard-Filter, Re-Query, Safety-Assert im Stream-Ablauf. `CLAUDE.md` §4/§2: Allergen-Garantie
+  als harte Regel. Agent-Datei: `avoidProtein`, Safety-Gate, Eval-Pflicht.
+- **Akzeptanz:** README behauptet nichts, was der Code nicht hält. `grep` „Allergie-Logik" in README zeigt
+  die verifizierte Formulierung.
+- **Agent:** `content-engineer`. **Aufwand:** S. **Risiko:** niedrig. **Abhängt von:** 2A.1–2A.8.
+
+---
+
 ### Operation 2.2 — Modell-Routing: schnell fragen, stark empfehlen
 - **Ziel:** Frage-Turn = schnell/billig; Empfehlungs-Turn = beste Begründungsqualität.
 - **Warum:** T14. EEAT und Conversion hängen an der Empfehlungs-Begründung, nicht an der Rückfrage.
@@ -673,8 +796,17 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 1.4 | Test-Fundament | 🟡 Unit (68 Tests) · Playwright folgt | 2026-09-03 | _(dieser Batch)_ |
 | 1.5 | Drizzle-Migrationen | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 1.6 | Font-Bug + tsconfig | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
-| 2.1 | Intent-LLM | ✅ Fast-Path + breed-match + LLM-Ergänzung + safe merge | 2026-09-03 | _(dieser Batch)_ |
-| 2.2 | Modell-Routing | ⬜ offen | | |
+| 2.1 | Intent-LLM | ✅ Grundgerüst · ⚠️ Allergen-Fall offen → Phase 2A | 2026-09-03 | 7aa3742 |
+| **2A.1** | Allergen `avoidProtein` | ⬜ offen (Audit `docs/audits/2026-09-03-bella-chat-audit.md`) | | |
+| **2A.2** | SQL-Hard-Ausschluss + Snack-Guard | ⬜ offen | | |
+| **2A.3** | Sicherheitsnetz / Re-Query / Leermeldung | ⬜ offen | | |
+| **2A.4** | Prompt-Framing + Allergie-Signal | ⬜ offen | | |
+| **2A.5** | Futter-Pass nur für sichere Hauptfutter | ⬜ offen | | |
+| **2A.6** | LLM-Intent im RECOMMEND immer | ⬜ offen | | |
+| **2A.7** | Ehrliche Zahlen im Stream | ⬜ offen | | |
+| **2A.8** | Eval-Suite Allergen (blockierend) | ⬜ offen | | |
+| **2A.9** | Doku + README | ⬜ offen | | |
+| 2.2 | Modell-Routing | ⬜ offen (nach 2A) | | |
 | 2.3 | Stream-Robustheit | ⬜ offen | | |
 | 2.4 | Advisor-Eval-Suite | ⬜ offen | | |
 | 2.5 | Allergen-Gate | ⬜ offen | | |

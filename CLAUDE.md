@@ -43,8 +43,11 @@ Preisvergleich und Cross-Selling (Snacks, Versicherung, Zubehör, alles für Hun
 
 ### 🔴 Offene Baustellen (Auszug — vollständig in `BELLA_NEXT_LEVEL.md`)
 
-- **Fundament:** React 18 unter Next 16 (Op 1.1) · kein CSP/COOP (1.2) · kein API-Rate-Limit (1.3) · **null Tests** (1.4) · Schema-Drift via Laufzeit-DDL (1.5) · toter `src/lib/{environment,performance,state,…}` (0.2)
-- **BELLA:** Regex-Intent + duplizierte Rassen-Liste (2.1) · pauschales Modell-Routing (2.2) · keine Eval-Suite (2.4)
+- **🔴 Advisor-Notfall (Phase 2A):** allergischer Hund bekam Huhn-Futter empfohlen —
+  `sensitive`/Allergen wird nicht zuverlässig erkannt, kein SQL-Hard-Ausschluss, Snack als
+  Hauptfutter, Karten kaufbar trotz LLM-„nein". Audit: `docs/audits/2026-09-03-bella-chat-audit.md`. **Vorrang vor allem in Phase 2.**
+- **Fundament:** ✅ 0.x + 1.x weitgehend erledigt (React 19, CSP, Rate-Limit-Grundschutz, 90 Tests, Migrationen). Reste: Playwright-Smoke (1.4), verteilter Rate-Limit-Store (1.3), `strict-dynamic` CSP (1.2).
+- **BELLA:** Modell-Routing (2.2), Stream-Robustheit (2.3), Eval-Suite (2.4).
 - **Design:** nur Dark-Mode (3.1) · BELLA = Emoji (3.2) · kein OG-Bild pro Rasse (3.3) · `--font-inter` nie geladen (1.6)
 - **Content:** Thin-Content-Risiko bei 1.400 Tipps + `/stadt/*` (4.1) · kein Tierarzt-Review (4.2)
 - **Moat:** Futter-Pass-Schleife nicht geschlossen (5.1) · GA4 statt first-party (5.2) · Funnel ungemessen (5.3)
@@ -72,6 +75,7 @@ hundefutter-tests.net). Die gewinnen über **EEAT** (echte Tests, transparente S
 2. **Kein totes Verzeichnis erweitern.** Kein `src/features/`, `src/platform/` — gelöscht.
 3. **Keine erfundenen Zahlen.** „11.000+" steht da, weil so viele echte Datensätze in `dog_foods` sind. Ändert sich die DB, ändert sich die Zahl.
 4. **Keine medizinischen/tierärztlichen Heilversprechen.** „kann unterstützen", nicht „heilt".
+4a. **Allergen-Garantie (nicht verhandelbar).** Ein gemiedenes Protein darf **nie** in der `OFFERS:`-Payload landen. Im Zweifel NICHT empfehlen + ehrlich neu suchen. Per blockierendem CI-Test abgesichert (Roadmap 2A.8).
 5. **Affiliate-Transparenz:** Jeder AWIN-Link `rel="sponsored"`, sichtbare Offenlegung. Pflicht.
 6. **Deutsch, Du-Form, Hundehalter-Sprache.** Kein Marketing-Sprech, keine Floskeln.
 7. **Build muss grün bleiben.** `cd bella-app && npm run build` vor jedem Push.

@@ -14,14 +14,16 @@ Burggraben gegenüber den statischen Testseiten. Lies `CLAUDE.md`. Bellas Verspr
 **5 Fragen, ~60 Sekunden, 3 wirklich passende Empfehlungen mit nachvollziehbarer Begründung.**
 
 ## Realitätscheck zuerst
-Die aktive Logik ist `src/app/api/advisor/chat/route.ts` (~740 Zeilen): regelbasiertes
-Intent-Parsing über die User-Turns, SQL-Scoring gegen `dog_foods`, **harter Allergen-Ausschluss**,
-Marken-Vielfalt, Cross-Sell, Futter-Pass-Anlage — alles echt, streamt ein Zeilen-Protokoll
+Die aktive Logik ist `src/app/api/advisor/chat/route.ts` + `src/lib/advisor/*` (Intent-Fast-Path,
+LLM-Ergänzung, Merge, Scoring, breed-match). Streamt ein Zeilen-Protokoll
 (`STEP/CONF/ELIM/SCORE/TEXT/OFFERS/COMPANIONS/PROFILE`, siehe `bella-app/ARCHITECTURE.md`).
-Deine offenen Baustellen stehen in `../../BELLA_NEXT_LEVEL.md` Phase 2:
-**2.1** Intent per LLM-Structured-Output (Regex + die duplizierte 180-Rassen-Liste ersetzen),
-**2.2** Modell-Routing (schnell fragen / stark empfehlen), **2.3** Stream-Robustheit,
-**2.4** Eval-Suite, **2.5** Allergen-Gate im CI.
+
+**🔴 ZUERST: Phase 2A (Advisor-Notfall).** Audit `docs/audits/2026-09-03-bella-chat-audit.md` —
+ein allergischer Hund bekam Huhn-Futter empfohlen (`sensitive` wurde nie gesetzt, „Huhn" als
+Wunsch-Protein geboostet). Ops **2A.1–2A.9** in `../../BELLA_NEXT_LEVEL.md`: `avoidProtein` als
+eigenes hartes Feld, SQL-Ausschluss + Snack-Guard, Sicherheitsnetz/Re-Query, Prompt-Framing,
+Futter-Pass nur für sichere Produkte, LLM-Intent im RECOMMEND immer, ehrliche Zahlen, **blockierende
+Allergen-Eval**, Doku. Danach: **2.2** Modell-Routing, **2.3** Stream-Robustheit, **2.4** Eval-Suite.
 
 ## Der Fragen-Flow (max. 5, adaptiv)
 1. **Rasse / Größe** (oder Mischling + Gewichtsklasse) → Bedarf, Portionsgröße
