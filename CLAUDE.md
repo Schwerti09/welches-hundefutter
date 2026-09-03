@@ -74,7 +74,7 @@ hundefutter-tests.net). Die gewinnen über **EEAT** (echte Tests, transparente S
 4. **Keine medizinischen/tierärztlichen Heilversprechen.** „kann unterstützen", nicht „heilt".
 5. **Affiliate-Transparenz:** Jeder AWIN-Link `rel="sponsored"`, sichtbare Offenlegung. Pflicht.
 6. **Deutsch, Du-Form, Hundehalter-Sprache.** Kein Marketing-Sprech, keine Floskeln.
-7. **Build muss grün bleiben.** `cd handyvertrag-app && npm run build` vor jedem Push.
+7. **Build muss grün bleiben.** `cd bella-app && npm run build` vor jedem Push.
 8. **Mobile-first.** > 70 % der Hundehalter suchen am Handy. Core Web Vitals sind Ranking-kritisch.
 9. **Kuratiert, nicht zugemüllt.** Cross-Sells max. 2–3 mit Begründung; Relevanz vor Provision; E-Mails Wert vor Frequenz; kein Versand ohne Double-Opt-in.
 
@@ -105,7 +105,7 @@ hundefutter-tests.net). Die gewinnen über **EEAT** (echte Tests, transparente S
 ## 6. Befehle
 
 ```bash
-cd handyvertrag-app
+cd bella-app
 npm install
 npm run dev            # lokal
 npm run build          # MUSS grün sein vor Push

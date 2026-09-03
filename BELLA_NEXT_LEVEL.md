@@ -1,0 +1,597 @@
+# 🐕 BELLA — NEXT LEVEL
+
+> **Die eine Landkarte.** Ist-Zustand ehrlich, Zielbild scharf, dazwischen ein
+> Operationsplan, den wir Stück für Stück abarbeiten.
+>
+> **Stichtag der Analyse:** 2026-09-03 · **Repo:** `welches-hundefutter` · **App:** `bella-app/`
+> · **Live:** https://welches-hundefutter.today · **Deploy:** Netlify (auto on push `main`)
+>
+> Ground Truth für den Alltag bleibt `CLAUDE.md`. Dieses Dokument ist die *Roadmap*.
+> Fleet: `.claude/agents/*.md`. Wenn dieses Dokument und ein anderes sich widersprechen,
+> gewinnt dieses — und das andere wird korrigiert oder gelöscht (siehe **Operation 0.1**).
+
+---
+
+## Spielregeln für jede Operation
+
+1. **Atomar.** Eine Operation = ein PR-großer, einzeln testbarer Schritt.
+2. **Akzeptanzkriterien zuerst.** Erst wenn die Haken definiert sind, wird Code geschrieben.
+3. **`cd bella-app && npm run build` muss grün bleiben.** Kein Push ohne grünen Build.
+   Ab **Operation 0.4** zusätzlich: `npm run lint`, `npm run typecheck`, `npm test` grün.
+4. **Keine erfundenen Zahlen. Keine Heilversprechen. Jeder Affiliate-Link `rel="sponsored"` + sichtbare Offenlegung.**
+5. **Allergen-Sicherheit ist nicht verhandelbar.** Was ein Allergiker nie empfohlen bekommen darf,
+   wird durch einen Test abgesichert, nicht durch Hoffnung.
+6. **Mobile-first, Core Web Vitals sind Ranking-kritisch.** Kein Merge, der die Vitals verschlechtert.
+7. Jede Operation trägt unten ein: **Ziel · Warum · Dateien · Vorgehen · Akzeptanz · Agent · Aufwand · Risiko · Abhängt von**.
+
+Aufwand: **S** ≈ ½ Tag · **M** ≈ 1–2 Tage · **L** ≈ 3–5 Tage · **XL** ≈ >1 Woche / mehrere PRs.
+
+---
+
+# TEIL 1 — IST-ZUSTAND (geprüft, nicht behauptet)
+
+Das Fundament trägt: 2.372 Seiten bauen grün, echte Neon-DB, echte Feed-Pipeline (Cron via
+Netlify Scheduled Functions), streamender KI-Berater mit Intent-Parsing + Scoring +
+Allergen-Ausschluss + Cross-Sell + Futter-Pass-Anlage, Preis-Historie, DOI-E-Mail-Audience,
+Outcome-Checks, programmatische Rasse-/Problem-/Futtertyp-/Vergleichs-Seiten, `llms.txt`,
+maschinenlesbarer Katalog. **Das ist viel und es ist echt.**
+
+Was das „nächste Level" blockiert, sortiert nach Ebene:
+
+## 1.1 Technik
+
+| # | Befund | Beleg | Schwere |
+|---|---|---|---|
+| T1 | **React 18.3.1 unter Next 16.2.6.** Next 16 setzt React 19.2 voraus. Läuft, ist aber neben der unterstützten Basis — und lässt Actions, `useOptimistic`, `use()`, verbesserte Suspense/RSC-Semantik liegen. | `bella-app/package.json` | hoch |
+| T2 | **Kein CSP, kein COOP** in `next.config.ts` oder `netlify.toml`. `ARCHITECTURE.md` behauptet „strict CSP with allowlist" — das ist unwahr. | `bella-app/next.config.ts`, `netlify.toml` | hoch |
+| T3 | **Keine Middleware, kein Rate-Limiting.** `/api/advisor/chat` ruft Gemini **und** Claude, ungedrosselt und ohne Auth/Herkunftsprüfung → Kosten-/Missbrauchs-Exposition. `ARCHITECTURE.md` behauptet einen Proxy-Layer mit 60 req/min — existiert nicht. | `src/app/api/advisor/chat/route.ts`, kein `src/middleware.ts` | hoch |
+| T4 | **Null automatisierte Tests.** ~120k Zeilen TS/TSX, Scoring, Allergen-Ausschluss, Verbrauchsmathematik, Feed-Parsing, Preis-Extraktion — kein Unit-Test, kein E2E. Höchstes Risiko im Repo. | kein `vitest.config.*` / `playwright.config.*` | hoch |
+| T5 | **Schema-Drift als Nebenwirkung.** `logChat()` macht `CREATE TABLE IF NOT EXISTS` bei *jedem* Request. Keine committeten Drizzle-Migrationen; Schema wird per `drizzle-kit push` von Hand gepflegt. | `route.ts:518`, kein `drizzle/` Ordner | mittel |
+| T6 | **Intent-Parsing = ~200 Zeilen handgeschriebene Regex** inkl. einer **duplizierten 180-Rassen-Liste** (der Kommentar gibt zu, dass es eine Kopie von `@/data/breeds.ts` ist). Brüchig, schwer zu erweitern, unmöglich sauber zu testen. | `src/app/api/advisor/chat/route.ts:87-211` | mittel |
+| T7 | **Toter „Architektur-Theater"-Code lebt noch.** `src/lib/environment/*`, `src/lib/performance/*`, `src/lib/state/*`, `src/lib/validation/*`, `src/lib/rendering/*`, `src/lib/data/production-data-flow.ts` sind aus `tsconfig.json` **und** ESLint **ausgeschlossen** → werden nicht typgeprüft, nicht gelintet, von nichts importiert. | `tsconfig.json:40-52`, `eslint.config.mjs:13-23` | mittel |
+| T8 | **`--font-inter` wird referenziert, aber nie gesetzt.** `globals.css` baut die Font-Stacks auf `var(--font-inter, …)`, es gibt kein `next/font`-Setup im Layout → die Seite rendert immer in System-Fonts. Design-Absicht ≠ Auslieferung. | `src/app/globals.css:27,33`, `src/app/layout.tsx` (kein `next/font`) | mittel |
+| T9 | **`tsconfig` target `ES2017`** — unnötig alt, zwingt Downlevel-Transforms. | `tsconfig.json:3` | niedrig |
+| T10 | **Zwei Env-Templates** mit unterschiedlichem Inhalt: `.env.example` (DB/AI/Netlify) und `env.example` (14 tote `NEXT_PUBLIC_*_ENABLED` Feature-Flags aus der HANSI-Zeit). Keine dokumentiert vollständig die echten Vars aus `CLAUDE.md` (`RESEND_API_KEY`, `SITE_URL`, `AWIN_FEED_URLS`, `CRON_SECRET`, …). | `bella-app/.env.example`, `bella-app/env.example` | niedrig |
+| T11 | **CI prüft nichts.** 3 Workflows, alle nur `workflow_dispatch` (manuell). Kein PR-Gate für `build`/`lint`/`typecheck`/`test`. | `.github/workflows/*.yml` | mittel |
+| T12 | **46 von 58 Komponenten sind `"use client"`** (79 %), mehrere sehr groß (`BellaAdvisor` 763, `BellaDecisionUI` 630, `BellaExperience` 452, `AnalysisStorm` 371). 6 ziehen `framer-motion`. Für eine „RSC-first"-Behauptung zu viel Client-JS. | `src/components/` | mittel |
+| T13 | **`index.html` liegt lose im App-Root** — vom App Router ungenutzt, reiner Verwirrungsposten. | `bella-app/index.html` | niedrig |
+| T14 | **Modell-Routing pauschal.** Frage-Turn und Empfehlungs-Turn nutzen dasselbe Modell (`gemini-2.5-flash`, Fallback `claude-haiku-4-5`). Der Empfehlungs-Turn (Qualität, EEAT) verdient ein stärkeres Modell; der Frage-Turn nicht. | `route.ts:585-616` | niedrig |
+
+## 1.2 Design
+
+| # | Befund | Schwere |
+|---|---|---|
+| D1 | **Nur ein Theme (Dark).** Kein `prefers-color-scheme`-Respekt, kein Light-Mode. 2026-Standard ist beides. | mittel |
+| D2 | **Token-Schulden.** Honig-Farben (`rgba(240,167,60,…)`, `#f0a73c`, `#ff8a4c`) hart in Komponenten verstreut statt über semantische Tokens. `globals.css` hat CSS-Vars **und** `@theme inline` **und** Inline-Werte — drei Wahrheiten. | mittel |
+| D3 | **`sheen`-Keyframe animiert `background-position`** (nicht GPU-composited) — `.text-sheen`, `.tile__sheen`, `.count-shimmer`. Lighthouse meldet „nicht zusammengesetzte Animation". | niedrig |
+| D4 | **BELLA hat keinen Charakter.** Sie ist ein 🐕-Emoji auf Farbverlaufs-Kreis. `DEFINITION_OF_DONE.md` markiert eine echte Marke/Maskottchen als offen. Für Wiedererkennung + KI-Bildsuche eine verpasste Chance. | mittel |
+| D5 | **Kein OG-Bild-System pro Rasse.** 8 statische `opengraph-image.tsx` existieren, aber die 186 Rasse-Seiten teilen sich das generische `/og-image.png`. `DEFINITION_OF_DONE.md` nennt „OG-Bilder pro Rasse" als offen. | mittel |
+| D6 | **Kein Komponenten-Katalog, keine visuelle Regression.** Design-Änderungen sind Blindflug. | niedrig |
+| D7 | **`--muted: #9a93a6` auf `#08080c`** ist grenzwertiger Kontrast (~4.7:1) für kleine Schrift — a11y-Audit nötig, bevor mehr Grautext dazukommt. | niedrig |
+
+## 1.3 Content
+
+| # | Befund | Schwere |
+|---|---|---|
+| C1 | **Skalierungs-Risiko.** 1.400+ Tipps-Artikel + 186 Rassen + 14 Probleme + Futtertyp/Lebensphase/Vergleich/Studien/Glossar/Blog. Google „Scaled Content Abuse" / Helpful-Content trifft dünne programmatische Seiten hart. Die `/rasse/[slug]`-Seite ist inhaltlich reich (Portionsrechner, FAQ, Fütterungs-Absätze) — die 1.400 Tipps müssen auf echten Eigenwert geprüft werden. | hoch |
+| C2 | **Kein Tierarzt-Review.** `REVIEWER` ist leer, `reviewedBy`-Schema damit inaktiv. Der größte EEAT-Hebel für eine Gesundheits-nahe Affiliate-Seite. (Off-Page, aber Content-nah.) | hoch |
+| C3 | **Aktualität nicht sichtbar.** Kein einheitliches „zuletzt geprüft am"-Signal über Seitentypen. | mittel |
+| C4 | **Interne Verlinkung ad hoc.** Kein bewusster Themen-Cluster-Graph (Hub → Spoke → Sibling), der Autorität bündelt. | mittel |
+| C5 | **GEO / AI-Search halb.** `llms.txt` + `catalog.json` da; `llms-full.txt`, Bot-Logging, Antwort-zuerst-Konsistenz über alle Seitentypen offen. | mittel |
+| C6 | **JSON-LD 21× per `dangerouslySetInnerHTML`** ohne gemeinsamen Helfer → Schema-Fehler schleichen sich einzeln ein (GSC hatte schon einen `image`-Fehler). | niedrig |
+
+## 1.4 Wachstum & Moat
+
+| # | Befund | Schwere |
+|---|---|---|
+| G1 | **Futter-Pass-Schwungrad nur halb verdrahtet.** `dog_profiles` wird im Chat-Route angelegt (Verbrauchsmathematik, `est_bag_days`, Share-Token), aber die Schleife *Nachschub fällig → E-Mail → Re-Kauf* ist nicht geschlossen. Das ist der Burggraben (`FUTTERPASS.md`). | hoch |
+| G2 | **GA4 (`gtag.js`) trotz „kein Fremd-Pixel"-Prinzip.** Es gibt bereits `/api/vitals` + `WebVitals` (first-party RUM). Analytics könnte komplett first-party werden — Prinzip-treu, DSGVO-leichter, schneller. | mittel |
+| G3 | **Funnel nicht instrumentiert.** `conversion-analyst` ist definiert, aber Seite→Profil→Klick→Nachschub wird nicht durchgängig gemessen; die Signale fließen nicht zurück in Advisor/Cross-Sell/SEO. | mittel |
+| G4 | **Outcome-Checks (3-Wochen-„hat's geholfen?") laufen, werden aber nirgends sichtbar** als Trust-Signal / aggregierte Aussage. Einziger Datenpunkt, den kein Vergleichsportal hat — ungenutzt. | mittel |
+| G5 | **Kein Error-Tracking / kein strukturiertes Logging in Produktion.** Streams brechen still ab (`catch { fullText = "" }`), niemand erfährt es. | mittel |
+
+## 1.5 Doku (Meta)
+
+Der Verwirrungs-Stapel. Vieles ist historisch, widerspricht dem Code oder sich selbst:
+
+| Datei | Zustand |
+|---|---|
+| `agents.md` (Root) | **Stale.** „BELLA BLUEPRINT — Migration HANSI→BELLA", Steps 1–16. Migration ist **fertig**. Verweist auf `/mnt/user-data/outputs/*`. |
+| `.github/copilot-instructions.md` | **Stale.** Enthält denselben Migrations-Blueprint. |
+| `bella-app/ARCHITECTURE.md` | **Komplett falsch.** Beschreibt Mobilfunkverträge, Städte-Seiten, `/hunds/[slug]`, `products.ts`, `src/features/`, `src/proxy.ts`. Nichts davon existiert. |
+| `bella-app/AGENTS.md` · `Bella_AGENTS.md` · `Bella_DECISION_INTELLIGENCE_AGENTS.md` · `SEO_AGENTS.md` | Überlappend, teils redundant zur `.claude/agents/`-Flotte. |
+| `bella-app/DEFINITION_OF_DONE.md` (13.06.) · `DEPLOYMENT_DEBUG_REPORT.md` · `OUTREACH_SETUP.md` · `docs/GEO_PROTOCOL.md` | Zeitpunkt-Snapshots, teils noch nützlich, aber nicht als SSOT markiert. |
+| `.claude/agents/*.md` (13) + `README.md` | **Das gute System.** README sagt „10 Agenten", es sind 13 Dateien — leicht auseinander. |
+| `CLAUDE.md` (Root) + `bella-app/CLAUDE.md` (`@AGENTS.md`) | Aktuell & korrekt. Bleibt SSOT für den Alltag. |
+| `README.md` (Root) + `bella-app/README.md` | Beide brauchbar & aktuell. |
+
+---
+
+# TEIL 2 — ZIELBILD ("es rummst")
+
+Messbar. Kein Vibe.
+
+| Dimension | Heute | Ziel |
+|---|---|---|
+| **Stack** | React 18 / Next 16 (off-baseline), 0 Tests, kein CI-Gate | React 19 / Next 16, ≥ 60 % Kernlogik testabgedeckt, CI blockt roten `main` |
+| **Sicherheit** | kein CSP, kein Rate-Limit | strikte CSP (Lighthouse „CSP effektiv") + COOP, `/api/*` rate-limited, Secrets nur server-seitig |
+| **PageSpeed (mobil)** | Perf 91 · BP 96 (nach heutigem Fix) | **Perf ≥ 98 · BP 100 · A11y 100 · SEO 100**, gehalten durch Perf-Budget in CI |
+| **BELLA-Qualität** | Regex-Intent, ein Modell, kein Eval | LLM-strukturierter Intent + Regex-Fast-Path, Modell-Routing (schnell fragen / stark empfehlen), **Eval-Suite mit ≥ 30 Szenarien** grün, Allergen-Sicherheit per Test |
+| **Design** | 1 Theme, Token-Schulden, Emoji-BELLA | Light+Dark, ein Token-System, echtes BELLA-Maskottchen (SVG, mehrere Posen), OG-Bild pro Rasse |
+| **Content/EEAT** | kein Vet-Review, Aktualität unsichtbar, Cluster ad hoc | Tierarzt-Review live (`reviewedBy` aktiv), „geprüft am" überall, bewusster Cluster-Graph, Thin-Content-Audit bestanden |
+| **Moat** | Futter-Pass halb, GA4, kein Funnel | Nachschub-Schleife geschlossen (E-Mail → Re-Kauf), first-party Analytics, Funnel Seite→Profil→Klick→Nachschub durchgemessen |
+| **Betrieb** | keine Fehler-Sicht | Error-Tracking + strukturierte Logs, Alerts bei Stream-/Feed-/Cron-Fehlern, `SECURITY.md` |
+| **North Star** | — | **ORPV** (Affiliate-Umsatz / organische Besucher) messbar und steigend |
+
+---
+
+# TEIL 3 — DIE OPERATIONEN
+
+> Reihenfolge = grob top-down. Innerhalb einer Phase parallelisierbar, außer bei `Abhängt von`.
+
+## PHASE 0 — Aufräumen & Wahrheit
+
+Bevor gebaut wird, muss das Repo aufhören zu lügen.
+
+### ✅ Operation 0.0 — App-Ordner `handyvertrag-app` → `bella-app` — **ERLEDIGT (2026-09-03)**
+`git mv`, `netlify.toml base`, `package.json name`, 3 CI-Workflows, `.gitignore` ×2,
+`CLAUDE.md`, `.claude/agents/{00,06}`, `README` angepasst. Legacy-Skript `migrate-from-hansi.sh` entfernt. Build grün.
+**Rest-Haken (Mensch):** in der Netlify-UI unter *Site configuration → Build & deploy → Build settings*
+prüfen, dass „Base directory" leer ist oder auf `bella-app` steht (sonst überstimmt die UI `netlify.toml`).
+
+### Operation 0.1 — Doku auf eine Wahrheit reduzieren
+- **Ziel:** Ein Leser (Mensch oder Agent) findet in < 2 Minuten heraus, was stimmt.
+- **Warum:** 8 teils widersprüchliche Strategiedokumente kosten jeden Onboarding-Versuch eine Stunde und verleiten Agenten zu falschen Annahmen (T2/T3 stehen als „erledigt" in `ARCHITECTURE.md`).
+- **Dateien:** `agents.md`, `.github/copilot-instructions.md`, `bella-app/ARCHITECTURE.md`, `bella-app/{AGENTS,Bella_AGENTS,Bella_DECISION_INTELLIGENCE_AGENTS,SEO_AGENTS}.md`, `.claude/agents/README.md`, neu: `bella-app/ARCHITECTURE.md` (echt).
+- **Vorgehen:**
+  1. `bella-app/ARCHITECTURE.md` **löschen** und **neu schreiben** — echter Stand: App-Router-Seiten, Neon/Drizzle-Schema (aus `src/db/schema.ts`), Feed-Pipeline (Python `parse-feeds.py` → `load-dog-foods.mjs`, Netlify Scheduled Functions), KI-Route-Stream-Protokoll, Netlify-Deploy. Ein ASCII-Diagramm, das dem Code entspricht.
+  2. `agents.md` (Root) **ersetzen** durch eine 15-Zeilen-Wegweiser-Datei: „Roadmap → `BELLA_NEXT_LEVEL.md`, Alltag → `CLAUDE.md`, Flotte → `.claude/agents/`."
+  3. `.github/copilot-instructions.md` **ersetzen** durch dieselben Constraints wie in `CLAUDE.md` §4 + Verweis auf dieses Dokument. Keine Migrations-Steps mehr.
+  4. `bella-app/{AGENTS,Bella_AGENTS,Bella_DECISION_INTELLIGENCE_AGENTS,SEO_AGENTS}.md`: Inhalt, der noch trägt, in `.claude/agents/`-Dateien einpflegen, dann **löschen**. `bella-app/CLAUDE.md` (`@AGENTS.md`) auf `@../CLAUDE.md` oder eigenen Kurzinhalt umstellen.
+  5. `DEPLOYMENT_DEBUG_REPORT.md` löschen (Zeitpunkt-Artefakt). `DEFINITION_OF_DONE.md` → `docs/status/2026-06-13-definition-of-done.md` archivieren. `OUTREACH_SETUP.md`, `docs/GEO_PROTOCOL.md` nach `docs/` sortieren.
+  6. `.claude/agents/README.md`: „10" → „13", Tabelle mit allen 13 Dateien synchronisieren.
+- **Akzeptanz:** `grep -ri "handyvertrag\|mobilfunk\|schufa\|products.ts\|/hunds/" --include=*.md` = 0 relevante Treffer. Jede verbleibende `.md` hat oben eine Zeile „Status: SSOT | ergänzend | Archiv (Datum)". `README`-Badges stimmen.
+- **Agent:** `content-engineer` (+ `platform-architect` fürs Architektur-Doc). **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** —
+
+### Operation 0.2 — Toten „Architektur-Theater"-Code entfernen
+- **Ziel:** Was nicht typgeprüft und von nichts importiert wird, ist weg.
+- **Warum:** T7. Excludes in `tsconfig`/ESLint verstecken Code, der weder kompiliert noch gelintet wird — er kann jederzeit still brechen und verwirrt jeden Refactor.
+- **Dateien:** `src/lib/environment/*`, `src/lib/performance/*`, `src/lib/state/*`, `src/lib/validation/*`, `src/lib/rendering/*`, `src/lib/data/production-data-flow.ts`, `tsconfig.json`, `eslint.config.mjs`, `bella-app/index.html`.
+- **Vorgehen:**
+  1. Pro Datei: `grep -rn "from ['\"].*<datei>" src` → wenn 0 Importe: löschen. Wenn Importe: erst entkoppeln.
+  2. Excludes aus `tsconfig.json` (Zeilen 40–52 außer `node_modules`, `drizzle.config.ts`) und `eslint.config.mjs` `globalIgnores` (außer `scripts/**`) **entfernen** — jetzt muss alles Verbleibende typ- und lint-clean sein.
+  3. `bella-app/index.html` löschen.
+  4. `scripts/**` behalten, aber ein eigenes lockeres `tsconfig.scripts.json` geben statt komplett ignorieren (optional, S).
+- **Akzeptanz:** `tsconfig.json` `exclude` = nur `["node_modules"]`. `npm run typecheck` grün über **alles**. `npm run lint` grün. Build grün. Bundle-Size First-Load-JS nicht gestiegen.
+- **Agent:** `platform-architect`. **Aufwand:** M. **Risiko:** mittel (versteckte Importe). **Abhängt von:** —
+
+### Operation 0.3 — Env-Templates konsolidieren + dokumentieren
+- **Ziel:** Eine `.env.example`, die jede echte Variable erklärt.
+- **Dateien:** `bella-app/.env.example` (behalten, neu befüllen), `bella-app/env.example` (löschen).
+- **Vorgehen:** Alle in Code + `netlify/functions/*` + `.github/workflows/*` referenzierten `process.env.*` sammeln (`grep -rn "process.env." src netlify scripts`), jede mit 1-Zeilen-Kommentar + „required/optional" + „wo eintragen (Netlify UI / GH Secret)". Die 14 toten `NEXT_PUBLIC_*_ENABLED` streichen (nach Gegencheck `grep -rn "NEXT_PUBLIC_.*_ENABLED" src`).
+- **Akzeptanz:** `env.example` gelöscht. Jede `process.env`-Nutzung im Code taucht in `.env.example` auf. `README`/`CLAUDE.md`-Env-Absatz zeigt auf die eine Datei.
+- **Agent:** `platform-architect`. **Aufwand:** S. **Risiko:** niedrig. **Abhängt von:** —
+
+### Operation 0.4 — CI-Gate: build + lint + typecheck + test bei jedem PR
+- **Ziel:** Roter Code kommt nicht nach `main`.
+- **Warum:** T11. Heute schützt nur die Disziplin „ich hab lokal gebaut".
+- **Dateien:** neu `.github/workflows/ci.yml`, `bella-app/package.json` (Scripts `typecheck`, `test`).
+- **Vorgehen:**
+  1. `package.json`: `"typecheck": "tsc --noEmit"`, `"test": "vitest run"` (nach 1.4), vorerst `"test": "echo no tests yet"`.
+  2. `ci.yml`: on `pull_request` + `push: main`, Node 22, `npm ci`, dann `npm run typecheck && npm run lint && npm run build && npm test`. Cache `~/.npm` + `.next/cache`.
+  3. Branch-Protection auf `main`: „require status checks" = `ci`.
+  4. Concurrency-Group pro Branch (alte Läufe canceln).
+- **Akzeptanz:** PR mit absichtlichem TS-Fehler wird rot geblockt. Grüner PR merged. Laufzeit < 8 min.
+- **Agent:** `platform-architect`. **Aufwand:** S–M. **Risiko:** niedrig. **Abhängt von:** —
+
+---
+
+## PHASE 1 — Fundament modernisieren
+
+### Operation 1.1 — React 19 Upgrade
+- **Ziel:** Auf die von Next 16 unterstützte Basis. React 19.2 + `react-dom` 19.2 + Typen.
+- **Warum:** T1. Supportbasis, Bugfixes, und die Tür zu `useOptimistic`/`use()`/`<form>`-Actions für den Advisor- und Preis-Wecker-Flow.
+- **Dateien:** `bella-app/package.json`, `@types/react*`, potentiell jede `"use client"`-Komponente mit veraltetem Pattern.
+- **Vorgehen:**
+  1. `npm i react@^19.2 react-dom@^19.2 && npm i -D @types/react@^19 @types/react-dom@^19`.
+  2. `npx types-react-codemod@latest preset-19 ./src` (JSX-namespace, `ref`-as-prop, `useRef`-Argument-Pflicht).
+  3. `framer-motion` → aktuelle `motion`-Version gegen React 19 prüfen; wo Animation trivial ist, gegen CSS (`@starting-style`, View Transitions) tauschen (siehe D3/1.x).
+  4. Voller Klick-Test: Advisor-Stream, DogPassPopup, ExitIntent, SupportChat, Preis-Wecker-Formular, `/rassen`, ein `/rasse/[slug]`.
+  5. `reactStrictMode` bleibt an — Doppel-Effekte-Regressionen fixen statt Strict-Mode aus.
+- **Akzeptanz:** `npm run build` + `typecheck` + `lint` grün. Keine React-19-Konsolen-Warnings auf Home/`/rassen`/`/rasse/[slug]`/Advisor. Vitals nicht schlechter. Ein Preview-Deploy manuell durchgeklickt.
+- **Agent:** `platform-architect`. **Aufwand:** M–L. **Risiko:** mittel. **Abhängt von:** 0.2, 0.4.
+
+### Operation 1.2 — Sicherheits-Header: strikte CSP + COOP + Rahmen
+- **Ziel:** Lighthouse „CSP ist wirksam gegen XSS" bestanden, COOP gesetzt, keine `unsafe-inline`-Skripte.
+- **Warum:** T2. Aktuell 0 CSP; `ARCHITECTURE.md` behauptet das Gegenteil.
+- **Dateien:** neu `src/middleware.ts` (Nonce), `next.config.ts` (Header), `netlify.toml` (Fallback-Header), `layout.tsx` (Nonce an Inline-`<script type="application/ld+json">` + `GoogleAnalytics`/`WebVitals`).
+- **Vorgehen:**
+  1. Middleware erzeugt pro Request eine Nonce, setzt `Content-Security-Policy` mit `script-src 'self' 'nonce-…' 'strict-dynamic'; object-src 'none'; base-uri 'none'; frame-ancestors 'self'; …` und reicht sie via Header/`headers()` an RSC weiter.
+  2. Alle 21 `dangerouslySetInnerHTML`-JSON-LD-Stellen auf einen `<JsonLd nonce>`-Helfer (siehe C6/4.6) umstellen.
+  3. `Cross-Origin-Opener-Policy: same-origin`, `Cross-Origin-Resource-Policy: same-site`, `X-Frame-Options` → durch `frame-ancestors` ersetzt, aber als Legacy behalten.
+  4. Prüfen, dass Netlify-Image-Optimierung, GA (lazyOnload) und `/api/vitals` weiter funktionieren; `report-uri`/`report-to` auf `/api/csp-report` (nur loggen).
+  5. Trade-off bewerten: Nonce-Middleware macht Seiten dynamisch. Prüfen, ob eine **statische** CSP mit Hash-Liste für die wenigen Inline-Skripte reicht (bevorzugt, hält SSG). Wenn ja: dieser Weg.
+- **Akzeptanz:** Lighthouse BP = 100, „CSP evaluiert" grün. `curl -I` zeigt CSP + COOP. Kein Funktionsbruch auf Home/Advisor/`/rassen`. SSG-Seitenzahl im Build unverändert (falls Hash-Weg) oder bewusst dokumentiert (falls Nonce-Weg).
+- **Agent:** `platform-architect` + `trust-compliance` (Freigabe). **Aufwand:** M. **Risiko:** mittel (kann Seiten dynamisch machen / Skripte brechen). **Abhängt von:** 1.1 empfohlen.
+
+### Operation 1.3 — API-Middleware: Rate-Limit + Herkunftsprüfung
+- **Ziel:** `/api/advisor/chat` & andere teure Routen sind gegen Missbrauch/Kostenexplosion geschützt.
+- **Warum:** T3. Zwei LLM-Calls pro Request, ungedrosselt, von überall.
+- **Dateien:** `src/middleware.ts` (aus 1.2), neu `src/lib/rate-limit.ts`, `src/app/api/advisor/chat/route.ts`.
+- **Vorgehen:**
+  1. Rate-Limit pro IP: `/api/advisor/*` z.B. 20/min + 200/Tag, restliche `/api/*` 60/min. Speicher: Netlify-kompatibel — **Upstash Redis** (REST) oder Netlify Blobs; In-Memory als Dev-Fallback.
+  2. `Origin`/`Referer`-Check gegen `SITE_URL` für POST-Routen; `429` mit `Retry-After` als JSON.
+  3. Kurzes serverseitiges Kosten-Logging (Tokens/Modell) pro Advisor-Request in eine `ai_usage`-Tabelle (Migration, nicht `CREATE TABLE IF NOT EXISTS`).
+  4. `maxDuration`/Abbruch: Client-`AbortController` serverseitig respektieren, Stream sauber schließen.
+- **Akzeptanz:** 25 schnelle Requests → ab #21 `429`. Fremd-`Origin`-POST → `403`. `ai_usage` füllt sich. Normale Nutzung unbeeinträchtigt.
+- **Agent:** `platform-architect`. **Aufwand:** M. **Risiko:** mittel (Redis-Abhängigkeit / false positives). **Abhängt von:** 1.2.
+
+### Operation 1.4 — Test-Fundament: Vitest (Unit) + Playwright (Smoke)
+- **Ziel:** Die gefährliche Logik ist abgedeckt, bevor sie umgebaut wird.
+- **Warum:** T4. Allergen-Ausschluss ist tier-sicherheitsnah und hat null Netz.
+- **Dateien:** neu `vitest.config.ts`, `playwright.config.ts`, `src/**/*.test.ts`, `e2e/*.spec.ts`, `package.json`.
+- **Vorgehen — Unit zuerst (reine Funktionen):**
+  - `parseIntent` — 20+ Fälle: „Hühnerallergie" → `protein: Huhn` + `sensitive`; NFD-Umlaute; Budget „unter 5€/kg"; Rasse-Erkennung; „Welpe" vs. „ist dein Hund ein Welpe?" (nur User-Turns).
+  - `scoreFood` / Kandidaten-Ranking — Allergen wird **nie** in Top-3, Marken-Vielfalt, Budget-Penalty.
+  - `containsAllergen` (`@/db/queries/crosssell`) — Huhn ⇒ Geflügel/Hähnchen.
+  - `dailyGrams` / `monthlyEuro` (`consumption-math`) — bekannte RER-Werte.
+  - `extractPricePerKg`, Slug-Generierung, `findGlossaryLinks`, `issueToProblemSlug`.
+  - `getBreedsSlim`, Breed-Alias-Redirects.
+- **Vorgehen — Playwright-Smoke (gegen `next build && next start`):**
+  - Home rendert, kein Konsolen-Error. `/rassen` zeigt Bilder. Ein `/rasse/[slug]` rendert Hero + FAQ. Advisor: Nachricht senden → Stream kommt → am Ende `OFFERS`. `robots.txt`/`sitemap.xml` `200`.
+- **Akzeptanz:** `npm test` grün, in `ci.yml` verdrahtet. Kernmodule aus 1.x haben Tests **vor** ihrem Umbau. Coverage-Report existiert (Ziel iterativ ≥ 60 % der `src/lib` + Advisor-Logik).
+- **Agent:** `platform-architect` + `bella-advisor` (Advisor-Fälle). **Aufwand:** L. **Risiko:** niedrig. **Abhängt von:** 0.4.
+
+### Operation 1.5 — Drizzle-Migrationen statt Laufzeit-DDL
+- **Ziel:** Schema-Änderungen sind versioniert und reviewbar.
+- **Warum:** T5. `CREATE TABLE IF NOT EXISTS` im Request-Pfad ist eine Zeitbombe (Race, Latenz, stille Divergenz).
+- **Dateien:** neu `bella-app/drizzle/` (SQL), `drizzle.config.ts`, `src/app/api/advisor/chat/route.ts` (`logChat`), evtl. weitere Routen mit demselben Muster (`grep -rn "CREATE TABLE IF NOT EXISTS" src`).
+- **Vorgehen:**
+  1. `chat_logs`, `ai_usage` (aus 1.3) als Drizzle-Tabellen ins `schema.ts`.
+  2. `npx drizzle-kit generate` → SQL committen. Einmalig `drizzle-kit migrate` gegen Neon (oder GH-Action mit `DATABASE_URL`-Secret).
+  3. Alle Laufzeit-DDL aus dem Code entfernen.
+  4. Optional CI-Job: `drizzle-kit check` gegen die Migrationen (Drift-Detektor).
+- **Akzeptanz:** `grep -rn "CREATE TABLE" src` = 0. `drizzle/`-Ordner mit nummerierten SQL-Files committet. Advisor-Logging funktioniert weiter.
+- **Agent:** `platform-architect`. **Aufwand:** S–M. **Risiko:** niedrig. **Abhängt von:** —
+
+### Operation 1.6 — Font-Bug + tsconfig-Modernisierung
+- **Ziel:** Die Seite rendert in der Font, die das Design meint; TS-Output ist modern.
+- **Dateien:** `src/app/layout.tsx`, `src/app/globals.css`, `tsconfig.json`.
+- **Vorgehen:**
+  1. `next/font` (self-hosted, z.B. `next/font/google` Inter mit `display: "swap"`, `variable: "--font-inter"`) im `layout.tsx`, `className={inter.variable}` auf `<html>`. Alternativ bewusst auf System-Font-Stack committen und `var(--font-inter, …)` aus `globals.css` entfernen — aber nicht den Zwischenzustand lassen.
+  2. `tsconfig.json`: `target` → `ES2022`, `lib` → `["dom","dom.iterable","ES2022"]`. Build + typecheck.
+- **Akzeptanz:** DevTools „Computed → font-family" zeigt Inter (oder die bewusste Entscheidung ist im Code eindeutig). `target: "ES2022"`. Build/typecheck grün. LCP nicht schlechter (Font `swap` + Preload).
+- **Agent:** `visual-designer` + `platform-architect`. **Aufwand:** S. **Risiko:** niedrig. **Abhängt von:** —
+
+---
+
+## PHASE 2 — BELLA-Intelligenz auf das nächste Level
+
+### Operation 2.1 — Intent-Extraktion per LLM-Structured-Output (Regex als Fast-Path)
+- **Ziel:** Robuste, erweiterbare Intent-Erkennung; die 180-Rassen-Regex-Kopie stirbt.
+- **Warum:** T6. Regex skaliert nicht auf natürliche Formulierungen und ist nicht sauber testbar.
+- **Dateien:** `src/app/api/advisor/chat/route.ts`, neu `src/lib/advisor/intent.ts`, `src/lib/advisor/schema.ts` (Zod), Tests aus 1.4.
+- **Vorgehen:**
+  1. Zod-Schema `DogIntent` (Lebensphase, Futtertyp, sensitiv, Protein/Allergen, Rasse-Slug, Budget, aktuelles Futter, Wechselgrund, Konfidenz).
+  2. **Fast-Path:** billige deterministische Regeln für die eindeutigen Fälle (Slug-Match gegen `@/data/breeds.ts` — **eine** Quelle —, „unter X €/kg", explizite Futtertyp-Wörter).
+  3. **LLM-Path:** wenn Fast-Path unsicher, Gemini/Claude mit `responseSchema`/Tool-Use auf die letzten N Turns → strukturierter Intent. Kein Freitext.
+  4. Merge Fast-Path ⊕ LLM, Konflikte zugunsten des sicheren Wertes (Allergie gewinnt).
+  5. `BREEDS`-Array aus der Route **löschen**, aus `breeds.ts` ableiten.
+- **Akzeptanz:** Alle `parseIntent`-Tests aus 1.4 grün + 10 neue „natürliche Sprache"-Fälle. Keine Rassen-Liste mehr in `route.ts`. Latenz-Budget: Fast-Path 0 ms, LLM-Path nur wenn nötig, gemessen in `ai_usage`.
+- **Agent:** `bella-advisor`. **Aufwand:** L. **Risiko:** mittel (Latenz/Kosten). **Abhängt von:** 1.4, 1.3.
+
+### Operation 2.2 — Modell-Routing: schnell fragen, stark empfehlen
+- **Ziel:** Frage-Turn = schnell/billig; Empfehlungs-Turn = beste Begründungsqualität.
+- **Warum:** T14. EEAT und Conversion hängen an der Empfehlungs-Begründung, nicht an der Rückfrage.
+- **Dateien:** `route.ts` (`buildSystemPrompt`/Modell-Auswahl), Konfig `src/lib/advisor/models.ts`.
+- **Vorgehen:** `ask === true` → Haiku/Flash. `ask === false` (Empfehlung) → stärkeres Modell (Sonnet-Klasse) mit striktem Token-Limit; Fallback-Kette beibehalten. Modell + Tokens + Latenz nach `ai_usage`. A/B-fähig über Env-Flag.
+- **Akzeptanz:** Empfehlungs-Antworten in 10 Blind-Bewertungen im Schnitt konkreter/faktentreuer (Rubrik in 2.4). Kein Latenz-Regress > 1,5 s p50 im Empfehlungs-Turn. Kosten pro Empfehlung dokumentiert.
+- **Agent:** `bella-advisor`. **Aufwand:** S–M. **Risiko:** niedrig–mittel (Kosten). **Abhängt von:** 1.3.
+
+### Operation 2.3 — Stream-Robustheit + ehrliche Fehler
+- **Ziel:** Ein abgebrochener LLM-Call ist sichtbar (für uns) und höflich (für den Nutzer), nie ein stiller Leer-Stream.
+- **Warum:** G5. Heute `catch { fullText = "" }` → Nutzer sieht evtl. nichts, wir erfahren nichts.
+- **Dateien:** `route.ts`, `src/components/BellaAdvisor.tsx` (Client-Parser), `src/lib/environment/production-logging.ts` → Ersatz (siehe 6.1).
+- **Vorgehen:** Timeouts pro Provider, `error`-Event ins Stream-Protokoll, Client zeigt Retry-Chip, Serverfehler → Error-Tracking (6.1). `AbortController`-Kette Client→Server.
+- **Akzeptanz:** Simulierter Provider-Timeout → Nutzer sieht „Kurz nicht durchgekommen — nochmal?" + funktionierender Retry; ein Fehler-Event landet im Tracking. Kein leerer `OFFERS`-Abschluss ohne Text.
+- **Agent:** `bella-advisor` + `platform-architect`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 6.1 (Tracking) — oder parallel mit `console.error`-Stub.
+
+### Operation 2.4 — Advisor-Eval-Suite (≥ 30 Szenarien)
+- **Ziel:** Änderungen am Prompt/Scoring/Modell werden gegen feste Szenarien gemessen, nicht „gefühlt".
+- **Warum:** Ohne Eval ist jede Prompt-Änderung ein Blindflug; mit 2.1/2.2 ändern wir viel.
+- **Dateien:** neu `eval/advisor/*.jsonl` (Szenario: Conversation-History → Erwartungen), `eval/run.ts`, npm-Script `eval:advisor`.
+- **Vorgehen:** Szenarien u.a.: Hühnerallergie (nie Huhn/Geflügel in Offers), Welpe große Rasse (kein reines Adult), Senior + Gelenke (Cross-Sell Gelenke), Budget 4 €/kg (alle Offers ≤ Budget), BARF-Wunsch, „mein Hund frisst X nicht" (Wechsel-Kontext genutzt), vager Protein-Hinweis (Warnung ausgesprochen), Score < 40 (BELLA sagt offen „lass den"). Assertions: strukturell (Offers-Constraints) + LLM-Judge (Rubrik: faktentreu / konkret / kein Heilversprechen / Offenlegung).
+- **Akzeptanz:** `npm run eval:advisor` läuft lokal + als **nicht-blockierender** CI-Job (Report als PR-Kommentar). Baseline dokumentiert; Regressionen sichtbar.
+- **Agent:** `bella-advisor` + `conversion-analyst`. **Aufwand:** L. **Risiko:** niedrig. **Abhängt von:** 1.4.
+
+### Operation 2.5 — Allergen-Sicherheit als harter Gate
+- **Ziel:** Kein Deploy, wenn ein Allergiker-Szenario ein verbotenes Protein in den Offers hätte.
+- **Dateien:** `eval/advisor/allergen/*.jsonl`, `ci.yml`.
+- **Vorgehen:** Teilmenge von 2.4 nur für Allergene, als **blockierender** CI-Check. Deckt Namen-basierten Ausschluss ab (Huhn → „Hühnchen", „Geflügel", „Poulet", zusammengesetzte Produktnamen).
+- **Akzeptanz:** Absichtlich gelockerter Filter → CI rot. Normalzustand grün.
+- **Agent:** `trust-compliance` + `bella-advisor`. **Aufwand:** S (baut auf 2.4). **Risiko:** niedrig. **Abhängt von:** 2.4.
+
+---
+
+## PHASE 3 — Design auf das nächste Level
+
+### Operation 3.1 — Ein Token-System (Light + Dark)
+- **Ziel:** Alle Farben/Abstände/Radien kommen aus benannten Tokens; die Seite respektiert `prefers-color-scheme` und hat einen Umschalter.
+- **Warum:** D1/D2. Drei Farbwahrheiten + nur Dark = Wartungslast und aus der Zeit.
+- **Dateien:** `src/app/globals.css`, neu `src/styles/tokens.css`, `src/lib/theme.ts`, `src/components/ThemeToggle.tsx`, ~8 Komponenten mit hartem Honig-Wert.
+- **Vorgehen:**
+  1. Semantische Tokens: `--surface`, `--surface-raised`, `--text`, `--text-muted`, `--accent`, `--accent-ink`, `--border`, `--focus` … je für Light und Dark unter `:root` / `:root[data-theme]` / `@media (prefers-color-scheme)`.
+  2. `@theme inline` nur noch Tokens referenzieren, keine Rohwerte.
+  3. `grep -rn "rgba(240,167,60\|#f0a73c\|#ff8a4c" src` → alle auf Tokens.
+  4. `ThemeToggle` (System/Light/Dark, `localStorage`, kein FOUC via Inline-Script im `<head>`).
+  5. Kontrast-Audit (D7): `--text-muted` in beiden Modi ≥ 4.5:1.
+- **Akzeptanz:** `grep` nach Roh-Honig in `src` = 0. Lighthouse A11y = 100 in beiden Modi. Umschalter ohne Flash. Screenshots Light+Dark von Home/`/rassen`/`/rasse/[slug]`/Advisor.
+- **Agent:** `visual-designer`. **Aufwand:** L. **Risiko:** mittel (visuelle Regressionen). **Abhängt von:** 3.4 (visuelle Regression) empfohlen.
+
+### Operation 3.2 — Echtes BELLA-Maskottchen
+- **Ziel:** Eine wiedererkennbare, eigene BELLA — SVG, 3–4 Posen (Idle, „schnüffelt/analysiert", „gefunden!", Fehler/„hm").
+- **Warum:** D4. Marke + KI-Bildsuche + Conversion. Ein Emoji ist kein Asset.
+- **Dateien:** neu `src/components/bella/BellaMascot.tsx` (+ SVG-Sprites), Einsatz in `BellaAdvisor`, Hero, `DogPassPopup`, 404, Loading-States.
+- **Vorgehen:** Stil aufs Design-System (Honig/Dark, wenige Linien). Inline-SVG, `currentColor`/Token-fähig, `prefers-reduced-motion` respektiert. Optional 1 Lottie für den „Analyse"-Moment — nur wenn Budget < 15 KB gz.
+- **Akzeptanz:** BELLA erscheint konsistent an ≥ 5 Stellen. Kein Emoji-🐕 mehr als Marken-Element (Deko-Emoji im Fließtext ok). Assets < 20 KB gesamt. Reduced-Motion sauber.
+- **Agent:** `visual-designer`. **Aufwand:** L. **Risiko:** niedrig. **Abhängt von:** 3.1 (Tokens).
+
+### Operation 3.3 — OG-Bild-System pro Rasse (und Kern-Seitentypen)
+- **Ziel:** Jede `/rasse/[slug]` (und Problem/Vergleich/Blog) hat ein eigenes, generiertes Teilen-Bild.
+- **Warum:** D5. 186 Rassen teilen sich ein generisches Bild → schwache Social/Chat-Vorschau.
+- **Dateien:** neu `src/app/rasse/[slug]/opengraph-image.tsx` (+ analog problem/vergleich), `src/lib/og/*` (Layout-Bausteine), evtl. Rasse-Foto aus `public/breeds/` einbetten.
+- **Vorgehen:** `ImageResponse` (Edge), Layout: Rasse-Foto + Name + „Futter-Empfehlung" + BELLA-Maskottchen + Domain. `size`/`contentType` export, `alt`. Fonts via `fetch` einer `.woff`.
+- **Akzeptanz:** `/rasse/labrador-retriever/opengraph-image` liefert 1200×630 PNG mit Rasse-Foto + Name. Twitter/Slack/WhatsApp-Vorschau geprüft. Build-Zeit-Impact gemessen (ggf. on-demand statt prebuild).
+- **Agent:** `visual-designer` + `content-engineer`. **Aufwand:** M. **Risiko:** mittel (Build-Zeit bei 186). **Abhängt von:** 3.2.
+
+### Operation 3.4 — Komponenten-Katalog + visuelle Regression
+- **Ziel:** Design-Änderungen sind sichtbar bevor sie live gehen.
+- **Dateien:** neu `.storybook/` **oder** eine schlanke `/dev/components`-Route (nur non-prod), Playwright-`toHaveScreenshot` für Kern-Screens.
+- **Vorgehen:** Minimal-Katalog für Card, Button, Pill, Advisor-Bubble, FoodCard, BreedImg, Mascot, ThemeToggle. Playwright-Screenshots von Home/`/rassen`/`/rasse/[slug]`/Advisor in Light+Dark, Baseline committen, Diff im CI (nicht-blockierend).
+- **Akzeptanz:** `npm run test:visual` erzeugt Diffs. Katalog rendert alle Kernkomponenten in beiden Themes.
+- **Agent:** `visual-designer` + `platform-architect`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 1.4.
+
+### Operation 3.5 — Motion-Politur
+- **Ziel:** Alle Dauer-Animationen GPU-composited; `framer-motion` nur dort, wo es echten Mehrwert bringt.
+- **Dateien:** `src/app/globals.css` (`sheen`), 6 `framer-motion`-Komponenten.
+- **Vorgehen:** `sheen` von `background-position` auf `transform: translateX` einer Pseudo-Element-Ebene. `framer-motion`-Audit: triviale Fades/Slides → CSS `@starting-style` + `transition`; komplexe Sequenzen (AnalysisStorm) behalten. View Transitions API für Seitenwechsel prüfen.
+- **Akzeptanz:** Lighthouse „nicht zusammengesetzte Animationen" = 0. `framer-motion`-Bundle-Anteil messbar kleiner. Kein sichtbarer Qualitätsverlust.
+- **Agent:** `visual-designer`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 1.1.
+
+---
+
+## PHASE 4 — Content & EEAT auf das nächste Level
+
+### Operation 4.1 — Thin-Content-Audit (programmatische Seiten)
+- **Ziel:** Jede indexierte Seite hat nachweisbaren Eigenwert; „Scaled Content Abuse"-Risiko raus.
+- **Warum:** C1. 1.400+ Tipps + hunderte programmatische Seiten sind ein Google-Helpful-Content-Risiko.
+- **Dateien:** neu `scripts/content-audit.mjs` (Report: URL, Wortzahl, Template-Anteil, interne Links, unique Fakten), Ziel-Seitentypen: `/tipps/*`, `/futtertyp/*`, `/lebensphase/*`, `/vergleich/*`, `/stadt/*`, `/glossar/*`.
+- **Vorgehen:** Metriken je Seite; Schwellen definieren (z.B. < 350 sinnvolle Wörter **oder** > 70 % Template ⇒ Flag). Optionen pro Flag: anreichern (echte Daten aus DB/Portionsmathematik/Studien), zusammenlegen, oder `noindex` + aus Sitemap. `/stadt/*` (634 Seiten) besonders kritisch prüfen — hat eine Hundefutter-Stadtseite echten Wert?
+- **Akzeptanz:** Report committet unter `docs/audits/`. Jede geflaggte Seite hat eine Entscheidung (anreichern/mergen/noindex) mit Umsetzung. Sitemap enthält nur „wertige" URLs.
+- **Agent:** `seo-strategist` + `content-engineer`. **Aufwand:** L. **Risiko:** mittel (Index-Änderungen — schrittweise, mit GSC-Monitoring). **Abhängt von:** —
+
+### Operation 4.2 — Tierarzt-Review live schalten
+- **Ziel:** `reviewedBy`-Schema aktiv, sichtbares „fachlich geprüft von …" auf den Gesundheits-nahen Seiten.
+- **Warum:** C2. Größter EEAT-Hebel. Outreach-Drafts liegen schon (`OUTREACH_SETUP.md`).
+- **Dateien:** `src/data/reviewer.ts` (echt befüllen), `src/components/ReviewedBadge.tsx`, `AuthorBox.tsx`, `StructuredData.tsx`.
+- **Vorgehen (Code-Teil):** Sobald ein realer Reviewer zusagt: `REVIEWER` mit Name, Qualifikation, Profil-URL füllen; Badge auf `/rasse/*`, `/problem/*`, `/lebensphase/*`, Ratgeber; `reviewedBy` + `lastReviewed` ins Article-Schema. **Off-Page-Teil (Mensch):** Reviewer gewinnen — steht in Phase „Off-Page" unten.
+- **Akzeptanz:** `REVIEWER !== null`, Badge sichtbar, Rich-Results-Test zeigt `reviewedBy`. Kein Fake — bis ein echter Reviewer da ist, bleibt es aus.
+- **Agent:** `trust-compliance` + `content-engineer`. **Aufwand:** S (Code). **Risiko:** niedrig. **Abhängt von:** externem Reviewer.
+
+### Operation 4.3 — Aktualitäts-Signal überall
+- **Ziel:** Jede Content-Seite zeigt „zuletzt geprüft/aktualisiert am" — konsistent, ehrlich, im Schema.
+- **Dateien:** ein `<Freshness>`-Component, `dateModified` in allen Article/FAQ-Schemas, Datenquelle: echtes Git-/DB-Datum, nicht `new Date()`.
+- **Akzeptanz:** Kein `dateModified: new Date().toISOString()` mehr (das lügt bei jedem Build). Sichtbares Datum auf `/rasse/*`, `/problem/*`, `/tipps/*`, Blog.
+- **Agent:** `content-engineer`. **Aufwand:** S–M. **Risiko:** niedrig. **Abhängt von:** 4.6.
+
+### Operation 4.4 — Interner Cluster-Graph
+- **Ziel:** Bewusste Hub→Spoke→Sibling-Verlinkung, die Autorität auf die Money-Keywords bündelt.
+- **Warum:** C4. Interne Links sind der stärkste Hebel, den wir allein kontrollieren.
+- **Dateien:** neu `src/lib/linking/graph.ts` (Themen-Cluster-Definition), `<RelatedLinks>`-Component, Einsatz in `/rasse/*`, `/problem/*`, `/futtertyp/*`, `/vergleich/*`, `/tipps/*`, Blog.
+- **Vorgehen:** Cluster definieren (z.B. „Allergie" = Hub `/problem/allergie` ↔ Spokes: getreidefrei-Futtertyp, Monoprotein, betroffene Rassen, relevante Studien, Vergleich getreidefrei-vs-mit-getreide). Jede Seite: 3–6 kuratierte kontextuelle Links + Breadcrumb. Orphan-Check-Skript.
+- **Akzeptanz:** 0 verwaiste indexierbare Seiten (`scripts/link-audit.mjs`). Jede Money-Seite hat ≥ 3 eingehende kontextuelle interne Links. Klick-Tiefe von Home zu jeder Money-Seite ≤ 3.
+- **Agent:** `seo-strategist`. **Aufwand:** L. **Risiko:** niedrig. **Abhängt von:** 4.1.
+
+### Operation 4.5 — GEO / AI-Search vervollständigen
+- **Ziel:** Für KI-Antwortmaschinen (ChatGPT, Perplexity, Google AI, Claude) maximal zitierfähig.
+- **Dateien:** `src/app/llms.txt` → + `llms-full.txt`, „Antwort-zuerst"-Konsistenz-Check über Seitentypen, `robots.ts` (KI-Bots explizit), `bella_summary`-Felder in Studien nutzen.
+- **Vorgehen:** `llms-full.txt` mit den 20 wichtigsten Antworten. Jede Money-Seite: erster Absatz = direkte Antwort in 2–3 Sätzen mit Originaldatum/-zahl. Zitierfähige Statistik-Bausteine (`CitableStat`) breiter einsetzen. Bot-Zugriffs-Logging (leichtgewichtig, first-party).
+- **Akzeptanz:** `llms-full.txt` erreichbar. Stichprobe 10 Money-Seiten: Absatz 1 beantwortet die Titelfrage eigenständig. Perplexity/ChatGPT-Testfragen zitieren die Domain (manuell, dokumentiert).
+- **Agent:** `seo-strategist`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 4.3.
+
+### Operation 4.6 — `<JsonLd>` + `<Freshness>` Schema-Helfer
+- **Ziel:** Ein getesteter Weg, strukturierte Daten auszugeben.
+- **Warum:** C6. 21 handgerollte `dangerouslySetInnerHTML` = 21 Fehlerquellen (GSC hatte schon eine).
+- **Dateien:** neu `src/components/JsonLd.tsx` (nonce-fähig, typisiert), Migration aller 21 Stellen, Unit-Test „gültiges JSON, kein XSS".
+- **Akzeptanz:** `grep -rn "application/ld\+json" src` nutzt nur noch `<JsonLd>`. Rich-Results-Test grün auf Home/`/rasse`/`/rassen`/FAQ/Blog. Nonce aus 1.2 greift.
+- **Agent:** `content-engineer` + `platform-architect`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 1.2.
+
+---
+
+## PHASE 5 — Wachstum & Moat schließen
+
+### Operation 5.1 — Futter-Pass-Schleife schließen (Nachschub → E-Mail → Re-Kauf)
+- **Ziel:** Aus dem Einmal-Klick wird wiederkehrender Umsatz. Der Burggraben (`FUTTERPASS.md`).
+- **Warum:** G1. `dog_profiles` + `est_bag_days` werden angelegt, aber nichts passiert, wenn der Sack leer wird.
+- **Dateien:** `netlify/functions/*` (neuer Scheduled Job „refill-due"), `src/lib/lifecycle.ts`, `src/lib/pack-reach.ts`, `src/lib/email.ts`, `priceAlerts` (mode `refill`), `/hund/[share_token]`.
+- **Vorgehen:**
+  1. Verbrauchsmathematik verfeinern: `est_daily_grams` × Packungsgröße → `refill_due_at`; Aktivität/Lebensphase einbeziehen.
+  2. Scheduled Function: fällige Profile mit bestätigter DOI-E-Mail → „Bello ist in ~5 Tagen durch — hier nachbestellen" (Affiliate-Link zum zuletzt empfohlenen Futter, + 1 kuratierte Alternative/Preis-Check).
+  3. Lebensphasen-Trigger: Welpe→Adult, Adult→Senior → „Zeit, das Futter anzupassen".
+  4. `/hund/[share_token]`: Steckbrief zeigt Nachschub-Countdown + „jetzt nachbestellen".
+  5. Frequenz-Disziplin: max. 1 Nachschub-Mail pro Zyklus, kein Spam (`last_notified_at`).
+- **Akzeptanz:** Seed-Profil mit `refill_due_at` in 2 Tagen → nächster Function-Lauf schickt genau eine Mail mit korrektem Link. Lebensphasen-Trigger feuert einmalig. Opt-out in jeder Mail.
+- **Agent:** `lifecycle-architect` + `retention-growth`. **Aufwand:** L. **Risiko:** mittel (E-Mail-Reputation, Frequenz). **Abhängt von:** 1.5, 6.1.
+
+### Operation 5.2 — First-Party-Analytics statt GA4
+- **Ziel:** Analytics ohne Fremd-Pixel — prinzipientreu (`CLAUDE.md`: „kein On-Load-Pixel"), DSGVO-leichter, schneller.
+- **Warum:** G2. GA4 widerspricht dem eigenen Prinzip und kostet PageSpeed/Consent-Komplexität.
+- **Dateien:** `src/app/api/vitals/route.ts` → erweitern zu `/api/track`, `src/components/WebVitals.tsx`, neue `events`-Tabelle (Migration), `GoogleAnalytics.tsx` entfernen, `layout.tsx`.
+- **Vorgehen:** Leichtes first-party Beacon (`navigator.sendBeacon`), anonym (kein Cookie, kein PII, IP nur gehasht/verworfen), Events: pageview, advisor_start, advisor_offers, affiliate_click, refill_click, alert_subscribe. Aggregat-Query für ein simples `/admin`-Dashboard. GA4 raus (oder hinter Consent, falls für ein spezifisches Signal nötig).
+- **Akzeptanz:** `grep -rn "googletagmanager\|gtag" src` = 0 (oder bewusst hinter Consent). PageSpeed „Drittanbieter" ohne Google-Analytics-Eintrag. Events landen in DB, Dashboard zeigt Funnel.
+- **Agent:** `conversion-analyst` + `trust-compliance`. **Aufwand:** M–L. **Risiko:** mittel (Datenkontinuität — Parallelbetrieb 2 Wochen). **Abhängt von:** 1.5.
+
+### Operation 5.3 — Funnel-Instrumentierung Seite→Profil→Klick→Nachschub
+- **Ziel:** Wir sehen, wo Nutzer abspringen, und die Signale fließen zurück in Advisor/Cross-Sell/SEO.
+- **Dateien:** Events aus 5.2, `src/app/empfehlung/[slug]/route.ts` (Klick-Attribution), Advisor-Route (Offer-Impression), Auswertungs-Query.
+- **Vorgehen:** Jede Stufe ein Event mit anonymer Session-Kette. Wochenreport: Conversion je Stufe, je Einstiegs-Seitentyp, je Advisor-Thema. Ableitungen: schwache Rasse-Seiten → `content-engineer`; Themen mit hoher Klick-, niedriger Nachschub-Rate → `lifecycle-architect`.
+- **Akzeptanz:** Report `docs/reports/` wöchentlich (halb-automatisch). Mind. eine konkrete Optimierung pro Monat aus den Daten abgeleitet und umgesetzt.
+- **Agent:** `conversion-analyst`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 5.2.
+
+### Operation 5.4 — Outcome-Checks sichtbar machen (Trust-Asset)
+- **Ziel:** „Von 128 Haltern mit Allergie-Hund sagten 71 % nach 3 Wochen: besser." — das hat kein Vergleichsportal.
+- **Warum:** G4. Die Daten entstehen bereits (`outcome_checks`), werden aber nicht genutzt.
+- **Dateien:** Aggregat-Query, `<OutcomeStat>`-Component auf `/problem/*`, `/rasse/*`, `warum-bella`, Methodik-Seite; strikt als „Nutzererfahrung", nie medizinische Aussage (wie `REVIEWER`-Prinzip).
+- **Akzeptanz:** Sichtbare, ehrlich gerundete Aggregatzahl mit n und Zeitraum, sobald n ≥ 30 pro Kategorie. Disclaimer „subjektive Halter-Rückmeldung, keine Studie". `trust-compliance`-Freigabe.
+- **Agent:** `retention-growth` + `trust-compliance`. **Aufwand:** M. **Risiko:** mittel (Compliance-Formulierung). **Abhängt von:** —
+
+---
+
+## PHASE 6 — Betrieb & Vertrauen
+
+### Operation 6.1 — Error-Tracking + strukturierte Logs
+- **Ziel:** Wir erfahren von Fehlern, bevor der Nutzer mailt.
+- **Dateien:** `src/lib/environment/production-logging.ts` (aus 0.2 ggf. gelöscht → sauber neu), Sentry (oder OTEL zu einem Collector), Einbindung in `route.ts`-Catches, `netlify/functions/*`, `error.tsx`/`global-error.tsx`.
+- **Vorgehen:** Sentry (Next-SDK, Client+Server+Edge), Sampling, PII-Scrubbing (E-Mails, Hundenamen raus), Release-Tagging pro Deploy. Alerts: Stream-Fehlerrate, Feed-Import-Fehler, Cron-Fehlschlag, 5xx-Spike.
+- **Akzeptanz:** Provozierter Fehler erscheint in Sentry mit Stacktrace + Release. Alert-Regeln aktiv. Kein PII in den Events (Stichprobe).
+- **Agent:** `platform-architect`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** —
+
+### Operation 6.2 — Performance-Budget in CI
+- **Ziel:** Kein Merge, der die Vitals oder die JS-Bundle-Size über die Schwelle drückt.
+- **Dateien:** `ci.yml` (Lighthouse-CI gegen `next start` oder Netlify-Preview-URL), `lighthouserc.json`, optional `size-limit`.
+- **Vorgehen:** LHCI auf Home + `/rassen` + ein `/rasse/[slug]`. Budgets: Perf ≥ 95 (Warn), TBT ≤ 200 ms, CLS ≤ 0.02, First-Load-JS ≤ Baseline + 10 %. Anfangs Warn, dann blockierend.
+- **Akzeptanz:** PR, der 100 KB JS hinzufügt, wird geflaggt. Report als PR-Kommentar.
+- **Agent:** `platform-architect` + `visual-designer`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 0.4.
+
+### Operation 6.3 — SECURITY.md, CODEOWNERS, PR-Template, Dependabot
+- **Ziel:** Repo-Hygiene wie ein Produkt, nicht wie ein Bastelprojekt.
+- **Dateien:** neu `SECURITY.md`, `.github/CODEOWNERS`, `.github/pull_request_template.md`, `.github/dependabot.yml`.
+- **Vorgehen:** SECURITY.md (Kontakt, Scope, kein Bug-Bounty aber verantwortungsvolle Offenlegung). Dependabot wöchentlich, gruppiert, für npm + GH-Actions. PR-Template mit „Build grün? Vitals? Tests? Offenlegung?"-Checkliste.
+- **Akzeptanz:** Alle Dateien da. Erster Dependabot-PR läuft durch CI.
+- **Agent:** `platform-architect` + `trust-compliance`. **Aufwand:** S. **Risiko:** niedrig. **Abhängt von:** 0.4.
+
+### Operation 6.4 — Daten-Backup + Wiederherstellungs-Runbook
+- **Ziel:** Neon-Datenverlust ist überlebbar; die Feed-Pipeline hat ein dokumentiertes „so bootstrappst du neu".
+- **Dateien:** neu `docs/runbooks/db-restore.md`, `docs/runbooks/feed-bootstrap.md`, ggf. Scheduled Function „daily pg_dump → Netlify Blobs / S3".
+- **Akzeptanz:** Ein Restore in eine Scratch-DB wurde einmal real durchgespielt und im Runbook protokolliert. Backup-Job läuft + alertet bei Fehlschlag.
+- **Agent:** `platform-architect`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 6.1.
+
+---
+
+## OFF-PAGE (kein Commit — aber ohne das rummst nichts)
+
+Aus `DEFINITION_OF_DONE.md`, weiterhin gültig und weiterhin der eigentliche Flaschenhals:
+
+1. **Digital PR über Originaldaten (C4).** Preisindex quartalsweise als fertige Pressemitteilung + Grafik an Tier-Magazine, Lokalzeitungen, Pet-Blogger. Die einzige skalierbare Backlink-Quelle für eine Affiliate-Seite.
+2. **Tierarzt-Reviewer gewinnen** (entsperrt Operation 4.2).
+3. **5 Profil-Rücklinks scharf machen** (Pinterest-Claim, Website-Feld bei LinkedIn/YouTube/X, LinkedIn-Name „Rolf Schwertfechter").
+4. **Eigene Produktfotos (F1).** Physische Arbeit, aber der Schlüssel-Differenzierer für Multimodal-/KI-Bildsuche.
+5. **AWIN-Programme:** Bewerbungen für weitere Partner (Terra Canis, Wolfsblut, MERA …) laufend nachziehen.
+
+---
+
+# TEIL 4 — REIHENFOLGE
+
+```
+Phase 0  ─ 0.1 Doku ┐
+                    ├─ parallel ─ 0.2 Toter Code ─ 0.3 Env ─ 0.4 CI-Gate
+                    ┘                                          │
+Phase 1  ─ 1.4 Tests ◀──────────────────────────────────────┘
+             │
+             ├─ 1.1 React 19 ─┬─ 1.2 CSP/COOP ─ 1.3 Rate-Limit
+             │                └─ 1.6 Font/tsconfig
+             └─ 1.5 Migrationen
+                        │
+Phase 2  ─ 2.1 Intent-LLM ─ 2.2 Modell-Routing ─ 2.3 Stream-Robustheit
+             └─ 2.4 Eval-Suite ─ 2.5 Allergen-Gate (blockierend)
+                        │
+Phase 3  ─ 3.4 Visuelle Regression ─ 3.1 Tokens/Light-Dark ─ 3.2 Maskottchen ─ 3.3 OG-Bilder ─ 3.5 Motion
+                        │
+Phase 4  ─ 4.1 Thin-Content-Audit ─ 4.6 JsonLd-Helfer ─ 4.3 Freshness ─ 4.4 Cluster-Graph ─ 4.5 GEO ─ (4.2 Vet: sobald Reviewer)
+                        │
+Phase 5  ─ 5.2 First-Party-Analytics ─ 5.3 Funnel ─ 5.1 Futter-Pass-Schleife ─ 5.4 Outcome sichtbar
+                        │
+Phase 6  ─ 6.1 Error-Tracking (früh ziehen!) ─ 6.2 Perf-Budget ─ 6.3 Repo-Hygiene ─ 6.4 Backup
+```
+
+**Wenn nur DREI Dinge als Nächstes:** `0.1` (Doku entlügen) → `0.4` (CI-Gate) → `1.4` (Tests). Danach ist alles andere sicher machbar.
+**Frühzeitig vorziehen, quer zu den Phasen:** `6.1` (Error-Tracking) — je eher, desto mehr blinde Flecken verschwinden.
+
+---
+
+# TEIL 5 — DOKU-LANDKARTE (Soll-Zustand nach Operation 0.1)
+
+| Datei | Rolle |
+|---|---|
+| `BELLA_NEXT_LEVEL.md` | **Roadmap-SSOT.** Dieses Dokument. Operationen, Reihenfolge, Akzeptanz. |
+| `CLAUDE.md` (Root) | **Alltags-SSOT.** Ist-Zustand, harte Regeln, Befehle, Flotte. |
+| `.claude/agents/*.md` + `README.md` | **Flotte.** 13 Spezialisten, Delegation. README auf 13 synchron. |
+| `bella-app/ARCHITECTURE.md` | **Neu geschrieben.** Echter technischer Aufbau. |
+| `README.md` (Root) + `bella-app/README.md` | Öffentliche/Entwickler-Einführung. |
+| `FUTTERPASS.md` | Blaupause Futter-Pass-Schwungrad (Phase 5). |
+| `docs/` | GEO-Protokoll, Audits, Reports, Runbooks, archivierte Status-Snapshots. |
+| ~~`agents.md`~~ | → 15-Zeilen-Wegweiser auf die drei oben. |
+| ~~`.github/copilot-instructions.md`~~ | → Constraints + Verweis, keine Migrations-Steps. |
+| ~~`bella-app/{AGENTS,Bella_AGENTS,Bella_DECISION_INTELLIGENCE_AGENTS,SEO_AGENTS}.md`~~ | eingepflegt in `.claude/agents/`, dann gelöscht. |
+| ~~`bella-app/DEPLOYMENT_DEBUG_REPORT.md`~~ | gelöscht (Zeitpunkt-Artefakt). |
+| ~~`bella-app/DEFINITION_OF_DONE.md`~~ | → `docs/status/2026-06-13-…md` (Off-Page-Teil in TEIL 3 „Off-Page" übernommen). |
+
+---
+
+# TEIL 6 — DEFINITION OF DONE (projektweit, ab sofort)
+
+Ein PR ist fertig, wenn **alle** zutreffen:
+
+- [ ] `cd bella-app && npm run build` grün.
+- [ ] `npm run typecheck` + `npm run lint` grün (keine neuen Excludes/Ignores).
+- [ ] `npm test` grün; neue Logik hat Tests; berührte Kernlogik behält/gewinnt Tests.
+- [ ] Keine erfundenen Zahlen im UI. Keine Heilversprechen. Deutsch, Du-Form.
+- [ ] Jeder Affiliate-Link `rel="sponsored"` + sichtbare Offenlegung.
+- [ ] Allergen-Sicherheit: kein Pfad, der einem Allergiker das verbotene Protein zeigt (Test deckt es ab).
+- [ ] Core Web Vitals (mobil) nicht schlechter als vor dem PR; kein neuer Konsolen-Error.
+- [ ] Betroffene Doku im selben PR aktualisiert (dieses Dokument, `CLAUDE.md`, `ARCHITECTURE.md`).
+- [ ] Die zugehörige Operation hier abgehakt (`[x]` + Datum + Commit-SHA).
+
+---
+
+## Fortschritt
+
+| Op | Titel | Status | Datum | Commit |
+|---|---|---|---|---|
+| 0.0 | App-Ordner → `bella-app` | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
+| 0.1 | Doku auf eine Wahrheit | ⬜ offen | | |
+| 0.2 | Toten Code entfernen | ⬜ offen | | |
+| 0.3 | Env-Templates | ⬜ offen | | |
+| 0.4 | CI-Gate | ⬜ offen | | |
+| 1.1 | React 19 | ⬜ offen | | |
+| 1.2 | CSP + COOP | ⬜ offen | | |
+| 1.3 | API Rate-Limit | ⬜ offen | | |
+| 1.4 | Test-Fundament | ⬜ offen | | |
+| 1.5 | Drizzle-Migrationen | ⬜ offen | | |
+| 1.6 | Font-Bug + tsconfig | ⬜ offen | | |
+| 2.1 | Intent-LLM | ⬜ offen | | |
+| 2.2 | Modell-Routing | ⬜ offen | | |
+| 2.3 | Stream-Robustheit | ⬜ offen | | |
+| 2.4 | Advisor-Eval-Suite | ⬜ offen | | |
+| 2.5 | Allergen-Gate | ⬜ offen | | |
+| 3.1 | Token-System Light/Dark | ⬜ offen | | |
+| 3.2 | BELLA-Maskottchen | ⬜ offen | | |
+| 3.3 | OG-Bilder pro Rasse | ⬜ offen | | |
+| 3.4 | Komponenten-Katalog + VisReg | ⬜ offen | | |
+| 3.5 | Motion-Politur | ⬜ offen | | |
+| 4.1 | Thin-Content-Audit | ⬜ offen | | |
+| 4.2 | Tierarzt-Review live | ⬜ blockiert (Reviewer) | | |
+| 4.3 | Aktualitäts-Signal | ⬜ offen | | |
+| 4.4 | Interner Cluster-Graph | ⬜ offen | | |
+| 4.5 | GEO / AI-Search | ⬜ offen | | |
+| 4.6 | JsonLd-Helfer | ⬜ offen | | |
+| 5.1 | Futter-Pass-Schleife | ⬜ offen | | |
+| 5.2 | First-Party-Analytics | ⬜ offen | | |
+| 5.3 | Funnel-Instrumentierung | ⬜ offen | | |
+| 5.4 | Outcome-Checks sichtbar | ⬜ offen | | |
+| 6.1 | Error-Tracking | ⬜ offen | | |
+| 6.2 | Performance-Budget CI | ⬜ offen | | |
+| 6.3 | Repo-Hygiene | ⬜ offen | | |
+| 6.4 | Backup + Runbook | ⬜ offen | | |
+
+_Zuletzt aktualisiert: 2026-09-03_

@@ -49,7 +49,7 @@ Marketing-Layer) ist gut. **Substanz vor Politur. Echte Daten vor schönen Zahle
 
 ## Definition of Done (projektweit)
 - Keine erfundenen Zahlen mehr im UI. Keine Handy-Begriffe. Keine toten Verzeichnisse erweitert.
-- `cd handyvertrag-app && npm run build` ist grün.
+- `cd bella-app && npm run build` ist grün.
 - Neue produktbezogene Seiten rendern aus der DB.
 - Jeder Affiliate-Link `rel="sponsored"`, Offenlegung sichtbar.
 

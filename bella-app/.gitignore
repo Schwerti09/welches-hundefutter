@@ -39,7 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-handyvertrag-app/*.log
+bella-app/*.log
 *.bak
 *.bak[0-9]*
 

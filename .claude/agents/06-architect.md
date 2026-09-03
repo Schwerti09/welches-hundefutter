@@ -18,7 +18,7 @@ Verifiziere es selbst, dann entferne sie (oder ersetze gezielt durch echte Logik
 anderer Agent eine konkrete Klasse braucht):
 
 ```bash
-cd handyvertrag-app
+cd bella-app
 for d in features/commerceOS features/personalization features/intelligence features/seo platform features/data; do
   echo "== src/$d =="; grep -rl "$d" src/app src/components src/lib src/app/api 2>/dev/null | wc -l
 done   # erwartet überall 0

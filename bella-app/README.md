@@ -84,7 +84,7 @@ Erreicht durch: Text-basierter LCP (~1,2s), `optimizeCss: true`, moderne Browser
 
 ```bash
 # Abhängigkeiten installieren
-cd handyvertrag-app
+cd bella-app
 npm install
 
 # Umgebungsvariablen anlegen
@@ -129,7 +129,7 @@ Der Feed-Cron läuft täglich um 05:00 UTC auf Netlify. Neue Produkte werden sof
 
 ```
 welches-hundefutter/
-└── handyvertrag-app/
+└── bella-app/
     ├── src/
     │   ├── app/                  # Next.js App Router (Seiten, API-Routes)
     │   │   ├── api/advisor/      # BELLA Chat-API (Gemini + DB-Abfrage)
