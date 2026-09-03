@@ -1,0 +1,45 @@
+name: Visuelle Regression
+
+# Roadmap 3.4 — NICHT blockierend, manuell ausgeloest. Vergleicht Screenshots
+# von Home / /rassen / /rasse/[slug] / /dev/components gegen die committeten
+# Baselines in bella-app/e2e/visual.spec.ts-snapshots/.
+#
+# Beim ersten Lauf gibt es keine Baselines -> mit "update = true" starten,
+# die erzeugten PNGs als Artefakt herunterladen, pruefen und committen.
+
+on:
+  workflow_dispatch:
+    inputs:
+      update:
+        description: "Baselines neu erzeugen (--update-snapshots)"
+        type: boolean
+        default: false
+
+jobs:
+  visual:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: bella-app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: bella-app/package-lock.json
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+      - name: Visuelle Tests
+        run: npx playwright test e2e/visual.spec.ts ${{ inputs.update && '--update-snapshots' || '' }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: visual-${{ github.run_number }}
+          path: |
+            bella-app/playwright-report/
+            bella-app/e2e/visual.spec.ts-snapshots/
+          retention-days: 14

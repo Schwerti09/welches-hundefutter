@@ -84,7 +84,6 @@ describe.skipIf(!RUN)("Advisor LLM-Judge (2.4) — opt-in", () => {
   it("Zusammenfassung", () => {
     const keys = ["faktentreu", "konkret", "kein_heilversprechen", "allergen_sicher", "kein_falsches_zitat"];
     const avg = Object.fromEntries(keys.map(k => [k, rows.reduce((s, r) => s + (Number(r[k]) || 0), 0) / rows.length]));
-    // eslint-disable-next-line no-console
     console.table({ ...avg });
     for (const k of keys) expect(avg[k], `Durchschnitt ${k}`).toBeGreaterThanOrEqual(3.5);
   });

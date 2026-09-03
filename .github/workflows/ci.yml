@@ -49,3 +49,33 @@ jobs:
         env:
           NEXT_TELEMETRY_DISABLED: "1"
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+  e2e:
+    # Playwright-Smoke (Roadmap 1.4 / 3.4) — deterministisch, kein API-Key noetig.
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: bella-app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: bella-app/package-lock.json
+      - name: Install
+        run: npm ci
+      - name: Playwright-Browser
+        run: npx playwright install --with-deps chromium
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+      - name: E2E-Smoke
+        run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: bella-app/playwright-report/
+          retention-days: 7

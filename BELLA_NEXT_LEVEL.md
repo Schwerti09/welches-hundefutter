@@ -290,8 +290,10 @@ nötig gewesen — Limit sitzt in den Node-Route-Handlern (Edge-Middleware hätt
 - **Agent:** `platform-architect`. **Aufwand:** M. **Risiko:** mittel (Redis-Abhängigkeit / false positives). **Abhängt von:** 1.2.
 </details>
 
-### 🟡 Operation 1.4 — Test-Fundament — **UNIT ERLEDIGT (2026-09-03), Playwright folgt**
-Umgesetzt: Vitest 3 + v8-Coverage, `vitest.config.ts`, `test`/`test:watch`/`test:coverage` Scripts,
+### ✅ Operation 1.4 — Test-Fundament — **ERLEDIGT (2026-09-03; Playwright-Smoke via 3.4)**
+Stand: **113 Vitest-Tests** + 2 DB-Evals (2A.8/2.4, `skipIf`) + 1 LLM-Judge-Eval (opt-in) +
+**5 Playwright-Smoke** (`e2e/smoke.spec.ts`, lokal grün, im CI blockierend). Ursprünglich:
+Vitest 3 + v8-Coverage, `vitest.config.ts`, `test`/`test:watch`/`test:coverage` Scripts,
 in `ci.yml` verdrahtet. **68 Unit-Tests** grün: `containsAllergen`/`allergenVariants` (Allergen-Sicherheit),
 `consumption-math`, `dogCost`, `issue-to-problem`, `glossary-links` — und `parseIntent` + `scoreFood`
 + `hasEnoughIntent`/`classifyTheme`/`computeConfidence` **nach Extraktion** aus `route.ts` in
@@ -672,12 +674,26 @@ normale **und** die `{ relax }`-Suche. Braucht das `DATABASE_URL`-GitHub-Secret 
 - **Akzeptanz:** `/rasse/labrador-retriever/opengraph-image` liefert 1200×630 PNG mit Rasse-Foto + Name. Twitter/Slack/WhatsApp-Vorschau geprüft. Build-Zeit-Impact gemessen (ggf. on-demand statt prebuild).
 - **Agent:** `visual-designer` + `content-engineer`. **Aufwand:** M. **Risiko:** mittel (Build-Zeit bei 186). **Abhängt von:** 3.2.
 
-### Operation 3.4 — Komponenten-Katalog + visuelle Regression
+### ✅ Operation 3.4 — Komponenten-Katalog + visuelle Regression — **ERLEDIGT (2026-09-03)**
+- **`/dev/components`** (non-prod, `notFound()` in Prod, `noindex`): Farb-Tokens, Typo-Skala, Buttons/Pills,
+  `.card`/`.glass`-Flächen, `BreedImg` inkl. Fallback, Advisor-Bubbles — die Baseline für 3.1/3.2/3.5.
+- **Playwright** (`@playwright/test` + chromium): `playwright.config.ts` (eigener `next start`-webServer,
+  `E2E_BASE_URL` überschreibbar). `e2e/smoke.spec.ts` — 5 Tests, **lokal grün** (Home ohne Konsolen-Fehler,
+  `/rassen`-Bilder laden, `/rasse/[slug]` Hero+FAQ, robots/sitemap 200, Advisor antwortet). Scripts
+  `test:e2e` / `test:visual`.
+- **`ci.yml`**: neuer **`e2e`-Job** (parallel, blockierend, deterministisch, kein API-Key).
+- **`e2e/visual.spec.ts` + `.github/workflows/visual.yml`**: `toHaveScreenshot` für Home / `/rassen` /
+  `/rasse/[slug]` / `/dev/components`, **nicht-blockierend, `workflow_dispatch`** — Baselines werden im
+  CI (Linux) erzeugt (`update`-Input), als Artefakt geprüft, dann committet. (Bewusst kein lokaler
+  Windows-Baseline — Font-Rendering weicht ab.)
+<details><summary>ursprünglicher Plan</summary>
+
 - **Ziel:** Design-Änderungen sind sichtbar bevor sie live gehen.
 - **Dateien:** neu `.storybook/` **oder** eine schlanke `/dev/components`-Route (nur non-prod), Playwright-`toHaveScreenshot` für Kern-Screens.
 - **Vorgehen:** Minimal-Katalog für Card, Button, Pill, Advisor-Bubble, FoodCard, BreedImg, Mascot, ThemeToggle. Playwright-Screenshots von Home/`/rassen`/`/rasse/[slug]`/Advisor in Light+Dark, Baseline committen, Diff im CI (nicht-blockierend).
 - **Akzeptanz:** `npm run test:visual` erzeugt Diffs. Katalog rendert alle Kernkomponenten in beiden Themes.
 - **Agent:** `visual-designer` + `platform-architect`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 1.4.
+</details>
 
 ### Operation 3.5 — Motion-Politur
 - **Ziel:** Alle Dauer-Animationen GPU-composited; `framer-motion` nur dort, wo es echten Mehrwert bringt.
@@ -894,7 +910,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 1.1 | React 19 | ✅ live, Preview bestätigt | 2026-09-03 | 79383ce |
 | 1.2 | CSP + COOP | ✅ Weg B live · strict-dynamic als Folge-Op | 2026-09-03 | 6b68152 |
 | 1.3 | API Rate-Limit | 🟡 In-Memory-Limiter live · verteilter Store + ai_usage folgen | 2026-09-03 | _(dieser Batch)_ |
-| 1.4 | Test-Fundament | 🟡 116 Tests (Unit+Eval) · Playwright folgt | 2026-09-03 | _(dieser Batch)_ |
+| 1.4 | Test-Fundament | ✅ 113 Vitest + 5 Playwright-Smoke + Evals | 2026-09-03 | _(dieser Batch)_ |
 | 1.5 | Drizzle-Migrationen | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 1.6 | Font-Bug + tsconfig | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 2.1 | Intent-LLM | ✅ Grundgerüst · ⚠️ Allergen-Fall offen → Phase 2A | 2026-09-03 | 7aa3742 |
@@ -914,7 +930,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 3.1 | Token-System Light/Dark | ⬜ offen | | |
 | 3.2 | BELLA-Maskottchen | ⬜ offen | | |
 | 3.3 | OG-Bilder pro Rasse | ⬜ offen | | |
-| 3.4 | Komponenten-Katalog + VisReg | ⬜ offen | | |
+| 3.4 | Komponenten-Katalog + VisReg | ✅ Katalog + Playwright (Smoke blockierend, Visual manuell) | 2026-09-03 | _(dieser Batch)_ |
 | 3.5 | Motion-Politur | ⬜ offen | | |
 | 4.1 | Thin-Content-Audit | ⬜ offen | | |
 | 4.2 | Tierarzt-Review live | ⬜ blockiert (Reviewer) | | |

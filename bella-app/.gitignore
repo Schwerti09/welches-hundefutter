@@ -52,3 +52,9 @@ node_modules/
 *.png
 !public/og-image.png
 !public/logo.png
+
+# playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
