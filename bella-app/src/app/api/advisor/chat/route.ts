@@ -210,7 +210,8 @@ function buildSystemPrompt(offers: ScoredFood[], confidence: number, ask: boolea
   const known: string[] = [];
   if (intent.breed) known.push(`Rasse: ${intent.breed}`);
   if (intent.lifePhase) known.push(`Lebensphase: ${intent.lifePhase}`);
-  if (intent.sensitive) known.push(`empfindlich/Allergie${intent.protein ? ` (auf ${intent.protein})` : ""}`);
+  if (intent.avoidProtein?.length) known.push(`🚫 ALLERGIE — KEIN ${intent.avoidProtein.join(", KEIN ")} (Pflicht, nie brechen)`);
+  else if (intent.sensitive) known.push(`empfindlich / möglicherweise Allergie${intent.protein ? ` (Wunsch: ${intent.protein})` : ""}`);
   if (intent.foodType) known.push(`Wunsch-Futtertyp: ${intent.foodType}`);
   if (intent.maxPricePerKg) known.push(`Budget: bis ${intent.maxPricePerKg} €/kg`);
   if (intent.currentFood && intent.currentFood !== "bekannt") known.push(`aktuelles Futter: ${intent.currentFood}`);
@@ -221,7 +222,7 @@ function buildSystemPrompt(offers: ScoredFood[], confidence: number, ask: boolea
   const missing: string[] = [];
   if (!intent.lifePhase) missing.push("Lebensphase (Welpe / ausgewachsen / Senior)");
   if (!intent.currentFood) missing.push("aktuelles Futter & warum sie wechseln möchten");
-  if (!intent.sensitive && !intent.protein) missing.push("Allergien oder empfindlicher Magen");
+  if (!intent.sensitive && !intent.protein && !intent.avoidProtein?.length) missing.push("Allergien oder empfindlicher Magen");
   if (!intent.foodType) missing.push("gewünschter Futtertyp (Trocken / Nass / BARF)");
 
   const switchCtx = intent.wantToSwitch && intent.currentFood
@@ -285,15 +286,16 @@ KONFIDENZ: ${confidence}% (wie sicher bin ich mir mit den vorliegenden Infos)
 
 ${mode}
 
-ANALYSIERTE FUTTER-PRODUKTE (NUR diese verwenden — echte Daten aus 11.000+ Katalog):
+KATALOG-AUSZUG, den ICH (BELLA) gerade im Live-Katalog gefunden habe.
+Der Halter hat KEINE dieser Produkte genannt — es ist meine Recherche. NUR diese verwenden:
 ${block}
 ${studyBlock}
 
 STRIKTE REGELN — nie brechen:
 - "geeignet für: alle Lebensphase" = für Welpe, Adult UND Senior geeignet. NIE "Juniorprodukt" nennen.
 - Nur die echten Produktdaten oben verwenden. Nie Marken, Preise oder Inhaltsstoffe erfinden.
-- Allergen-Sicherheit: Wenn Allergie auf X bekannt, empfehle NIE ein Produkt das X enthält.
-- Du duzt den Halter. Immer auf Deutsch antworten.
+- Der Katalog-Auszug ist MEINE Recherche. Behaupte NIE, der Halter hätte Produkte genannt oder "in Betracht gezogen". Ist nichts Passendes dabei → sag das und biete an, neu zu suchen.
+${intent.avoidProtein?.length ? `- 🚫 ALLERGIE: KEIN ${intent.avoidProtein.join(", KEIN ")}. Empfiehl NIE ein Produkt, dessen Name oder Protein das enthält — auch nicht "zur Not". Lieber gar nichts empfehlen.\n` : "- Allergen-Sicherheit: Wenn Allergie auf X bekannt, empfehle NIE ein Produkt das X enthält.\n"}- Du duzt den Halter. Immer auf Deutsch antworten.
 - Wenn du eine Studie zitierst: nur wenn sie wirklich zur Situation passt, nie aufgezwungen.
 - Steht bei einem der Futter "🎁 GUTSCHEIN VERFÜGBAR" dabei: erwähne den Rabatt kurz und beiläufig (1 halber Satz), wenn du genau dieses Futter empfiehlst. Nie erfinden, nie für Futter ohne diesen Hinweis erwähnen.
 - Du darfst und sollst NEIN sagen: Steht bei Futter [1] "⚠️ NIEDRIG" (Score <40) oder "⚠️ vage Proteinquelle", sag das offen — "Lass [1] lieber, der Score ist niedrig" oder "die Proteinquelle ist hier nicht klar benannt, das würde ich bei einem Allergiker nicht riskieren" — und empfiehl stattdessen [2] oder [3], wenn die besser sind. Erfinde NIEMALS eine Zutatenliste, die nicht in den Produktdaten steht — bewerte nur anhand von Score, Protein-Klarheit, getreidefrei/hypoallergen und Preis/kg.
@@ -513,7 +515,8 @@ export async function POST(request: NextRequest) {
       }
 
       // ── Futter-Pass: Profil anlegen (non-blocking, 500er nie sichtbar) ──
-      if (!ask && offers.length > 0 && process.env.DATABASE_URL) {
+      // Futter-Pass nur für eine sichere, echte Hauptfutter-Empfehlung (2A.5).
+      if (!ask && offers.length > 0 && offers[0].type !== "snack" && process.env.DATABASE_URL) {
         try {
           const allConv = [...conversationHistory.map(h => h.content), message].join(" ");
           // Hundename erkennen: "heißt Bello", "mein Hund Bello", "meine Hündin Luna"
@@ -551,7 +554,7 @@ export async function POST(request: NextRequest) {
               ${intent.breedSlug ?? (intent.breed ? intent.breed.toLowerCase().replace(/\s+/g, "-") : null)},
               ${weightKg ?? null},
               ${actLevel},
-              ${intent.sensitive && intent.protein ? [intent.protein] : null},
+              ${intent.avoidProtein?.length ? intent.avoidProtein : null},
               ${intent.lifePhase ? [intent.lifePhase] : null},
               ${offers[0].slug ?? null},
               ${dg ?? null},

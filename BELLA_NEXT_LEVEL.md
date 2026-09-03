@@ -485,7 +485,14 @@ nur `adult|erwachsen`). **+6 Tests inkl. exaktem Transkript-Fall.** Suite 96 gr�
 - **Agent:** `bella-advisor`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 2A.2.
 </details>
 
-### Operation 2A.4 — Prompt-Framing + strukturiertes Allergie-Signal
+### ✅ Operation 2A.4 — Prompt-Framing + Allergie-Signal — **ERLEDIGT (2026-09-03)**
+`buildSystemPrompt`: `known` bei `avoidProtein` → „🚫 ALLERGIE — KEIN {X} (Pflicht, nie brechen)".
+Produktblock-Kopf: „KATALOG-AUSZUG, den ICH (BELLA) gefunden habe. Der Halter hat KEINE dieser
+Produkte genannt — es ist meine Recherche." Neue STRIKTE REGEL: nie behaupten der Halter hätte
+Produkte genannt; bei `avoidProtein` eine harte, namentliche Verbots-Regel statt der generischen.
+`missing` bezieht `avoidProtein` ein.
+<details><summary>ursprünglicher Plan</summary>
+
 - **Ziel:** Der Text-LLM weiß von der Allergie und behandelt den Katalog als *seine* Recherche.
 - **Dateien:** `route.ts` `buildSystemPrompt`.
 - **Vorgehen:**
@@ -496,14 +503,13 @@ nur `adult|erwachsen`). **+6 Tests inkl. exaktem Transkript-Fall.** Suite 96 gr�
 - **Akzeptanz:** Eval: Antwort erwähnt nie „die Produkte, die du genannt hast"; bei Allergie steht
   das Verbot im Prompt (`known`).
 - **Agent:** `bella-advisor`. **Aufwand:** S. **Risiko:** niedrig. **Abhängt von:** 2A.1.
+</details>
 
-### Operation 2A.5 — Futter-Pass / Preis-Wecker nur für sichere, echte Hauptfutter
-- **Dateien:** `route.ts` (Profil-Insert), `dog_profiles.allergies`.
-- **Vorgehen:** Insert überspringen, wenn `offers.length === 0` **oder** `offers[0]` Snack ist
-  **oder** ein `avoidProtein` enthält (nach 2A.3 unmöglich → `assert`). `allergies`-Spalte aus
-  `avoidProtein` befüllen (Array), nicht aus `intent.sensitive && intent.protein`. Kein `PROFILE:` /
-  Preis-Wecker-Box für einen Snack.
-- **Akzeptanz:** Eval: kein `PROFILE:`-Event, wenn Offers leer/unsicher; `allergies` = `['Huhn']` im Happy-Path.
+### ✅ Operation 2A.5 — Futter-Pass nur für sichere Hauptfutter — **ERLEDIGT (2026-09-03)**
+`route.ts` Profil-Insert: zusätzlich `offers[0].type !== "snack"` (neben dem schon vorhandenen
+`offers.length > 0`-Gate → leere/unsichere Empfehlung erzeugt automatisch **kein** `PROFILE:` /
+Preis-Wecker). `dog_profiles.allergies` wird jetzt aus `intent.avoidProtein` befüllt (Array),
+nicht mehr aus `intent.sensitive && intent.protein` (das war mit dem Bug immer `null`).
 - **Agent:** `bella-advisor` + `lifecycle-architect`. **Aufwand:** S. **Risiko:** niedrig. **Abhängt von:** 2A.3.
 
 ### Operation 2A.6 — LLM-Intent-Pfad im RECOMMEND-Modus immer laufen lassen
@@ -841,8 +847,8 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | **2A.1** | Allergen `avoidProtein` | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | **2A.2** | SQL-Hard-Ausschluss + Snack-Guard | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | **2A.3** | Sicherheitsnetz / Re-Query / Leermeldung | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
-| **2A.4** | Prompt-Framing + Allergie-Signal | ⬜ offen | | |
-| **2A.5** | Futter-Pass nur für sichere Hauptfutter | ⬜ offen | | |
+| **2A.4** | Prompt-Framing + Allergie-Signal | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
+| **2A.5** | Futter-Pass nur für sichere Hauptfutter | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | **2A.6** | LLM-Intent im RECOMMEND immer | ⬜ offen | | |
 | **2A.7** | Ehrliche Zahlen im Stream | 🟡 fake ELIM-Splits raus (2A.3) · Rest offen | 2026-09-03 | |
 | **2A.8** | Eval-Suite Allergen (blockierend) | ⬜ offen | | |
