@@ -397,7 +397,17 @@ CSP-sicher) in `layout.tsx`, `className={inter.variable}` auf `<html>` — `glob
 > Eval-Szenario. **Nicht-verhandelbar: kein Produkt mit einem gemiedenen Protein darf je
 > in der `OFFERS:`-Payload landen — abgesichert per blockierendem CI-Test.**
 
-### Operation 2A.1 — Allergen als eigenes, hartes Konzept (`avoidProtein`)
+### ✅ Operation 2A.1 — Allergen `avoidProtein` — **ERLEDIGT (2026-09-03)**
+`DogIntent.avoidProtein?: string[]` (getrennt von `protein`). `parseIntent`: `PROTEIN_KEYS` auf
+Modul-Ebene (geteilt), Symptom-Trigger stark erweitert (`haut/fell/haarausfall/schuppen/hotspot/
+pfoten lecken/ohrenentz/erbrech` → `sensitive`), `askedAboutAllergy` aus dem letzten Assistenten-Turn,
+Allergen-Erkennung: explizite Meide-Phrasen (`ohne/kein X`, `allergisch gegen X`, `verträgt kein X`,
+`X-allergie`) **+ bloßes Protein als Antwort auf die Allergiefrage**. Bei Treffer: `avoidProtein` gesetzt,
+`sensitive=true`, Protein aus `protein` entfernt (`avoidProtein` gewinnt). `intentSignalCount` +
+`computeConfidence` zählen `avoidProtein`. **Bonus-Fix:** „ausgewachsen" → `lifePhase: adult` (Regex kannte
+nur `adult|erwachsen`). **+6 Tests inkl. exaktem Transkript-Fall.** Suite 96 grün.
+<details><summary>ursprünglicher Plan</summary>
+
 - **Ziel:** „Dieses Protein ist der Feind" ist ein von „Wunsch-Protein" getrenntes Feld.
 - **Dateien:** `src/lib/advisor/intent.ts`, `intent.test.ts`.
 - **Vorgehen:**
@@ -411,6 +421,7 @@ CSP-sicher) in `layout.tsx`, `className={inter.variable}` auf `<html>` — `glob
 - **Akzeptanz:** Test mit der exakten Transkript-Sequenz: `avoidProtein` enthält „Huhn", `sensitive` true,
   `protein` enthält NICHT „Huhn". `intentSignalCount` zählt `avoidProtein` als Signal.
 - **Agent:** `bella-advisor`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** —
+</details>
 
 ### Operation 2A.2 — Harter Allergen-Ausschluss auf SQL-Ebene + Snack-Guard
 - **Ziel:** Kein gemiedenes Protein kommt aus der DB zurück; kein Snack als Hauptfutter.
@@ -797,7 +808,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 1.5 | Drizzle-Migrationen | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 1.6 | Font-Bug + tsconfig | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 2.1 | Intent-LLM | ✅ Grundgerüst · ⚠️ Allergen-Fall offen → Phase 2A | 2026-09-03 | 7aa3742 |
-| **2A.1** | Allergen `avoidProtein` | ⬜ offen (Audit `docs/audits/2026-09-03-bella-chat-audit.md`) | | |
+| **2A.1** | Allergen `avoidProtein` | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | **2A.2** | SQL-Hard-Ausschluss + Snack-Guard | ⬜ offen | | |
 | **2A.3** | Sicherheitsnetz / Re-Query / Leermeldung | ⬜ offen | | |
 | **2A.4** | Prompt-Framing + Allergie-Signal | ⬜ offen | | |

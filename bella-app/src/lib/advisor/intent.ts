@@ -12,9 +12,15 @@ export type LifePhase = "welpen" | "adult" | "senior";
 export interface DogIntent {
   foodType?: FoodType;
   lifePhase?: LifePhase;
-  sensitive?: boolean; // Allergie / empfindlicher Magen
+  sensitive?: boolean; // Allergie / empfindlicher Magen / Symptome
   grainFree?: boolean;
-  protein?: string; // bevorzugtes Protein, z. B. "Lachs"
+  protein?: string; // BEVORZUGTES Protein, z. B. "Lachs"
+  /**
+   * GEMIEDENE Proteine (Allergie/Unverträglichkeit). Hart — kein Produkt mit
+   * einem dieser Proteine darf je in die OFFERS-Payload (Roadmap 2A, CLAUDE.md §4a).
+   * Getrennt von `protein`: dasselbe Protein steht nie in beiden, `avoidProtein` gewinnt.
+   */
+  avoidProtein?: string[];
   breed?: string; // erkannte Rasse — kanonischer Name (Anzeige / Prompt)
   breedSlug?: string; // erkannte Rasse — dog_breeds.slug (Futter-Pass-Kopplung)
   maxPricePerKg?: number; // Budget €/kg
@@ -26,6 +32,16 @@ export interface DogIntent {
 export type AdvisorTheme = "idle" | "budget" | "allergie" | "welpe" | "senior" | "barf" | "premium";
 
 type HistoryEntry = { role: string; content: string };
+
+// Protein-Erkennung: [normalisierter Schlüssel (umlautfrei), Label]. Reihenfolge = Priorität.
+// Genutzt für Wunsch-Protein UND Allergen-Ausschluss.
+export const PROTEIN_KEYS: [string, string][] = [
+  ["huehn", "Huhn"], ["huhn", "Huhn"], ["haehnchen", "Huhn"], ["gefluegel", "Huhn"], ["poulet", "Huhn"],
+  ["rind", "Rind"], ["lachs", "Lachs"], ["lamm", "Lamm"], ["ente", "Ente"], ["pute", "Pute"],
+  ["truthahn", "Pute"], ["wild", "Wild"], ["hirsch", "Wild"], ["reh", "Wild"], ["fisch", "Fisch"],
+  ["kaninchen", "Kaninchen"], ["hase", "Kaninchen"], ["pferd", "Pferd"], ["insekt", "Insekt"],
+  ["schwein", "Schwein"],
+];
 
 export function parseIntent(message: string, history: HistoryEntry[]): DogIntent {
   // NFC zuerst: iOS/macOS liefern Umlaute oft zerlegt (u + ◌̈, NFD). Ohne Normalisierung
@@ -41,9 +57,9 @@ export function parseIntent(message: string, history: HistoryEntry[]): DogIntent
   const intent: DogIntent = {};
 
   // Lebensphase
-  if (/welpe|junior|puppy|baby/.test(all)) intent.lifePhase = "welpen";
-  else if (/senior|\balt(er)?\b|aelter|ageing|aging|7\+|8\+/.test(all)) intent.lifePhase = "senior";
-  else if (/adult|erwachsen/.test(all)) intent.lifePhase = "adult";
+  if (/welpe|welpi|junghund|junior|puppy|baby|\d+\s*wochen/.test(all)) intent.lifePhase = "welpen";
+  else if (/senior|\balt(er|es)?\b|aelter|ageing|aging|7\+|8\+|9\+|10\s*jahr/.test(all)) intent.lifePhase = "senior";
+  else if (/adult|erwachsen|ausgewachsen|ausgewachs/.test(all)) intent.lifePhase = "adult";
 
   // Futtertyp
   if (/barf|roh\b|frischfleisch|frostfutter/.test(all)) intent.foodType = "barf";
@@ -51,16 +67,43 @@ export function parseIntent(message: string, history: HistoryEntry[]): DogIntent
   else if (/snack|leckerli|leckerchen|kausnack|kauknochen|kaustange/.test(all)) intent.foodType = "snack";
   else if (/trockenfutter|trocken|kroketten/.test(all)) intent.foodType = "trocken";
 
-  // Allergie / Sensibilität
-  if (/allergi|sensibel|empfindlich|unvertraeglich|juckt|juckreiz|durchfall|blaeh|magen|verdauung|sensitiv/.test(all)) intent.sensitive = true;
-  if (/getreidefrei|grain.?free|glutenfrei/.test(all)) { intent.grainFree = true; intent.sensitive = true; }
+  // Allergie / Sensibilität / Symptome. Symptomwörter setzen `sensitive` (Scoring
+  // bevorzugt dann hypoallergen/getreidefrei), auch ohne benanntes Allergen.
+  if (/allergi|sensibel|empfindlich|unvertr(ae)?gl|unvertraeglich|intoleran|juckt|juckreiz|kratzt sich|durchfall|weicher kot|blaeh|magen|verdauung|sensitiv|haut|fell|haarausfall|schuppen|hotspot|hot spot|pfoten (leck|knabber|kau)|ohrenentz|ohren entz|erbrech|uebergibt/.test(all)) intent.sensitive = true;
+  if (/getreidefrei|grain.?free|glutenfrei|getreide.?allergie|weizen.?allergie/.test(all)) { intent.grainFree = true; intent.sensitive = true; }
 
-  // Protein/Allergen — beachte: `all` ist umlaut-normalisiert (ü→ue), daher
-  // "Hühnerallergie" → "huehnerallergie". Varianten "huehn"/"gefluegel" mitfangen.
-  for (const [k, lab] of [["huehn", "Huhn"], ["huhn", "Huhn"], ["haehnchen", "Huhn"], ["gefluegel", "Huhn"],
-    ["rind", "Rind"], ["lachs", "Lachs"], ["lamm", "Lamm"], ["ente", "Ente"], ["pute", "Pute"],
-    ["wild", "Wild"], ["fisch", "Fisch"], ["kaninchen", "Kaninchen"], ["pferd", "Pferd"]] as [string, string][]) {
+  // ── Wunsch-Protein (Präferenz) — `all` ist umlaut-normalisiert (ü→ue).
+  for (const [k, lab] of PROTEIN_KEYS) {
     if (new RegExp(`\\b${k}`).test(all)) { intent.protein = lab; break; }
+  }
+
+  // ── Gemiedene Proteine (Allergie) — hart. Zwei Wege:
+  //   (a) explizite Meide-/Allergie-Phrase je Protein im Gesamttext
+  //   (b) bloßes Protein als Antwort, wenn BELLA zuletzt nach Allergien/Zutaten fragte
+  const lastAssistant = [...history].reverse().find(h => h.role === "assistant")?.content ?? "";
+  const askedAboutAllergy = /allergi|unvertr|zutat|reagier|vertr(ae|ä)gt|empfindlich|besonderheit|magen/i
+    .test(lastAssistant.normalize("NFC").toLowerCase());
+  const msgNorm = message.normalize("NFC").toLowerCase()
+    .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss");
+
+  const avoid = new Set<string>();
+  for (const [k, lab] of PROTEIN_KEYS) {
+    const explicit = new RegExp(
+      `(?:allergi\\w*\\s+(?:auf|gegen)\\s+\\w*${k}` +
+      `|reagiert\\s+(?:allergisch\\s+)?auf\\s+\\w*${k}` +
+      `|vertr(?:ae|ä)gt\\s+kein\\w*\\s+\\w*${k}` +
+      `|unvertr\\w*\\s+(?:auf|gegen)\\s+\\w*${k}` +
+      `|(?:^|\\s)(?:ohne|kein|keine|nicht)\\s+\\w*${k}` +
+      `|\\w*${k}\\w*[- ]?allergie` +
+      `|\\w*${k}\\w*[- ]?unvertr)`,
+    );
+    if (explicit.test(all)) avoid.add(lab);
+    else if (askedAboutAllergy && new RegExp(`\\b${k}`).test(msgNorm)) avoid.add(lab);
+  }
+  if (avoid.size) {
+    intent.avoidProtein = [...avoid];
+    intent.sensitive = true;
+    if (intent.protein && avoid.has(intent.protein)) intent.protein = undefined; // avoidProtein gewinnt
   }
 
   // Rasse — aus @/data/breeds.ts abgeleiteter Index (Op 2.1).
@@ -109,7 +152,7 @@ export function intentSignalCount(i: DogIntent): number {
   let n = 0;
   if (i.lifePhase) n++;
   if (i.foodType) n++;
-  if (i.sensitive || i.protein) n++;
+  if (i.sensitive || i.protein || (i.avoidProtein?.length ?? 0) > 0) n++;
   if (i.maxPricePerKg) n++;
   if (i.breed) n++;
   if (i.currentFood) n++;
@@ -136,6 +179,7 @@ export function computeConfidence(i: DogIntent, history: { content: string }[]):
   if (i.lifePhase) s += 18;
   if (i.foodType) s += 14;
   if (i.sensitive) s += 14;
+  if (i.avoidProtein?.length) s += 8;
   if (i.protein) s += 10;
   if (i.maxPricePerKg) s += 12;
   if (i.breed) s += 10;

@@ -2,23 +2,66 @@ import { describe, it, expect } from "vitest";
 import { parseIntent, hasEnoughIntent, classifyTheme, computeConfidence } from "./intent";
 
 const u = (content: string) => ({ role: "user", content });
+const a = (content: string) => ({ role: "assistant", content });
 
-describe("parseIntent — Allergen-Sicherheit", () => {
-  it("erkennt Hühnerallergie als Protein=Huhn + sensitive", () => {
+describe("parseIntent — Allergen-Sicherheit (2A.1)", () => {
+  it("'Hühnerallergie' -> avoidProtein=[Huhn], sensitive, NICHT protein", () => {
     const i = parseIntent("Mein Hund hat eine Hühnerallergie", []);
-    expect(i.protein).toBe("Huhn");
+    expect(i.avoidProtein).toEqual(["Huhn"]);
+    expect(i.sensitive).toBe(true);
+    expect(i.protein).toBeUndefined();
+  });
+
+  it("NFD-zerlegte Umlaute (iOS): 'Hühnerallergie' -> avoidProtein=[Huhn]", () => {
+    const i = parseIntent("Hühnerallergie", []);
+    expect(i.avoidProtein).toEqual(["Huhn"]);
     expect(i.sensitive).toBe(true);
   });
 
-  it("funktioniert auch mit NFD-zerlegten Umlauten (iOS)", () => {
-    // "Hühnerallergie" mit kombinierendem Diaeresis (u + U+0308)
-    const i = parseIntent("Hühnerallergie", []);
-    expect(i.protein).toBe("Huhn");
+  it("DER TRANSKRIPT-FALL: bloßes 'huhn' als Antwort auf die Allergiefrage", () => {
+    const history = [
+      u("Ich habe einen Deutscher Schäferhund, ca. 31 kg."),
+      a("Wie alt ist er ungefähr – Welpe, ausgewachsen oder Senior?"),
+      u("ausgewachsen"),
+      a("Was frisst dein Schäferhund aktuell, und warum möchtest du wechseln?"),
+      u("fell fällt aus"),
+      a("Gibt es Allergien oder reagiert dein Schäferhund auf bestimmte Zutaten?"),
+    ];
+    const i = parseIntent("huhn", history);
+    expect(i.avoidProtein).toEqual(["Huhn"]);
     expect(i.sensitive).toBe(true);
+    expect(i.protein).toBeUndefined(); // NIE als Wunsch-Protein
+    expect(i.lifePhase).toBe("adult");
+    expect(i.breedSlug).toBe("deutscher-schaeferhund");
   });
 
-  it("Getreide-Wunsch impliziert sensitive", () => {
-    const i = parseIntent("bitte getreidefrei", []);
+  it("Symptom 'fell fällt aus' allein -> sensitive (noch kein Allergen)", () => {
+    const i = parseIntent("fell fällt aus", []);
+    expect(i.sensitive).toBe(true);
+    expect(i.avoidProtein).toBeUndefined();
+  });
+
+  it("'ohne Rind bitte' -> avoidProtein=[Rind]", () => {
+    expect(parseIntent("ich hätte gern was ohne Rind", []).avoidProtein).toEqual(["Rind"]);
+  });
+
+  it("'verträgt keinen Lachs' -> avoidProtein=[Lachs]", () => {
+    expect(parseIntent("er verträgt keinen Lachs", []).avoidProtein).toEqual(["Lachs"]);
+  });
+
+  it("'allergisch gegen Huhn ... gegen Rind' -> beide gemieden", () => {
+    const i = parseIntent("allergisch gegen Huhn und allergisch gegen Rind", []);
+    expect(i.avoidProtein).toEqual(expect.arrayContaining(["Huhn", "Rind"]));
+  });
+
+  it("bloßes 'lachs' OHNE vorherige Allergiefrage bleibt Wunsch-Protein", () => {
+    const i = parseIntent("am liebsten mit Lachs", []);
+    expect(i.protein).toBe("Lachs");
+    expect(i.avoidProtein).toBeUndefined();
+  });
+
+  it("Getreide-Allergie -> grainFree + sensitive", () => {
+    const i = parseIntent("hat eine Getreideallergie", []);
     expect(i.grainFree).toBe(true);
     expect(i.sensitive).toBe(true);
   });
@@ -83,7 +126,7 @@ describe("computeConfidence", () => {
   it("steigt mit mehr Signalen, gedeckelt bei 98", () => {
     const low = computeConfidence({}, []);
     const high = computeConfidence(
-      { lifePhase: "adult", foodType: "trocken", sensitive: true, protein: "Lachs", maxPricePerKg: 5, breed: "labrador", currentFood: "bosch", wantToSwitch: true },
+      { lifePhase: "adult", foodType: "trocken", sensitive: true, avoidProtein: ["Huhn"], maxPricePerKg: 5, breed: "labrador", currentFood: "bosch", wantToSwitch: true },
       [{ content: "x" }, { content: "y" }, { content: "z" }, { content: "w" }, { content: "v" }],
     );
     expect(high).toBeGreaterThan(low);
