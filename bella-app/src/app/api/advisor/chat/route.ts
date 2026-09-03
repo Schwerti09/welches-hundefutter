@@ -16,7 +16,8 @@ import { z } from "zod";
 import { neon } from "@neondatabase/serverless";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import Anthropic from "@anthropic-ai/sdk";
-import { getCompanions, containsAllergen } from "@/db/queries/crosssell";
+import { getCompanions } from "@/db/queries/crosssell";
+import { containsAnyAllergen, allergenLikePatterns } from "@/lib/advisor/allergens";
 import { dailyGrams } from "@/lib/consumption-math";
 import type { ActivityLevel } from "@/lib/consumption-math";
 import { getVoucherForUrl } from "@/data/partners";
@@ -110,6 +111,19 @@ async function fetchCandidates(intent: DogIntent): Promise<{ offers: ScoredFood[
   const params: (string | number | string[])[] = [];
   let p = 1;
 
+  // Hauptfutter-Empfehlung: nie ein Snack (Audit A8) und keine Neben-Kategorien.
+  cond.push(`type <> 'snack'`);
+  cond.push(`(category IS NULL OR category NOT IN ('snack','oel','nem','versicherung','zubehoer'))`);
+
+  // 🔴 HARTER Allergen-Ausschluss auf SQL-Ebene (Roadmap 2A.2, CLAUDE.md §4a).
+  // `avoidProtein` → alle Namensvarianten; kein Treffer in `protein` NOCH `name`.
+  const avoidLike = allergenLikePatterns(intent.avoidProtein);
+  if (avoidLike.length) {
+    cond.push(`(protein IS NULL OR NOT (lower(protein) LIKE ANY($${p}::text[]))) AND NOT (lower(name) LIKE ANY($${p}::text[]))`);
+    params.push(avoidLike);
+    p++;
+  }
+
   if (intent.foodType) { cond.push(`type = $${p++}`); params.push(intent.foodType); }
   if (intent.maxPricePerKg) { cond.push(`(price_per_kg IS NULL OR price_per_kg <= $${p++})`); params.push(intent.maxPricePerKg); }
   // Senior/Adult: Welpen-exklusive Produkte hart ausschließen. Produkte ohne suitable_for
@@ -145,16 +159,15 @@ async function fetchCandidates(intent: DogIntent): Promise<{ offers: ScoredFood[
          price_per_kg, price, suitable_for, image_url, affiliate_url, rating, score
        FROM dog_foods WHERE ${cond.join(" AND ")}
        ORDER BY ${nameKey}, price_per_kg ASC NULLS LAST
-     ) d ORDER BY ${outerOrder} LIMIT 40`,
+     ) d ORDER BY ${outerOrder} LIMIT 120`,
     orderParams
   );
   const raw = ((rows as unknown as { rows?: DogFoodRow[] }).rows ?? (rows as unknown as DogFoodRow[])) || [];
 
-  // Bei Allergie das auslösende Protein hart ausschließen — auch namens-basiert
-  // (Huhn → auch Geflügel/Hähnchen). Ein Allergiker darf das NIE empfohlen bekommen.
-  const allergen = intent.sensitive ? (intent.protein ?? null) : null;
-  const safe = allergen
-    ? raw.filter(o => !containsAllergen(`${o.name} ${o.protein ?? ""}`, allergen))
+  // Zweite Sicherung (der SQL-Filter oben ist die erste): namens-/protein-basiert
+  // jedes gemiedene Protein raus. Ein Allergiker darf das NIE empfohlen bekommen.
+  const safe = (intent.avoidProtein?.length)
+    ? raw.filter(o => !containsAnyAllergen(`${o.name} ${o.protein ?? ""}`, intent.avoidProtein))
     : raw;
 
   const scored = safe.map(o => scoreFood(o, intent)).sort((a, b) => b.matchScore - a.matchScore);
@@ -444,7 +457,7 @@ export async function POST(request: NextRequest) {
           const companions = await getCompanions({
             issues,
             lifeStage: intent.lifePhase ? [intent.lifePhase] : [],
-            allergen: intent.sensitive ? (intent.protein ?? null) : null,
+            avoidProteins: intent.avoidProtein ?? [],
           }, 3);
           if (companions.length) emit(`COMPANIONS:${JSON.stringify({ companions })}`);
         } catch { /* Cross-Sell ist optional, nie blockierend */ }

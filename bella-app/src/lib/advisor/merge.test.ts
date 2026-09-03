@@ -36,4 +36,17 @@ describe("mergeIntent", () => {
   it("currentFood impliziert wantToSwitch", () => {
     expect(mergeIntent({}, { currentFood: "bosch" }).wantToSwitch).toBe(true);
   });
+
+  it("avoidProtein: Vereinigung + sensitive + Protein-Bereinigung", () => {
+    const m = mergeIntent({ avoidProtein: ["Huhn"], protein: "Lachs" }, { avoidProtein: ["Rind"] });
+    expect(m.avoidProtein).toEqual(expect.arrayContaining(["Huhn", "Rind"]));
+    expect(m.sensitive).toBe(true);
+    expect(m.protein).toBe("Lachs"); // Lachs ist nicht gemieden -> bleibt
+  });
+
+  it("avoidProtein aus dem LLM entfernt ein kollidierendes Wunsch-Protein", () => {
+    const m = mergeIntent({ protein: "Huhn" }, { avoidProtein: ["Huhn"] });
+    expect(m.avoidProtein).toEqual(["Huhn"]);
+    expect(m.protein).toBeUndefined();
+  });
 });

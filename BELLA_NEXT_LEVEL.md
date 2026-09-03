@@ -423,7 +423,20 @@ nur `adult|erwachsen`). **+6 Tests inkl. exaktem Transkript-Fall.** Suite 96 gr�
 - **Agent:** `bella-advisor`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** —
 </details>
 
-### Operation 2A.2 — Harter Allergen-Ausschluss auf SQL-Ebene + Snack-Guard
+### ✅ Operation 2A.2 — SQL-Hard-Ausschluss + Snack-Guard — **ERLEDIGT (2026-09-03)**
+- **`src/lib/advisor/allergens.ts`** (neu): `allergenVariants` (erweitert), `containsAllergen`,
+  `containsAnyAllergen(text, avoidProtein[])`, `allergenLikePatterns(avoidProtein[])` → `%variante%`.
+  `crosssell.ts` re-exportiert die alten Namen (Import-Kompat).
+- **`fetchCandidates`**: `type <> 'snack'` + `category NOT IN ('snack','oel','nem','versicherung','zubehoer')`.
+  Bei `avoidProtein`: `WHERE (protein IS NULL OR NOT (lower(protein) LIKE ANY($p))) AND NOT (lower(name) LIKE ANY($p))`.
+  Pool `LIMIT 40 → 120`. Post-Fetch-Filter jetzt über `containsAnyAllergen` + `avoidProtein`.
+- **`getCompanions`**: `CompanionContext.allergen` → `avoidProteins: string[]`; SQL-`LIKE ANY`-Ausschluss;
+  **`OR category IN ('snack','zeckenschutz')` entfernt** (Audit C7 — „Kettenanhänger" als Zeckenschutz).
+- **`mergeIntent`**: `avoidProtein` = Vereinigung beider Quellen, kollidierendes Wunsch-Protein entfernt.
+- **+10 Tests** (`allergens` 8, `merge` +2). Suite 106 grün. typecheck + lint + build grün.
+- **Grenze:** kein Zutaten-Level (keine `ingredients`-Spalte) — Ausschluss über `protein` + `name` + `category`.
+<details><summary>ursprünglicher Plan</summary>
+
 - **Ziel:** Kein gemiedenes Protein kommt aus der DB zurück; kein Snack als Hauptfutter.
 - **Dateien:** `src/app/api/advisor/chat/route.ts` (`fetchCandidates`), `src/db/queries/crosssell.ts`, `src/lib/advisor/allergens.ts` (aus `allergenVariants` extrahiert), Tests.
 - **Vorgehen:**
@@ -439,6 +452,7 @@ nur `adult|erwachsen`). **+6 Tests inkl. exaktem Transkript-Fall.** Suite 96 gr�
   Query mit `avoidProtein:['Huhn']` liefert 0 Zeilen mit „huhn/hühn/hähnchen/geflügel/chicken/poultry"
   in `name`/`protein`; keine `type='snack'`.
 - **Agent:** `bella-advisor` + `platform-architect`. **Aufwand:** M. **Risiko:** mittel (SQL). **Abhängt von:** 2A.1.
+</details>
 
 ### Operation 2A.3 — Sicherheitsnetz: kein unsicheres OFFERS, Re-Query, ehrliche Leermeldung
 - **Ziel:** Sind alle Kandidaten unsicher → BELLA empfiehlt **nichts** und sucht ehrlich neu.
@@ -809,7 +823,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 1.6 | Font-Bug + tsconfig | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 2.1 | Intent-LLM | ✅ Grundgerüst · ⚠️ Allergen-Fall offen → Phase 2A | 2026-09-03 | 7aa3742 |
 | **2A.1** | Allergen `avoidProtein` | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
-| **2A.2** | SQL-Hard-Ausschluss + Snack-Guard | ⬜ offen | | |
+| **2A.2** | SQL-Hard-Ausschluss + Snack-Guard | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | **2A.3** | Sicherheitsnetz / Re-Query / Leermeldung | ⬜ offen | | |
 | **2A.4** | Prompt-Framing + Allergie-Signal | ⬜ offen | | |
 | **2A.5** | Futter-Pass nur für sichere Hauptfutter | ⬜ offen | | |

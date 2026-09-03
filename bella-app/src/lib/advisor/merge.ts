@@ -16,11 +16,18 @@ export function mergeIntent(fast: DogIntent, llm: Partial<DogIntent>): DogIntent
   if (fast.sensitive || llm.sensitive) out.sensitive = true;
   if (fast.grainFree || llm.grainFree) out.grainFree = true;
 
-  // Protein: Fast-Path zuerst (regex ist konservativ & allergen-bewusst),
-  // sonst LLM. Wenn eine Seite ein Allergen kennt und sensitive gesetzt ist,
-  // niemals auf undefined zurückfallen.
+  // Gemiedene Proteine: Vereinigung beider Quellen (Sicherheitssignal geht nie verloren).
+  const avoid = new Set([...(fast.avoidProtein ?? []), ...(llm.avoidProtein ?? [])]);
+  if (avoid.size) {
+    out.avoidProtein = [...avoid];
+    out.sensitive = true;
+  }
+
+  // Wunsch-Protein: Fast-Path zuerst, sonst LLM …
   out.protein = fast.protein ?? llm.protein;
   if (out.sensitive && !out.protein && llm.protein) out.protein = llm.protein;
+  // … aber ein gemiedenes Protein darf NIE als Wunsch-Protein durchrutschen.
+  if (out.protein && avoid.has(out.protein)) out.protein = undefined;
 
   // Budget: der niedrigere (strengere) Wert gewinnt, wenn beide da sind.
   if (fast.maxPricePerKg != null && llm.maxPricePerKg != null) {
