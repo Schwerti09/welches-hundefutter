@@ -30,6 +30,7 @@ import {
 import type { DogIntent, AdvisorTheme } from "@/lib/advisor/intent";
 import { scoreFood } from "@/lib/advisor/scoring";
 import type { DogFoodRow, ScoredFood } from "@/lib/advisor/scoring";
+import { checkRateLimit, checkSameOrigin } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 45;
@@ -288,6 +289,15 @@ async function logChat(entry: { sessionId: string; userMessage: string; bellaRep
 // ─── Route ────────────────────────────────────────────────────────────────────
 
 export async function POST(request: NextRequest) {
+  // Missbrauchs-/Kostenschutz: zwei LLM-Calls pro Request. In-Memory pro Instanz (Roadmap Op 1.3).
+  const limited = checkRateLimit(request, "advisor", [
+    { limit: 15, windowMs: 60_000 },
+    { limit: 150, windowMs: 60 * 60_000 },
+  ]);
+  if (limited) return limited;
+  const badOrigin = checkSameOrigin(request);
+  if (badOrigin) return badOrigin;
+
   let body: unknown;
   try { body = await request.json(); } catch { return new Response("Bad request", { status: 400 }); }
 

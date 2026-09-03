@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import Anthropic from "@anthropic-ai/sdk";
+import { checkRateLimit, checkSameOrigin } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -49,6 +50,14 @@ Wenn eine Frage außerhalb deines Wissens liegt, sag das ehrlich und verweise au
 support@welches-hundefutter.today.`;
 
 export async function POST(req: NextRequest) {
+  const limited = checkRateLimit(req, "support", [
+    { limit: 15, windowMs: 60_000 },
+    { limit: 120, windowMs: 60 * 60_000 },
+  ]);
+  if (limited) return limited;
+  const badOrigin = checkSameOrigin(req);
+  if (badOrigin) return badOrigin;
+
   let body: unknown;
   try {
     body = await req.json();

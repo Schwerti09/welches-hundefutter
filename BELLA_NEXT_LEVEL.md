@@ -246,7 +246,16 @@ für `main` „Require status checks to pass" = `ci` aktivieren, sonst blockt de
 - **Akzeptanz:** Lighthouse BP = 100, „CSP evaluiert" grün. `curl -I` zeigt CSP + COOP. Kein Funktionsbruch auf Home/Advisor/`/rassen`. SSG-Seitenzahl im Build unverändert (falls Hash-Weg) oder bewusst dokumentiert (falls Nonce-Weg).
 - **Agent:** `platform-architect` + `trust-compliance` (Freigabe). **Aufwand:** M. **Risiko:** mittel (kann Seiten dynamisch machen / Skripte brechen). **Abhängt von:** 1.1 empfohlen.
 
-### Operation 1.3 — API-Middleware: Rate-Limit + Herkunftsprüfung
+### 🟡 Operation 1.3 — Rate-Limit + Herkunftsprüfung — **GRUNDSCHUTZ LIVE (2026-09-03)**
+Umgesetzt: `src/lib/rate-limit.ts` — In-Memory-Sliding-Window pro IP (Modul-Scope, hält auf warmer
+Node-Instanz), zwei Fenster (15/min + ~150/h) auf `/api/advisor/chat` **und** `/api/support/chat`,
+`429` mit `Retry-After`. `checkSameOrigin`: fremde `Origin`/`Referer` → `403`, fehlender Header
+(curl/S2S) durchgelassen. 10 Unit-Tests. Ohne Redis, ohne neue Infra.
+**Offen:** verteilter Store (Upstash Redis / Netlify Blobs) für globales Limit über Instanzen,
+`ai_usage`-Kosten-Logging (Tokens/Modell), `AbortController`-Durchreichung. Kein `src/middleware.ts`
+nötig gewesen — Limit sitzt in den Node-Route-Handlern (Edge-Middleware hätte keinen persistenten Zustand).
+<details><summary>ursprünglicher Plan</summary>
+
 - **Ziel:** `/api/advisor/chat` & andere teure Routen sind gegen Missbrauch/Kostenexplosion geschützt.
 - **Warum:** T3. Zwei LLM-Calls pro Request, ungedrosselt, von überall.
 - **Dateien:** `src/middleware.ts` (aus 1.2), neu `src/lib/rate-limit.ts`, `src/app/api/advisor/chat/route.ts`.
@@ -257,6 +266,7 @@ für `main` „Require status checks to pass" = `ci` aktivieren, sonst blockt de
   4. `maxDuration`/Abbruch: Client-`AbortController` serverseitig respektieren, Stream sauber schließen.
 - **Akzeptanz:** 25 schnelle Requests → ab #21 `429`. Fremd-`Origin`-POST → `403`. `ai_usage` füllt sich. Normale Nutzung unbeeinträchtigt.
 - **Agent:** `platform-architect`. **Aufwand:** M. **Risiko:** mittel (Redis-Abhängigkeit / false positives). **Abhängt von:** 1.2.
+</details>
 
 ### 🟡 Operation 1.4 — Test-Fundament — **UNIT ERLEDIGT (2026-09-03), Playwright folgt**
 Umgesetzt: Vitest 3 + v8-Coverage, `vitest.config.ts`, `test`/`test:watch`/`test:coverage` Scripts,
@@ -622,7 +632,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 0.4 | CI-Gate | 🟡 Workflow live (Branch-Protection = Mensch) | 2026-09-03 | _(dieser Batch)_ |
 | 1.1 | React 19 | ⬜ offen | | |
 | 1.2 | CSP + COOP | ⬜ offen | | |
-| 1.3 | API Rate-Limit | ⬜ offen | | |
+| 1.3 | API Rate-Limit | 🟡 In-Memory-Limiter live · verteilter Store + ai_usage folgen | 2026-09-03 | _(dieser Batch)_ |
 | 1.4 | Test-Fundament | 🟡 Unit (68 Tests) · Playwright folgt | 2026-09-03 | _(dieser Batch)_ |
 | 1.5 | Drizzle-Migrationen | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 1.6 | Font-Bug + tsconfig | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
