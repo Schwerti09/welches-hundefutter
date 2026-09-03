@@ -589,20 +589,24 @@ Op 2A.9 — Doku + README aktuell
 
 ---
 
-### Operation 2.2 — Modell-Routing: schnell fragen, stark empfehlen
-- **Ziel:** Frage-Turn = schnell/billig; Empfehlungs-Turn = beste Begründungsqualität.
-- **Warum:** T14. EEAT und Conversion hängen an der Empfehlungs-Begründung, nicht an der Rückfrage.
-- **Dateien:** `route.ts` (`buildSystemPrompt`/Modell-Auswahl), Konfig `src/lib/advisor/models.ts`.
-- **Vorgehen:** `ask === true` → Haiku/Flash. `ask === false` (Empfehlung) → stärkeres Modell (Sonnet-Klasse) mit striktem Token-Limit; Fallback-Kette beibehalten. Modell + Tokens + Latenz nach `ai_usage`. A/B-fähig über Env-Flag.
-- **Akzeptanz:** Empfehlungs-Antworten in 10 Blind-Bewertungen im Schnitt konkreter/faktentreuer (Rubrik in 2.4). Kein Latenz-Regress > 1,5 s p50 im Empfehlungs-Turn. Kosten pro Empfehlung dokumentiert.
+### ✅ Operation 2.2 — Modell-Routing — **ERLEDIGT (2026-09-03)**
+`src/lib/advisor/models.ts` — `planModels(ask)`: **Frage-Turn** = `gemini-2.5-flash` (thinking 0) /
+`claude-haiku-4-5`, kurzes Token-Budget, 12 s-Timeout. **Empfehlungs-Turn** = `gemini-2.5-flash`
+mit **Thinking an** (`thinkingBudget 640` → Produkte abwägen, Warnungen beachten) / Fallback
+**`claude-sonnet-5`**, 18 s-Timeout (Worst-Case 2× < `maxDuration 45`). Alles per Env übersteuerbar
+(`ADVISOR_REC_GEMINI_MODEL`, `ADVISOR_REC_THINKING`, `ADVISOR_REC_CLAUDE_MODEL`, …) für Kosten-/
+Qualitäts-Tuning ohne Deploy. `route.ts` nutzt `plan` statt hartkodierter Modelle.
+- **Offen (→ 2.4):** Blind-Bewertung der Qualität, Latenz-/Kosten-Messung (`ai_usage`).
 - **Agent:** `bella-advisor`. **Aufwand:** S–M. **Risiko:** niedrig–mittel (Kosten). **Abhängt von:** 1.3.
 
-### Operation 2.3 — Stream-Robustheit + ehrliche Fehler
-- **Ziel:** Ein abgebrochener LLM-Call ist sichtbar (für uns) und höflich (für den Nutzer), nie ein stiller Leer-Stream.
-- **Warum:** G5. Heute `catch { fullText = "" }` → Nutzer sieht evtl. nichts, wir erfahren nichts.
-- **Dateien:** `route.ts`, `src/components/BellaAdvisor.tsx` (Client-Parser), `src/lib/environment/production-logging.ts` → Ersatz (siehe 6.1).
-- **Vorgehen:** Timeouts pro Provider, `error`-Event ins Stream-Protokoll, Client zeigt Retry-Chip, Serverfehler → Error-Tracking (6.1). `AbortController`-Kette Client→Server.
-- **Akzeptanz:** Simulierter Provider-Timeout → Nutzer sieht „Kurz nicht durchgekommen — nochmal?" + funktionierender Retry; ein Fehler-Event landet im Tracking. Kein leerer `OFFERS`-Abschluss ohne Text.
+### 🟡 Operation 2.3 — Stream-Robustheit — **SERVER ERLEDIGT (2026-09-03), Client-Retry offen**
+`route.ts`: **Timeout pro Provider** (`withTimeout` via `Promise.race`, aus `planModels`), jeder
+Fehler → strukturiertes `console.error("[advisor] … failed", msg)` (Netlify-Function-Logs) statt
+stillem `catch { "" }`. Bricht alles → `emit("WARN:degraded")` (der Client ignoriert es heute
+gefahrlos, ist aber bereit für einen Retry-Hinweis) + `console.error` „beide Provider ohne Antwort".
+Deterministischer Fallback-Text greift wie bisher — nie ein leerer Stream.
+- **Offen:** Client-Retry-Chip in `BellaAdvisor.tsx` (763 Z. Client-Komponente), Client→Server
+  `AbortController`, echtes Error-Tracking (→ 6.1).
 - **Agent:** `bella-advisor` + `platform-architect`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 6.1 (Tracking) — oder parallel mit `console.error`-Stub.
 
 ### Operation 2.4 — Advisor-Eval-Suite (≥ 30 Szenarien)
@@ -888,8 +892,8 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | **2A.7** | Ehrliche Zahlen im Stream | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | **2A.8** | Eval-Suite Allergen (blockierend, echte DB) | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | **2A.9** | Doku + README | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
-| 2.2 | Modell-Routing | ⬜ offen (nach 2A) | | |
-| 2.3 | Stream-Robustheit | ⬜ offen | | |
+| 2.2 | Modell-Routing | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
+| 2.3 | Stream-Robustheit | 🟡 Server (Timeout+Logging+WARN) · Client-Retry offen | 2026-09-03 | _(dieser Batch)_ |
 | 2.4 | Advisor-Eval-Suite | ⬜ offen | | |
 | 2.5 | Allergen-Gate | ⬜ offen | | |
 | 3.1 | Token-System Light/Dark | ⬜ offen | | |

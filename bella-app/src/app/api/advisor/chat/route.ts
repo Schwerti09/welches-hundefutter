@@ -32,6 +32,7 @@ import {
 import type { DogIntent, AdvisorTheme } from "@/lib/advisor/intent";
 import { extractIntentLLM, llmIntentEnabled } from "@/lib/advisor/intent-llm";
 import { mergeIntent } from "@/lib/advisor/merge";
+import { planModels } from "@/lib/advisor/models";
 import type { ScoredFood } from "@/lib/advisor/scoring";
 import { fetchCandidates, fetchRelevantStudies, type StudyCitation } from "@/lib/advisor/candidates";
 import { checkRateLimit, checkSameOrigin } from "@/lib/rate-limit";
@@ -289,40 +290,65 @@ export async function POST(request: NextRequest) {
       const history = conversationHistory.slice(-8);
       const geminiKey = process.env.GEMINI_API_KEY;
       const anthropicKey = process.env.ANTHROPIC_API_KEY;
+      const plan = planModels(ask); // 2.2: schnell fragen / stark empfehlen
+
+      // 2.3: Provider mit hartem Timeout, Fehler strukturiert loggen (nie still).
+      const withTimeout = <T,>(pr: Promise<T>, ms: number, tag: string): Promise<T> => {
+        let timer: ReturnType<typeof setTimeout>;
+        return Promise.race([
+          pr,
+          new Promise<T>((_, rej) => { timer = setTimeout(() => rej(new Error(`${tag} timeout ${ms}ms`)), ms); }),
+        ]).finally(() => clearTimeout(timer));
+      };
+      const providerErrors: string[] = [];
 
       if (geminiKey) {
         try {
           const genAI = new GoogleGenerativeAI(geminiKey);
-          const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash", systemInstruction: sysPrompt });
-          // maxOutputTokens 600→1200: Gemini 2.5 Flash verbraucht bei kurzen Antworten
-          // teils Thinking-Tokens aus demselben Budget — bei 600 bricht die Antwort
-          // mittendrin ab. 1200 gibt genug Raum für vollständige Empfehlungen.
-          // thinkingBudget: 0 → Thinking deaktiviert: konversationelle Beratung braucht kein
-          // Chain-of-Thought — spart Tokens und verhindert dass Thinking-Tokens das sichtbare
-          // Output-Budget auffressen (Gemini 2.5 Flash verrechnet Thinking gegen maxOutputTokens).
-          // maxOutputTokens 2048: Empfehlung + Kontext + Tipp + Folgefrage ~400-600 Tokens,
-          // Frage mit Acknowledgment + Optionen ~200-300 Tokens — 2048 gibt sicheren Puffer.
+          const model = genAI.getGenerativeModel({ model: plan.gemini.model, systemInstruction: sysPrompt });
+          // thinkingBudget: 0 im Frage-Turn (kein Chain-of-Thought nötig), > 0 im
+          // Empfehlungs-Turn (Produkte abwägen, Warnungen beachten). Gemini 2.5 Flash
+          // verrechnet Thinking gegen maxOutputTokens → beim Empfehlen mehr Budget.
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const genConfig: any = { temperature: 0.8, maxOutputTokens: 2048, thinkingConfig: { thinkingBudget: 0 } };
+          const genConfig: any = {
+            temperature: 0.8,
+            maxOutputTokens: plan.gemini.maxOutputTokens,
+            thinkingConfig: { thinkingBudget: plan.gemini.thinkingBudget },
+          };
           const chat = model.startChat({
             history: history.map(h => ({ role: h.role === "assistant" ? "model" : "user", parts: [{ text: h.content }] })),
             generationConfig: genConfig,
           });
-          const result = await chat.sendMessageStream(message);
+          const result = await withTimeout(chat.sendMessageStream(message), plan.timeoutMs, "gemini");
           for await (const chunk of result.stream) { const t = chunk.text(); if (t) { fullText += t; emit(`TEXT:${t.replace(/\r?\n/g, "\\n")}`); } }
-        } catch { fullText = ""; }
+        } catch (e) {
+          fullText = "";
+          const msg = e instanceof Error ? e.message : String(e);
+          providerErrors.push(`gemini(${plan.gemini.model}): ${msg}`);
+          console.error(`[advisor] gemini failed (${plan.label})`, msg);
+        }
       }
       if (!fullText && anthropicKey) {
         try {
           const anthropic = new Anthropic({ apiKey: anthropicKey });
           const msgs = [...history.map(h => ({ role: h.role as "user" | "assistant", content: h.content })), { role: "user" as const, content: message }];
-          const resp = await anthropic.messages.create({ model: "claude-haiku-4-5", max_tokens: 1536, temperature: 0.8, system: sysPrompt, messages: msgs, stream: true });
+          const resp = await withTimeout(
+            anthropic.messages.create({ model: plan.anthropic.model, max_tokens: plan.anthropic.maxTokens, temperature: 0.8, system: sysPrompt, messages: msgs, stream: true }),
+            plan.timeoutMs, "anthropic",
+          );
           for await (const event of resp) {
             if (event.type === "content_block_delta" && event.delta.type === "text_delta") { const t = event.delta.text; if (t) { fullText += t; emit(`TEXT:${t.replace(/\r?\n/g, "\\n")}`); } }
           }
-        } catch { fullText = ""; }
+        } catch (e) {
+          fullText = "";
+          const msg = e instanceof Error ? e.message : String(e);
+          providerErrors.push(`anthropic(${plan.anthropic.model}): ${msg}`);
+          console.error(`[advisor] anthropic failed (${plan.label})`, msg);
+        }
       }
       if (!fullText) {
+        if (providerErrors.length) emit(`WARN:degraded`); // Client kann einen Retry-Hinweis zeigen
+        console.error(`[advisor] beide Provider ohne Antwort → deterministischer Fallback`, providerErrors.join(" | "));
         fullText = ask ? fallbackQuestion() : fallbackRecommend(offers, intent);
         for (const w of fullText.split(" ")) { emit(`TEXT:${w.replace(/\r?\n/g, "\\n")} `); await new Promise(r => setTimeout(r, 25)); }
       }
