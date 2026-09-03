@@ -70,27 +70,29 @@ interface StudyCitation {
 
 function intentToHubs(intent: DogIntent): string[] {
   const hubs: string[] = [];
-  if (intent.sensitive) hubs.push("allergien");
+  if (intent.sensitive || intent.avoidProtein?.length) hubs.push("allergien");
   if (intent.lifePhase === "welpen") hubs.push("welpen");
   if (intent.lifePhase === "senior") hubs.push("senioren");
   if (intent.foodType === "barf") hubs.push("barf");
   if (intent.maxPricePerKg && intent.maxPricePerKg <= 6) hubs.push("uebergewicht");
-  return hubs.length ? hubs : ["verdauung"];
+  // Kein Default-Hub mehr (2A.7): ohne konkrete Sorge zitiert BELLA keine Studie.
+  return hubs;
 }
 
 async function fetchRelevantStudies(intent: DogIntent): Promise<StudyCitation[]> {
   const url = process.env.DATABASE_URL;
   if (!url) return [];
+  const hubs = intentToHubs(intent);
+  if (!hubs.length) return []; // ohne konkrete Sorge keine Studie (2A.7)
   try {
     const sql = neon(url);
-    const hubs = intentToHubs(intent);
     const rows = await sql`
       SELECT slug, title, authors, year, journal, bella_summary, evidence_strength, topic_hub
       FROM studies
       WHERE topic_hub = ANY(${hubs})
-        AND evidence_strength IN ('hoch', 'mittel')
-      ORDER BY evidence_strength = 'hoch' DESC, year DESC
-      LIMIT 2
+        AND evidence_strength = 'hoch'
+      ORDER BY year DESC
+      LIMIT 1
     `;
     return rows as StudyCitation[];
   } catch {
@@ -349,11 +351,13 @@ export async function POST(request: NextRequest) {
 
   const { message, conversationHistory = [] } = parsed.data;
 
-  // Fast-Path (Regex, 0 ms). Bei dünnem Ergebnis + vorhandenem Verlauf: LLM-Pfad
-  // (Gemini JSON, ~1 LLM-Call) ergänzen und sicher mergen (Op 2.1).
+  // Fast-Path (Regex, 0 ms). LLM-Pfad (Gemini JSON, ~1 Call) ergänzen, wenn wir
+  // gleich empfehlen (2A.6 — da zählt Genauigkeit am meisten) ODER der Fast-Path
+  // dünn ist. Merge ist allergen-sicher (avoidProtein = Vereinigung).
   const fastIntent = parseIntent(message, conversationHistory);
   let intent: DogIntent = fastIntent;
-  if (intentSignalCount(fastIntent) < 3 && conversationHistory.length > 0 && llmIntentEnabled()) {
+  const aboutToRecommend = hasEnoughIntent(fastIntent, conversationHistory);
+  if ((aboutToRecommend || intentSignalCount(fastIntent) < 3) && conversationHistory.length > 0 && llmIntentEnabled()) {
     const llm = await extractIntentLLM(message, conversationHistory);
     intent = mergeIntent(fastIntent, llm);
   }
@@ -539,10 +543,11 @@ export async function POST(request: NextRequest) {
           const birthOrAge = ageRaw ? ageRaw[0].trim() : lifePhaseFallback;
           const actLevel: ActivityLevel = intent.lifePhase === "welpen" ? "niedrig" : intent.lifePhase === "senior" ? "niedrig" : "mittel";
           const dg = weightKg ? dailyGrams(weightKg, actLevel) : null;
-          // Packungsgröße aus dem Produktnamen schätzen (z.B. "Paket Hund Allergie 9 kg") für den Nachschub-Wecker.
+          // Packungsgröße aus dem Produktnamen schätzen (z.B. "… 9 kg") für den Nachschub-Wecker.
+          // Nur plausible Hauptfutter-Größen (≥ 0,5 kg) — sonst lieber keine Schätzung als eine falsche (2A.7).
           const pkgMatch = offers[0].name?.match(/(\d+(?:[.,]\d+)?)\s*kg\b/i);
           const packageKg = pkgMatch ? parseFloat(pkgMatch[1].replace(",", ".")) : null;
-          const estBagDays = dg && packageKg ? Math.round((packageKg * 1000) / dg) : null;
+          const estBagDays = dg && packageKg && packageKg >= 0.5 ? Math.round((packageKg * 1000) / dg) : null;
           const shareToken = randomBytes(18).toString("hex");
           const profileSql = neon(process.env.DATABASE_URL);
           const [row] = await profileSql`

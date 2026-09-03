@@ -13,6 +13,7 @@ export const dogIntentSchema = z.object({
   sensitive: z.boolean().optional(),
   grainFree: z.boolean().optional(),
   protein: z.string().max(40).optional(),
+  avoidProtein: z.array(z.string().max(40)).max(8).optional(),
   breed: z.string().max(80).optional(),
   breedSlug: z.string().max(80).optional(),
   maxPricePerKg: z.number().positive().max(200).optional(),
@@ -23,14 +24,19 @@ export const dogIntentSchema = z.object({
 
 export type DogIntentParsed = z.infer<typeof dogIntentSchema>;
 
-/** Verträglich parsen: unbekannte Felder / falsche Typen werden verworfen, nie geworfen. */
+const KNOWN_KEYS = Object.keys(dogIntentSchema.shape) as (keyof DogIntentParsed)[];
+const partialSchema = dogIntentSchema.partial();
+
+/** Verträglich parsen: unbekannte Felder / null / falsche Typen werden verworfen, nie geworfen. */
 export function coerceIntent(raw: unknown): Partial<DogIntentParsed> {
   if (!raw || typeof raw !== "object") return {};
+  const src = raw as Record<string, unknown>;
   const out: Record<string, unknown> = {};
-  for (const [k, v] of Object.entries(raw as Record<string, unknown>)) {
+  for (const k of KNOWN_KEYS) {
+    const v = src[k];
     if (v === null || v === undefined || v === "") continue;
     out[k] = v;
   }
-  const res = dogIntentSchema.partial().safeParse(out);
-  return res.success ? res.data : {};
+  const res = partialSchema.safeParse(out);
+  return res.success ? (res.data as Partial<DogIntentParsed>) : {};
 }

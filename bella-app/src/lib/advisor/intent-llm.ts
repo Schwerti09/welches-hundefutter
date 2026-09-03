@@ -20,7 +20,8 @@ const RESPONSE_SCHEMA = {
     lifePhase: { type: SchemaType.STRING, enum: ["welpen", "adult", "senior"], nullable: true },
     sensitive: { type: SchemaType.BOOLEAN, nullable: true },
     grainFree: { type: SchemaType.BOOLEAN, nullable: true },
-    protein: { type: SchemaType.STRING, nullable: true, description: "Genanntes Allergen ODER Wunsch-Protein, ein Wort: Huhn/Rind/Lachs/Lamm/Ente/Pute/Wild/Fisch/Kaninchen/Pferd" },
+    protein: { type: SchemaType.STRING, nullable: true, description: "NUR ein GEWÜNSCHTES Protein (Vorliebe), ein Wort: Huhn/Rind/Lachs/Lamm/Ente/Pute/Wild/Fisch/Kaninchen/Pferd. NICHT setzen bei Allergie." },
+    avoidProtein: { type: SchemaType.ARRAY, nullable: true, items: { type: SchemaType.STRING }, description: "GEMIEDENE Proteine (Allergie/Unverträglichkeit/Symptome nach Zutat), je ein Wort wie bei protein. Bloßes Protein als Antwort auf eine Allergiefrage gehört hierher." },
     currentFood: { type: SchemaType.STRING, nullable: true, description: "Marke des aktuellen Futters, oder 'bekannt' wenn erwähnt ohne Marke" },
     maxPricePerKg: { type: SchemaType.NUMBER, nullable: true, description: "genanntes Budget in Euro pro kg" },
     wantToSwitch: { type: SchemaType.BOOLEAN, nullable: true },
@@ -30,7 +31,11 @@ const RESPONSE_SCHEMA = {
 
 const SYSTEM = `Du extrahierst strukturierte Fakten über EINEN Hund aus einem Beratungsgespräch.
 Nutze NUR, was der Halter (user) wirklich gesagt hat — nichts erraten, nichts aus BELLAs Rückfragen übernehmen.
-"protein" NUR setzen, wenn ein konkretes Tier genannt wurde (als Allergie ODER Wunsch). Bei Allergie/Unverträglichkeit/empfindlichem Magen zusätzlich sensitive=true.
+WICHTIG — Allergie vs. Wunsch:
+- Allergie / Unverträglichkeit / "verträgt kein X" / "ohne X" / bloßes Protein als Antwort auf eine Allergiefrage → "avoidProtein" (Liste) + sensitive=true.
+- Nur eine echte Vorliebe ("am liebsten mit Lachs") → "protein".
+- Dasselbe Protein NIE in beiden. Im Zweifel: avoidProtein (sicherer).
+Symptome (Juckreiz, Fellprobleme, Haarausfall, Durchfall) ohne genanntes Tier → sensitive=true, avoidProtein leer.
 Unbekanntes Feld: weglassen bzw. null.`;
 
 export function llmIntentEnabled(): boolean {

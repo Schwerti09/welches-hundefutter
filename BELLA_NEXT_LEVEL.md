@@ -512,7 +512,14 @@ Preis-Wecker). `dog_profiles.allergies` wird jetzt aus `intent.avoidProtein` bef
 nicht mehr aus `intent.sensitive && intent.protein` (das war mit dem Bug immer `null`).
 - **Agent:** `bella-advisor` + `lifecycle-architect`. **Aufwand:** S. **Risiko:** niedrig. **Abhängt von:** 2A.3.
 
-### Operation 2A.6 — LLM-Intent-Pfad im RECOMMEND-Modus immer laufen lassen
+### ✅ Operation 2A.6 — LLM-Intent im RECOMMEND — **ERLEDIGT (2026-09-03)**
+`route.ts` Gate: LLM-Pfad läuft, wenn `hasEnoughIntent(fastIntent)` (→ gleich Empfehlung) **oder**
+`intentSignalCount < 3`. `intent-llm.ts`: `avoidProtein: string[]` im `responseSchema` + im System-Prompt
+scharf getrennt (Allergie → `avoidProtein`, Vorliebe → `protein`, im Zweifel `avoidProtein`).
+`schema.ts`: `avoidProtein` im Zod-Schema; `coerceIntent` kopiert nur bekannte Keys (kein `.strict()`-Reject
+mehr bei Fremdfeldern). `mergeIntent` bildet die `avoidProtein`-Vereinigung (schon aus 2A.2). +3 Schema-Tests.
+<details><summary>ursprünglicher Plan</summary>
+
 - **Dateien:** `route.ts` (Gate), `src/lib/advisor/intent-llm.ts`, `src/lib/advisor/merge.ts`, Tests.
 - **Vorgehen:**
   1. Gate: `extractIntentLLM` läuft, wenn `ask === false` **oder** `intentSignalCount < 3` (und `llmIntentEnabled()`).
@@ -530,6 +537,12 @@ nicht mehr aus `intent.sensitive && intent.protein` (das war mit dem Bug immer `
   `topic_hub` zur primären Sorge passt, max. 1, nie im „ask"-Turn.
 - **Akzeptanz:** Kein erfundener Zahlensplit mehr im Protokoll; kein „0,1 kg-Packung"-Hinweis für Snacks.
 - **Agent:** `bella-advisor` + `trust-compliance`. **Aufwand:** S. **Risiko:** niedrig. **Abhängt von:** —
+</details>
+
+**✅ Op 2A.7 erledigt (2026-09-03):** erfundene `ELIM:`-Splits raus (schon in 2A.3). `intentToHubs`
+ohne Default-Hub → ohne konkrete Sorge zitiert BELLA **keine** Studie; `fetchRelevantStudies`
+`LIMIT 2 → 1`, nur `evidence_strength = 'hoch'`. Packungs-Reichweite nur bei `packageKg ≥ 0,5`
+(kein „0,1 kg"-Unsinn für Snacks — der Snack-Guard aus 2A.2 verhindert das ohnehin schon).
 
 ### Operation 2A.8 — Eval-Suite Allergen (zieht Op 2.4/2.5 vor, blockierend)
 - **Dateien:** `eval/advisor/allergen/*.jsonl`, `eval/run.ts`, `package.json` (`eval:advisor`), `ci.yml`.
@@ -849,8 +862,8 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | **2A.3** | Sicherheitsnetz / Re-Query / Leermeldung | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | **2A.4** | Prompt-Framing + Allergie-Signal | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | **2A.5** | Futter-Pass nur für sichere Hauptfutter | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
-| **2A.6** | LLM-Intent im RECOMMEND immer | ⬜ offen | | |
-| **2A.7** | Ehrliche Zahlen im Stream | 🟡 fake ELIM-Splits raus (2A.3) · Rest offen | 2026-09-03 | |
+| **2A.6** | LLM-Intent im RECOMMEND immer | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
+| **2A.7** | Ehrliche Zahlen im Stream | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | **2A.8** | Eval-Suite Allergen (blockierend) | ⬜ offen | | |
 | **2A.9** | Doku + README | ⬜ offen | | |
 | 2.2 | Modell-Routing | ⬜ offen (nach 2A) | | |
