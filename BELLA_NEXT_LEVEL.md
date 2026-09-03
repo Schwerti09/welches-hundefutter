@@ -544,7 +544,19 @@ ohne Default-Hub → ohne konkrete Sorge zitiert BELLA **keine** Studie; `fetchR
 `LIMIT 2 → 1`, nur `evidence_strength = 'hoch'`. Packungs-Reichweite nur bei `packageKg ≥ 0,5`
 (kein „0,1 kg"-Unsinn für Snacks — der Snack-Guard aus 2A.2 verhindert das ohnehin schon).
 
-### Operation 2A.8 — Eval-Suite Allergen (zieht Op 2.4/2.5 vor, blockierend)
+### ✅ Operation 2A.8 — Allergen-Eval (blockierend, echte DB) — **ERLEDIGT (2026-09-03), CI braucht Secret**
+Weg **B** (echte Neon-DB, keine Fixtures). `fetchCandidates` + `fetchRelevantStudies` +
+`intentToHubs` + `StudyCitation` aus `route.ts` → **`src/lib/advisor/candidates.ts`** ausgelagert
+(route.ts orchestriert nur noch, importiert). Neu: **`src/lib/advisor/allergen-eval.test.ts`** —
+`describe.skipIf(!DATABASE_URL)`, 6 Szenarien (der Transkript-Fall + „kein Rind" / „verträgt keinen Lachs" /
+explizite Allergie / zwei Allergene / Folgeturn „ohne huhn") + Referenz-Test (Katalog nicht leer).
+Assertion pro Offer: `containsAnyAllergen(name+protein, avoidProtein) === false`, `type !== 'snack'` —
+für die normale **und** die `{ relax }`-Suche. Kein LLM nötig (Fast-Path setzt `avoidProtein` deterministisch).
+`ci.yml`: `DATABASE_URL` als env aus `secrets.DATABASE_URL` im Test- **und** Build-Step.
+**Rest-Haken (Mensch):** `DATABASE_URL` als GitHub-Actions-Secret hinterlegen (Settings → Secrets and
+variables → Actions). Ohne Secret werden die 7 Eval-Tests übersprungen (lokal + CI), der Rest läuft normal.
+<details><summary>ursprünglicher Plan</summary>
+
 - **Dateien:** `eval/advisor/allergen/*.jsonl`, `eval/run.ts`, `package.json` (`eval:advisor`), `ci.yml`.
 - **Vorgehen:** Szenarien: der Schäferhund+Huhn-Verlauf + ~10 Varianten („kein Rind", „verträgt
   Lachs nicht", „allergisch gegen Getreide", nur Symptome „juckt sich ständig", „ohne Huhn bitte").
@@ -554,6 +566,7 @@ ohne Default-Hub → ohne konkrete Sorge zitiert BELLA **keine** Studie; `fetchR
   ODER läuft gegen einen fixen Fixture-Katalog (bevorzugt — deterministisch, kein Netz).
 - **Akzeptanz:** Absichtlich gelockerter Filter → CI rot. Normalzustand grün. Läuft < 60 s.
 - **Agent:** `bella-advisor` + `trust-compliance`. **Aufwand:** L. **Risiko:** niedrig. **Abhängt von:** 2A.1–2A.6.
+</details>
 
 ### ✅ Operation 2A.9 — Doku + README — **ERLEDIGT (2026-09-03)**
 `bella-app/ARCHITECTURE.md` Advisor-Ablauf komplett neu (Intent-Fast-Path + LLM, `avoidProtein`,
@@ -873,7 +886,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | **2A.5** | Futter-Pass nur für sichere Hauptfutter | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | **2A.6** | LLM-Intent im RECOMMEND immer | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | **2A.7** | Ehrliche Zahlen im Stream | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
-| **2A.8** | Eval-Suite Allergen (blockierend) | ⬜ offen | | |
+| **2A.8** | Eval-Suite Allergen (blockierend, echte DB) | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | **2A.9** | Doku + README | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 2.2 | Modell-Routing | ⬜ offen (nach 2A) | | |
 | 2.3 | Stream-Robustheit | ⬜ offen | | |

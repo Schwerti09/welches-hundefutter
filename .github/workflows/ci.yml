@@ -36,11 +36,16 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Test
+      - name: Test (inkl. blockierender Allergen-Eval gegen die echte DB)
         run: npm test
+        env:
+          # DATABASE_URL als Repo-Secret -> die Allergen-Eval (src/lib/advisor/
+          # allergen-eval.test.ts) laeuft gegen Neon. Ohne Secret wird sie
+          # uebersprungen (describe.skipIf), der Rest der Tests laeuft normal.
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Build
         run: npm run build
         env:
           NEXT_TELEMETRY_DISABLED: "1"
-          # Kein DATABASE_URL im CI: DB-Abfragen liefern [] und der Build bleibt gruen.
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
