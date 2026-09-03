@@ -710,13 +710,33 @@ normale **und** die `{ relax }`-Suche. Braucht das `DATABASE_URL`-GitHub-Secret 
 - Optionales Lottie für den „Analyse"-Moment.
 - Reduced-Motion-Screenshot-Prüfung über `visual.yml`.
 
-### Operation 3.3 — OG-Bild-System pro Rasse (und Kern-Seitentypen)
+### Operation 3.3 — OG-Bild-System pro Rasse (und Kern-Seitentypen) — 🟡 **RASSE ERLEDIGT (2026-09-03)**
 - **Ziel:** Jede `/rasse/[slug]` (und Problem/Vergleich/Blog) hat ein eigenes, generiertes Teilen-Bild.
 - **Warum:** D5. 186 Rassen teilen sich ein generisches Bild → schwache Social/Chat-Vorschau.
 - **Dateien:** neu `src/app/rasse/[slug]/opengraph-image.tsx` (+ analog problem/vergleich), `src/lib/og/*` (Layout-Bausteine), evtl. Rasse-Foto aus `public/breeds/` einbetten.
 - **Vorgehen:** `ImageResponse` (Edge), Layout: Rasse-Foto + Name + „Futter-Empfehlung" + BELLA-Maskottchen + Domain. `size`/`contentType` export, `alt`. Fonts via `fetch` einer `.woff`.
 - **Akzeptanz:** `/rasse/labrador-retriever/opengraph-image` liefert 1200×630 PNG mit Rasse-Foto + Name. Twitter/Slack/WhatsApp-Vorschau geprüft. Build-Zeit-Impact gemessen (ggf. on-demand statt prebuild).
 - **Agent:** `visual-designer` + `content-engineer`. **Aufwand:** M. **Risiko:** mittel (Build-Zeit bei 186). **Abhängt von:** 3.2.
+
+**Ausgangslage (war schon da):** `opengraph-image.tsx` existierte bereits für rasse/problem/
+futtertyp/lebensphase/tipps + 2× vergleich — aber **text-only** (`src/lib/og-image.tsx` →
+`buildOgImage`), ohne Foto, ohne Maskottchen. Die Roadmap-Prämisse „generisches Bild" war stale.
+
+**Was jetzt live ist:**
+- `src/lib/og-image.tsx` — `buildOgImage` nimmt optional `imageUrl` → Split-Layout (Text links,
+  Foto-Spalte 430 px rechts mit weichem Verlauf). Statische **BELLA-Marke** (pures Inline-SVG,
+  Satori-tauglich — kein `<style>`/Animation) ersetzt das „B"-Kästchen in **allen** OG-Bildern.
+- `src/app/rasse/[slug]/opengraph-image.tsx` — bettet das self-hosted Rassefoto ein
+  (`localImg` → `${SITE_URL}/breeds/…`, mit Remote-Fallback), Badge/Größen-Label/Name/Claim.
+  Verifiziert: `/rasse/labrador-retriever/opengraph-image` → 200 `image/png` 1200×630 mit Foto;
+  unbekannte Rasse → 200 text-only (kein 500).
+- **Build-Zeit-Risiko gelöst:** `generateStaticParams: () => []` + `dynamicParams` + `revalidate=86400`
+  → **kein** Prebuild von 186 Foto-OG-Bildern (Seitenzahl unverändert 2373), on-demand + 24 h Cache.
+- `/dev/components` zeigt die Live-OG-Vorschau.
+
+**Offen (Teil 2):** Foto/Maskottchen-Layout auch für `problem`/`vergleich`/Blog (aktuell text-only,
+aber günstig & stabil — niedrige Prio). Font via `fetch(.woff)` statt System-Sans. Social-Debugger-
+Check (Twitter/Slack/WhatsApp) nach Deploy.
 
 ### ✅ Operation 3.4 — Komponenten-Katalog + visuelle Regression — **ERLEDIGT (2026-09-03)**
 - **`/dev/components`** (non-prod, `notFound()` in Prod, `noindex`): Farb-Tokens, Typo-Skala, Buttons/Pills,
@@ -973,7 +993,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 2.5 | Allergen-Gate | ✅ via 2A.8 (braucht DB-Secret) | 2026-09-03 | 334a46b |
 | 3.1 | Token-System Light/Dark | 🟡 Token-Ebene + `[data-theme]` Light/Dark + `ThemeToggle` live (nicht-brechend, auf `/dev/components`) · Teil 2: site-weite `bg-white/x`→Token-Migration + `@media (prefers-color-scheme)` offen | 2026-09-03 | _(dieser Batch)_ |
 | 3.2 | BELLA-Maskottchen | 🟡 kanonisches `BellaMascot` (SVG, 4 Posen, server-safe) + echte 404/Loading + Popup/Avatar-Einsatz · Teil 2: off-brand `BellaCharacter` ablösen + `🐕`-CTA-Sweep offen | 2026-09-03 | _(dieser Batch)_ |
-| 3.3 | OG-Bilder pro Rasse | ⬜ offen | | |
+| 3.3 | OG-Bilder pro Rasse | 🟡 Rasse-OG mit Foto + BELLA-Marke, on-demand (kein 186er-Prebuild) · Teil 2: problem/vergleich/Blog-Layout + Custom-Font offen | 2026-09-03 | _(dieser Batch)_ |
 | 3.4 | Komponenten-Katalog + VisReg | ✅ Katalog + Playwright (Smoke blockierend, Visual manuell) | 2026-09-03 | _(dieser Batch)_ |
 | 3.5 | Motion-Politur | ⬜ offen | | |
 | 4.1 | Thin-Content-Audit | ⬜ offen | | |

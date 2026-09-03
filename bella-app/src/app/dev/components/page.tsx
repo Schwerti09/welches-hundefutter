@@ -137,6 +137,23 @@ export default function ComponentsCatalog() {
         </p>
       </Section>
 
+      <Section title="OG-Bild — Rasse (3.3)">
+        <div className="max-w-xl overflow-hidden rounded-xl border border-[var(--border)]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/rasse/labrador-retriever/opengraph-image"
+            alt="OG-Bild-Vorschau Labrador Retriever"
+            width={1200}
+            height={630}
+            className="w-full h-auto"
+          />
+        </div>
+        <p className="mt-3 text-xs text-[var(--text-muted)]">
+          1200×630, Rassefoto + Name + BELLA-Marke. On-demand generiert (kein Prebuild für 186
+          Rassen), dann 24&nbsp;h gecacht.
+        </p>
+      </Section>
+
       <Section title="Advisor-Bubbles (statisch)">
         <div className="max-w-md space-y-3">
           <div className="text-sm leading-relaxed rounded-xl px-3 py-2 max-w-[85%]" style={{ background: "var(--surface)" }}>
