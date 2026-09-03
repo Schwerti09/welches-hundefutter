@@ -258,7 +258,16 @@ für `main` „Require status checks to pass" = `ci` aktivieren, sonst blockt de
 - **Akzeptanz:** 25 schnelle Requests → ab #21 `429`. Fremd-`Origin`-POST → `403`. `ai_usage` füllt sich. Normale Nutzung unbeeinträchtigt.
 - **Agent:** `platform-architect`. **Aufwand:** M. **Risiko:** mittel (Redis-Abhängigkeit / false positives). **Abhängt von:** 1.2.
 
-### Operation 1.4 — Test-Fundament: Vitest (Unit) + Playwright (Smoke)
+### 🟡 Operation 1.4 — Test-Fundament — **UNIT ERLEDIGT (2026-09-03), Playwright folgt**
+Umgesetzt: Vitest 3 + v8-Coverage, `vitest.config.ts`, `test`/`test:watch`/`test:coverage` Scripts,
+in `ci.yml` verdrahtet. **68 Unit-Tests** grün: `containsAllergen`/`allergenVariants` (Allergen-Sicherheit),
+`consumption-math`, `dogCost`, `issue-to-problem`, `glossary-links` — und `parseIntent` + `scoreFood`
++ `hasEnoughIntent`/`classifyTheme`/`computeConfidence` **nach Extraktion** aus `route.ts` in
+`src/lib/advisor/{intent,scoring}.ts` (verbatim, Verhalten unverändert → macht Op 2.1 sicher).
+**Offen:** Playwright-Smoke (Home / `/rassen` / ein `/rasse/[slug]` / Advisor-Happy-Path / robots+sitemap)
+— eigener Schritt, weil es Browser-Download im CI braucht.
+<details><summary>ursprünglicher Plan</summary>
+
 - **Ziel:** Die gefährliche Logik ist abgedeckt, bevor sie umgebaut wird.
 - **Warum:** T4. Allergen-Ausschluss ist tier-sicherheitsnah und hat null Netz.
 - **Dateien:** neu `vitest.config.ts`, `playwright.config.ts`, `src/**/*.test.ts`, `e2e/*.spec.ts`, `package.json`.
@@ -273,6 +282,14 @@ für `main` „Require status checks to pass" = `ci` aktivieren, sonst blockt de
   - Home rendert, kein Konsolen-Error. `/rassen` zeigt Bilder. Ein `/rasse/[slug]` rendert Hero + FAQ. Advisor: Nachricht senden → Stream kommt → am Ende `OFFERS`. `robots.txt`/`sitemap.xml` `200`.
 - **Akzeptanz:** `npm test` grün, in `ci.yml` verdrahtet. Kernmodule aus 1.x haben Tests **vor** ihrem Umbau. Coverage-Report existiert (Ziel iterativ ≥ 60 % der `src/lib` + Advisor-Logik).
 - **Agent:** `platform-architect` + `bella-advisor` (Advisor-Fälle). **Aufwand:** L. **Risiko:** niedrig. **Abhängt von:** 0.4.
+</details>
+
+### ✅ Operation 1.5 — Drizzle-Migrationen statt Laufzeit-DDL — **ERLEDIGT (2026-09-03)**
+`CREATE TABLE IF NOT EXISTS chat_logs` (einziges Laufzeit-DDL im Repo) aus `route.ts` entfernt.
+`chatLogs` als Drizzle-Tabelle in `schema.ts`. `drizzle/0000_baseline.sql` (16 Tabellen) + snapshot/journal
+generiert. `drizzle/README.md` erklärt die Baseline-Situation (Prod-DB existiert schon → nicht blind
+`migrate`). Scripts `db:generate` / `db:migrate` / `db:push`. `grep "CREATE TABLE" src` = 0.
+<details><summary>ursprünglicher Plan</summary>
 
 ### Operation 1.5 — Drizzle-Migrationen statt Laufzeit-DDL
 - **Ziel:** Schema-Änderungen sind versioniert und reviewbar.
@@ -285,6 +302,7 @@ für `main` „Require status checks to pass" = `ci` aktivieren, sonst blockt de
   4. Optional CI-Job: `drizzle-kit check` gegen die Migrationen (Drift-Detektor).
 - **Akzeptanz:** `grep -rn "CREATE TABLE" src` = 0. `drizzle/`-Ordner mit nummerierten SQL-Files committet. Advisor-Logging funktioniert weiter.
 - **Agent:** `platform-architect`. **Aufwand:** S–M. **Risiko:** niedrig. **Abhängt von:** —
+</details>
 
 ### ✅ Operation 1.6 — Font-Bug + tsconfig — **ERLEDIGT (2026-09-03)**
 `next/font/google` Inter (`variable: "--font-inter"`, `display: "swap"`, self-hosted zur Build-Zeit →
@@ -605,7 +623,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 1.1 | React 19 | ⬜ offen | | |
 | 1.2 | CSP + COOP | ⬜ offen | | |
 | 1.3 | API Rate-Limit | ⬜ offen | | |
-| 1.4 | Test-Fundament | ⬜ offen | | |
+| 1.4 | Test-Fundament | 🟡 Unit (68 Tests) · Playwright folgt | 2026-09-03 | _(dieser Batch)_ |
 | 1.5 | Drizzle-Migrationen | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 1.6 | Font-Bug + tsconfig | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 2.1 | Intent-LLM | ⬜ offen | | |
