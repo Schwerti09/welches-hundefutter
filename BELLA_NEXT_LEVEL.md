@@ -617,12 +617,18 @@ Deterministischer Fallback-Text greift wie bisher — nie ein leerer Stream.
 - **Akzeptanz:** `npm run eval:advisor` läuft lokal + als **nicht-blockierender** CI-Job (Report als PR-Kommentar). Baseline dokumentiert; Regressionen sichtbar.
 - **Agent:** `bella-advisor` + `conversion-analyst`. **Aufwand:** L. **Risiko:** niedrig. **Abhängt von:** 1.4.
 
-### Operation 2.5 — Allergen-Sicherheit als harter Gate
+### ✅ Operation 2.5 — Allergen-Gate — **via Operation 2A.8 erledigt (2026-09-03)**
+`src/lib/advisor/allergen-eval.test.ts` ist genau dieser Gate: blockierender CI-Test gegen die
+echte DB, 6 Szenarien, Assertion „kein `avoidProtein`-Produkt in den Offers, kein Snack" für die
+normale **und** die `{ relax }`-Suche. Braucht das `DATABASE_URL`-GitHub-Secret zum Scharfschalten.
+<details><summary>ursprünglicher Plan</summary>
+
 - **Ziel:** Kein Deploy, wenn ein Allergiker-Szenario ein verbotenes Protein in den Offers hätte.
 - **Dateien:** `eval/advisor/allergen/*.jsonl`, `ci.yml`.
 - **Vorgehen:** Teilmenge von 2.4 nur für Allergene, als **blockierender** CI-Check. Deckt Namen-basierten Ausschluss ab (Huhn → „Hühnchen", „Geflügel", „Poulet", zusammengesetzte Produktnamen).
 - **Akzeptanz:** Absichtlich gelockerter Filter → CI rot. Normalzustand grün.
 - **Agent:** `trust-compliance` + `bella-advisor`. **Aufwand:** S (baut auf 2.4). **Risiko:** niedrig. **Abhängt von:** 2.4.
+</details>
 
 ---
 
