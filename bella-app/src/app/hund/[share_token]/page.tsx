@@ -4,6 +4,7 @@ import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import ShareButton from "./ShareButton";
 import { getBreedImage } from "@/lib/breed-image";
+import BellaMascot from "@/components/bella/BellaMascot";
 import { getSharedDogProfile, buildCardNumber } from "@/lib/dog-profile";
 import { BREED_BY_SLUG } from "@/data/breeds";
 
@@ -168,7 +169,7 @@ export default async function HundSteckbriefPage({ params }: { params: Promise<{
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={getBreedImage(profile.breed_slug)!} alt={profile.breed_slug ?? profile.name} className="w-full h-full object-cover" />
                 ) : (
-                  "🐕"
+                  <BellaMascot pose="idle" size={60} />
                 )}
               </div>
               <div className="flex-1 min-w-0">

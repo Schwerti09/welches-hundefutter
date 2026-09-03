@@ -680,13 +680,35 @@ normale **und** die `{ relax }`-Suche. Braucht das `DATABASE_URL`-GitHub-Secret 
 - No-FOUC-Script + `ThemeToggle` in `layout.tsx` (aktuell nur `/dev/components`).
 - Lighthouse-A11y-Audit Light-Modus, Screenshots Light+Dark der echten Seiten.
 
-### Operation 3.2 — Echtes BELLA-Maskottchen
+### Operation 3.2 — Echtes BELLA-Maskottchen — 🟡 **TEIL 1 ERLEDIGT (2026-09-03)**
 - **Ziel:** Eine wiedererkennbare, eigene BELLA — SVG, 3–4 Posen (Idle, „schnüffelt/analysiert", „gefunden!", Fehler/„hm").
 - **Warum:** D4. Marke + KI-Bildsuche + Conversion. Ein Emoji ist kein Asset.
 - **Dateien:** neu `src/components/bella/BellaMascot.tsx` (+ SVG-Sprites), Einsatz in `BellaAdvisor`, Hero, `DogPassPopup`, 404, Loading-States.
 - **Vorgehen:** Stil aufs Design-System (Honig/Dark, wenige Linien). Inline-SVG, `currentColor`/Token-fähig, `prefers-reduced-motion` respektiert. Optional 1 Lottie für den „Analyse"-Moment — nur wenn Budget < 15 KB gz.
 - **Akzeptanz:** BELLA erscheint konsistent an ≥ 5 Stellen. Kein Emoji-🐕 mehr als Marken-Element (Deko-Emoji im Fließtext ok). Assets < 20 KB gesamt. Reduced-Motion sauber.
 - **Agent:** `visual-designer`. **Aufwand:** L. **Risiko:** niedrig. **Abhängt von:** 3.1 (Tokens).
+
+**Was jetzt live ist:**
+- `src/components/bella/BellaMascot.tsx` — **kanonisches** Marken-Maskottchen. Reines SVG,
+  KEIN `"use client"`, kein JS → server-renderbar. Posen `idle | sniff | found | hmm`
+  (Ohren/Brauen/Mund + Accessoire: Duftspur / Funke / „?"). Honig-Token-Palette mit
+  Fallback (Light + Dark), Idle-/Nasen-Animation nur bei `prefers-reduced-motion: no-preference`.
+  ~1,8 KB gerendertes HTML pro Instanz. `title`→`role="img"`, sonst `aria-hidden`.
+- **Neu: `src/app/not-found.tsx`** — echte, gebrandete 404 (`pose="hmm"`, CTA → Advisor + Start,
+  Quick-Links). Vorher: Next-Default.
+- **Neu: `src/app/loading.tsx`** — Route-Level-Ladezustand („BELLA schnüffelt …", `pose="sniff"`).
+- `DogPassPopup` Avatar, `mein-hund` (Leerzustand + Profil-Avatar-Fallback), `hund/[share_token]`
+  Avatar-Fallback → Maskottchen statt `🐕`.
+- `/dev/components` zeigt alle 4 Posen. Grün: `tsc` · `lint` · `build` (2373 Seiten) · 113 Vitest.
+
+**Bewusst NICHT gemacht (Teil 2):**
+- **Off-brand `BellaCharacter.tsx`** (Indigo/Cyan/Pink-Auren `#6366f1`…) in `BellaExperience`,
+  `BellaDecisionUI`, `BellaAdvisor` — auf Token-Palette umfärben ODER durch `BellaMascot`/`Bella`
+  ersetzen. Das ist der sichtbarste D4-Verstoß, aber ein eigener visueller Eingriff mit Regressionsrisiko.
+- `🐕` in ~40 CTA-Button-Labels (`🐕 BELLA fragen …`) über `src/app/**` — „Deko-Emoji im Fließtext",
+  aber grenzwertig als Marken-Element; eigener Sweep.
+- Optionales Lottie für den „Analyse"-Moment.
+- Reduced-Motion-Screenshot-Prüfung über `visual.yml`.
 
 ### Operation 3.3 — OG-Bild-System pro Rasse (und Kern-Seitentypen)
 - **Ziel:** Jede `/rasse/[slug]` (und Problem/Vergleich/Blog) hat ein eigenes, generiertes Teilen-Bild.
@@ -950,7 +972,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 2.4 | Advisor-Eval-Suite | ✅ strukturell + LLM-Judge (opt-in) | 2026-09-03 | _(dieser Batch)_ |
 | 2.5 | Allergen-Gate | ✅ via 2A.8 (braucht DB-Secret) | 2026-09-03 | 334a46b |
 | 3.1 | Token-System Light/Dark | 🟡 Token-Ebene + `[data-theme]` Light/Dark + `ThemeToggle` live (nicht-brechend, auf `/dev/components`) · Teil 2: site-weite `bg-white/x`→Token-Migration + `@media (prefers-color-scheme)` offen | 2026-09-03 | _(dieser Batch)_ |
-| 3.2 | BELLA-Maskottchen | ⬜ offen | | |
+| 3.2 | BELLA-Maskottchen | 🟡 kanonisches `BellaMascot` (SVG, 4 Posen, server-safe) + echte 404/Loading + Popup/Avatar-Einsatz · Teil 2: off-brand `BellaCharacter` ablösen + `🐕`-CTA-Sweep offen | 2026-09-03 | _(dieser Batch)_ |
 | 3.3 | OG-Bilder pro Rasse | ⬜ offen | | |
 | 3.4 | Komponenten-Katalog + VisReg | ✅ Katalog + Playwright (Smoke blockierend, Visual manuell) | 2026-09-03 | _(dieser Batch)_ |
 | 3.5 | Motion-Politur | ⬜ offen | | |

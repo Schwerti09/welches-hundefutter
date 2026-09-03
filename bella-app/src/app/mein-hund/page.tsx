@@ -6,6 +6,7 @@ import SiteFooter from "@/components/SiteFooter";
 import { calcLifecycle, fmtDate, stageLabelDe } from "@/lib/lifecycle";
 import { getBreedImage } from "@/lib/breed-image";
 import { getVoucherForUrl, PARTNER_VOUCHERS } from "@/data/partners";
+import BellaMascot from "@/components/bella/BellaMascot";
 
 interface Profile {
   id: string;
@@ -436,7 +437,7 @@ export default function MeinHundPage() {
           </div>
         ) : noProfile ? (
           <div className="text-center py-16">
-            <div className="text-5xl mb-6">🐕</div>
+            <BellaMascot pose="idle" size={80} className="mb-6" title="BELLA" />
             <h1 className="text-2xl font-black mb-3">Noch kein Hunde-Profil</h1>
             <p className="text-[var(--muted)] mb-8 max-w-md mx-auto">
               Lass BELLA ein Profil für deinen Hund anlegen — sie braucht nur Rasse, Alter und Gewicht.
@@ -462,7 +463,7 @@ export default function MeinHundPage() {
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={getBreedImage(data.profile.breed_slug)!} alt={data.profile.breed_slug ?? data.profile.name} className="w-full h-full object-cover" />
                   ) : (
-                    "🐕"
+                    <BellaMascot pose="idle" size={60} />
                   )}
                 </div>
                 <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">

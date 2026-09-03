@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import BellaMascot from "@/components/bella/BellaMascot";
 
 const STORAGE_KEY = "dogPassPopupShown";
 const SHOW_DELAY_MS = 1300;
@@ -96,11 +97,11 @@ export default function DogPassPopup() {
 
             <div className="relative flex flex-col items-center gap-3">
               <div
-                className={`w-16 h-16 rounded-2xl flex items-center justify-center text-2xl transition-all ${
+                className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all ${
                   name ? "bg-gradient-to-br from-orange-400 to-amber-500 ring-2 ring-orange-400/40 shadow-lg shadow-orange-500/25" : "bg-white/5 ring-1 ring-white/10"
                 }`}
               >
-                🐕
+                <BellaMascot pose={name ? "found" : "idle"} size={44} />
               </div>
 
               <input

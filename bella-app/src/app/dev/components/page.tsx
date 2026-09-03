@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import BreedImg from "@/components/BreedImg";
 import ThemeToggle from "@/components/ThemeToggle";
+import BellaMascot from "@/components/bella/BellaMascot";
 
 // Nicht-Prod Komponenten-Katalog (Roadmap 3.4 / 3.1). Zum Draufschauen vor/nach
 // Design-Änderungen (Tokens, Light/Dark, Motion). Kein SEO, nicht verlinkt.
@@ -118,6 +119,22 @@ export default function ComponentsCatalog() {
           <BreedImg src="/breeds/GIBT-ES-NICHT.jpg" alt="Fehlt → Emoji-Fallback" wrapperClassName="w-full h-28 rounded-xl" />
           <BreedImg src={undefined} alt="Kein src → Emoji-Fallback" wrapperClassName="w-full h-28 rounded-xl" />
         </div>
+      </Section>
+
+      <Section title="BELLA-Maskottchen (3.2)">
+        <div className="flex flex-wrap items-end gap-8">
+          {(["idle", "sniff", "found", "hmm"] as const).map((p) => (
+            <div key={p} className="flex flex-col items-center gap-2">
+              <BellaMascot pose={p} size={88} title={`BELLA ${p}`} />
+              <code className="text-xs text-[var(--text-muted)]">{p}</code>
+            </div>
+          ))}
+        </div>
+        <p className="mt-4 text-xs text-[var(--text-muted)]">
+          Reines SVG, server-renderbar, Token-Palette (Honig), Idle-Animation nur bei
+          <code> prefers-reduced-motion: no-preference</code>. Im Einsatz: 404, Loading,
+          Hundepass-Popup, Profil-Avatare.
+        </p>
       </Section>
 
       <Section title="Advisor-Bubbles (statisch)">
