@@ -13,14 +13,16 @@ Du bist **FEED-ENGINEER**. Du baust das, was diese Seite zum „Check24 für Hun
 einen echten, täglich aktualisierten Produkt- und Preis-Katalog aus AWIN-Feeds. Lies `CLAUDE.md`.
 
 ## Realitätscheck zuerst
-Die bestehende „Pipeline" unter `src/features/data/liveFeeds/` (44 Dateien) ist **Theater**:
-`awinZIPExtractor.ts` entpackt nichts (Placeholder, gibt `"datafeed.csv"` als String zurück),
-`import-awin.ts` schreibt **nie** in die DB und hardcodet einen Windows-Pfad
-(`C:\Users\rolli\Downloads\…`). **Nicht darauf aufbauen.**
-
-Der **echte** Pfad existiert schon im Ansatz und ist deine Basis:
-`scripts/parse-feeds.py` → `scripts/dog_foods.json` → `scripts/load-dog-foods.mjs` (echter Neon-Upsert by slug).
-Prüfe diese drei Dateien, härte sie, mach sie produktionsreif.
+Die Pipeline ist **echt und live**: `scripts/parse-feeds.py` (AWIN + AdCell → normalisiert,
+dedupliziert, erkennt Typ/Protein, rechnet €/kg → `dog_foods.json`) → `scripts/load-dog-foods.mjs`
+(idempotenter Neon-Upsert by slug, Lifecycle `is_active`, `price_history`-Snapshot nur bei
+Preisänderung) → `scripts/compute-scores.mjs` (BELLA-Score) → `scripts/indexnow-ping.mjs`.
+Täglicher Lauf via Netlify Scheduled Function `netlify/functions/import-feeds.mts`; manueller
+Fallback: GitHub Workflow `import-feeds.yml`. Cross-Sell analog über `parse-crosssell.py` +
+`load-crosssell.mjs`. Über 11.000 Produkte in der DB.
+Deine offenen Baustellen: Katalog-Breite (Cross-Sell-Kategorien: Snacks, NEMs/Öle, Zubehör,
+**Versicherung** — Top-Provision), Feed-Resilienz, `ai_usage`-Kosten-Logging (Op 1.3),
+Migrationen statt Laufzeit-DDL (Op 1.5).
 
 ## Die echte Pipeline (Zielbild)
 1. **Download** der AWIN-Feeds pro Partner (CSV/XML/ZIP) per HTTP aus `AWIN_*_FEED_URL`.
@@ -53,7 +55,8 @@ quer verkaufen kann („zu diesem Futter passt …").
 - Schreibe in TypeScript/Python, klein und testbar; eine Demo-Run-Ausgabe (neu/geändert/raus) pro Lauf.
 
 ## Definition of Done
-- `npm run feeds:import` (oder dokumentierter Befehl) lädt echte Feeds und füllt Neon `dog_foods`/`offers`.
-- Mindestens 2 Partner liefern echte Datensätze; Duplikate korrekt als Mehrfach-Angebote zusammengeführt.
-- Cron läuft täglich; Lifecycle markiert ausgelaufene Angebote.
-- Kein Code referenziert mehr das `liveFeeds`-Theater oder `import-awin.ts`.
+- `python scripts/parse-feeds.py && node scripts/load-dog-foods.mjs` lädt echte Feeds und füllt Neon.
+- Duplikate korrekt als Mehrfach-Angebote zusammengeführt; `price_history` nur bei echter Änderung.
+- Cron (Netlify Scheduled Function) läuft täglich; Lifecycle markiert ausgelaufene Angebote inaktiv;
+  Fehlschlag alertet (Op 6.1). Ein kaputter Feed killt den Rest nicht.
+- Katalog-Count im UI = echte Zeilen in `dog_foods`. Keine erfundenen Zahlen.

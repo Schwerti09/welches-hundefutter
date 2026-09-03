@@ -1,5 +1,7 @@
 # AGENTS.md — BELLA Commerce OS
 
+> Status: ergänzend (Mission/Philosophie). SSOT Alltag = `../CLAUDE.md`, Roadmap = `../BELLA_NEXT_LEVEL.md`, Flotte = `../.claude/agents/`.
+
 ## Mission
 
 Dieses Repository existiert ausschließlich, um die beste deutschsprachige Plattform für

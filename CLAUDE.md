@@ -2,7 +2,9 @@
 
 > Diese Datei wird von Claude Code automatisch geladen. Sie ist die **Single Source of Truth**
 > für den Ist-Zustand und die Spielregeln. Agenten in `.claude/agents/` ergänzen sie.
-> **`FUTTERPASS.md`** (Repo-Root) ist die Blaupause für das Futter-Pass-Schwungrad (Stufen 1–5) — muss ebenfalls gelesen werden.
+> **`BELLA_NEXT_LEVEL.md`** (Repo-Root) ist die Roadmap — nummerierte Operationen mit Akzeptanzkriterien.
+> **`FUTTERPASS.md`** (Repo-Root) ist die Blaupause für das Futter-Pass-Schwungrad (Stufen 1–5).
+> App-Code: **`bella-app/`** (Next.js 16, App Router). Technischer Aufbau: `bella-app/ARCHITECTURE.md`.
 
 ---
 
@@ -15,39 +17,37 @@ Preisvergleich und Cross-Selling (Snacks, Versicherung, Zubehör, alles für Hun
 - **Domain:** welches-hundefutter.today
 - **Persona:** BELLA (Fork von HANSI / HandyvertragTrotzSchufa)
 - **Ziel:** Platz 1 DACH für „welches hundefutter für meinen hund" (+ Cluster)
-- **Stack:** Next.js 16 (App Router) · TS · Tailwind v4 · Neon Postgres (Drizzle) · Netlify · AWIN · Gemini 2.0 Flash + Claude Haiku 4.5
+- **Stack:** Next.js 16 (App Router) · React 18.3 (→ 19, Roadmap Op 1.1) · TS · Tailwind v4 · Neon Postgres (Drizzle) · Netlify · AWIN + AdCell · Gemini 2.5 Flash + Claude Haiku 4.5
 
 ---
 
-## 2. GROUND TRUTH — Ist-Zustand (geprüft, Stand 2026-06-05)
+## 2. GROUND TRUTH — Ist-Zustand (Stand 2026-09-03)
 
-**Das Fundament trägt. Phase = Wachstum.**
+**Das Fundament trägt. Phase = Next Level** — siehe `BELLA_NEXT_LEVEL.md` (36 nummerierte Operationen).
 
 ### ✅ Erledigt & live
 
 | Was | Detail |
 |---|---|
-| ~18k Zeilen toter Code | Architektur-Theater entfernt (0 Importe, Build grün) |
-| `products.ts` Handy-Frankenstein | Abgelöst; Live-Seite liest aus **Neon** |
-| 8.442 echte Produkte | AWIN (`a=615299`) + AdCell, täglicher Cron 05:00 UTC |
+| Migration HANSI→BELLA + toter Code | Abgeschlossen. App-Ordner heißt jetzt `bella-app/` (2026-09-03). Rest-Reste → Roadmap Op 0.2 |
+| `products.ts` Handy-Frankenstein | Abgelöst; Seiten rendern aus **Neon** (`src/db/queries/*`) |
+| über 11.000 Produkte | AWIN (`a=615299`) + AdCell, täglicher Cron via Netlify Scheduled Functions |
 | `price_history` | Snapshot nur bei Änderung, Lifecycle (`is_active`) |
-| KI-Berater (BELLA) | Auf echten Produkten; Allergie→getreidefrei, Welpe+Lachs, BARF |
-| 54 Rasse-Seiten | `/rasse/[slug]` + Galerie mit echten Fotos |
+| KI-Berater (BELLA) | `/api/advisor/chat`, streamt, scort echte `dog_foods`, harter Allergen-Ausschluss, Futter-Pass-Anlage |
+| 186 Rasse-Seiten | `/rasse/[slug]` — Portionsrechner, FAQ, Fütterungs-Absätze; Fotos **self-hosted** in `public/breeds/` (2026-09-03) |
+| Programmatik | `/problem/*` (14), `/futtertyp/*`, `/lebensphase/*`, `/vergleich/*`, ~1.400 Tipps, Studien, Glossar |
 | Schicht 1 — Cross-sell | Kuratierte Begleit-Empfehlung (max. 3, mit Begründung) |
 | Schicht 2 — Preis-Wecker | DOI-E-Mail-Audience via `price_history`, `/preis-wecker` |
-| Hero „lebende BELLA" | Aurora + Bento-Universum + Schnüffel-Scan |
 | Rechtshygiene | Impressum (DDG), Datenschutz inkl. KI, kein On-Load-Pixel |
-| Legacy-Routen gelöscht | berlin, hamburg, duesseldorf, frankfurt, koeln, leipzig, muenchen, stuttgart, stadt, anbieter, handy, contract-tuev |
-| deals/page.tsx | Echte dog_foods-DB-Abfrage, BELLA-Branding |
-| StructuredData | HowTo + FAQs korrekt auf Hundefutter |
+| PageSpeed / Sticky-CTA | 2026-09-03: GA `lazyOnload`, `next/image` für Rasse-Fotos, mobiler CTA entschärft |
 
-### 🔵 Nächste Wachstums-Tracks
+### 🔴 Offene Baustellen (Auszug — vollständig in `BELLA_NEXT_LEVEL.md`)
 
-| Track | Was | Agent |
-|---|---|---|
-| Long-Tail SEO | 14 Problem-Seiten `/problem/[slug]`, Futtertyp-Seiten `/futtertyp/[slug]`, `/vergleich/[a]-vs-[b]` | `content-engineer` + `seo-strategist` |
-| Katalog-Breite | Cross-Sell-Kategorien: Snacks, NEMs/Öle, Zubehör, Versicherung | `feed-engineer` |
-| Konversion | OG-Bilder pro Rasse, Social-Proof, Score-Transparenz sichtbar machen | `visual-designer` |
+- **Fundament:** React 18 unter Next 16 (Op 1.1) · kein CSP/COOP (1.2) · kein API-Rate-Limit (1.3) · **null Tests** (1.4) · Schema-Drift via Laufzeit-DDL (1.5) · toter `src/lib/{environment,performance,state,…}` (0.2)
+- **BELLA:** Regex-Intent + duplizierte Rassen-Liste (2.1) · pauschales Modell-Routing (2.2) · keine Eval-Suite (2.4)
+- **Design:** nur Dark-Mode (3.1) · BELLA = Emoji (3.2) · kein OG-Bild pro Rasse (3.3) · `--font-inter` nie geladen (1.6)
+- **Content:** Thin-Content-Risiko bei 1.400 Tipps + `/stadt/*` (4.1) · kein Tierarzt-Review (4.2)
+- **Moat:** Futter-Pass-Schleife nicht geschlossen (5.1) · GA4 statt first-party (5.2) · Funnel ungemessen (5.3)
 
 ---
 
@@ -68,9 +68,9 @@ hundefutter-tests.net). Die gewinnen über **EEAT** (echte Tests, transparente S
 
 ## 4. Harte Regeln für ALLE Agenten
 
-1. **DB-first.** Neue Daten kommen aus Neon (`dog_foods`/`offers`), nie aus `products.ts`.
+1. **DB-first.** Neue Daten kommen aus Neon (`dog_foods`/`offers`), nie aus statischen Fakes.
 2. **Kein totes Verzeichnis erweitern.** Kein `src/features/`, `src/platform/` — gelöscht.
-3. **Keine erfundenen Zahlen.** „8.000+" steht da, weil 8.442 echte Datensätze in der DB sind.
+3. **Keine erfundenen Zahlen.** „11.000+" steht da, weil so viele echte Datensätze in `dog_foods` sind. Ändert sich die DB, ändert sich die Zahl.
 4. **Keine medizinischen/tierärztlichen Heilversprechen.** „kann unterstützen", nicht „heilt".
 5. **Affiliate-Transparenz:** Jeder AWIN-Link `rel="sponsored"`, sichtbare Offenlegung. Pflicht.
 6. **Deutsch, Du-Form, Hundehalter-Sprache.** Kein Marketing-Sprech, keine Floskeln.

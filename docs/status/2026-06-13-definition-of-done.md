@@ -1,5 +1,7 @@
 # BELLA — Definition of Done (Stand: 13.06.2026)
 
+> Status: Archiv (Zeitpunkt-Snapshot). Der noch offene Off-Page-Teil ist in `../../BELLA_NEXT_LEVEL.md` TEIL 3 „Off-Page" übernommen. Die projektweite Definition of Done steht dort in TEIL 6.
+
 Ehrliche Gesamtdurchsicht aller Pläne (GEO-Protokoll A–J, DACH-Plan, Agents).
 Kernsatz vorweg: **Der Code ist zu ~90 % fertig. Was zum „wirklich fertig" fehlt,
 ist überwiegend KEIN Code mehr — sondern Off-Page-Arbeit, die kein Commit löst.**

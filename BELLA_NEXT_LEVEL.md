@@ -139,7 +139,15 @@ Bevor gebaut wird, muss das Repo aufhören zu lügen.
 **Rest-Haken (Mensch):** in der Netlify-UI unter *Site configuration → Build & deploy → Build settings*
 prüfen, dass „Base directory" leer ist oder auf `bella-app` steht (sonst überstimmt die UI `netlify.toml`).
 
-### Operation 0.1 — Doku auf eine Wahrheit reduzieren
+### ✅ Operation 0.1 — Doku auf eine Wahrheit reduzieren — **ERLEDIGT (2026-09-03)**
+Umgesetzt: `ARCHITECTURE.md` neu (echter Stand) · `agents.md` + `.github/copilot-instructions.md`
+= Wegweiser/Constraints · `Bella_AGENTS.md`, `Bella_DECISION_INTELLIGENCE_AGENTS.md`, `SEO_AGENTS.md`,
+`DEPLOYMENT_DEBUG_REPORT.md` gelöscht · `DEFINITION_OF_DONE.md` → `docs/status/` archiviert ·
+`.claude/agents/README.md` auf 13 Agenten + aktuellen Stand · Realitäts-Update in `00/01/02/04/05/06`
+(kein „totes Theater / products.ts / gefälschte Pipeline" mehr) · `CLAUDE.md` §2 Ground Truth aktualisiert ·
+Status-Header auf verbleibende Strategie-Docs. Acceptance-Grep sauber.
+<details><summary>ursprünglicher Plan</summary>
+
 - **Ziel:** Ein Leser (Mensch oder Agent) findet in < 2 Minuten heraus, was stimmt.
 - **Warum:** 8 teils widersprüchliche Strategiedokumente kosten jeden Onboarding-Versuch eine Stunde und verleiten Agenten zu falschen Annahmen (T2/T3 stehen als „erledigt" in `ARCHITECTURE.md`).
 - **Dateien:** `agents.md`, `.github/copilot-instructions.md`, `bella-app/ARCHITECTURE.md`, `bella-app/{AGENTS,Bella_AGENTS,Bella_DECISION_INTELLIGENCE_AGENTS,SEO_AGENTS}.md`, `.claude/agents/README.md`, neu: `bella-app/ARCHITECTURE.md` (echt).
@@ -152,6 +160,7 @@ prüfen, dass „Base directory" leer ist oder auf `bella-app` steht (sonst übe
   6. `.claude/agents/README.md`: „10" → „13", Tabelle mit allen 13 Dateien synchronisieren.
 - **Akzeptanz:** `grep -ri "handyvertrag\|mobilfunk\|schufa\|products.ts\|/hunds/" --include=*.md` = 0 relevante Treffer. Jede verbleibende `.md` hat oben eine Zeile „Status: SSOT | ergänzend | Archiv (Datum)". `README`-Badges stimmen.
 - **Agent:** `content-engineer` (+ `platform-architect` fürs Architektur-Doc). **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** —
+</details>
 
 ### Operation 0.2 — Toten „Architektur-Theater"-Code entfernen
 - **Ziel:** Was nicht typgeprüft und von nichts importiert wird, ist weg.
@@ -558,8 +567,8 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 
 | Op | Titel | Status | Datum | Commit |
 |---|---|---|---|---|
-| 0.0 | App-Ordner → `bella-app` | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
-| 0.1 | Doku auf eine Wahrheit | ⬜ offen | | |
+| 0.0 | App-Ordner → `bella-app` | ✅ erledigt | 2026-09-03 | eb02776 |
+| 0.1 | Doku auf eine Wahrheit | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 0.2 | Toten Code entfernen | ⬜ offen | | |
 | 0.3 | Env-Templates | ⬜ offen | | |
 | 0.4 | CI-Gate | ⬜ offen | | |

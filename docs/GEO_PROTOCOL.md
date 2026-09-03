@@ -1,5 +1,7 @@
 # 🐕🧠 BELLA OMNIPRÄSENZ-PROTOKOLL
 
+> Status: ergänzend (GEO / AI-Search-Strategie). Umsetzungs-Operationen: `../BELLA_NEXT_LEVEL.md` Phase 4 (v.a. 4.5).
+
 ## Mission: BELLA wird nicht nur gefunden — BELLA wird **zitiert**. Von jeder KI. In jeder Antwort.
 
 > **Target:** welches-hundefutter.today · Next.js 16.2 App Router · TypeScript · Tailwind v4 · Neon Postgres (Drizzle) · Netlify

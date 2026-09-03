@@ -1,44 +1,47 @@
-# 🐕 BELLA Agent-Flotte — v2 (Wachstumsphase)
+# 🐕 BELLA Agent-Flotte
 
-Fundament geheilt, Feeds live (8.442 Produkte, täglicher Cron). Die Flotte wächst von „Seite bauen"
-zu „Platz 1 halten": Monetarisierungs-Tiefe + eigene Audience + Long-Tail-Skalierung.
-Ground Truth: `../../CLAUDE.md` (+ `CLAUDE_UPDATE.md` einpflegen).
+> Status: SSOT für die Flotte. Ground Truth = `../../CLAUDE.md`. Roadmap = `../../BELLA_NEXT_LEVEL.md`.
+> Stand 2026-09-03.
 
-## Die Flotte (10)
+**Phase: Next Level.** Fundament trägt (2.372 Seiten grün, echte Neon-DB, echte
+Feed-Pipeline via Netlify Scheduled Functions, streamender KI-Berater, programmatische
+Seiten live). Die Migration HANSI→BELLA und der „toter-Code"-Abriss sind erledigt.
+Was jetzt ansteht, steht als nummerierte Operationen in `BELLA_NEXT_LEVEL.md` — die
+Flotte arbeitet daran.
 
-| # | Agent | Rolle | Modell |
-|---|---|---|---|
-| 00 | **bella-lead** | Orchestrator — zerlegt, delegiert, nimmt ab | opus |
-| 06 | **platform-architect** | ✅ Fundament geheilt · DB-Integrität, Build | opus |
-| 04 | **feed-engineer** | ✅ AWIN+AdCell live, Cron, price_history · erweitert Cross-Sell-Kategorien | sonnet |
-| 01 | **bella-advisor** | Der Berater — Flow, Scoring · integriert beide Evolutions-Schichten | sonnet |
-| 02 | **content-engineer** | Der Content — jetzt Long-Tail-Scale-out (Problem/Vergleich/Futtertyp) | sonnet |
-| 03 | **visual-designer** | Das Visuelle — Designsystem, Bella, CRO, CWV | sonnet |
-| 05 | **seo-strategist** | DACH #1 halten — Cluster, Vergleichsseiten, Sitemap, AI-Search | sonnet |
-| 07 | **trust-compliance** | Recht · Offenlegung · Versicherung-Tippgeber · Double-Opt-in (Veto) | sonnet |
-| 08 | 🆕 **cross-sell-curator** | **Schicht 1** — Begleit-Empfehlung, `companion_for`, kuratiert statt Müll | sonnet |
-| 09 | 🆕 **retention-growth** | **Schicht 2** — Preis-Alerts + eigene E-Mail-Audience (der Burggraben) | sonnet |
+## Die 13 Spezialisten
 
-## Die nächste Evolutionsstufe
-- **Schicht 1 (`cross-sell-curator`):** BELLA verkauft nach der Futter-Empfehlung kuratiert quer —
-  Snacks, NEMs/Öle, Zubehör, **Versicherung** (Top-Provision). Max. 2–3, immer mit „warum".
-- **Schicht 2 (`retention-growth`):** Nutzt die bisher ungenutzte `price_history` für Preis-Alerts +
-  Double-Opt-in-Liste. Umsatz, der **nicht** von Google abhängt. Hält Platz 1, statt ihn nur zu holen.
-- **Parallel:** `content-engineer` + `seo-strategist` rollen das bewiesene Rasse-Muster auf den
-  ganzen Long-Tail aus.
+| # | Datei | Agent | Rolle | Modell |
+|---|---|---|---|---|
+| 00 | `00-orchestrator.md` | **bella-lead** | Orchestrator — zerlegt, delegiert, nimmt gegen Akzeptanzkriterien ab | opus |
+| 01 | `01-bella-advisor.md` | **bella-advisor** | Der Berater — Fragenflow, Scoring, Allergen-Sicherheit, Prompt, `/api/advisor/*` | sonnet |
+| 02 | `02-content-engineer.md` | **content-engineer** | Rasse-/Problem-/Futtertyp-/Vergleichs-Seiten, FAQ, Seed-Daten, Schema | sonnet |
+| 03 | `03-visual-designer.md` | **visual-designer** | Designsystem, BELLA-Charakter, CRO, OG-Bilder, Core Web Vitals | sonnet |
+| 04 | `04-feed-engineer.md` | **feed-engineer** | AWIN/AdCell-Pipeline + Cross-Sell-Katalog (Snacks, Versicherung, Zubehör) | sonnet |
+| 05 | `05-seo-strategist.md` | **seo-strategist** | Pfad zu DACH #1 — Cluster, interne Links, Technical SEO, AI-Search | sonnet |
+| 06 | `06-architect.md` | **platform-architect** | DB-Integrität, Build-Gesundheit, Refactors, Sicherheit, Tests, CI | opus |
+| 07 | `07-trust-compliance.md` | **trust-compliance** | DSGVO/DDG, EEAT, Affiliate-Offenlegung, Health-Claims (Veto-Recht) | sonnet |
+| 08 | `08-cross-sell-curator.md` | **cross-sell-curator** | Begleit-Empfehlung, `companion_for`, Anti-Müll-Disziplin | sonnet |
+| 09 | `09-retention-growth.md` | **retention-growth** | Preis-Alerts, DOI-E-Mail-Audience, Lifecycle-Mails | sonnet |
+| 10 | `10-experience-architect.md` | **experience-architect** | Der „lebende" BELLA-Moment — Hero, Motion, Interaktions-Erlebnis | sonnet |
+| 11 | `11-lifecycle-architect.md` | **lifecycle-architect** | Futter-Pass-Schwungrad (`FUTTERPASS.md`): `dog_profiles`, Nachschub-Wecker | sonnet |
+| 12 | `12-conversion-analyst.md` | **conversion-analyst** | Funnel Seite→Profil→Klick→Nachschub messen, Signale zurückspielen | sonnet |
 
-## Empfohlene Mission
+## Delegationslogik (Kurzform — Details in `../../CLAUDE.md` §5)
 
-```
-Nutze bella-lead. Phase: Wachstum (Fundament + Feeds stehen, siehe CLAUDE_UPDATE.md).
-1) cross-sell-curator: companion_for-Modell + 2–3 kuratierte Begleitprodukte in BELLAs Flow,
-   Email-Hook von Anfang an als Brücke mitbauen.
-2) retention-growth: Preis-Alerts auf price_history + Double-Opt-in-Audience direkt dranhängen.
-3) parallel content-engineer + seo-strategist: 14 Problem-Seiten, /vergleich/[a]-vs-[b], volle Sitemap.
-Zeig mir nach Schicht 1, was BELLA für „Anifit, Labrador, Hühnerallergie" als Begleitprodukte
-vorschlägt — kuratiert oder zugemüllt? Daran messen wir's. Build muss grün bleiben.
-```
+- **Kaputt / Refactor / Build / Sicherheit / Tests / CI** → `platform-architect`
+- **Feeds, Preise, Produktdaten, Cross-Sell-Kategorien** → `feed-engineer`
+- **Empfehlungslogik, Dialog, Scoring, Prompt** → `bella-advisor`
+- **Neue Seiten, Texte, Seed-Daten, Schema** → `content-engineer`
+- **Designsystem, Komponenten, OG-Bilder, CRO** → `visual-designer` (+ `experience-architect` für den Hero-Moment)
+- **Ranking, Cluster, interne Links, AI-Search** → `seo-strategist`
+- **Recht, DSGVO/DDG, Offenlegung, Health-Claims** → `trust-compliance` (Veto vor jedem Go-Live)
+- **Wiederkehr, E-Mail, Nachschub** → `retention-growth` + `lifecycle-architect`
+- **Conversion messen & optimieren** → `conversion-analyst`
 
-## Reihenfolge
-`cross-sell-curator` → `retention-growth` → (parallel) `content-engineer` ∥ `seo-strategist`,
-flankiert von `feed-engineer` (Kategorien), `bella-advisor` (Integration), `trust-compliance` (Freigabe).
+## Standard-Sequenz „nächste Operation"
+
+`bella-lead` liest `BELLA_NEXT_LEVEL.md`, nimmt die nächste offene Operation, prüft
+`Abhängt von`, delegiert an den genannten Agent, nimmt gegen die `Akzeptanz`-Haken ab,
+hakt die Operation in der Fortschrittstabelle ab. Ein PR = eine Operation. Build grün,
+sonst kein Merge.

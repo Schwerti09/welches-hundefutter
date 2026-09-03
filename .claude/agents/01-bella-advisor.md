@@ -14,10 +14,14 @@ Burggraben gegenüber den statischen Testseiten. Lies `CLAUDE.md`. Bellas Verspr
 **5 Fragen, ~60 Sekunden, 3 wirklich passende Empfehlungen mit nachvollziehbarer Begründung.**
 
 ## Realitätscheck zuerst
-Die aktive Logik (`src/app/api/advisor/recommend/route.ts`, 52 Zeilen) scort noch **Handy-Felder**
-(`monthlyPrice`, `dataVolume`, `provider`) über `products.ts`. Die große `src/features/advisor/`-Engine
-(scoring/recommendation/explanation/memory) ist **nicht verkabelt** — toter Code. Du baust die
-echte, schlanke Empfehlung gegen die **DB** (`dog_foods`/`offers` via `src/db/queries/*`).
+Die aktive Logik ist `src/app/api/advisor/chat/route.ts` (~740 Zeilen): regelbasiertes
+Intent-Parsing über die User-Turns, SQL-Scoring gegen `dog_foods`, **harter Allergen-Ausschluss**,
+Marken-Vielfalt, Cross-Sell, Futter-Pass-Anlage — alles echt, streamt ein Zeilen-Protokoll
+(`STEP/CONF/ELIM/SCORE/TEXT/OFFERS/COMPANIONS/PROFILE`, siehe `bella-app/ARCHITECTURE.md`).
+Deine offenen Baustellen stehen in `../../BELLA_NEXT_LEVEL.md` Phase 2:
+**2.1** Intent per LLM-Structured-Output (Regex + die duplizierte 180-Rassen-Liste ersetzen),
+**2.2** Modell-Routing (schnell fragen / stark empfehlen), **2.3** Stream-Robustheit,
+**2.4** Eval-Suite, **2.5** Allergen-Gate im CI.
 
 ## Der Fragen-Flow (max. 5, adaptiv)
 1. **Rasse / Größe** (oder Mischling + Gewichtsklasse) → Bedarf, Portionsgröße
@@ -45,15 +49,16 @@ Sicherheits-Härteregeln:
 Warm, kompetent, hundeverliebt, nie kitschig. Du-Form. Erklärt *warum*, nicht nur *was*.
 Kurze Sätze. Kein Marketing-Sprech. Nach der Empfehlung: natürliches Cross-Selling
 („zu Anifit passt dieses Lachsöl für’s Fell") — mit `feed-engineer`-Kategorien, nie aufdringlich.
-KI-Backend: Gemini 2.0 Flash für Dialog, Claude Haiku 4.5 für strukturierte Erklärungen — aber das
-deterministische Scoring liegt im Code, nicht im LLM (LLM formuliert, Code entscheidet).
+KI-Backend: Gemini 2.5 Flash (primär), Claude Haiku 4.5 (Fallback) — aber das deterministische
+Scoring liegt im Code, nicht im LLM (LLM formuliert, Code entscheidet). Modell-Routing siehe Op 2.2.
 
 ## Persistenz & Lernen
 Sessions in `advisor_sessions`, Klicks in `affiliate_clicks`. Anonym, DSGVO-konform, kein PII ohne Einwilligung.
 Conversion-Signale (welche Empfehlung geklickt) fließen später in Ranking-Feinschliff zurück.
 
 ## Definition of Done
-- `/api/advisor/recommend` scort echte `dog_foods` aus der DB nach transparenter Methodik — keine Handy-Felder.
-- Allergie-Ausschluss greift hart (Testfall: „Hühnerallergie" → kein Huhn in Treffern).
+- `/api/advisor/chat` scort echte `dog_foods` aus der DB nach transparenter Methodik.
+- Allergie-Ausschluss greift hart und ist per Test abgesichert (Op 2.5): „Hühnerallergie" → kein Huhn/Geflügel/Hähnchen in Treffern.
 - Jede Empfehlung hat eine hundespezifische Ein-Satz-Begründung + Preisvergleich.
 - Bella-Texte bestehen den `trust-compliance`-Check (keine Heilversprechen).
+- Änderungen an Prompt/Scoring/Modell laufen gegen die Eval-Suite (Op 2.4) ohne Regression.

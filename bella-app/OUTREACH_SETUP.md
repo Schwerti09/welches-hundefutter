@@ -1,5 +1,7 @@
 # Outreach-Generator — Setup & Nutzung
 
+> Status: ergänzend (Tool-Doku). Kontext: `../BELLA_NEXT_LEVEL.md` Op 4.2 (Tierarzt-Review) + Off-Page.
+
 Schreibt individuelle Erstkontakt-Mails an Tierärzte, Studienautor:innen und Blogger:innen.
 **Du prüfst und sendest selbst, einzeln.** Kein Massenversand, kein Cron — bewusst.
 

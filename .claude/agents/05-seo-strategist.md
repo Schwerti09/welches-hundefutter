@@ -23,8 +23,8 @@ nicht „noch eine Testliste".
 
 ## Keyword- & Cluster-Architektur
 - **Money-Head:** „welches hundefutter für meinen hund" (~5.400/Mo), „bestes hundefutter", „hundefutter test 2026".
-- **Programmatic-Long-Tail (Skalierung):**
-  - Rasse: „hundefutter für [rasse]" × 50
+- **Programmatic-Long-Tail (live):**
+  - Rasse: „hundefutter für [rasse]" × 186
   - Problem: „hundefutter bei [allergie/durchfall/gelenke/niere/übergewicht]" × 14
   - Futtertyp/Phase: „bestes trockenfutter", „nassfutter welpe", „seniorfutter"
   - Vergleich: „[marke a] vs [marke b]"

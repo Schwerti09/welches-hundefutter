@@ -58,7 +58,7 @@ Das ist der strukturelle Burggraben, den Check24 oder statische Testseiten nicht
 | Layer | Technologie |
 |---|---|
 | Frontend | Next.js 16 (App Router), TypeScript, Tailwind v4 |
-| KI | Gemini 2.0 Flash (Berater), Claude Haiku 4.5 (Fallback) |
+| KI | Gemini 2.5 Flash (Berater), Claude Haiku 4.5 (Fallback) |
 | Datenbank | Neon Postgres + Drizzle ORM |
 | Feeds | AWIN Publisher API (a=615299), AdCell |
 | Deployment | Netlify (Edge Functions + ISR) |

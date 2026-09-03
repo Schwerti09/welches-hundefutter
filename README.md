@@ -24,7 +24,7 @@ Der komplette Tech-Stack bleibt — nur der Inhalt wechselt: von Handyverträgen
 - **Styling:** Tailwind v4
 - **Hosting:** Netlify
 - **Datenbank:** Neon Postgres (Drizzle ORM)
-- **KI:** Gemini 2.0 Flash + Claude Haiku 4.5
+- **KI:** Gemini 2.5 Flash + Claude Haiku 4.5
 - **Affiliate:** AWIN
 
 ---
