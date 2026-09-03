@@ -606,7 +606,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 1.2 | CSP + COOP | ⬜ offen | | |
 | 1.3 | API Rate-Limit | ⬜ offen | | |
 | 1.4 | Test-Fundament | ⬜ offen | | |
-| 1.5 | Drizzle-Migrationen | ⬜ offen | | |
+| 1.5 | Drizzle-Migrationen | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 1.6 | Font-Bug + tsconfig | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 2.1 | Intent-LLM | ⬜ offen | | |
 | 2.2 | Modell-Routing | ⬜ offen | | |

@@ -515,9 +515,7 @@ async function logChat(entry: { sessionId: string; userMessage: string; bellaRep
   if (!url) return;
   try {
     const sql = neon(url);
-    await sql`CREATE TABLE IF NOT EXISTS chat_logs (
-      id serial PRIMARY KEY, session_id text, user_message text, bella_reply text,
-      offers_shown integer, top_food text, had_results boolean, created_at timestamp DEFAULT now())`;
+    // Schema: siehe src/db/schema.ts (chatLogs) + drizzle/-Migrationen. Kein DDL im Request-Pfad.
     await sql`INSERT INTO chat_logs (session_id,user_message,bella_reply,offers_shown,top_food,had_results)
       VALUES (${entry.sessionId},${entry.userMessage},${entry.bellaReply},${entry.offersShown},${entry.topFood},${entry.hadResults})`;
   } catch { /* never block */ }

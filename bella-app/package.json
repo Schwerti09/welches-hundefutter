@@ -9,6 +9,9 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "echo \"(noch keine Tests — Roadmap Op 1.4)\" && exit 0",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
     "download-breed-images": "node scripts/download-breed-images.mjs"
   },
   "dependencies": {

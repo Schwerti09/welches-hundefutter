@@ -330,6 +330,21 @@ export const communityInsights = pgTable("community_insights", {
 export type CommunityInsight = typeof communityInsights.$inferSelect;
 export type NewCommunityInsight = typeof communityInsights.$inferInsert;
 
+// ─── BELLA Chat-Logs (non-blocking Logging aus /api/advisor/chat) ─────────────
+export const chatLogs = pgTable("chat_logs", {
+  id: serial("id").primaryKey(),
+  sessionId: text("session_id"),
+  userMessage: text("user_message"),
+  bellaReply: text("bella_reply"),
+  offersShown: integer("offers_shown"),
+  topFood: text("top_food"),
+  hadResults: boolean("had_results"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type ChatLog = typeof chatLogs.$inferSelect;
+export type NewChatLog = typeof chatLogs.$inferInsert;
+
 // ─── BELLA Chat-Sessions ──────────────────────────────────────────────────────
 export const advisorSessions = pgTable("advisor_sessions", {
   id: uuid("id").defaultRandom().primaryKey(),
