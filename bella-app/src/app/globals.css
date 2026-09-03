@@ -6,24 +6,90 @@
    für die Hunde-Futter-Identität.
 ════════════════════════════════════════════════════════════ */
 
+/* ── Farb-Tokens (Roadmap 3.1) ──────────────────────────────────────────────
+   Dark-first: `:root` = die dunkle Marken-Palette (unverändert, Live-Seite
+   bleibt gleich). Light-Werte kommen als Override — für Nutzer mit
+   `prefers-color-scheme: light` und für den manuellen Umschalter
+   (`[data-theme]`). Jede Farbe hat ihren Wert HIER, nie nur im Override.
+   Site-weite Umstellung von `bg-white/x`/`text-white/x` auf diese Tokens
+   folgt als eigener Schritt (mit visuellen Baselines). */
 :root {
   --bg: #08080c;            /* fast schwarz, leicht warm */
   --bg-2: #0d0d14;
   --surface: rgba(255,255,255,0.04);
+  --surface-raised: rgba(255,255,255,0.06);
   --ink: #f4f1ea;          /* warmes Off-White */
+  --text: var(--ink);
   --muted: #9a93a6;        /* gedämpft */
+  --text-muted: var(--muted);
   --line: rgba(255,255,255,0.09);
+  --border: var(--line);
   --honey: #f0a73c;        /* Akzent (Honig/Amber) */
   --honey-2: #ff8a4c;      /* Akzent 2 (warmes Orange) */
+  --accent: var(--honey);
+  --accent-ink: #1a1206;   /* Text auf Akzent-Flächen (Buttons) */
   --amber-glow: rgba(240,167,60,0.16);
+  --focus: #ffcd8a;
+  color-scheme: dark;
+}
+
+/* Light-Palette — vorerst NUR über den expliziten Umschalter (`[data-theme="light"]`).
+   Die Aktivierung per `@media (prefers-color-scheme: light)` kommt erst, wenn die
+   site-weite Umstellung von `bg-white/x`/`text-white/x` auf Tokens durch ist —
+   sonst sähen Hell-Nutzer eine halb-kaputte Seite. */
+:root[data-theme="light"] {
+  --bg: #faf7f2;
+  --bg-2: #ffffff;
+  --surface: rgba(20,15,10,0.03);
+  --surface-raised: rgba(20,15,10,0.05);
+  --ink: #201a15;
+  --text: var(--ink);
+  --muted: #6b6259;
+  --text-muted: var(--muted);
+  --line: rgba(20,15,10,0.12);
+  --border: var(--line);
+  --honey: #c2650a;
+  --honey-2: #d9480f;
+  --accent: var(--honey);
+  --accent-ink: #ffffff;
+  --amber-glow: rgba(194,101,10,0.10);
+  --focus: #9a4a00;
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --bg: #08080c;
+  --bg-2: #0d0d14;
+  --surface: rgba(255,255,255,0.04);
+  --surface-raised: rgba(255,255,255,0.06);
+  --ink: #f4f1ea;
+  --text: var(--ink);
+  --muted: #9a93a6;
+  --text-muted: var(--muted);
+  --line: rgba(255,255,255,0.09);
+  --border: var(--line);
+  --honey: #f0a73c;
+  --honey-2: #ff8a4c;
+  --accent: var(--honey);
+  --accent-ink: #1a1206;
+  --amber-glow: rgba(240,167,60,0.16);
+  --focus: #ffcd8a;
+  color-scheme: dark;
 }
 
 @theme inline {
   --color-background: var(--bg);
   --color-foreground: var(--ink);
   --color-honey: var(--honey);
+  --color-honey-2: var(--honey-2);
   --color-ink: var(--ink);
   --color-line: var(--line);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
   --font-sans: var(--font-inter, ui-sans-serif), system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 

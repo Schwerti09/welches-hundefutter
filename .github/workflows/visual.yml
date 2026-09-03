@@ -18,6 +18,10 @@ on:
 jobs:
   visual:
     runs-on: ubuntu-latest
+    env:
+      # Blendet /dev/components in den Prod-Build ein, damit die visuelle
+      # Regression den Komponenten-Katalog erfassen kann (Roadmap 3.4 / 3.1).
+      NEXT_PUBLIC_DEV_PAGES: "1"
     defaults:
       run:
         working-directory: bella-app

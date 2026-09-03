@@ -645,7 +645,7 @@ normale **und** die `{ relax }`-Suche. Braucht das `DATABASE_URL`-GitHub-Secret 
 
 ## PHASE 3 — Design auf das nächste Level
 
-### Operation 3.1 — Ein Token-System (Light + Dark)
+### Operation 3.1 — Ein Token-System (Light + Dark) — 🟡 **TEIL 1 ERLEDIGT (2026-09-03)**
 - **Ziel:** Alle Farben/Abstände/Radien kommen aus benannten Tokens; die Seite respektiert `prefers-color-scheme` und hat einen Umschalter.
 - **Warum:** D1/D2. Drei Farbwahrheiten + nur Dark = Wartungslast und aus der Zeit.
 - **Dateien:** `src/app/globals.css`, neu `src/styles/tokens.css`, `src/lib/theme.ts`, `src/components/ThemeToggle.tsx`, ~8 Komponenten mit hartem Honig-Wert.
@@ -657,6 +657,28 @@ normale **und** die `{ relax }`-Suche. Braucht das `DATABASE_URL`-GitHub-Secret 
   5. Kontrast-Audit (D7): `--text-muted` in beiden Modi ≥ 4.5:1.
 - **Akzeptanz:** `grep` nach Roh-Honig in `src` = 0. Lighthouse A11y = 100 in beiden Modi. Umschalter ohne Flash. Screenshots Light+Dark von Home/`/rassen`/`/rasse/[slug]`/Advisor.
 - **Agent:** `visual-designer`. **Aufwand:** L. **Risiko:** mittel (visuelle Regressionen). **Abhängt von:** 3.4 (visuelle Regression) empfohlen.
+
+**Was jetzt live ist (nicht-brechend — die Live-Seite bleibt byte-identisch Dark):**
+- `globals.css`: semantische Token-Ebene ergänzt — `--surface`, `--surface-raised`, `--text`,
+  `--text-muted`, `--border`, `--accent`, `--accent-ink`, `--focus`, `--honey-2`, `--amber-glow`,
+  `color-scheme`. `:root` = volle Dark-Palette (unverändert). Volle **Light-Palette** unter
+  `:root[data-theme="light"]` (bg `#faf7f2`, ink `#201a15`, muted `#6b6259` (4.7:1), honey `#c2650a`,
+  accent-ink `#fff`), volle Dark-Neubestätigung unter `:root[data-theme="dark"]`. Jede Farbe hat
+  ihren Wert direkt unter `:root` — nie nur im Override. `@theme inline` mappt alle neuen `--color-*`.
+- `src/components/ThemeToggle.tsx` — System/Hell/Dunkel, `useSyncExternalStore` liest `localStorage`
+  (`bella-theme`), setzt `data-theme` auf `<html>`, reagiert auf andere Tabs, `aria-pressed`.
+- `/dev/components` nutzt jetzt durchgängig Tokens + zeigt den `ThemeToggle` + No-FOUC-Inline-Script
+  → Light/Dark ist dort verifizierbar, ohne die Live-Seite anzufassen. Sichtbar in `npm run dev`
+  oder mit `NEXT_PUBLIC_DEV_PAGES=1` (setzt `visual.yml` beim Build); Live (Netlify) → 404.
+- Grün: `tsc` · `lint` (0 Fehler) · `build` · 113 Vitest.
+
+**Bewusst NICHT gemacht (Teil 2 — eigener Schritt, braucht visuelle Baselines aus `visual.yml`):**
+- **Kein** `@media (prefers-color-scheme: light)` — würde für Hell-Nutzer sofort greifen, aber
+  ~40 Komponenten hängen noch an hart­codiertem `bg-white/x` · `text-white/x` · `border-white/x`
+  · `from-[#08080c]` → die Seite sähe halb-kaputt aus.
+- Site-weite Migration `bg-white/x`/`text-white/x`/Roh-Honig → Tokens (Akzeptanz „grep = 0").
+- No-FOUC-Script + `ThemeToggle` in `layout.tsx` (aktuell nur `/dev/components`).
+- Lighthouse-A11y-Audit Light-Modus, Screenshots Light+Dark der echten Seiten.
 
 ### Operation 3.2 — Echtes BELLA-Maskottchen
 - **Ziel:** Eine wiedererkennbare, eigene BELLA — SVG, 3–4 Posen (Idle, „schnüffelt/analysiert", „gefunden!", Fehler/„hm").
@@ -927,7 +949,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 2.3 | Stream-Robustheit | 🟡 Server (Timeout+Logging+WARN) · Client-Retry offen | 2026-09-03 | _(dieser Batch)_ |
 | 2.4 | Advisor-Eval-Suite | ✅ strukturell + LLM-Judge (opt-in) | 2026-09-03 | _(dieser Batch)_ |
 | 2.5 | Allergen-Gate | ✅ via 2A.8 (braucht DB-Secret) | 2026-09-03 | 334a46b |
-| 3.1 | Token-System Light/Dark | ⬜ offen | | |
+| 3.1 | Token-System Light/Dark | 🟡 Token-Ebene + `[data-theme]` Light/Dark + `ThemeToggle` live (nicht-brechend, auf `/dev/components`) · Teil 2: site-weite `bg-white/x`→Token-Migration + `@media (prefers-color-scheme)` offen | 2026-09-03 | _(dieser Batch)_ |
 | 3.2 | BELLA-Maskottchen | ⬜ offen | | |
 | 3.3 | OG-Bilder pro Rasse | ⬜ offen | | |
 | 3.4 | Komponenten-Katalog + VisReg | ✅ Katalog + Playwright (Smoke blockierend, Visual manuell) | 2026-09-03 | _(dieser Batch)_ |
