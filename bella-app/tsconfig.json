@@ -40,14 +40,6 @@
   "exclude": [
     "node_modules",
     "drizzle.config.ts",
-    "src/features/data/liveFeeds",
-    "src/features/personalization",
-    "src/features/intelligence",
-    "src/features/commerce",
-    "src/features/seo",
-    "src/lib/performance",
-    "src/lib/validation",
-    "src/lib/state",
     "scripts"
   ]
 }

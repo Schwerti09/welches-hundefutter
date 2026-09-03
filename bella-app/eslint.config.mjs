@@ -11,14 +11,8 @@ export default defineConfig([
     },
   },
   globalIgnores([
-    "src/features/**",
-    "src/platform/**",
-    "src/lib/data/**",
-    "src/lib/environment/**",
-    "src/lib/performance/**",
-    "src/lib/rendering/fallback-rendering.tsx",
-    "src/lib/state/**",
-    "src/lib/validation/**",
+    // Standalone-Node-Utilities, eigener Kontext — nicht Teil des App-Lints.
+    // (Roadmap Op 0.2: optional eigenes tsconfig.scripts.json)
     "scripts/**",
   ]),
 ]);

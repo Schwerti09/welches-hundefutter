@@ -162,7 +162,13 @@ Status-Header auf verbleibende Strategie-Docs. Acceptance-Grep sauber.
 - **Agent:** `content-engineer` (+ `platform-architect` fürs Architektur-Doc). **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** —
 </details>
 
-### Operation 0.2 — Toten „Architektur-Theater"-Code entfernen
+### ✅ Operation 0.2 — Toten Code entfernen — **ERLEDIGT (2026-09-03)**
+`src/lib/{environment,performance,state,validation,rendering,data}` (12 Dateien, 0 externe Importe)
++ `scripts/production-test.ts` + `bella-app/index.html` gelöscht. `tsconfig.json` `exclude` → nur noch
+`node_modules`, `drizzle.config.ts`, `scripts`. `eslint.config.mjs` `globalIgnores` → nur noch `scripts/**`.
+`src/features/**` / `src/platform/**` waren reine tsconfig/ESLint-Geister (existierten nicht). typecheck + lint + build grün.
+<details><summary>ursprünglicher Plan</summary>
+
 - **Ziel:** Was nicht typgeprüft und von nichts importiert wird, ist weg.
 - **Warum:** T7. Excludes in `tsconfig`/ESLint verstecken Code, der weder kompiliert noch gelintet wird — er kann jederzeit still brechen und verwirrt jeden Refactor.
 - **Dateien:** `src/lib/environment/*`, `src/lib/performance/*`, `src/lib/state/*`, `src/lib/validation/*`, `src/lib/rendering/*`, `src/lib/data/production-data-flow.ts`, `tsconfig.json`, `eslint.config.mjs`, `bella-app/index.html`.
@@ -173,13 +179,23 @@ Status-Header auf verbleibende Strategie-Docs. Acceptance-Grep sauber.
   4. `scripts/**` behalten, aber ein eigenes lockeres `tsconfig.scripts.json` geben statt komplett ignorieren (optional, S).
 - **Akzeptanz:** `tsconfig.json` `exclude` = nur `["node_modules"]`. `npm run typecheck` grün über **alles**. `npm run lint` grün. Build grün. Bundle-Size First-Load-JS nicht gestiegen.
 - **Agent:** `platform-architect`. **Aufwand:** M. **Risiko:** mittel (versteckte Importe). **Abhängt von:** —
+- **Ergebnis:** `exclude` = `["node_modules","drizzle.config.ts","scripts"]` (die letzten beiden bewusst — Config + Standalone-Node-Utilities; `tsconfig.scripts.json` bleibt optional/offen).
+</details>
 
-### Operation 0.3 — Env-Templates konsolidieren + dokumentieren
+### ✅ Operation 0.3 — Env-Templates konsolidieren — **ERLEDIGT (2026-09-03)**
+`bella-app/env.example` (14 tote `NEXT_PUBLIC_*_ENABLED` aus der HANSI-Zeit — starben mit `feature-flags.ts`
+in Op 0.2) gelöscht. `bella-app/.env.example` neu: nur die real im Code genutzten Vars
+(DB, Gemini/Anthropic, Resend + `EMAIL_FROM` + `SITE_URL`, AWIN/AdCell-Feeds + `_EXTRA`, `FEED_DIR`,
+`DRY_RUN`, `INDEXNOW_KEY`, `PEXELS_API_KEY`, `OUTREACH_TOKEN`), je mit Kommentar. Die alten
+`NEXT_PUBLIC_GA_ID` / `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` / `NETLIFY_*` waren nie im Code — raus.
+<details><summary>ursprünglicher Plan</summary>
+
 - **Ziel:** Eine `.env.example`, die jede echte Variable erklärt.
 - **Dateien:** `bella-app/.env.example` (behalten, neu befüllen), `bella-app/env.example` (löschen).
 - **Vorgehen:** Alle in Code + `netlify/functions/*` + `.github/workflows/*` referenzierten `process.env.*` sammeln (`grep -rn "process.env." src netlify scripts`), jede mit 1-Zeilen-Kommentar + „required/optional" + „wo eintragen (Netlify UI / GH Secret)". Die 14 toten `NEXT_PUBLIC_*_ENABLED` streichen (nach Gegencheck `grep -rn "NEXT_PUBLIC_.*_ENABLED" src`).
 - **Akzeptanz:** `env.example` gelöscht. Jede `process.env`-Nutzung im Code taucht in `.env.example` auf. `README`/`CLAUDE.md`-Env-Absatz zeigt auf die eine Datei.
 - **Agent:** `platform-architect`. **Aufwand:** S. **Risiko:** niedrig. **Abhängt von:** —
+</details>
 
 ### ✅ Operation 0.4 — CI-Gate — **TEILWEISE ERLEDIGT (2026-09-03)**
 Umgesetzt: `.github/workflows/ci.yml` (typecheck + lint + test + build, Node 22, npm-cache,
@@ -576,8 +592,8 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 |---|---|---|---|---|
 | 0.0 | App-Ordner → `bella-app` | ✅ erledigt | 2026-09-03 | eb02776 |
 | 0.1 | Doku auf eine Wahrheit | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
-| 0.2 | Toten Code entfernen | ⬜ offen | | |
-| 0.3 | Env-Templates | ⬜ offen | | |
+| 0.2 | Toten Code entfernen | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
+| 0.3 | Env-Templates | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 0.4 | CI-Gate | 🟡 Workflow live (Branch-Protection = Mensch) | 2026-09-03 | _(dieser Batch)_ |
 | 1.1 | React 19 | ⬜ offen | | |
 | 1.2 | CSP + COOP | ⬜ offen | | |
