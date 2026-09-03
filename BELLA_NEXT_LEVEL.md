@@ -233,7 +233,17 @@ für `main` „Require status checks to pass" = `ci` aktivieren, sonst blockt de
 - **Akzeptanz:** `npm run build` + `typecheck` + `lint` grün. Keine React-19-Konsolen-Warnings auf Home/`/rassen`/`/rasse/[slug]`/Advisor. Vitals nicht schlechter. Ein Preview-Deploy manuell durchgeklickt.
 - **Agent:** `platform-architect`. **Aufwand:** M–L. **Risiko:** mittel. **Abhängt von:** 0.2, 0.4.
 
-### Operation 1.2 — Sicherheits-Header: strikte CSP + COOP + Rahmen
+### 🟡 Operation 1.2 — CSP + COOP — **WEG B LIVE (2026-09-03)**
+`next.config.ts`: `Content-Security-Policy` für `/(.*)` — `default-src 'self'`, `object-src 'none'`,
+`base-uri 'self'`, `form-action 'self'`, `frame-ancestors 'self'`, `frame-src 'none'`,
+`upgrade-insecure-requests`; `script-src` + `style-src` mit `'unsafe-inline'` (Next/Tailwind);
+`img-src 'self' data: blob: https:` (AWIN-Händler-Bilder); GA (`googletagmanager` / `*.google-analytics.com`)
+in script/connect erlaubt. `Cross-Origin-Opener-Policy: same-origin-allow-popups`. Toter
+`pagead2.googlesyndication.com`-Prefetch raus. Build grün, CSP-Header per `next start` + curl verifiziert.
+**Offen (Folgeschritt):** `'strict-dynamic'` + Nonce/Hash für den Lighthouse-Audit „CSP wirksam gegen XSS"
+— bewusst zurückgestellt, weil Nonce-Middleware die SSG-Seiten dynamisch machen würde.
+<details><summary>ursprünglicher Plan</summary>
+
 - **Ziel:** Lighthouse „CSP ist wirksam gegen XSS" bestanden, COOP gesetzt, keine `unsafe-inline`-Skripte.
 - **Warum:** T2. Aktuell 0 CSP; `ARCHITECTURE.md` behauptet das Gegenteil.
 - **Dateien:** neu `src/middleware.ts` (Nonce), `next.config.ts` (Header), `netlify.toml` (Fallback-Header), `layout.tsx` (Nonce an Inline-`<script type="application/ld+json">` + `GoogleAnalytics`/`WebVitals`).
@@ -245,6 +255,8 @@ für `main` „Require status checks to pass" = `ci` aktivieren, sonst blockt de
   5. Trade-off bewerten: Nonce-Middleware macht Seiten dynamisch. Prüfen, ob eine **statische** CSP mit Hash-Liste für die wenigen Inline-Skripte reicht (bevorzugt, hält SSG). Wenn ja: dieser Weg.
 - **Akzeptanz:** Lighthouse BP = 100, „CSP evaluiert" grün. `curl -I` zeigt CSP + COOP. Kein Funktionsbruch auf Home/Advisor/`/rassen`. SSG-Seitenzahl im Build unverändert (falls Hash-Weg) oder bewusst dokumentiert (falls Nonce-Weg).
 - **Agent:** `platform-architect` + `trust-compliance` (Freigabe). **Aufwand:** M. **Risiko:** mittel (kann Seiten dynamisch machen / Skripte brechen). **Abhängt von:** 1.1 empfohlen.
+- **Nach-Deploy prüfen:** Seite lädt normal (kein CSP-Block in der Konsole), GA feuert, Bilder laden. Lighthouse BP.
+</details>
 
 ### 🟡 Operation 1.3 — Rate-Limit + Herkunftsprüfung — **GRUNDSCHUTZ LIVE (2026-09-03)**
 Umgesetzt: `src/lib/rate-limit.ts` — In-Memory-Sliding-Window pro IP (Modul-Scope, hält auf warmer
@@ -631,7 +643,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 0.3 | Env-Templates | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 0.4 | CI-Gate | 🟡 Workflow live (Branch-Protection = Mensch) | 2026-09-03 | _(dieser Batch)_ |
 | 1.1 | React 19 | ⬜ offen | | |
-| 1.2 | CSP + COOP | ⬜ offen | | |
+| 1.2 | CSP + COOP | 🟡 Weg B live (unsafe-inline script) · strict-dynamic offen | 2026-09-03 | _(dieser Batch)_ |
 | 1.3 | API Rate-Limit | 🟡 In-Memory-Limiter live · verteilter Store + ai_usage folgen | 2026-09-03 | _(dieser Batch)_ |
 | 1.4 | Test-Fundament | 🟡 Unit (68 Tests) · Playwright folgt | 2026-09-03 | _(dieser Batch)_ |
 | 1.5 | Drizzle-Migrationen | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
