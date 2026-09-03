@@ -454,7 +454,22 @@ nur `adult|erwachsen`). **+6 Tests inkl. exaktem Transkript-Fall.** Suite 96 gr�
 - **Agent:** `bella-advisor` + `platform-architect`. **Aufwand:** M. **Risiko:** mittel (SQL). **Abhängt von:** 2A.1.
 </details>
 
-### Operation 2A.3 — Sicherheitsnetz: kein unsicheres OFFERS, Re-Query, ehrliche Leermeldung
+### ✅ Operation 2A.3 — Sicherheitsnetz — **ERLEDIGT (2026-09-03)**
+- **`fetchCandidates(intent, { relax })`**: `relax` lässt Futtertyp + Budget fallen, hält Allergen-
+  Ausschluss + Lebensphase + Snack-Guard. Stream: `offers.length === 0` + weiche Kriterien → **Re-Query**
+  (`STEP:widen`).
+- **Zwei Sicherheits-Assertions** (`intent.avoidProtein`): (1) direkt nach der Kandidatensuche,
+  (2) **direkt vor `emit(OFFERS…)`** — jedes Offer mit einer Avoid-Protein-Variante in `name`/`protein`
+  fliegt raus. Was hier greift, setzt `safetyBlocked` → `logChat` prefix `[SAFETY_BLOCKED]`.
+- **Leere Offers**: neuer Prompt-Modus „KEINE SICHERE EMPFEHLUNG MÖGLICH" — sag es ehrlich, **empfiehl
+  nichts**, biete Neu-Suche (Futtertyp/Budget/Protein) an, behaupte nie der Halter hätte Produkte genannt.
+  `fallbackRecommend(offers, intent)` gibt bei 0 Offers die ehrliche „nichts Sicheres ohne {X}"-Antwort.
+  Futter-Pass/Preis-Wecker sind schon über `offers.length > 0` gated → bei leer automatisch aus.
+- **Bonus (2A.7)**: die erfundenen `ELIM:`-Splits (`* 0.4` „zu teuer", `* 0.25` „nicht allergikergeeignet")
+  entfernt — nur noch echter `eliminated`-Count.
+- typecheck + lint + build + 106 Tests grün.
+<details><summary>ursprünglicher Plan</summary>
+
 - **Ziel:** Sind alle Kandidaten unsicher → BELLA empfiehlt **nichts** und sucht ehrlich neu.
 - **Dateien:** `route.ts` (Stream-Ablauf), `fallbackRecommend`, Tests.
 - **Vorgehen:**
@@ -468,6 +483,7 @@ nur `adult|erwachsen`). **+6 Tests inkl. exaktem Transkript-Fall.** Suite 96 gr�
      Bricht die Assertion → `offers = []` + Leermeldung, `logChat` markiert `safety_blocked`.
 - **Akzeptanz:** Eval-Szenario „nur Huhn-Produkte im Pool" → leere Offers + ehrlicher Text, kein Profil.
 - **Agent:** `bella-advisor`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 2A.2.
+</details>
 
 ### Operation 2A.4 — Prompt-Framing + strukturiertes Allergie-Signal
 - **Ziel:** Der Text-LLM weiß von der Allergie und behandelt den Katalog als *seine* Recherche.
@@ -824,11 +840,11 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 2.1 | Intent-LLM | ✅ Grundgerüst · ⚠️ Allergen-Fall offen → Phase 2A | 2026-09-03 | 7aa3742 |
 | **2A.1** | Allergen `avoidProtein` | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | **2A.2** | SQL-Hard-Ausschluss + Snack-Guard | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
-| **2A.3** | Sicherheitsnetz / Re-Query / Leermeldung | ⬜ offen | | |
+| **2A.3** | Sicherheitsnetz / Re-Query / Leermeldung | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | **2A.4** | Prompt-Framing + Allergie-Signal | ⬜ offen | | |
 | **2A.5** | Futter-Pass nur für sichere Hauptfutter | ⬜ offen | | |
 | **2A.6** | LLM-Intent im RECOMMEND immer | ⬜ offen | | |
-| **2A.7** | Ehrliche Zahlen im Stream | ⬜ offen | | |
+| **2A.7** | Ehrliche Zahlen im Stream | 🟡 fake ELIM-Splits raus (2A.3) · Rest offen | 2026-09-03 | |
 | **2A.8** | Eval-Suite Allergen (blockierend) | ⬜ offen | | |
 | **2A.9** | Doku + README | ⬜ offen | | |
 | 2.2 | Modell-Routing | ⬜ offen (nach 2A) | | |

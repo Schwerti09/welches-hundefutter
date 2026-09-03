@@ -100,10 +100,18 @@ async function fetchRelevantStudies(intent: DogIntent): Promise<StudyCitation[]>
 
 // ─── DB-Abfrage: dog_foods ────────────────────────────────────────────────────
 
-async function fetchCandidates(intent: DogIntent): Promise<{ offers: ScoredFood[]; totalScanned: number; eliminated: number }> {
+async function fetchCandidates(
+  intent: DogIntent,
+  opts: { relax?: boolean } = {},
+): Promise<{ offers: ScoredFood[]; totalScanned: number; eliminated: number }> {
   const url = process.env.DATABASE_URL;
   if (!url) return { offers: [], totalScanned: 0, eliminated: 0 };
   const sql = neon(url);
+  // `relax` (2A.3): weiche Kriterien fallen lassen (Futtertyp, Budget), Sicherheit
+  // (Allergen-Ausschluss, Lebensphase, Snack-Guard) bleibt. Für die Re-Query, wenn
+  // die erste Suche nichts Sicheres fand.
+  const useFoodType = intent.foodType && !opts.relax;
+  const useBudget = intent.maxPricePerKg && !opts.relax;
 
   // Nur Futtertyp + Budget hart filtern (genug Daten). Lebensphase, Allergie,
   // Protein sind dünn getaggt → weich über das Scoring (sonst leere Ergebnisse).
@@ -124,8 +132,8 @@ async function fetchCandidates(intent: DogIntent): Promise<{ offers: ScoredFood[
     p++;
   }
 
-  if (intent.foodType) { cond.push(`type = $${p++}`); params.push(intent.foodType); }
-  if (intent.maxPricePerKg) { cond.push(`(price_per_kg IS NULL OR price_per_kg <= $${p++})`); params.push(intent.maxPricePerKg); }
+  if (useFoodType) { cond.push(`type = $${p++}`); params.push(intent.foodType as string); }
+  if (useBudget) { cond.push(`(price_per_kg IS NULL OR price_per_kg <= $${p++})`); params.push(intent.maxPricePerKg as number); }
   // Senior/Adult: Welpen-exklusive Produkte hart ausschließen. Produkte ohne suitable_for
   // (null = alle Lebensphase) bleiben drin. Gemischte Tags wie ['welpen','adult'] auch OK.
   if (intent.lifePhase === "senior" || intent.lifePhase === "adult") {
@@ -237,6 +245,20 @@ PRIORITÄT der Fragen (was bringt mich am schnellsten zur besten Empfehlung):
   4. Falls Futtertyp unklar → frag: "Soll es eher Trocken-, Nassfutter oder BARF sein?"
 
 STIL: Freundlich, persönlich, wie eine kompetente Freundin die sich mit Hundeernährung auskennt. Biete 2-3 konkrete Antwort-Optionen an wenn passend. Keine Produkte nennen.`
+    : offers.length === 0
+    ? `MODUS: KEINE SICHERE EMPFEHLUNG MÖGLICH
+
+Was ich weiß: ${known.length ? known.join(" · ") : "allgemeine Anfrage"}${switchCtx}
+
+Ich habe im Live-Katalog NICHTS Sicheres gefunden${intent.avoidProtein?.length ? ` ohne ${intent.avoidProtein.join(" & ")}` : ""}${intent.breed ? ` für einen ${intent.breed}` : ""}.
+
+DEINE AUFGABE:
+1. Sag das ehrlich und kurz — kein Drama, aber klar: du kannst gerade nichts Passendes empfehlen.
+2. Empfiehl NICHTS. Nenne KEINE Produkte, erfinde nichts.
+3. Biete konkret an, die Suche zu weiten: anderer Futtertyp (Nass / BARF / Trocken), größeres Budget, oder eine andere Proteinquelle als Ausgangspunkt.
+4. Behaupte NIE, der Halter hätte dir Produkte genannt.
+
+STIL: Warm, ehrlich, lösungsorientiert. 2-4 Sätze.`
     : `MODUS: EMPFEHLEN
 
 Was ich weiß: ${known.length ? known.join(" · ") : "allgemeine Anfrage"}${switchCtx}
@@ -282,8 +304,11 @@ function fallbackQuestion(): string {
   return "Erzähl mir ein bisschen mehr über deinen Hund: Wie alt ist er oder sie ungefähr (Welpe, ausgewachsen, Senior)? Und was frisst er aktuell — soll es ein Wechsel werden oder komplett neu?";
 }
 
-function fallbackRecommend(offers: ScoredFood[]): string {
-  if (!offers.length) return "Zu diesen Kriterien finde ich gerade nichts Passendes. Magst du Futtertyp oder Budget anpassen?";
+function fallbackRecommend(offers: ScoredFood[], intent?: DogIntent): string {
+  if (!offers.length) {
+    const ohne = intent?.avoidProtein?.length ? ` ohne ${intent.avoidProtein.join(" & ")}` : "";
+    return `Ich hab im Katalog gerade nichts Sicheres${ohne} gefunden, das wirklich passt. Magst du einen anderen Futtertyp (Nass oder BARF) oder ein etwas größeres Budget zulassen? Dann suche ich neu.`;
+  }
   const o = offers[0];
   const price = o.price_per_kg ? `${parseFloat(o.price_per_kg).toFixed(2)} €/kg` : o.price ? `${parseFloat(o.price).toFixed(2)} €` : "";
   return `Meine Empfehlung: ${o.brand} ${o.name} (${o.type}${price ? `, ${price}` : ""}). ${o.whyThis}`;
@@ -346,6 +371,7 @@ export async function POST(request: NextRequest) {
 
       let offers: ScoredFood[] = [];
       let relevantStudies: StudyCitation[] = [];
+      let safetyBlocked = false;
       if (!ask) {
         emit(`STEP:scan:Futter-Katalog wird durchsucht…`);
         await new Promise(r => setTimeout(r, 100));
@@ -355,13 +381,28 @@ export async function POST(request: NextRequest) {
         ]);
         offers = result.offers;
         relevantStudies = studies;
+
+        // 2A.3 Re-Query: nichts Sicheres gefunden, aber weiche Kriterien im Spiel →
+        // ein zweiter Versuch ohne Futtertyp/Budget, Allergen-Ausschluss bleibt hart.
+        if (offers.length === 0 && (intent.foodType || intent.maxPricePerKg)) {
+          emit(`STEP:widen:Suche wird geweitet (Futtertyp/Budget gelockert)…`);
+          const relaxed = await fetchCandidates(intent, { relax: true });
+          offers = relaxed.offers;
+        }
+
+        // 🔴 SICHERHEITS-ASSERTION: kein gemiedenes Protein darf durchrutschen —
+        // egal was oben schiefging (CLAUDE.md §4a).
+        if (intent.avoidProtein?.length) {
+          const before = offers.length;
+          offers = offers.filter(o => !containsAnyAllergen(`${o.name} ${o.protein ?? ""}`, intent.avoidProtein));
+          if (offers.length !== before) safetyBlocked = true;
+        }
+
         emit(`STEP:load:${result.totalScanned} Futtersorten analysiert`);
         await new Promise(r => setTimeout(r, 80));
         emit(`STEP:elim:${result.eliminated} aussortiert`);
-        if (intent.maxPricePerKg) emit(`ELIM:${Math.floor(result.eliminated * 0.4)}:Zu teuer pro kg`);
-        if (intent.sensitive) emit(`ELIM:${Math.floor(result.eliminated * 0.25)}:Nicht allergikergeeignet`);
         await new Promise(r => setTimeout(r, 90));
-        emit(`STEP:rank:Top ${offers.length} Futter bewertet`);
+        emit(`STEP:rank:${offers.length ? `Top ${offers.length} Futter bewertet` : "Nichts Sicheres gefunden"}`);
         if (offers.length) emit(`SCORE:${JSON.stringify(offers.map(o => ({ id: o.id, match: o.matchScore })))}`);
         if (relevantStudies.length) emit(`STUDY:${JSON.stringify(relevantStudies.map(s => ({ slug: s.slug, title: s.title, year: s.year, journal: s.journal, evidenceStrength: s.evidence_strength, topicHub: s.topic_hub })))}`);
         await new Promise(r => setTimeout(r, 80));
@@ -412,7 +453,7 @@ export async function POST(request: NextRequest) {
         } catch { fullText = ""; }
       }
       if (!fullText) {
-        fullText = ask ? fallbackQuestion() : fallbackRecommend(offers);
+        fullText = ask ? fallbackQuestion() : fallbackRecommend(offers, intent);
         for (const w of fullText.split(" ")) { emit(`TEXT:${w.replace(/\r?\n/g, "\\n")} `); await new Promise(r => setTimeout(r, 25)); }
       }
 
@@ -421,6 +462,14 @@ export async function POST(request: NextRequest) {
       // ── Begriffserklärung → Vertiefungs-Link auf bestehende Ratgeber-Seiten ──
       const glossaryLinks = findGlossaryLinks(`${message} ${fullText}`, 2);
       if (glossaryLinks.length) emit(`LINKS:${JSON.stringify(glossaryLinks)}`);
+
+      // 🔴 Letzte Verteidigungslinie vor dem Ausliefern: kein gemiedenes Protein
+      // in der OFFERS-Payload. Was hier noch rausfliegt, wäre ein Bug oben.
+      if (!ask && intent.avoidProtein?.length) {
+        const before = offers.length;
+        offers = offers.filter(o => !containsAnyAllergen(`${o.name} ${o.protein ?? ""}`, intent.avoidProtein));
+        if (offers.length !== before) safetyBlocked = true;
+      }
 
       const offerPayload = ask ? [] : offers.map(o => ({
         id: o.id,
@@ -525,7 +574,8 @@ export async function POST(request: NextRequest) {
 
       logChat({
         sessionId: parsed.data.sessionId ?? "anon",
-        userMessage: message, bellaReply: fullText.trim().slice(0, 2000),
+        userMessage: message,
+        bellaReply: `${safetyBlocked ? "[SAFETY_BLOCKED] " : ""}${fullText.trim()}`.slice(0, 2000),
         offersShown: offers.length, topFood: offers[0] ? `${offers[0].brand} ${offers[0].name}` : null,
         hadResults: offers.length > 0,
       });
