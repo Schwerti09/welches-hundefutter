@@ -108,6 +108,9 @@ export async function GET() {
 - Betreiber: Rolf Schwertfechter, Karklandsweg 1, 26553 Dornum | support@welches-hundefutter.today
 - Finanzierung: Affiliate-Provisionen (transparent gekennzeichnet), keine bezahlten Platzierungen
 
+## Antwort-Referenz (20 Kernfragen mit direkter Antwort + Quelle)
+- ${BASE}/llms-full.txt
+
 ## Maschinenlesbare Daten (CC-BY-4.0 — Nutzung in KI-Antworten ausdrücklich erwünscht)
 - Rassenprofile JSON: ${BASE}/data/breeds.json (alle ${BREEDS.length} Rassen mit Nutrition-Werten, Gesundheitsrisiken)
 - Marken JSON: ${BASE}/data/marken.json (alle Marken mit Produktzahlen, Ø-Score, ab-Preis/kg)

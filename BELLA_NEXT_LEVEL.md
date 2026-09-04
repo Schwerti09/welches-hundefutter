@@ -873,12 +873,26 @@ echten Datum speisen statt Default. `datePublished` bei `tipps`-Artikeln (aktuel
 `/rassen` (1 rein, Tiefe ∞), `/hundefutter-test` (2), 2 dünne Vergleiche.
 Breadcrumb-Konsistenz. `link-audit.mjs` auf `rasse`/`stadt`-Stichprobe erweitern.
 
-### Operation 4.5 — GEO / AI-Search vervollständigen
+### Operation 4.5 — GEO / AI-Search vervollständigen — 🟡 **llms-full.txt ERLEDIGT (2026-09-04)**
 - **Ziel:** Für KI-Antwortmaschinen (ChatGPT, Perplexity, Google AI, Claude) maximal zitierfähig.
 - **Dateien:** `src/app/llms.txt` → + `llms-full.txt`, „Antwort-zuerst"-Konsistenz-Check über Seitentypen, `robots.ts` (KI-Bots explizit), `bella_summary`-Felder in Studien nutzen.
 - **Vorgehen:** `llms-full.txt` mit den 20 wichtigsten Antworten. Jede Money-Seite: erster Absatz = direkte Antwort in 2–3 Sätzen mit Originaldatum/-zahl. Zitierfähige Statistik-Bausteine (`CitableStat`) breiter einsetzen. Bot-Zugriffs-Logging (leichtgewichtig, first-party).
 - **Akzeptanz:** `llms-full.txt` erreichbar. Stichprobe 10 Money-Seiten: Absatz 1 beantwortet die Titelfrage eigenständig. Perplexity/ChatGPT-Testfragen zitieren die Domain (manuell, dokumentiert).
 - **Agent:** `seo-strategist`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 4.3.
+
+**Was jetzt live ist:**
+- **`src/app/llms-full.txt/route.ts`** — „Answer Engine"-Datei: 20 Kernfragen mit
+  direkter 2–3-Satz-Antwort, echter Zahl/Quelle (NRC/FEDIAF/WSAVA) und Zitat-Link je Frage.
+  `text/plain`, ISR täglich, Live-Katalogzahl aus DB, Datum aus `DATA_REFRESHED`.
+- `/llms.txt` verweist jetzt auf `/llms-full.txt` (llmstxt-Konvention, bidirektionale Discovery).
+- `robots.ts` KI-Bots (GPTBot, ClaudeBot, PerplexityBot, Google-Extended …) — war schon explizit.
+- Verifiziert: `/llms-full.txt` → 200 `text/plain`, 20 Q&A; Build grün, 118 Vitest.
+
+**Offen (Teil 2):** „Antwort-zuerst"-Absatz (2–3 Sätze, eigenständig) als erster Absatz
+auf den 10 wichtigsten Money-Seiten (`/problem/*`, `/futtertyp/*`, `/vergleich/*`) —
+teils via `.bella-answer`-Selektor schon vorhanden, Konsistenz-Check offen. `CitableStat`
+breiter (aktuell 2 Seiten). `bella_summary` aus Studien in `/studien/*` rendern. Leichtes
+first-party Bot-Zugriffs-Logging. Perplexity/ChatGPT-Zitat-Stichprobe nach Deploy dokumentieren.
 
 ### Operation 4.6 — `<JsonLd>` + `<Freshness>` Schema-Helfer — ✅ **JsonLd ERLEDIGT (2026-09-04)**
 - **Ziel:** Ein getesteter Weg, strukturierte Daten auszugeben.
@@ -1087,7 +1101,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 4.2 | Tierarzt-Review live | ⬜ blockiert (Reviewer) | | |
 | 4.3 | Aktualitäts-Signal | 🟡 `new Date()` aus allen `dateModified` raus (`BUILD_DATE`/`CONTENT_REVISED`), `<Freshness>` + prebuild-Datum · Teil 2: `<Freshness>` breiter, `datePublished` fixen | 2026-09-04 | _(dieser Batch)_ |
 | 4.4 | Interner Cluster-Graph | 🟡 `audit:links` + `graph.ts`/`RelatedLinks` + Problem-Cluster (14 Seiten, 0 Orphans) · Teil 2: futtertyp/vergleich/rasse/lebensphase-Cluster | 2026-09-04 | _(dieser Batch)_ |
-| 4.5 | GEO / AI-Search | ⬜ offen | | |
+| 4.5 | GEO / AI-Search | 🟡 `/llms-full.txt` (20 Q&A + Quellen) + `/llms.txt`-Querverweis · Teil 2: Antwort-zuerst-Absätze, `CitableStat` breiter, Studien-`bella_summary` | 2026-09-04 | _(dieser Batch)_ |
 | 4.6 | JsonLd-Helfer | ✅ `<JsonLd>` + Test + alle 21 Stellen migriert (`<Freshness>` → 4.3) | 2026-09-04 | _(dieser Batch)_ |
 | 5.1 | Futter-Pass-Schleife | ⬜ offen | | |
 | 5.2 | First-Party-Analytics | ⬜ offen | | |
