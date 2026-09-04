@@ -16,6 +16,7 @@
     "test:visual": "playwright test e2e/visual.spec.ts",
     "eval:advisor": "vitest run src/lib/advisor/advisor-judge.test.ts",
     "audit:content": "node scripts/content-audit.mjs",
+    "audit:links": "node scripts/link-audit.mjs",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",

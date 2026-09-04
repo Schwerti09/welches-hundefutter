@@ -846,13 +846,32 @@ Lighthouse-Gegenprobe „nicht zusammengesetzte Animationen = 0" nach Deploy.
 echten Datum speisen statt Default. `datePublished` bei `tipps`-Artikeln (aktuell hart
 `"2025-01-01"`).
 
-### Operation 4.4 — Interner Cluster-Graph
+### Operation 4.4 — Interner Cluster-Graph — 🟡 **TOOL + PROBLEM-CLUSTER ERLEDIGT (2026-09-04)**
 - **Ziel:** Bewusste Hub→Spoke→Sibling-Verlinkung, die Autorität auf die Money-Keywords bündelt.
 - **Warum:** C4. Interne Links sind der stärkste Hebel, den wir allein kontrollieren.
 - **Dateien:** neu `src/lib/linking/graph.ts` (Themen-Cluster-Definition), `<RelatedLinks>`-Component, Einsatz in `/rasse/*`, `/problem/*`, `/futtertyp/*`, `/vergleich/*`, `/tipps/*`, Blog.
 - **Vorgehen:** Cluster definieren (z.B. „Allergie" = Hub `/problem/allergie` ↔ Spokes: getreidefrei-Futtertyp, Monoprotein, betroffene Rassen, relevante Studien, Vergleich getreidefrei-vs-mit-getreide). Jede Seite: 3–6 kuratierte kontextuelle Links + Breadcrumb. Orphan-Check-Skript.
 - **Akzeptanz:** 0 verwaiste indexierbare Seiten (`scripts/link-audit.mjs`). Jede Money-Seite hat ≥ 3 eingehende kontextuelle interne Links. Klick-Tiefe von Home zu jeder Money-Seite ≤ 3.
 - **Agent:** `seo-strategist`. **Aufwand:** L. **Risiko:** niedrig. **Abhängt von:** 4.1.
+
+**Was jetzt live ist:**
+- `scripts/link-audit.mjs` + `npm run audit:links` — crawlt 59 Money-/Hub-Seiten,
+  misst kontextuelle (Chrome-freie) raus-/rein-Links + Klick-Tiefe von `/`. Flags:
+  Orphan / dünn (< 3 rein) / Sackgasse (< 3 raus) / tief (> 3).
+- `docs/audits/2026-09-04-internal-links-audit.md`.
+- **Ursache gefunden:** `/problem/[slug]` verlinkte `PROBLEMS.slice(0, 8)` → hintere
+  Slugs verwaist (`leberprobleme` = 0 rein).
+- **Fix:** `src/lib/linking/graph.ts` (`PROBLEM_CLUSTER`, 14 kuratierte Listen à 4–7,
+  gemischte Zieltypen) + `src/components/RelatedLinks.tsx`, eingesetzt in `/problem/[slug]`.
+- **Ergebnis:** `/problem/*` mit < 3 rein: **5 → 0**. Gesamt Orphans 2 → 1, dünn 7 → 4.
+  Nebeneffekt: 8/14 `/tipps/*`-Kategorien bekommen erstmals kontextuelle rein-Links.
+- Grün: `tsc` · `lint` · `build` · 118 Vitest.
+
+**Offen (Teil 2):** `FUTTERTYP_CLUSTER` + `VERGLEICH_CLUSTER` in `graph.ts`,
+`<RelatedLinks>` in `/futtertyp/[slug]` · `/vergleich/[static]` · `/rasse/[slug]` ·
+`/lebensphase/[slug]`. Restliche Flags: `/hochwertiges-hundefutter` (Orphan),
+`/rassen` (1 rein, Tiefe ∞), `/hundefutter-test` (2), 2 dünne Vergleiche.
+Breadcrumb-Konsistenz. `link-audit.mjs` auf `rasse`/`stadt`-Stichprobe erweitern.
 
 ### Operation 4.5 — GEO / AI-Search vervollständigen
 - **Ziel:** Für KI-Antwortmaschinen (ChatGPT, Perplexity, Google AI, Claude) maximal zitierfähig.
@@ -1067,7 +1086,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 4.1 | Thin-Content-Audit | 🟡 Tool (`audit:content`) + Report + Bucket-Entscheidungen · Teil 2: DB-Re-Audit + `lebensphase`/`futtertyp`/`glossar` anreichern | 2026-09-04 | _(dieser Batch)_ |
 | 4.2 | Tierarzt-Review live | ⬜ blockiert (Reviewer) | | |
 | 4.3 | Aktualitäts-Signal | 🟡 `new Date()` aus allen `dateModified` raus (`BUILD_DATE`/`CONTENT_REVISED`), `<Freshness>` + prebuild-Datum · Teil 2: `<Freshness>` breiter, `datePublished` fixen | 2026-09-04 | _(dieser Batch)_ |
-| 4.4 | Interner Cluster-Graph | ⬜ offen | | |
+| 4.4 | Interner Cluster-Graph | 🟡 `audit:links` + `graph.ts`/`RelatedLinks` + Problem-Cluster (14 Seiten, 0 Orphans) · Teil 2: futtertyp/vergleich/rasse/lebensphase-Cluster | 2026-09-04 | _(dieser Batch)_ |
 | 4.5 | GEO / AI-Search | ⬜ offen | | |
 | 4.6 | JsonLd-Helfer | ✅ `<JsonLd>` + Test + alle 21 Stellen migriert (`<Freshness>` → 4.3) | 2026-09-04 | _(dieser Batch)_ |
 | 5.1 | Futter-Pass-Schleife | ⬜ offen | | |

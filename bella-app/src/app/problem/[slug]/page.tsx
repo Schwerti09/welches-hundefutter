@@ -12,6 +12,8 @@ import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 import CitableStat from "@/components/CitableStat";
+import RelatedLinks from "@/components/RelatedLinks";
+import { relatedForProblem } from "@/lib/linking/graph";
 import { problemDirectAnswer } from "@/lib/direct-answer";
 import { brandToSlug } from "@/db/queries/foods";
 import type { CitableVariant } from "@/db/queries/stats";
@@ -827,18 +829,9 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
         </section>
       )}
 
-      {/* Verwandte Probleme */}
-      <section className="max-w-5xl mx-auto w-full px-5 pb-16">
-        <h3 className="text-lg font-bold mb-4">Weitere Gesundheits-Ratgeber</h3>
-        <div className="flex flex-wrap gap-2">
-          {PROBLEMS.filter((p) => p.slug !== slug).slice(0, 8).map((p) => (
-            <Link key={p.slug} href={`/problem/${p.slug}`}
-              className="text-sm px-4 py-2 rounded-xl border border-white/10 text-[var(--muted)] hover:text-white hover:border-orange-500/40 transition-colors">
-              {p.name}
-            </Link>
-          ))}
-        </div>
-      </section>
+      {/* Kuratierte Cluster-Verlinkung (Roadmap 4.4) — ersetzt das alte
+          PROBLEMS.slice(0, 8), das die hinteren Slugs verwaisen ließ. */}
+      <RelatedLinks items={relatedForProblem(slug)} title="Passend dazu" />
 
       <AuthorBox />
       <SiteFooter />
