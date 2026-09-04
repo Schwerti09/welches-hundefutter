@@ -13,6 +13,7 @@ const inter = Inter({
 import SiteHeader from "@/components/SiteHeader";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
 import WebVitals from "@/components/WebVitals";
+import PageTracker from "@/components/PageTracker";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import DeferredExtras from "@/components/DeferredExtras";
 import DogPassPopup from "@/components/DogPassPopup";
@@ -103,6 +104,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         {children}
         <StickyMobileCTA />
         <WebVitals />
+        <PageTracker />
         <GoogleAnalytics />
         <DogPassPopup />
         <DeferredExtras />

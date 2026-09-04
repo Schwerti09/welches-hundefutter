@@ -359,3 +359,25 @@ export const advisorSessions = pgTable("advisor_sessions", {
   completedAt: timestamp("completed_at"),
   createdAt: timestamp("created_at").defaultNow(),
 });
+
+// ─── First-Party-Analytics (Roadmap 5.2) ─────────────────────────────────────
+// Anonym: keine Cookies, kein PII, keine IP. `sessionId` ist eine client-seitig
+// gewürfelte, kurzlebige Kennung nur zur Funnel-Verkettung. `props` enthält
+// ausschließlich PII-freie Kontextdaten (foodId, breedSlug, Anzahl …).
+export const events = pgTable("events", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: text("name").notNull(), // pageview | advisor_start | advisor_offers | affiliate_click | refill_click | alert_subscribe
+  path: text("path"),
+  ref: text("ref"), // interner Referrer-Pfad
+  sessionId: text("session_id"),
+  device: text("device"), // "mobile" | "desktop" | "bot" — grobe Klasse, kein Fingerprint
+  props: jsonb("props"),
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => ({
+  nameIdx: index("events_name_idx").on(table.name),
+  createdIdx: index("events_created_idx").on(table.createdAt),
+  sessionIdx: index("events_session_idx").on(table.sessionId),
+}));
+
+export type Event = typeof events.$inferSelect;
+export type NewEvent = typeof events.$inferInsert;
