@@ -322,6 +322,17 @@ alle im **Netlify-Build** (`npm run ci`) blockierend. **5 Playwright-Smoke**
 `src/lib/advisor/{intent,scoring}.ts` (verbatim, Verhalten unverändert → macht Op 2.1 sicher).
 **Offen:** Playwright-Smoke (Home / `/rassen` / ein `/rasse/[slug]` / Advisor-Happy-Path / robots+sitemap)
 — eigener Schritt, weil es Browser-Download im CI braucht.
+
+> **Nachtrag 2026-09-04 (AGENTS.md §13/§57):** `scoreFood` liefert jetzt zusätzlich zu `whyThis`
+> (Freitext) ein strukturiertes `reasons: ScoreReason[]` (`type/result/label/evidence`) sowie
+> `scoreVersion` (`BELLA_SCORE_VERSION = "v1"`), durchgereicht bis in die `OFFERS`-Payload von
+> `route.ts` und den `FoodCard`-Typ in `BellaAdvisor.tsx` (additive optionale Felder, `whyThis`-Text
+> unverändert). 2 neue Tests in `scoring.test.ts` (125 Vitest gesamt).
+> **Zusätzlich entdeckt:** `src/components/BellaDecisionUI.tsx`/`BellaDecisionWrapper.tsx`/
+> `BellaExperience.tsx`/`BellaExperienceWrapper.tsx`/`AIAdvisor.tsx`/`QuickStartCards.tsx` waren toter,
+> nirgends in `src/app` importierter Code (verwechselbar mit dem echten `BellaAdvisor.tsx` durch
+> gleichnamige Wrapper-Exports) — gelöscht. Live-Pfad end-to-end via `e2e/smoke.spec.ts` gegen
+> `next dev` verifiziert (4/5 grün; 1 Fail ist ein Dev-only CSP/`eval()`-Warnhinweis, kein Regressions-Bug).
 <details><summary>ursprünglicher Plan</summary>
 
 - **Ziel:** Die gefährliche Logik ist abgedeckt, bevor sie umgebaut wird.
