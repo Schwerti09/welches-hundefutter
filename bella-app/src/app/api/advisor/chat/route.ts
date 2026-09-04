@@ -21,6 +21,7 @@ import { containsAnyAllergen } from "@/lib/advisor/allergens";
 import { dailyGrams } from "@/lib/consumption-math";
 import type { ActivityLevel } from "@/lib/consumption-math";
 import { findGlossaryLinks } from "@/lib/glossary-links";
+import { logError, logWarn } from "@/lib/log";
 import {
   parseIntent,
   hasEnoughIntent,
@@ -196,7 +197,7 @@ export async function POST(request: NextRequest) {
           fullText = "";
           const msg = e instanceof Error ? e.message : String(e);
           providerErrors.push(`gemini(${plan.gemini.model}): ${msg}`);
-          console.error(`[advisor] gemini failed (${plan.label})`, msg);
+          logError("advisor.gemini", e, { plan: plan.label, model: plan.gemini.model });
         }
       }
       if (!fullText && anthropicKey) {
@@ -214,12 +215,12 @@ export async function POST(request: NextRequest) {
           fullText = "";
           const msg = e instanceof Error ? e.message : String(e);
           providerErrors.push(`anthropic(${plan.anthropic.model}): ${msg}`);
-          console.error(`[advisor] anthropic failed (${plan.label})`, msg);
+          logError("advisor.anthropic", e, { plan: plan.label, model: plan.anthropic.model });
         }
       }
       if (!fullText) {
         if (providerErrors.length) emit(`WARN:degraded`); // Client kann einen Retry-Hinweis zeigen
-        console.error(`[advisor] beide Provider ohne Antwort → deterministischer Fallback`, providerErrors.join(" | "));
+        logWarn("advisor.degraded", "beide Provider ohne Antwort → deterministischer Fallback", { providerErrors });
         fullText = ask ? fallbackQuestion() : fallbackRecommend(offers, intent);
         for (const w of fullText.split(" ")) { emit(`TEXT:${w.replace(/\r?\n/g, "\\n")} `); await new Promise(r => setTimeout(r, 25)); }
       }

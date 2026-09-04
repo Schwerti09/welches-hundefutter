@@ -1005,11 +1005,25 @@ echten Stellen verdrahten (überlappt mit 5.3). `/admin`-Aggregat-Dashboard. Dan
 
 ## PHASE 6 — Betrieb & Vertrauen
 
-### Operation 6.1 — Error-Tracking + strukturierte Logs
+### Operation 6.1 — Error-Tracking + strukturierte Logs — 🟡 **GRUNDGERÜST ERLEDIGT (2026-09-04)**
 - **Ziel:** Wir erfahren von Fehlern, bevor der Nutzer mailt.
-- **Vorarbeit (da):** `netlify/functions/health-check.mts` pingt stündlich die Kernrouten und
-  loggt Fehlschläge (`console.error`) ins Function-Log. `not-found.tsx` existiert; `error.tsx`/
-  `global-error.tsx` fehlen noch.
+
+**Was jetzt live ist:**
+- `src/lib/log.ts` — `logError(scope, err, ctx?)` / `logWarn(...)`: JSON-Zeile nach
+  `console.error`/`console.warn` (Netlify-/Next-Logs sind JSON-fähig). **PII-Scrubbing**:
+  E-Mails → `[email]`, Credentials in Connection-Strings → `//[redacted]@`, verdächtige
+  ctx-Keys (`mail|name|token|secret|key|pass|auth|ip|dsn|url`) → `[redacted]`, Tiefe/Länge
+  gekappt. Unit-Test `src/lib/log.test.ts` (5 Fälle).
+- **`src/app/error.tsx`** (Route-Segment-Boundary, `BellaMascot pose="hmm"` + Retry) +
+  **`src/app/global-error.tsx`** (eigenes `<html>/<body>`, dep-frei). Vorher: nur Next-Default.
+- `logError`/`logWarn` in den 3 Advisor-Provider-Catches verdrahtet (Referenz).
+- `health-check.mts` (stündlicher Prod-Smoke) war schon da.
+- Grün: `tsc` · `lint` · `build` · 123 Vitest.
+
+**Offen (Teil 2, braucht Account/Env):** `@sentry/nextjs` + `SENTRY_DSN` (Netlify-Env),
+`Sentry.captureException` an der **einen** Stelle in `log.ts` einhängen, Release-Tag pro Deploy,
+Alert-Regeln (Stream-Fehlerrate, Feed-Import-Fehler, Cron-Fehlschlag via `health-check`, 5xx-Spike).
+Restliche `console.error`-Routen (`api/alerts/*`, `api/auth/*`, `api/profiles` …) auf `logError` ziehen.
 - **Dateien:** Sentry (oder OTEL zu einem Collector), Einbindung in `route.ts`-Catches,
   `netlify/functions/*` (inkl. `health-check` → echtes Alert statt nur Log), `error.tsx`/`global-error.tsx`.
 - **Vorgehen:** Sentry (Next-SDK, Client+Server+Edge), Sampling, PII-Scrubbing (E-Mails, Hundenamen raus), Release-Tagging pro Deploy. Alerts: Stream-Fehlerrate, Feed-Import-Fehler, Cron-Fehlschlag, 5xx-Spike.
@@ -1169,7 +1183,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 5.2 | First-Party-Analytics | 🟡 `events` in Neon **live** + `/api/track` + `track()` + `PageTracker` (pageview läuft) · Teil 2: weitere Events verdrahten, `/admin`, GA4 raus | 2026-09-04 | _(dieser Batch)_ |
 | 5.3 | Funnel-Instrumentierung | ⬜ offen | | |
 | 5.4 | Outcome-Checks sichtbar | ⬜ offen | | |
-| 6.1 | Error-Tracking | ⬜ offen | | |
+| 6.1 | Error-Tracking | 🟡 `log.ts` (PII-Scrub) + Test + `error.tsx`/`global-error.tsx` + Advisor-Catches · Teil 2: Sentry-DSN + Alerts | 2026-09-04 | _(dieser Batch)_ |
 | 6.2 | Performance-Budget im Build | ⬜ offen | | |
 | 6.3 | Repo-Hygiene | ⬜ offen | | |
 | 6.4 | Backup + Runbook | ⬜ offen | | |
