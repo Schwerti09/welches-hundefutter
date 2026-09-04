@@ -745,10 +745,13 @@ normale **und** die `{ relax }`-Suche. Läuft im **Netlify-Build** (`npm run ci`
   Avatar-Fallback → Maskottchen statt `🐕`.
 - `/dev/components` zeigt alle 4 Posen. Grün: `tsc` · `lint` · `build` (2373 Seiten) · 113 Vitest.
 
-**Bewusst NICHT gemacht (Teil 2):**
-- **Off-brand `BellaCharacter.tsx`** (Indigo/Cyan/Pink-Auren `#6366f1`…) in `BellaExperience`,
-  `BellaDecisionUI`, `BellaAdvisor` — auf Token-Palette umfärben ODER durch `BellaMascot`/`Bella`
-  ersetzen. Das ist der sichtbarste D4-Verstoß, aber ein eigener visueller Eingriff mit Regressionsrisiko.
+> **Nachtrag 2026-09-04:** `BellaCharacter.tsx` (Indigo/Cyan/Pink-Auren `#6366f1`…) komplett entfernt.
+> Die zwei ursprünglichen Fundstellen `BellaExperience`/`BellaDecisionUI` waren toter Code (bereits
+> gelöscht, siehe 1.4-Nachtrag). Die dritte, `BellaAdvisor.tsx`, zeigte sie nur redundant neben der
+> bereits on-brand `Bella` (goldener Hund, gleiche Spalte, Honig-Palette) — Block ersatzlos entfernt,
+> keine Ersatz-Komponente nötig. Damit ist der sichtbarste D4-Verstoß aus 3.2 erledigt.
+
+**Bewusst weiterhin offen (Teil 2):**
 - `🐕` in ~40 CTA-Button-Labels (`🐕 BELLA fragen …`) über `src/app/**` — „Deko-Emoji im Fließtext",
   aber grenzwertig als Marken-Element; eigener Sweep.
 - Optionales Lottie für den „Analyse"-Moment.
@@ -1239,7 +1242,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 2.4 | Advisor-Eval-Suite | ✅ strukturell + LLM-Judge (opt-in) | 2026-09-03 | _(dieser Batch)_ |
 | 2.5 | Allergen-Gate | ✅ via 2A.8 (läuft im Netlify-Build, DATABASE_URL = Netlify-Env) | 2026-09-03 | 334a46b |
 | 3.1 | Token-System Light/Dark | 🟡 Token-Ebene + `[data-theme]` Light/Dark + `ThemeToggle` live (nicht-brechend, auf `/dev/components`) · Teil 2: site-weite `bg-white/x`→Token-Migration + `@media (prefers-color-scheme)` offen | 2026-09-03 | _(dieser Batch)_ |
-| 3.2 | BELLA-Maskottchen | 🟡 kanonisches `BellaMascot` (SVG, 4 Posen, server-safe) + echte 404/Loading + Popup/Avatar-Einsatz · Teil 2: off-brand `BellaCharacter` ablösen + `🐕`-CTA-Sweep offen | 2026-09-03 | _(dieser Batch)_ |
+| 3.2 | BELLA-Maskottchen | 🟡 `BellaMascot` (4 Posen) + 404/Loading/Popup/Avatar + off-brand `BellaCharacter` entfernt · Teil 2: `🐕`-CTA-Sweep offen | 2026-09-04 | _(dieser Batch)_ |
 | 3.3 | OG-Bilder pro Rasse | 🟡 Rasse-OG mit Foto + BELLA-Marke, on-demand (kein 186er-Prebuild) · Teil 2: problem/vergleich/Blog-Layout + Custom-Font offen | 2026-09-03 | _(dieser Batch)_ |
 | 3.4 | Komponenten-Katalog + VisReg | ✅ Katalog + Playwright Smoke/Visual (beide manuell gegen URL, nicht im Gate) | 2026-09-03 | _(dieser Batch)_ |
 | 3.5 | Motion-Politur | 🟡 tote nicht-composited Animationen entfernt (`sheen`/`scan-sweep`/`spotlight` + toter Hero-Block, −40 Zeilen CSS) · Teil 2: `framer-motion`-Audit + View Transitions offen | 2026-09-03 | _(dieser Batch)_ |
