@@ -206,14 +206,16 @@ Deploy**. Für `main` und für Deploy Previews (PRs) gilt derselbe Befehl. Die D
 komplett entfernt (auch die drei manuellen Cron-Fallbacks — die echten Crons sind
 `netlify/functions/*.mts`); zusätzlich `netlify/functions/health-check.mts` (stündlicher
 Prod-Smoke). `package.json` Scripts: `ci`, `typecheck`, `test`, `test:e2e`, `test:visual`.
-**Branch-Protection: bewusst NICHT gesetzt.** GitHub sperrt Branch-Rulesets/Protection für
-**private** Repos auf dem Free-Plan (`403 "Upgrade to GitHub Pro or make this repository
-public"` — geprüft 2026-09-04 via API). Zusätzlich meldet Netlify aktuell **keinen**
-Commit-Status/Deployment an GitHub zurück (0 Statuses, 0 Deployments), es gäbe also gar keinen
-Check zum „Requiren". **Kein Handlungsbedarf:** der Schutz ist der Netlify-Build selbst — rot =
-kein Deploy, kaputter Code nie live. Der „required check" hilft nur bei PR-Workflow; wir pushen
-direkt auf `main`. Optional später: GitHub Pro **oder** Repo public → dann Ruleset (Netlify-Check
-+ Require-PR, Owner auf Bypass-Liste) per API in einem Aufruf.
+**Branch-Protection: gesetzt (2026-09-04, nach Repo→public).** Ruleset **„main protection"**
+(id `22259043`) auf `~DEFAULT_BRANCH`, `enforcement: active`, via API angelegt:
+- `pull_request` (PR-Pflicht, 0 Reviews) · `required_status_checks` →
+  `netlify/celadon-starship-395744/deploy-preview` (Netlifys Deploy-Preview-Build = `npm run ci`)
+- `non_fast_forward` (kein Force-Push) · `deletion` (kein Löschen von `main`)
+- **Bypass:** `RepositoryRole` Admin → der Owner (`Schwerti09`) pusht weiter direkt auf `main`;
+  nur fremde PRs (z. B. `copilot/*`) werden vom grünen Netlify-Preview gated.
+
+Ändern/entfernen: `DELETE /repos/Schwerti09/welches-hundefutter/rulesets/22259043` bzw.
+`PUT …/rulesets/22259043` mit angepasstem Body.
 <details><summary>ursprünglicher Plan (GitHub Actions — verworfen)</summary>
 
 - **Ziel:** Roter Code kommt nicht nach `main`.
@@ -1122,7 +1124,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 0.1 | Doku auf eine Wahrheit | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 0.2 | Toten Code entfernen | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 0.3 | Env-Templates | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
-| 0.4 | Qualitäts-Gate | ✅ Netlify-Build `npm run ci` (kein GitHub Actions); `.github/workflows/` entfernt; `health-check.mts` Cron. Branch-Protection n/a (privates Repo, Free-Plan) | 2026-09-04 | _(dieser Batch)_ |
+| 0.4 | Qualitäts-Gate | ✅ Netlify-Build `npm run ci` (kein GitHub Actions); `.github/workflows/` entfernt; `health-check.mts` Cron; Ruleset „main protection" (PR + Netlify-Deploy-Preview-Check, Owner-Bypass) | 2026-09-04 | _(dieser Batch)_ |
 | 1.1 | React 19 | ✅ live, Preview bestätigt | 2026-09-03 | 79383ce |
 | 1.2 | CSP + COOP | ✅ Weg B live · strict-dynamic als Folge-Op | 2026-09-03 | 6b68152 |
 | 1.3 | API Rate-Limit | 🟡 In-Memory-Limiter live · verteilter Store + ai_usage folgen | 2026-09-03 | _(dieser Batch)_ |
