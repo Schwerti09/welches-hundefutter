@@ -358,9 +358,22 @@ generiert. `drizzle/README.md` erklärt die Baseline-Situation (Prod-DB existier
 `migrate`). Scripts `db:generate` / `db:migrate` / `db:push`. `grep "CREATE TABLE" src` = 0.
 
 > **Nachtrag 2026-09-04 (bei 5.2 entdeckt):** Die Prod-Neon-DB hat **keine `__drizzle_migrations`-Tabelle**
-> (nur per `push` gepflegt) und ist von `schema.ts` **gedriftet** — live existieren 13 Tabellen inkl.
-> `ai_visibility_checks`, `cross_sell`; es fehlen u. a. `dog_breeds`, `health_issues`, `offers`,
-> `affiliate_clicks`, `advisor_sessions`. `0000_baseline.sql` bildet also NICHT den echten Ist-Stand ab.
+> (nur per `push` gepflegt) und ist von `schema.ts` **gedriftet** — live existieren 15 Tabellen (`cross_sell`,
+> `ai_visibility_checks` per Raw-SQL/eigenen Init-Skripten, nicht in `schema.ts`); `dog_breeds`,
+> `health_issues`, `offers`, `affiliate_clicks`, `advisor_sessions` waren in `schema.ts` deklariert,
+> existierten aber live nicht.
+>
+> **Nachtrag 2026-09-04 (Auflösung, live geprüft via direkter DB-Query):** Kein reiner Doku-Fehler —
+> `affiliate_clicks` war ein **echter stiller Bug**: `empfehlung/[slug]/route.ts` schrieb bei jedem
+> Affiliate-Klick per `INSERT INTO affiliate_clicks` in eine nicht-existente Tabelle, der Fehler wurde
+> via `.catch(() => {})` verschluckt — der Redirect funktionierte, aber das „legacy" Klick-Tracking war
+> seit jeher ein No-op. Da der direkt darunterliegende `events`-Insert (Roadmap 5.3, live verifiziert)
+> exakt dieselben Daten bereits first-party erfasst, wurde die tote Insert-Zeile entfernt statt die
+> Tabelle nachträglich anzulegen (AGENTS.md §101 Single Source of Truth). `offers` (explizit als
+> „Legacy Rückwärtskompatibilität" markiert — Handyvertrag-Ära: `deviceName`, `has5g`, `contractMonths`)
+> war nirgends importiert/gequeried → beide Deklarationen aus `schema.ts` entfernt.
+> `dog_breeds`/`health_issues`/`advisor_sessions` bewusst **behalten** — kein Bug, sondern geplantes,
+> noch nicht gebautes Schema für 4.1 (Content-Anreicherung) bzw. 5.4 (Outcome-Checks).
 > **Offener 1.5-Rest:** echten Ist-Stand als neue Baseline dumpen, `__drizzle_migrations` initialisieren,
 > Drift auflösen — danach ist `db:migrate` (auch im Build) gefahrlos. `events` wurde für 5.2 direkt per
 > DDL angelegt (nicht über `migrate`).
