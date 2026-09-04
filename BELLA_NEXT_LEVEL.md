@@ -1041,9 +1041,23 @@ Restliche `console.error`-Routen (`api/alerts/*`, `api/auth/*`, `api/profiles` �
   Lighthouse-Report im Netlify-Deploy-Log.
 - **Agent:** `platform-architect` + `visual-designer`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 0.4.
 
-### Operation 6.3 — SECURITY.md, CODEOWNERS, PR-Template, Dependency-Hygiene
+### Operation 6.3 — SECURITY.md, CODEOWNERS, PR-Template, Dependency-Hygiene — 🟡 **DATEIEN DA (2026-09-04)**
 - **Ziel:** Repo-Hygiene wie ein Produkt, nicht wie ein Bastelprojekt — **ohne** GitHub-seitige
   Automation (alles läuft bei Netlify).
+
+**Was jetzt da ist:**
+- **`SECURITY.md`** (Root) — Meldeweg `support@welches-hundefutter.today`, Scope, kein Bounty,
+  72h-Bestätigung, Kontext was schon abgesichert ist.
+- **`.github/CODEOWNERS`** — `@Schwerti09` global + explizit für `advisor/`, `api/`, `next.config.ts`,
+  `netlify/`, `drizzle/`, `netlify.toml`. Greift, weil `.github/` jetzt nur passive Textdateien hält.
+- **`.github/pull_request_template.md`** — Checkliste: `npm run ci` grün, Doku im PR, Vitals,
+  Allergen-Garantie, Affiliate-Offenlegung, keine Excludes/DDL, keine Secrets.
+- **`npm run audit:deps`** (`npm audit --audit-level=high`) — Warn-Lauf, noch nicht blockierend.
+  Stand 2026-09-04: **11 Findings (7 high, 4 moderate)**, überwiegend `sharp` → `libvips`-CVEs
+  (transitiv, Bildverarbeitung). `npm audit fix` verfügbar (ohne Breaking Changes).
+
+**Offen (Teil 2):** `npm audit fix` gezielt durchspielen + `npm run ci` gegenprüfen (Bild-Pipeline
+testen), dann `audit:deps` blockierend in `npm run ci` einhängen.
 - **Dateien:** neu `SECURITY.md`, `.github/CODEOWNERS`, `.github/pull_request_template.md`.
   `.github/` hält **nur** diese passiven, von GitHub gerenderten Textdateien — keine Workflows,
   kein Dependabot, keine Actions.
@@ -1185,7 +1199,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 5.4 | Outcome-Checks sichtbar | ⬜ offen | | |
 | 6.1 | Error-Tracking | 🟡 `log.ts` (PII-Scrub) + Test + `error.tsx`/`global-error.tsx` + Advisor-Catches · Teil 2: Sentry-DSN + Alerts | 2026-09-04 | _(dieser Batch)_ |
 | 6.2 | Performance-Budget im Build | ⬜ offen | | |
-| 6.3 | Repo-Hygiene | ⬜ offen | | |
+| 6.3 | Repo-Hygiene | 🟡 SECURITY.md + CODEOWNERS + PR-Template + `audit:deps` (Warn) · Teil 2: `audit:deps` blockierend in `ci` | 2026-09-04 | _(dieser Batch)_ |
 | 6.4 | Backup + Runbook | ⬜ offen | | |
 
 _Zuletzt aktualisiert: 2026-09-03 — Phase 0 + 1 + 2 (inkl. Phase 2A) weitgehend durch; offen: 2.4 + Phasen 3–6._

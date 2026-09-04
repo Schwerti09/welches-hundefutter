@@ -1,0 +1,14 @@
+# Code-Owner für welches-hundefutter.today (BELLA)
+# Wird bei PRs automatisch als Reviewer angefragt.
+# Kein GitHub Actions — der Gate ist der Netlify-Build (`npm run ci`).
+
+*                       @Schwerti09
+
+# Sicherheits-/vertrauensrelevant — hier besonders genau hinschauen:
+/bella-app/src/lib/advisor/            @Schwerti09
+/bella-app/src/app/api/                @Schwerti09
+/bella-app/next.config.ts              @Schwerti09
+/bella-app/netlify/                    @Schwerti09
+/bella-app/drizzle/                    @Schwerti09
+/netlify.toml                          @Schwerti09
+/SECURITY.md                           @Schwerti09
