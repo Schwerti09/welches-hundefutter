@@ -43,7 +43,7 @@ Preisvergleich und Cross-Selling (Snacks, Versicherung, Zubehör, alles für Hun
 | **First-Party-Analytics (Phase 5, Teil 1)** | `events`-Tabelle **live in Neon** + `/api/track` (anonym, Allowlist, kein Cookie/PII) + `track()` + `PageTracker` — `pageview` läuft für echte Besucher. **Parallel zu GA4** (2-Wochen-Übergang). |
 | Schicht 1/2 — Cross-sell + Preis-Wecker | Kuratierte Begleit-Empfehlung (max. 3) · DOI-E-Mail-Audience via `price_history`, `/preis-wecker` |
 | Rechtshygiene | Impressum (DDG), Datenschutz inkl. KI, kein On-Load-Pixel |
-| Betrieb | Deploy + Qualitäts-Gate über **Netlify** (`npm run ci`); stündlicher Prod-Smoke `netlify/functions/health-check.mts` |
+| **Betrieb (Phase 6, Teil 1)** | Deploy + Gate über **Netlify** (`npm run ci` inkl. Bundle-Budget `check:bundle`); stündl. Prod-Smoke `health-check.mts`; `src/lib/log.ts` (PII-Scrub) + `error.tsx`/`global-error.tsx`; `SECURITY.md`/`CODEOWNERS`/PR-Template; Runbooks `docs/runbooks/*` |
 
 ### 🔴 Offene Baustellen (Auszug — vollständig in `BELLA_NEXT_LEVEL.md`)
 
@@ -51,7 +51,7 @@ Preisvergleich und Cross-Selling (Snacks, Versicherung, Zubehör, alles für Hun
 - **Design Teil 2:** site-weite Migration `bg-white/x`→Tokens + `@media (prefers-color-scheme)` aktivieren (3.1) · off-brand `BellaCharacter` ablösen + `🐕`-CTA-Sweep (3.2) · OG-Layout für problem/vergleich/Blog (3.3) · `framer-motion`-Audit + View Transitions (3.5).
 - **Content Teil 2:** Thin-Content anreichern — `lebensphase/*`, `futtertyp/*`, `glossar/*` (4.1) · Cluster-Graph auf futtertyp/vergleich/rasse ausweiten (4.4) · „Antwort-zuerst"-Absätze + `CitableStat` breiter (4.5) · **Tierarzt-Review** (4.2, extern blockiert).
 - **Moat:** `events`-Migration in Neon einspielen + Events verdrahten + `/admin`-Dashboard, dann GA4 raus (5.2/5.3) · Futter-Pass-Nachschub-Schleife (5.1) · Outcome-Checks sichtbar (5.4).
-- **Betrieb:** Error-Tracking-Anbindung (6.1) · Perf-Budget in CI (6.2).
+- **Betrieb Teil 2:** Sentry-DSN + Alerts (6.1) · Lighthouse post-deploy (6.2) · `npm audit fix` + `audit:deps` blockierend (6.3) · Restore-Drill real durchspielen + `db-backup.mts` (6.4).
 
 ---
 
