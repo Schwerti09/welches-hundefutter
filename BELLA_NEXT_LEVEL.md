@@ -987,8 +987,19 @@ grün = manuelle Prüfung nach Deploy. Nonce-Aktivierung hängt an 1.2 (CSP `str
 echten Stellen verdrahten (überlappt mit 5.3). `/admin`-Aggregat-Dashboard. Dann
 `GoogleAnalytics.tsx` + `googletagmanager`-Prefetch entfernen → Akzeptanz `grep gtag = 0`.
 
-### Operation 5.3 — Funnel-Instrumentierung Seite→Profil→Klick→Nachschub
+### Operation 5.3 — Funnel-Instrumentierung Seite→Profil→Klick→Nachschub — 🟡 **EVENTS VERDRAHTET (2026-09-04)**
 - **Ziel:** Wir sehen, wo Nutzer abspringen, und die Signale fließen zurück in Advisor/Cross-Sell/SEO.
+
+**Was jetzt live ist:** 4 von 5 First-Party-Events feuern real (`pageview` bereits seit 5.2; jetzt
+zusätzlich `advisor_start` beim ersten Absenden, `advisor_offers` bei ≥1 zurückgegebenem Angebot
+mit `count`+`confidence`, `affiliate_click` im `/empfehlung/[slug]`-Redirect neben der Legacy-Tabelle
+`affiliate_clicks`, `alert_subscribe` in `/api/alerts/subscribe`). Live gegen Neon verifiziert —
+die `events`-Tabelle sammelt bereits echten Prod-Traffic. **`refill_click` offen:** es gibt noch
+keine reale Nachbestellen-CTA (hängt an 5.1).
+
+**Offen (Teil 2):** Aggregat-Queries + `/admin`-Dashboard (überlappt 5.2 Teil 2). Wochenreport
+`docs/reports/*` mit Conversion je Stufe/Seitentyp/Advisor-Thema. Ableitungen zurück an
+`content-engineer`/`lifecycle-architect`. `refill_click` sobald 5.1 eine CTA hat.
 - **Dateien:** Events aus 5.2, `src/app/empfehlung/[slug]/route.ts` (Klick-Attribution), Advisor-Route (Offer-Impression), Auswertungs-Query.
 - **Vorgehen:** Jede Stufe ein Event mit anonymer Session-Kette. Wochenreport: Conversion je Stufe, je Einstiegs-Seitentyp, je Advisor-Thema. Ableitungen: schwache Rasse-Seiten → `content-engineer`; Themen mit hoher Klick-, niedriger Nachschub-Rate → `lifecycle-architect`.
 - **Akzeptanz:** Report `docs/reports/` wöchentlich (halb-automatisch). Mind. eine konkrete Optimierung pro Monat aus den Daten abgeleitet und umgesetzt.
@@ -1221,7 +1232,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 4.6 | JsonLd-Helfer | ✅ `<JsonLd>` + Test + alle 21 Stellen migriert (`<Freshness>` → 4.3) | 2026-09-04 | _(dieser Batch)_ |
 | 5.1 | Futter-Pass-Schleife | ⬜ offen | | |
 | 5.2 | First-Party-Analytics | 🟡 `events` in Neon **live** + `/api/track` + `track()` + `PageTracker` (pageview läuft) · Teil 2: weitere Events verdrahten, `/admin`, GA4 raus | 2026-09-04 | _(dieser Batch)_ |
-| 5.3 | Funnel-Instrumentierung | ⬜ offen | | |
+| 5.3 | Funnel-Instrumentierung | 🟡 4/5 Events live (advisor_start/offers, affiliate_click, alert_subscribe) · Teil 2: Dashboard, Wochenreport, refill_click | 2026-09-04 | _(dieser Batch)_ |
 | 5.4 | Outcome-Checks sichtbar | ⬜ offen | | |
 | 6.1 | Error-Tracking | 🟡 `log.ts` (PII-Scrub) + Test + `error.tsx`/`global-error.tsx` + Advisor-Catches · Teil 2: Sentry-DSN + Alerts | 2026-09-04 | _(dieser Batch)_ |
 | 6.2 | Performance-Budget im Build | 🟡 `check:bundle` (geteiltes First-Load-JS gzip vs. `.bundle-budget.json`) in `npm run ci`, Baseline 129→Budget 145 KB · Teil 2: Lighthouse post-deploy | 2026-09-04 | _(dieser Batch)_ |
