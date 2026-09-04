@@ -11,8 +11,6 @@ import VoiceButton from "@/components/VoiceButton";
 import MarketWatch from "@/components/MarketWatch";
 import AnalysisStorm, { type StormProduct } from "@/components/AnalysisStorm";
 import BellaRadar from "@/components/BellaRadar";
-import BellaCharacter from "@/components/BellaCharacter";
-import type { BellaMood as CharMood } from "@/components/BellaCharacter";
 
 const Bella = dynamic(() => import("@/components/Bella"), { ssr: false });
 
@@ -381,19 +379,6 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
             />
           </div>
 
-          <div className="hidden lg:flex flex-col items-center gap-2 pt-2">
-            <BellaCharacter
-              mood={((): CharMood => {
-                if (mood === "thinking") return "thinking";
-                if (mood === "excited") return "excited";
-                if (mood === "happy") return "happy";
-                if (mood === "talking") return "presenting";
-                return "idle";
-              })()}
-              size={90}
-            />
-            <p className="text-[10px] text-white/60 tracking-widest uppercase">BELLA Robot</p>
-          </div>
         </div>
 
         {/* ─── Chat Column ───────────────────────────────── */}

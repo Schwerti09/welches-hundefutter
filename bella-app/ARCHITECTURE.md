@@ -244,12 +244,12 @@ Route Handlers. Kein Connection-Pool nötig (serverless HTTP).
   ehrliche `dateModified` überall (4.3).
 - **Phase 5 (Teil 1):** First-Party-Event-Pipeline `events`/`/api/track`/`PageTracker` (5.2).
 
-**Offen (jeweils „Teil 2"):** verteilter Rate-Limit-Store + `ai_usage` (1.3) · `strict-dynamic`
-CSP + Nonce (1.2) · site-weite Token-Migration (3.1) · off-brand `BellaCharacter` + `🐕`-Sweep
-(3.2) · OG-Layout problem/vergleich/Blog (3.3) · `framer-motion`-Audit (3.5) · Thin-Content
-anreichern + Cluster-Graph ausweiten (4.1/4.4) · Tierarzt-Review (4.2, extern) · `events`
-verdrahten + `/admin` + GA4 raus (5.2/5.3) · Futter-Pass-Nachschub (5.1) · Outcome-Checks (5.4)
-· Error-Tracking + Perf-Budget (6.1/6.2).
+**Offen (jeweils „Teil 2"):** verteilter Rate-Limit-Store (1.3) · `strict-dynamic`
+CSP + Nonce (1.2) · site-weite Token-Migration (3.1) · `🐕`-CTA-Sweep (3.2, `BellaCharacter`
+selbst bereits entfernt) · OG-Layout problem/vergleich/Blog (3.3) · `framer-motion`-Audit (3.5) ·
+Thin-Content anreichern + Cluster-Graph ausweiten (4.1/4.4) · Tierarzt-Review (4.2, extern) ·
+`events` verdrahten + `/admin` + GA4 raus (5.2/5.3) · Futter-Pass-Nachschub (5.1) ·
+Outcome-Checks (5.4) · Sentry-DSN (6.1) · Lighthouse post-deploy (6.2).
 
 **Grenze Allergen-Ausschluss:** `dog_foods` hat keine `ingredients`-Spalte → Prüfung über `protein` +
 `name` + `category`, nicht auf Zutaten-Ebene (Feed-Pipeline-Thema).
