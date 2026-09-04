@@ -97,6 +97,9 @@ export async function POST(req: NextRequest) {
           is_active = true`;
     }
 
+    // First-Party-Event (Roadmap 5.3) — Abo-Absicht registriert, unabhängig vom Mail-Erfolg
+    sql`INSERT INTO events (name, path, props) VALUES ('alert_subscribe', '/api/alerts/subscribe', ${JSON.stringify({ mode: body.mode ?? "price", confirmed })}::jsonb)`.catch(() => {});
+
     // Mail: unbestätigt → DOI; bestätigt → kurze Bestätigung des neuen Weckers
     if (!confirmed && doiToken) {
       const { subject, html, text } = doiEmail(`${SITE_URL}/api/alerts/confirm?token=${doiToken}`, foodName || undefined);

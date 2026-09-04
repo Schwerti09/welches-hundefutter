@@ -17,9 +17,13 @@ export async function GET(
         SELECT affiliate_url FROM dog_foods WHERE slug = ${slug} LIMIT 1
       `
       if (rows[0]?.affiliate_url) {
-        // Click-Tracking (non-blocking)
+        // Click-Tracking (non-blocking) — legacy Tabelle + First-Party-Events (Roadmap 5.3)
+        const referer = req.headers.get('referer') ?? ''
         sql`INSERT INTO affiliate_clicks (slug, referer, clicked_at)
-            VALUES (${slug}, ${req.headers.get('referer') ?? ''}, NOW())
+            VALUES (${slug}, ${referer}, NOW())
+        `.catch(() => {})
+        sql`INSERT INTO events (name, path, ref, props)
+            VALUES ('affiliate_click', ${`/empfehlung/${slug}`}, ${referer || null}, ${JSON.stringify({ slug })}::jsonb)
         `.catch(() => {})
 
         return NextResponse.redirect(rows[0].affiliate_url as string, { status: 302 })

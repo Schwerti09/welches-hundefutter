@@ -13,6 +13,7 @@ import UserProfilePanel from "@/components/UserProfilePanel";
 import MemoryTimeline from "@/components/MemoryTimeline";
 import MarketWatch from "@/components/MarketWatch";
 import { loadProfile, saveProfile, learnFromInteraction, clearProfile, type UserProfile } from "@/lib/profileStore";
+import { track } from "@/lib/analytics";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -265,7 +266,7 @@ export default function BellaDecisionUI() {
   const send = useCallback(async (text: string) => {
     const trimmed = text.trim();
     if (!trimmed || busy) return;
-    if (!started) setStarted(true);
+    if (!started) { setStarted(true); track("advisor_start"); }
     if (!sessionIdRef.current) {
       const bytes = new Uint8Array(16);
       globalThis.crypto?.getRandomValues?.(bytes);
@@ -370,6 +371,7 @@ export default function BellaDecisionUI() {
         ...m, streaming: false, offers: finalOffers, confidence: finalConf,
         steps: stepsDone, elims: elimsDone,
       } : m));
+      if (finalOffers?.length) track("advisor_offers", { count: finalOffers.length, confidence: finalConf });
       setMood(finalOffers?.length ? "presenting" : "happy");
       setTimeout(() => setMood("idle"), 3500);
     } catch {
@@ -399,12 +401,12 @@ export default function BellaDecisionUI() {
       {/* Top bar */}
       <header className="relative z-20 flex items-center justify-between px-5 sm:px-8 py-3.5">
         <button onClick={resetToHero} className="flex items-center gap-2.5 group" aria-label="Startseite">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:shadow-indigo-500/50 transition-shadow">
-            <span className="text-white font-black">H</span>
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center shadow-lg shadow-orange-500/30 group-hover:shadow-orange-500/50 transition-shadow">
+            <span className="text-black font-black">B</span>
           </div>
           <div className="leading-tight text-left">
-            <p className="font-bold text-white text-sm group-hover:text-indigo-200 transition-colors">trotzallergie<span className="text-indigo-400">.today</span></p>
-            <p className="text-white/35 text-[9px] tracking-widest font-medium uppercase">Decision Intelligence</p>
+            <p className="font-bold text-white text-sm group-hover:text-amber-200 transition-colors">BELLA<span className="text-amber-400">.today</span></p>
+            <p className="text-white/35 text-[9px] tracking-widest font-medium uppercase">KI-Ernährungsberaterin</p>
           </div>
         </button>
 
