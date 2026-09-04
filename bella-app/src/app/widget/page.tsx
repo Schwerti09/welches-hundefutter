@@ -3,6 +3,7 @@ import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import EmbedCodeBox from "@/components/EmbedCodeBox";
 import WidgetPreview from "@/components/WidgetPreview";
+import JsonLd from "@/components/JsonLd";
 
 export const metadata: Metadata = {
   title: "Kostenloses Hundekosten-Widget zum Einbetten | welches-hundefutter.today",
@@ -24,18 +25,15 @@ const EMBED_CODE = `<div id="whf-lebenszeit-rechner"></div>
 export default function WidgetPage() {
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Lebenszeit-Kosten-Rechner für Hunde",
-            applicationCategory: "UtilitiesApplication",
-            operatingSystem: "Any (Web)",
-            offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
-            description: "Kostenloses Embed-Widget, das die Futterkosten eines Hundes über sein ganzes Leben berechnet.",
-          }),
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          name: "Lebenszeit-Kosten-Rechner für Hunde",
+          applicationCategory: "UtilitiesApplication",
+          operatingSystem: "Any (Web)",
+          offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
+          description: "Kostenloses Embed-Widget, das die Futterkosten eines Hundes über sein ganzes Leben berechnet.",
         }}
       />
 

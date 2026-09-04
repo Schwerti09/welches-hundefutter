@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
+import JsonLd from "@/components/JsonLd";
 
 export const metadata: Metadata = {
   title: "Über BELLA: Wir sind kein Affiliate-Vergleich. Wir sind ein Berater.",
@@ -70,10 +71,7 @@ const STUDIEN_HIGHLIGHTS = [
 export default function UeberUnsPage() {
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
-      />
+      <JsonLd data={personSchema} />
 
       <nav className="max-w-4xl mx-auto w-full px-5 pt-8 text-sm text-[var(--muted)]">
         <Link href="/" className="hover:text-[var(--honey)]">Start</Link>

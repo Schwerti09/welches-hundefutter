@@ -3,6 +3,7 @@ import Link from "next/link";
 import { neon } from "@neondatabase/serverless";
 import SiteFooter from "@/components/SiteFooter";
 import StructuredData from "@/components/StructuredData";
+import JsonLd from "@/components/JsonLd";
 
 export const revalidate = 86400;
 
@@ -356,10 +357,7 @@ export default async function PreisindexPage() {
         </div>
       </section>
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+      <JsonLd data={{
             "@context": "https://schema.org",
             "@type": "Dataset",
             name: "BELLA Hundefutter-Marktreport 2026",
@@ -382,9 +380,7 @@ export default async function PreisindexPage() {
               { "@type": "DataDownload", encodingFormat: "application/json", contentUrl: "https://welches-hundefutter.today/data/hundefutter-report" },
               { "@type": "DataDownload", encodingFormat: "text/csv", contentUrl: "https://welches-hundefutter.today/data/hundefutter-report?format=csv" },
             ],
-          }),
-        }}
-      />
+          }} />
 
       <SiteFooter />
     </div>

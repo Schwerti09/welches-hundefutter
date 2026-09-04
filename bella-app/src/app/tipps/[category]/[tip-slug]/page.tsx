@@ -7,6 +7,7 @@ import AuthorBox from "@/components/AuthorBox";
 import SiteFooter from "@/components/SiteFooter";
 import TipArticleImage from "@/components/TipArticleImage";
 import ReadingProgress from "@/components/ReadingProgress";
+import JsonLd from "@/components/JsonLd";
 
 // Wandelt eine Überschrift in einen URL-tauglichen Anker-Slug um
 function slugifyHeading(text: string): string {
@@ -162,8 +163,8 @@ export default async function TipArticlePage({
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
       <ReadingProgress accent={cat.accent} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
-      {geoSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(geoSchema) }} />}
+      <JsonLd data={articleSchema} />
+      {geoSchema && <JsonLd data={geoSchema} />}
       <StructuredData type="breadcrumb" breadcrumbs={breadcrumbs} />
 
       <nav className="max-w-4xl mx-auto w-full px-5 pt-8 text-sm text-[var(--muted)]">

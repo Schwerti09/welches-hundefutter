@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
+import JsonLd from "@/components/JsonLd";
 
 export const metadata: Metadata = {
   title: "BELLA-Score: Unsere Bewertungsmethodik für Hundefutter | BELLA",
@@ -189,10 +190,7 @@ export default function Methodik() {
         </p>
       </section>
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+      <JsonLd data={{
             "@context": "https://schema.org",
             "@type": "Dataset",
             name: "BELLA Hundefutter-Produktkatalog",
@@ -212,9 +210,7 @@ export default function Methodik() {
               { "@type": "DataDownload", encodingFormat: "application/json", contentUrl: "https://welches-hundefutter.today/data/catalog.json" },
               { "@type": "DataDownload", encodingFormat: "text/csv", contentUrl: "https://welches-hundefutter.today/data/catalog.json?format=csv" },
             ],
-          }),
-        }}
-      />
+          }} />
 
       <SiteFooter />
     </div>

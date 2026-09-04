@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import JsonLd from "@/components/JsonLd";
 
 export const metadata: Metadata = {
   title: "Stiftung Warentest Hundefutter: Methodik, Befunde & BELLA-Vergleich",
@@ -167,10 +168,7 @@ const FAQS = [
 export default function StiftungWarentestRatgeberPage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
 
       <div className="max-w-4xl mx-auto px-4 py-12">
         {/* Breadcrumb */}

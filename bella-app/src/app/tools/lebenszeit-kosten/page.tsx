@@ -6,6 +6,7 @@ import LifetimeCostCalculator, { type SlimBreed } from "@/components/LifetimeCos
 import WebMcpTools from "@/components/WebMcpTools";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
+import JsonLd from "@/components/JsonLd";
 
 export const revalidate = 86400;
 const BASE = "https://welches-hundefutter.today";
@@ -66,7 +67,7 @@ export default async function LebenszeitKostenPage() {
 
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(appSchema) }} />
+      <JsonLd data={appSchema} />
       <StructuredData type="faq" faqs={FAQS} />
       <StructuredData type="breadcrumb" breadcrumbs={breadcrumbs} />
 

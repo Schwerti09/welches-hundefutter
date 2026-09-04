@@ -13,6 +13,7 @@ import StructuredData from "@/components/StructuredData";
 import { breedDirectAnswer } from "@/lib/direct-answer";
 import SiteFooter from "@/components/SiteFooter";
 import BreedImg from "@/components/BreedImg";
+import JsonLd from "@/components/JsonLd";
 
 export const revalidate = 86400;
 
@@ -319,7 +320,7 @@ export default async function BreedPage({ params }: { params: Promise<{ slug: st
           rows: portions,
         }}
       />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <JsonLd data={faqSchema} />
 
       {/* ── BREADCRUMB ─────────────────────────────────────────────────── */}
       <nav className="max-w-5xl mx-auto w-full px-5 pt-8 text-sm text-[var(--muted)] flex gap-2 flex-wrap">

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { TIP_CATEGORY_BY_SLUG, type TipArticle } from "@/data/tips";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
+import JsonLd from "@/components/JsonLd";
 
 export const revalidate = 86400;
 
@@ -79,7 +80,7 @@ export default async function CategoryPage({
 
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+      <JsonLd data={itemListSchema} />
       <StructuredData type="breadcrumb" breadcrumbs={breadcrumbs} />
 
       <nav className="max-w-6xl mx-auto w-full px-5 pt-8 text-sm text-[var(--muted)]">

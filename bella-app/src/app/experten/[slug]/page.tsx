@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import SiteFooter from "@/components/SiteFooter";
+import JsonLd from "@/components/JsonLd";
 import { REVIEWER } from "@/data/reviewer";
 
 export async function generateStaticParams() {
@@ -48,10 +49,7 @@ export default async function ExpertenPage({ params }: { params: Promise<{ slug:
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
-      />
+      <JsonLd data={personSchema} />
 
       <header className="border-b border-white/5 px-5 py-4">
         <div className="max-w-4xl mx-auto flex items-center justify-between">

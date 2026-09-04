@@ -1,3 +1,4 @@
+import JsonLd from "@/components/JsonLd";
 interface FoodItem {
   name: string;
   brand: string;
@@ -63,9 +64,6 @@ export default function ProductSchemaBlock({ foods, listName }: { foods: FoodIte
   };
 
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
+    <JsonLd data={schema} />
   );
 }

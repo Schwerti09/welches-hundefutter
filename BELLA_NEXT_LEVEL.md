@@ -841,12 +841,26 @@ Lighthouse-Gegenprobe „nicht zusammengesetzte Animationen = 0" nach Deploy.
 - **Akzeptanz:** `llms-full.txt` erreichbar. Stichprobe 10 Money-Seiten: Absatz 1 beantwortet die Titelfrage eigenständig. Perplexity/ChatGPT-Testfragen zitieren die Domain (manuell, dokumentiert).
 - **Agent:** `seo-strategist`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 4.3.
 
-### Operation 4.6 — `<JsonLd>` + `<Freshness>` Schema-Helfer
+### Operation 4.6 — `<JsonLd>` + `<Freshness>` Schema-Helfer — ✅ **JsonLd ERLEDIGT (2026-09-04)**
 - **Ziel:** Ein getesteter Weg, strukturierte Daten auszugeben.
 - **Warum:** C6. 21 handgerollte `dangerouslySetInnerHTML` = 21 Fehlerquellen (GSC hatte schon eine).
 - **Dateien:** neu `src/components/JsonLd.tsx` (nonce-fähig, typisiert), Migration aller 21 Stellen, Unit-Test „gültiges JSON, kein XSS".
 - **Akzeptanz:** `grep -rn "application/ld\+json" src` nutzt nur noch `<JsonLd>`. Rich-Results-Test grün auf Home/`/rasse`/`/rassen`/FAQ/Blog. Nonce aus 1.2 greift.
 - **Agent:** `content-engineer` + `platform-architect`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 1.2.
+
+**Was jetzt live ist:**
+- `src/components/JsonLd.tsx` — `<JsonLd data={…} nonce?={…} />` + `serializeJsonLd()`.
+  Härtung: `<` → `<` (kein `</script>`-Ausbruch), zirkuläre Refs werfen laut,
+  `nonce`-Prop durchgereicht (greift sobald CSP `strict-dynamic` aus 1.2 steht).
+- `src/components/JsonLd.test.ts` — 5 Tests: JSON-Roundtrip, `</script>`-Escape,
+  Array-Input, `undefined`-Felder, zirkuläre Referenz.
+- **Alle 21 handgerollten Stellen migriert** (17 Seiten + `StructuredData.tsx` +
+  `ProductSchemaBlock.tsx`). `grep -rn "application/ld+json" src` → nur noch `JsonLd.tsx`.
+- Verifiziert: `tsc` · `lint` · `build` · 118 Vitest · Laufzeit-Check (7 Seiten,
+  alle `ld+json`-Blöcke parsen, Escaping aktiv).
+
+**Offen:** `<Freshness>`-Component = Deliverable von **4.3** (nicht 4.6). Rich-Results-Test
+grün = manuelle Prüfung nach Deploy. Nonce-Aktivierung hängt an 1.2 (CSP `strict-dynamic`).
 
 ---
 
@@ -1035,7 +1049,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 4.3 | Aktualitäts-Signal | ⬜ offen | | |
 | 4.4 | Interner Cluster-Graph | ⬜ offen | | |
 | 4.5 | GEO / AI-Search | ⬜ offen | | |
-| 4.6 | JsonLd-Helfer | ⬜ offen | | |
+| 4.6 | JsonLd-Helfer | ✅ `<JsonLd>` + Test + alle 21 Stellen migriert (`<Freshness>` → 4.3) | 2026-09-04 | _(dieser Batch)_ |
 | 5.1 | Futter-Pass-Schleife | ⬜ offen | | |
 | 5.2 | First-Party-Analytics | ⬜ offen | | |
 | 5.3 | Funnel-Instrumentierung | ⬜ offen | | |

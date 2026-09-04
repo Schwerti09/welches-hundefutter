@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { CITY_BY_SLUG, CITIES, getCitiesInState, type City } from '@/data/cities';
+import JsonLd from "@/components/JsonLd";
 
 export const revalidate = 86400;
 
@@ -406,10 +407,7 @@ export default async function StadtPage({
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
 
       <main className="min-h-screen" style={{ background: 'var(--bg, #0a0a0f)', color: 'var(--fg, #f0f0f0)' }}>
 

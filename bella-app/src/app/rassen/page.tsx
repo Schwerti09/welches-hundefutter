@@ -5,6 +5,7 @@ import gallery from "@/data/breed-gallery.json";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 import BreedImg from "@/components/BreedImg";
+import JsonLd from "@/components/JsonLd";
 
 export const revalidate = 86400;
 
@@ -65,7 +66,7 @@ export default function RassenHubPage() {
 
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+      <JsonLd data={itemListSchema} />
       <StructuredData type="breadcrumb" breadcrumbs={breadcrumbs} />
 
       <nav className="max-w-6xl mx-auto w-full px-5 pt-8 text-sm text-[var(--muted)]">

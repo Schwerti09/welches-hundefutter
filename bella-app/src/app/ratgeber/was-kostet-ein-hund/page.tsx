@@ -5,6 +5,7 @@ import { getAvgPricePerKgDry } from "@/db/queries/foods";
 import { lifetimeFoodCost, representativeWeight, lifespanYears, fmtEur } from "@/lib/dogCost";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
+import JsonLd from "@/components/JsonLd";
 
 export const revalidate = 86400;
 const BASE = "https://welches-hundefutter.today";
@@ -81,7 +82,7 @@ export default async function HundekostenRanglistePage() {
 
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }} />
+      <JsonLd data={itemList} />
       <StructuredData type="breadcrumb" breadcrumbs={breadcrumbs} />
 
       <article className="max-w-3xl mx-auto w-full px-5 pt-12 pb-16">

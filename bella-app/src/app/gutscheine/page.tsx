@@ -4,6 +4,7 @@ import { PARTNER_VOUCHERS, PARTNER_LINKS } from "@/data/partners";
 import VoucherCard from "@/components/VoucherCard";
 import AuthorBox from "@/components/AuthorBox";
 import SiteFooter from "@/components/SiteFooter";
+import JsonLd from "@/components/JsonLd";
 
 export const metadata: Metadata = {
   title: "Hundefutter Gutscheine & Rabattcodes 2026 — alle Codes auf einen Blick | BELLA",
@@ -45,22 +46,14 @@ export default function GutscheinePage() {
 
   return (
     <div className="min-h-screen text-[var(--ink)] flex flex-col">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+      <JsonLd data={{
             "@context": "https://schema.org",
             "@type": "ItemList",
             name: "Hundefutter Gutscheine & Rabattcodes",
             numberOfItems: PARTNER_VOUCHERS.length,
             itemListElement: schemaItems,
-          }),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          }} />
+      <JsonLd data={{
             "@context": "https://schema.org",
             "@type": "FAQPage",
             mainEntity: [
@@ -81,9 +74,7 @@ export default function GutscheinePage() {
                 },
               },
             ],
-          }),
-        }}
-      />
+          }} />
 
       <nav className="max-w-5xl mx-auto w-full px-5 pt-8 text-sm text-[var(--muted)]">
         <Link href="/" className="hover:text-[var(--honey)]">Start</Link>

@@ -1,3 +1,4 @@
+import JsonLd from "@/components/JsonLd";
 
 interface BreadcrumbItem {
   name: string;
@@ -285,10 +286,7 @@ export default function StructuredData({
   if (!schema) return null;
 
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
+    <JsonLd data={schema} />
   );
 }
 
