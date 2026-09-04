@@ -141,12 +141,16 @@ Ablauf pro Request (`src/lib/advisor/*` + `route.ts`):
 ## Datenbank (Drizzle, `src/db/schema.ts`)
 
 **Katalog:** `dog_foods` (Hauptkatalog, BELLA-Score, `companion_for`, `category`),
-`offers` (Legacy, Rückwärtskompatibilität), `price_history` (Snapshot-on-change).
-**Content:** `dog_breeds`, `health_issues`, `studies`, `topic_hubs`, `glossary_terms`,
-`community_insights`.
+`price_history` (Snapshot-on-change).
+**Content:** `studies`, `topic_hubs`, `glossary_terms`, `community_insights`.
 **Nutzer/Wachstum:** `subscribers` (DOI), `price_alerts` (mode `price`|`refill`),
 `dog_profiles` (Futter-Pass, `share_token`, Verbrauchsmathematik), `outcome_checks`
-(3-Wochen-„hat's geholfen?"), `affiliate_clicks`, `advisor_sessions`.
+(3-Wochen-„hat's geholfen?"), `chat_logs`, `events` (First-Party-Analytics, 5.2),
+`ai_usage` (Kosten-Monitoring, 1.3).
+**Live, aber nicht in `schema.ts`** (raw SQL, eigene Init-Skripte): `cross_sell`,
+`ai_visibility_checks`.
+**In `schema.ts`, noch nicht live** (geplant, für 4.1/5.4): `dog_breeds`, `health_issues`,
+`advisor_sessions` — existieren nicht in der Prod-DB, werden aktuell nirgends gequeried.
 
 Zugriff: `@neondatabase/serverless` (`neon()` HTTP) direkt in Server Components und
 Route Handlers. Kein Connection-Pool nötig (serverless HTTP).

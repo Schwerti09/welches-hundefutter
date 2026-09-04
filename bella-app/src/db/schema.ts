@@ -3,34 +3,6 @@ import {
   uuid, serial, index, jsonb,
 } from "drizzle-orm/pg-core";
 
-// ─── Legacy (Rückwärtskompatibilität) ────────────────────────────────────────
-export const offers = pgTable("offers", {
-  id: serial("id").primaryKey(),
-  brand: text("brand").notNull(),
-  deviceName: text("device_name").notNull(),
-  deviceSlug: text("device_slug").notNull(),
-  imageUrl: text("image_url"),
-  providerName: text("provider_name").notNull(),
-  futterfName: text("futterf_name").notNull(),
-  monthlyPrice: numeric("monthly_price", { precision: 8, scale: 2 }).notNull(),
-  effectiveMonthlyPrice: numeric("effective_monthly_price", { precision: 8, scale: 2 }),
-  oneTimePrice: numeric("one_time_price", { precision: 8, scale: 2 }).default("0"),
-  dataVolume: text("data_volume"),
-  dataVolumeGb: numeric("data_volume_gb", { precision: 8, scale: 1 }),
-  isUnlimited: boolean("is_unlimited").default(false),
-  has5g: boolean("has_5g").default(false),
-  contractMonths: integer("contract_months").default(24),
-  affiliateLink: text("affiliate_link").notNull(),
-  sourceFeed: text("source_feed"),
-  cashback: numeric("cashback", { precision: 8, scale: 2 }),
-  networkName: text("network_name"),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-});
-
-export type Offer = typeof offers.$inferSelect;
-export type NewOffer = typeof offers.$inferInsert;
-
 // ─── Hundefutter (Hauptkatalog) ───────────────────────────────────────────────
 export const dogFoods = pgTable("dog_foods", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -232,18 +204,6 @@ export const outcomeChecks = pgTable("outcome_checks", {
 
 export type OutcomeCheck = typeof outcomeChecks.$inferSelect;
 export type NewOutcomeCheck = typeof outcomeChecks.$inferInsert;
-
-// ─── Klick-Tracking ───────────────────────────────────────────────────────────
-export const affiliateClicks = pgTable("affiliate_clicks", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  foodId: uuid("food_id"),
-  sourceUrl: text("source_url"),
-  userAgent: text("user_agent"),
-  referrer: text("referrer"),
-  sessionId: text("session_id"),
-  bellaConversation: boolean("bella_conversation").default(false),
-  clickedAt: timestamp("clicked_at").defaultNow(),
-});
 
 // ─── Wissensuniversum: Themen-Hubs ───────────────────────────────────────────
 export const topicHubs = pgTable("topic_hubs", {
