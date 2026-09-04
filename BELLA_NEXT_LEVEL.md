@@ -1030,8 +1030,21 @@ Restliche `console.error`-Routen (`api/alerts/*`, `api/auth/*`, `api/profiles` �
 - **Akzeptanz:** Provozierter Fehler erscheint in Sentry mit Stacktrace + Release. Alert-Regeln aktiv. Kein PII in den Events (Stichprobe).
 - **Agent:** `platform-architect`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** —
 
-### Operation 6.2 — Performance-Budget im Build
+### Operation 6.2 — Performance-Budget im Build — 🟡 **BUNDLE-BUDGET LIVE (2026-09-04)**
 - **Ziel:** Kein Deploy, der die Vitals oder die JS-Bundle-Size über die Schwelle drückt.
+
+**Was jetzt live ist:**
+- `scripts/check-bundle-size.mjs` — misst die **gzip-Größe des geteilten First-Load-JS**
+  (`rootMainFiles` aus `.next/build-manifest.json`, lädt auf jeder Seite) und vergleicht mit
+  `bella-app/.bundle-budget.json`.
+- **In `npm run ci` eingehängt** (nach `build`) → über Budget = exit 1 = **kein Deploy**.
+- Baseline gesetzt: aktuell **129,2 KB gzip** (5 Chunks), Budget **145 KB** (~12 % Luft).
+  `npm run check:bundle` als Einzellauf.
+- Verifiziert: `npm run ci` grün, Check läuft + meldet „innerhalb Budget".
+
+**Offen (Teil 2):** Lighthouse als Post-Deploy-Schritt (Netlify-Plugin `onSuccess` oder
+`health-check`-Erweiterung) auf Home + `/rassen` + `/rasse/[slug]` — Perf ≥ 95 (Warn),
+TBT ≤ 200 ms, CLS ≤ 0,02. Optional zusätzlich ein Per-Route-Budget.
 - **Dateien:** `netlify.toml` / `package.json` (`ci`-Kette erweitern), `size-limit` + `.size-limit.json`;
   optional ein Netlify-Build-Plugin, das Lighthouse gegen die Deploy-Preview-URL fährt (`onSuccess`).
 - **Vorgehen:** `size-limit` auf den First-Load-JS-Bundle in `npm run ci` einhängen (Budget = Baseline
@@ -1198,7 +1211,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 5.3 | Funnel-Instrumentierung | ⬜ offen | | |
 | 5.4 | Outcome-Checks sichtbar | ⬜ offen | | |
 | 6.1 | Error-Tracking | 🟡 `log.ts` (PII-Scrub) + Test + `error.tsx`/`global-error.tsx` + Advisor-Catches · Teil 2: Sentry-DSN + Alerts | 2026-09-04 | _(dieser Batch)_ |
-| 6.2 | Performance-Budget im Build | ⬜ offen | | |
+| 6.2 | Performance-Budget im Build | 🟡 `check:bundle` (geteiltes First-Load-JS gzip vs. `.bundle-budget.json`) in `npm run ci`, Baseline 129→Budget 145 KB · Teil 2: Lighthouse post-deploy | 2026-09-04 | _(dieser Batch)_ |
 | 6.3 | Repo-Hygiene | 🟡 SECURITY.md + CODEOWNERS + PR-Template + `audit:deps` (Warn) · Teil 2: `audit:deps` blockierend in `ci` | 2026-09-04 | _(dieser Batch)_ |
 | 6.4 | Backup + Runbook | ⬜ offen | | |
 

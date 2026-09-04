@@ -1,0 +1,4 @@
+{
+  "_comment": "Roadmap 6.2 — Budget für das geteilte First-Load-JS (gzip KB). Geprüft am Ende von `npm run ci` via scripts/check-bundle-size.mjs. Aktueller Wert ~129 KB; Budget = +~12% Luft. Bewusst anheben, wenn ein Feature es rechtfertigt.",
+  "sharedFirstLoadGzipKB": 145
+}
