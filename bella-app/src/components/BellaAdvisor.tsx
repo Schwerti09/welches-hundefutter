@@ -87,6 +87,7 @@ interface Message {
   profile?: ProfileData;
   studies?: StudyCitation[];
   glossaryLinks?: GlossaryLink[];
+  degraded?: boolean; // beide KI-Provider nicht erreichbar → deterministischer Fallback-Text
 }
 
 type BellaMood = "idle" | "thinking" | "talking" | "happy" | "waving" | "excited";
@@ -219,6 +220,7 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
       let profile: ProfileData | undefined;
       let studies: StudyCitation[] = [];
       let glossaryLinks: GlossaryLink[] = [];
+      let degraded = false;
 
       const flushLine = (line: string) => {
         if (line.startsWith("TEXT:")) {
@@ -228,6 +230,9 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
           // BELLA hat genug Infos → geht in Empfehlungsmodus → Storm erst jetzt starten
           setStormQuery(trimmed);
           setStormActive(true);
+        } else if (line.startsWith("WARN:degraded")) {
+          // Beide KI-Provider ohne Antwort → deterministischer Fallback-Text kommt.
+          degraded = true;
         } else if (line.startsWith("OFFERS:")) {
           try {
             const payload = JSON.parse(line.slice(7));
@@ -261,7 +266,7 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
         replyText = "Erzähl mir noch ein bisschen mehr über deinen Hund — Rasse, Alter, Allergien? Dann finde ich das passende Futter.";
       }
       setMessages(prev => prev.map(m =>
-        m.id === bellaId ? { ...m, content: replyText, offers: offers.length ? offers : undefined, companions: companions.length ? companions : undefined, profile, studies: studies.length ? studies : undefined, glossaryLinks: glossaryLinks.length ? glossaryLinks : undefined } : m
+        m.id === bellaId ? { ...m, content: replyText, offers: offers.length ? offers : undefined, companions: companions.length ? companions : undefined, profile, studies: studies.length ? studies : undefined, glossaryLinks: glossaryLinks.length ? glossaryLinks : undefined, degraded: degraded || undefined } : m
       ));
 
       // Persist profile to localStorage so /mein-hund can load it
@@ -405,7 +410,7 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
 
           {/* Messages */}
           <div ref={scrollRef} className="flex-1 overflow-y-auto overscroll-contain p-5 space-y-5">
-            {messages.map((msg) => (
+            {messages.map((msg, msgIdx) => (
               <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} gap-3`}>
                 {msg.role === "bella" && (
                   <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center flex-shrink-0 mt-1 text-xs font-black text-white shadow-md shadow-orange-200">B</div>
@@ -429,6 +434,21 @@ export default function BellaAdvisor({ introMessage, pageQuickOptions, autoStart
                       <span className="text-white/40 text-xs">BELLA analysiert dein Profil…</span>
                     </div>
                   ) : null}
+
+                  {msg.role === "bella" && msg.degraded && !loading && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-[11px] text-white/40">⚠️ Antwort ohne KI erzeugt (Fallback) — Verbindung war kurz gestört.</span>
+                      <button
+                        onClick={() => {
+                          const prev = messages[msgIdx - 1];
+                          if (prev?.role === "user") sendMessage(prev.content);
+                        }}
+                        className="text-[11px] font-semibold text-[var(--honey)] hover:underline flex-shrink-0"
+                      >
+                        🔄 Nochmal versuchen
+                      </button>
+                    </div>
+                  )}
 
                   {msg.glossaryLinks && msg.glossaryLinks.length > 0 && (
                     <div className="flex flex-wrap gap-1.5">
