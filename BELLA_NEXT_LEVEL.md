@@ -1087,15 +1087,18 @@ Restliche `console.error`-Routen (`api/alerts/*`, `api/auth/*`, `api/profiles` �
   `npm run check:bundle` als Einzellauf.
 - Verifiziert: `npm run ci` grün, Check läuft + meldet „innerhalb Budget".
 
-**Offen (Teil 2):** Lighthouse als Post-Deploy-Schritt (Netlify-Plugin `onSuccess` oder
-`health-check`-Erweiterung) auf Home + `/rassen` + `/rasse/[slug]` — Perf ≥ 95 (Warn),
-TBT ≤ 200 ms, CLS ≤ 0,02. Optional zusätzlich ein Per-Route-Budget.
-- **Dateien:** `netlify.toml` / `package.json` (`ci`-Kette erweitern), `size-limit` + `.size-limit.json`;
-  optional ein Netlify-Build-Plugin, das Lighthouse gegen die Deploy-Preview-URL fährt (`onSuccess`).
-- **Vorgehen:** `size-limit` auf den First-Load-JS-Bundle in `npm run ci` einhängen (Budget = Baseline
-  + 10 %). Lighthouse-Check als Post-Deploy-Schritt (Netlify-Plugin oder `health-check`-Erweiterung)
-  auf Home + `/rassen` + ein `/rasse/[slug]`: Perf ≥ 95 (Warn), TBT ≤ 200 ms, CLS ≤ 0.02.
-- **Akzeptanz:** Ein Commit, der 100 KB JS hinzufügt, lässt `npm run ci` scheitern → kein Deploy.
+> **Nachtrag 2026-09-04:** `netlify/functions/lighthouse-check.mts` — täglich (04:30 UTC, versetzt
+> zum stündlichen `health-check`), fragt PageSpeed Insights für Home + `/rassen` +
+> `/rasse/labrador-retriever` ab (mobile), vergleicht `performance`-Score/TBT/CLS gegen die o. g.
+> Schwellen, loggt bei Unterschreitung `console.warn` — reine Beobachtung, kein Build-Gate.
+> **Live-getestet, ein echtes Problem gefunden:** die unauthentifizierte PSI-API war beim Testlauf
+> bereits mit `429 RESOURCE_EXHAUSTED` (geteiltes Tageskontingent) ausgelastet — der Code fängt das
+> sauber als „nicht ok" ab und loggt eine Warnung, liefert aber ohne Key aktuell keine verlässlichen
+> Daten. **Offen:** kostenlosen `PAGESPEED_API_KEY` in der Google Cloud Console erzeugen (PageSpeed
+> Insights API aktivieren, kein Billing nötig) und in Netlify als Env-Var setzen — externer Schritt,
+> wie Resend/Sentry.
+- **Weiterhin offen (Teil 2):** Optional `size-limit` statt des eigenen `check-bundle-size.mjs`-Scripts
+  (funktional gleichwertig, kein Umstieg ohne Grund nötig) · Per-Route-Budget.
   Lighthouse-Report im Netlify-Deploy-Log.
 - **Agent:** `platform-architect` + `visual-designer`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 0.4.
 
@@ -1270,7 +1273,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 5.3 | Funnel-Instrumentierung | 🟡 4/5 Events live (advisor_start/offers, affiliate_click, alert_subscribe) · Teil 2: Dashboard, Wochenreport, refill_click | 2026-09-04 | _(dieser Batch)_ |
 | 5.4 | Outcome-Checks sichtbar | ⬜ offen | | |
 | 6.1 | Error-Tracking | 🟡 `log.ts` (PII-Scrub) + Test + `error.tsx`/`global-error.tsx` + Advisor-Catches · Teil 2: Sentry-DSN + Alerts | 2026-09-04 | _(dieser Batch)_ |
-| 6.2 | Performance-Budget im Build | 🟡 `check:bundle` (geteiltes First-Load-JS gzip vs. `.bundle-budget.json`) in `npm run ci`, Baseline 129→Budget 145 KB · Teil 2: Lighthouse post-deploy | 2026-09-04 | _(dieser Batch)_ |
+| 6.2 | Performance-Budget im Build | 🟡 `check:bundle` in `ci` (Baseline 129→Budget 145 KB) + täglicher `lighthouse-check` (PSI) · Teil 2: `PAGESPEED_API_KEY` fehlt noch (extern) | 2026-09-04 | _(dieser Batch)_ |
 | 6.3 | Repo-Hygiene | ✅ SECURITY.md + CODEOWNERS + PR-Template + 7 High-CVEs gefixt + `audit:deps` blockierend in `ci` | 2026-09-04 | _(dieser Batch)_ |
 | 6.4 | Backup + Runbook | 🟡 `docs/runbooks/db-restore.md` + `feed-bootstrap.md` · Teil 2: Restore-Drill real + `db-backup.mts` (Blobs) | 2026-09-04 | _(dieser Batch)_ |
 
