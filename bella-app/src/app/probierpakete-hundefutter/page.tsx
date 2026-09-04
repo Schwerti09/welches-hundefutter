@@ -5,6 +5,7 @@ import StructuredData from "@/components/StructuredData";
 import AuthorBox from "@/components/AuthorBox";
 import SiteFooter from "@/components/SiteFooter";
 import VoucherBadge from "@/components/VoucherBadge";
+import { CONTENT_REVISED } from "@/lib/site-dates";
 
 export const revalidate = 86400;
 
@@ -83,7 +84,7 @@ export default async function ProbierpaketePage() {
           headline: "Probierpakete Hundefutter — testen, bevor der große Sack kommt",
           description: "Echte Probierpakete aus dem Live-Katalog.",
           url: "https://welches-hundefutter.today/probierpakete-hundefutter",
-          dateModified: new Date().toISOString(),
+          dateModified: CONTENT_REVISED,
         }}
       />
       <StructuredData type="faq" faqs={faqItems} />

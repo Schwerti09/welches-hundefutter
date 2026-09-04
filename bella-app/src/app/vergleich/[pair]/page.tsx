@@ -10,6 +10,7 @@ import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 import type { BrandSummary } from "@/db/queries/foods";
 import type { DogFood } from "@/lib/types";
+import { DATA_REFRESHED } from "@/lib/site-dates";
 
 export const revalidate = 3600;
 
@@ -201,7 +202,7 @@ export default async function MarkenVergleichPage({
           headline: `${brandA.brand} vs. ${brandB.brand} Hundefutter: Direktvergleich`,
           description: `${brandA.brand} oder ${brandB.brand}? BELLA vergleicht Score, Preise und Qualität beider Marken mit Live-Daten.`,
           url: `https://welches-hundefutter.today/vergleich/${pair}`,
-          dateModified: new Date().toISOString().slice(0, 10),
+          dateModified: DATA_REFRESHED,
           speakableSelectors: ["h1", ".bella-answer"],
         }}
       />

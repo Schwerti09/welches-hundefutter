@@ -4,6 +4,7 @@ import StructuredData from "@/components/StructuredData";
 import AuthorBox from "@/components/AuthorBox";
 import SiteFooter from "@/components/SiteFooter";
 import { getTopFoodsByScore } from "@/db/queries/foods";
+import { CONTENT_REVISED } from "@/lib/site-dates";
 
 export const revalidate = 86400;
 
@@ -55,7 +56,7 @@ export default async function HochwertigesHundefutterPage() {
           headline: "Hochwertiges Hundefutter erkennen — 4 messbare Kriterien",
           description: "So erkennst du echte Qualität an 4 messbaren Kriterien, nicht am Preis.",
           url: "https://welches-hundefutter.today/hochwertiges-hundefutter",
-          dateModified: new Date().toISOString(),
+          dateModified: CONTENT_REVISED,
         }}
       />
       <StructuredData type="faq" faqs={faqItems} />

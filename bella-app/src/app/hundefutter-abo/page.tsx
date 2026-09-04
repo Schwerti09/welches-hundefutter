@@ -3,6 +3,7 @@ import Link from "next/link";
 import StructuredData from "@/components/StructuredData";
 import AuthorBox from "@/components/AuthorBox";
 import SiteFooter from "@/components/SiteFooter";
+import { CONTENT_REVISED } from "@/lib/site-dates";
 
 export const metadata: Metadata = {
   title: "Hundefutter im Abo bestellen — lohnt sich das wirklich? | BELLA",
@@ -47,7 +48,7 @@ export default function HundefutterAboPage() {
           headline: "Hundefutter im Abo — lohnt sich das wirklich?",
           description: "Was Hundefutter-Abos wirklich kosten und wo die Fallstricke liegen.",
           url: "https://welches-hundefutter.today/hundefutter-abo",
-          dateModified: new Date().toISOString(),
+          dateModified: CONTENT_REVISED,
         }}
       />
       <StructuredData type="faq" faqs={faqItems} />

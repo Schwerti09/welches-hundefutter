@@ -820,11 +820,31 @@ Lighthouse-Gegenprobe „nicht zusammengesetzte Animationen = 0" nach Deploy.
 - **Akzeptanz:** `REVIEWER !== null`, Badge sichtbar, Rich-Results-Test zeigt `reviewedBy`. Kein Fake — bis ein echter Reviewer da ist, bleibt es aus.
 - **Agent:** `trust-compliance` + `content-engineer`. **Aufwand:** S (Code). **Risiko:** niedrig. **Abhängt von:** externem Reviewer.
 
-### Operation 4.3 — Aktualitäts-Signal überall
+### Operation 4.3 — Aktualitäts-Signal überall — 🟡 **KERN ERLEDIGT (2026-09-04)**
 - **Ziel:** Jede Content-Seite zeigt „zuletzt geprüft/aktualisiert am" — konsistent, ehrlich, im Schema.
 - **Dateien:** ein `<Freshness>`-Component, `dateModified` in allen Article/FAQ-Schemas, Datenquelle: echtes Git-/DB-Datum, nicht `new Date()`.
 - **Akzeptanz:** Kein `dateModified: new Date().toISOString()` mehr (das lügt bei jedem Build). Sichtbares Datum auf `/rasse/*`, `/problem/*`, `/tipps/*`, Blog.
 - **Agent:** `content-engineer`. **Aufwand:** S–M. **Risiko:** niedrig. **Abhängt von:** 4.6.
+
+**Was jetzt live ist:**
+- `scripts/gen-build-date.mjs` (`prebuild`) → schreibt `src/lib/generated-build-date.ts`
+  mit `BUILD_DATE` aus `git log -1 --format=%cs` (= Deploy-Datum). Fällt still zurück,
+  wenn git fehlt.
+- `src/lib/site-dates.ts` — `CONTENT_REVISED` (`"2026-06-01"`, zentral bumpen bei echter
+  Textüberarbeitung) + `DATA_REFRESHED` (= `BUILD_DATE`, für datengetriebene Seiten).
+- **Akzeptanz erfüllt:** `grep "dateModified:.*new Date()" src` → **0**. Alle 15 Stellen
+  migriert — Preis-/Marken-/Katalog-Seiten → `DATA_REFRESHED` (ehrlich, ändert sich je Deploy),
+  Ratgeber → `CONTENT_REVISED`.
+- `src/components/Freshness.tsx` — sichtbares `<time>`-Signal; als Referenz auf
+  `/analyse/methodik` gesetzt.
+- Sichtbares Datum auf `/rasse/*`, `/problem/*`, `/tipps/*`, Blog: **schon durch `AuthorBox`**
+  („Letzte Prüfung: <time>", auf 29 Seiten).
+- Grün: `tsc` · `lint` · `build` (prebuild läuft) · 118 Vitest.
+
+**Offen (Teil 2):** `<Freshness>` breiter auf Tool-/Daten-Seiten ohne `AuthorBox`
+(`/tools/*`, `/data/*`, `/widget`). `AuthorBox`-`reviewedAt` je Seitentyp aus einem
+echten Datum speisen statt Default. `datePublished` bei `tipps`-Artikeln (aktuell hart
+`"2025-01-01"`).
 
 ### Operation 4.4 — Interner Cluster-Graph
 - **Ziel:** Bewusste Hub→Spoke→Sibling-Verlinkung, die Autorität auf die Money-Keywords bündelt.
@@ -1046,7 +1066,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 3.5 | Motion-Politur | 🟡 tote nicht-composited Animationen entfernt (`sheen`/`scan-sweep`/`spotlight` + toter Hero-Block, −40 Zeilen CSS) · Teil 2: `framer-motion`-Audit + View Transitions offen | 2026-09-03 | _(dieser Batch)_ |
 | 4.1 | Thin-Content-Audit | 🟡 Tool (`audit:content`) + Report + Bucket-Entscheidungen · Teil 2: DB-Re-Audit + `lebensphase`/`futtertyp`/`glossar` anreichern | 2026-09-04 | _(dieser Batch)_ |
 | 4.2 | Tierarzt-Review live | ⬜ blockiert (Reviewer) | | |
-| 4.3 | Aktualitäts-Signal | ⬜ offen | | |
+| 4.3 | Aktualitäts-Signal | 🟡 `new Date()` aus allen `dateModified` raus (`BUILD_DATE`/`CONTENT_REVISED`), `<Freshness>` + prebuild-Datum · Teil 2: `<Freshness>` breiter, `datePublished` fixen | 2026-09-04 | _(dieser Batch)_ |
 | 4.4 | Interner Cluster-Graph | ⬜ offen | | |
 | 4.5 | GEO / AI-Search | ⬜ offen | | |
 | 4.6 | JsonLd-Helfer | ✅ `<JsonLd>` + Test + alle 21 Stellen migriert (`<Freshness>` → 4.3) | 2026-09-04 | _(dieser Batch)_ |

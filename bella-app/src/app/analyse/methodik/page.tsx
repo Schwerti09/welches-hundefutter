@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import JsonLd from "@/components/JsonLd";
+import Freshness from "@/components/Freshness";
+import { DATA_REFRESHED } from "@/lib/site-dates";
 
 export const metadata: Metadata = {
   title: "BELLA-Score: Unsere Bewertungsmethodik für Hundefutter | BELLA",
@@ -71,6 +73,7 @@ export default function Methodik() {
         <p className="text-[var(--muted)] text-sm">
           Kein Produkt zahlt für eine bessere Bewertung. Kein Score entsteht durch redaktionelle Willkür.
         </p>
+        <Freshness date={DATA_REFRESHED} label="Katalog-Daten & Formel-Stand" className="mt-4" />
       </section>
 
       {/* Formel-Übersicht */}
@@ -201,7 +204,7 @@ export default function Methodik() {
             license: "https://creativecommons.org/licenses/by/4.0/",
             isAccessibleForFree: true,
             inLanguage: "de-DE",
-            dateModified: new Date().toISOString().slice(0, 10),
+            dateModified: DATA_REFRESHED,
             variableMeasured: [
               "Preis pro Kilogramm", "BELLA-Score", "Proteinquelle",
               "Getreidefrei", "Hypoallergen", "Futtertyp",

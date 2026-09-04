@@ -4,6 +4,7 @@ import { neon } from "@neondatabase/serverless";
 import StructuredData from "@/components/StructuredData";
 import AuthorBox from "@/components/AuthorBox";
 import SiteFooter from "@/components/SiteFooter";
+import { DATA_REFRESHED } from "@/lib/site-dates";
 
 export const revalidate = 86400;
 
@@ -201,7 +202,7 @@ export default async function MarktberichtPage() {
           headline: "Hundefutter Marktbericht 2026: Preise, Marken, Trends",
           description: "Live-Marktbericht aus 11.065 Produkten — täglich aktualisiert.",
           url: "https://welches-hundefutter.today/blog/marktbericht-hundefutter-2026",
-          dateModified: now.toISOString(),
+          dateModified: DATA_REFRESHED,
           speakableSelectors: ["h1", ".bella-answer"],
         }}
       />

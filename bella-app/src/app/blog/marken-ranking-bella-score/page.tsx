@@ -4,6 +4,7 @@ import { neon } from "@neondatabase/serverless";
 import StructuredData from "@/components/StructuredData";
 import AuthorBox from "@/components/AuthorBox";
 import SiteFooter from "@/components/SiteFooter";
+import { DATA_REFRESHED } from "@/lib/site-dates";
 
 export const revalidate = 86400;
 
@@ -135,7 +136,7 @@ export default async function MarkenRankingPage() {
           headline: "Welche Hundefutter-Marke ist wirklich gut? BELLA Score Ranking 2026",
           description: "11.065 Produkte bewertet — das sind die Top-Marken nach echten Kriterien.",
           url: "https://welches-hundefutter.today/blog/marken-ranking-bella-score",
-          dateModified: now.toISOString(),
+          dateModified: DATA_REFRESHED,
           speakableSelectors: ["h1", ".bella-answer"],
         }}
       />

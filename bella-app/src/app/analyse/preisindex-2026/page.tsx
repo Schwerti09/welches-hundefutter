@@ -4,6 +4,7 @@ import { neon } from "@neondatabase/serverless";
 import SiteFooter from "@/components/SiteFooter";
 import StructuredData from "@/components/StructuredData";
 import JsonLd from "@/components/JsonLd";
+import { DATA_REFRESHED } from "@/lib/site-dates";
 
 export const revalidate = 86400;
 
@@ -172,7 +173,7 @@ export default async function PreisindexPage() {
           headline: "Hundefutter-Preisindex 2026",
           description: "BELLA analysiert Preis-Snapshots aus dem AWIN-Feed: welche Hundefutter-Typen teurer wurden, welche günstiger, und was das für deinen Geldbeutel bedeutet.",
           url: "https://welches-hundefutter.today/analyse/preisindex-2026",
-          dateModified: new Date().toISOString().slice(0, 10),
+          dateModified: DATA_REFRESHED,
           speakableSelectors: ["h1", ".bella-answer", ".bella-tldr"],
         }}
       />
@@ -368,7 +369,7 @@ export default async function PreisindexPage() {
             license: "https://creativecommons.org/licenses/by/4.0/",
             isAccessibleForFree: true,
             inLanguage: "de-DE",
-            dateModified: new Date().toISOString().slice(0, 10),
+            dateModified: DATA_REFRESHED,
             ...(data?.meta?.first_snapshot && data?.meta?.last_snapshot
               ? { temporalCoverage: `${data.meta.first_snapshot}/${data.meta.last_snapshot}` }
               : {}),

@@ -3,6 +3,7 @@ import Link from "next/link";
 import AuthorBox from "@/components/AuthorBox";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
+import { CONTENT_REVISED } from "@/lib/site-dates";
 
 export const metadata: Metadata = {
   title: "Hunde-Krankenversicherung Test 2026: Was sie wirklich kostet & wann sie sich lohnt",
@@ -71,7 +72,7 @@ export default function VersicherungPage() {
           headline: "Hunde-Krankenversicherung Test 2026: Was sie wirklich kostet & wann sie sich lohnt",
           description: "Hunde-OP-Versicherung vs. Vollkrankenversicherung — Kosten, Leistungen und wann es sich wirklich lohnt.",
           url: "https://welches-hundefutter.today/versicherung",
-          dateModified: new Date().toISOString().slice(0, 10),
+          dateModified: CONTENT_REVISED,
           speakableSelectors: ["h1", ".bella-answer"],
         }}
       />

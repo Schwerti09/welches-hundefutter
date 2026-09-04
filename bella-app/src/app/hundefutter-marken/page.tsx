@@ -4,6 +4,7 @@ import { neon } from "@neondatabase/serverless";
 import StructuredData from "@/components/StructuredData";
 import AuthorBox from "@/components/AuthorBox";
 import SiteFooter from "@/components/SiteFooter";
+import { DATA_REFRESHED } from "@/lib/site-dates";
 
 export const revalidate = 86400;
 
@@ -100,7 +101,7 @@ export default async function HundefutterMarkenPage() {
           headline: "Hundefutter Marken 2026: Was der BELLA Score wirklich sagt",
           description: "Josera, FRESSNAPF, Royal Canin & Co. — bewertet nach 4 messbaren Kriterien, nicht nach Marketing-Budget.",
           url: "https://welches-hundefutter.today/hundefutter-marken",
-          dateModified: now.toISOString(),
+          dateModified: DATA_REFRESHED,
           speakableSelectors: ["h1", ".bella-answer"],
         }}
       />

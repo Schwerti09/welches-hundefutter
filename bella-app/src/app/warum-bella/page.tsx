@@ -5,6 +5,7 @@ import SiteFooter from "@/components/SiteFooter";
 import LiveProofTicker from "@/components/LiveProofTicker";
 import { getFoodCount, getCrossSellCount } from "@/db/queries/foods";
 import { PARTNER_VOUCHERS } from "@/data/partners";
+import { CONTENT_REVISED } from "@/lib/site-dates";
 
 export const metadata: Metadata = {
   title: "Warum BELLA anders ist: Kein Affiliate-Vergleich. Ein Berater.",
@@ -125,7 +126,7 @@ export default async function WarumBellaPage() {
           headline: "Warum BELLA anders ist als 99 % der Hundefutter-Seiten",
           description: "Kein Affiliate-Vergleich. Ein Berater — mit dem Wohl deiner Fellnase als einzigem Ziel.",
           url: "https://welches-hundefutter.today/warum-bella",
-          dateModified: new Date().toISOString(),
+          dateModified: CONTENT_REVISED,
           speakableSelectors: ["h1", ".bella-manifesto"],
         }}
       />

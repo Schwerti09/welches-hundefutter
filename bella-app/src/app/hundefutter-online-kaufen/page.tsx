@@ -5,6 +5,7 @@ import AuthorBox from "@/components/AuthorBox";
 import SiteFooter from "@/components/SiteFooter";
 import VoucherBadge from "@/components/VoucherBadge";
 import { getTopFoodsByScore, getFoodCount } from "@/db/queries/foods";
+import { CONTENT_REVISED } from "@/lib/site-dates";
 
 export const revalidate = 86400;
 
@@ -53,7 +54,7 @@ export default async function HundefutterOnlineKaufenPage() {
           headline: "Hundefutter online kaufen — günstig, ohne Abo-Zwang",
           description: "Live-Preisvergleich über 11.000+ Sorten, täglich aktualisiert.",
           url: "https://welches-hundefutter.today/hundefutter-online-kaufen",
-          dateModified: new Date().toISOString(),
+          dateModified: CONTENT_REVISED,
         }}
       />
       <StructuredData type="faq" faqs={faqItems} />

@@ -8,6 +8,7 @@ import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 import { getBrandsWithCounts, getFoodsByBrand } from "@/db/queries/foods";
+import { DATA_REFRESHED } from "@/lib/site-dates";
 
 export const revalidate = 3600;
 
@@ -100,7 +101,7 @@ export default async function MarkePage({
           headline: `${entry.brand} Hundefutter im Test`,
           description: `${entry.count} ${entry.brand}-Sorten im BELLA-Score-Vergleich. Täglich aktuelle Preise.`,
           url: `https://welches-hundefutter.today/marke/${slug}`,
-          dateModified: new Date().toISOString().slice(0, 10),
+          dateModified: DATA_REFRESHED,
           speakableSelectors: ["h1", ".bella-answer"],
         }}
       />

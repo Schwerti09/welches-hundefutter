@@ -3,6 +3,7 @@ import Link from "next/link";
 import StructuredData from "@/components/StructuredData";
 import AuthorBox from "@/components/AuthorBox";
 import SiteFooter from "@/components/SiteFooter";
+import { CONTENT_REVISED } from "@/lib/site-dates";
 
 export const metadata: Metadata = {
   title: "Hundefutter Test 2026: Was dahinter steckt — und warum die meisten Tests wertlos sind",
@@ -85,7 +86,7 @@ export default function HundefutterTestPage() {
           headline: "Hundefutter Test 2026: Was steckt wirklich dahinter?",
           description: "Wie unterscheidest du echte Tests von Affiliate-Artikeln? Und was ist die Alternative?",
           url: "https://welches-hundefutter.today/hundefutter-test",
-          dateModified: new Date().toISOString(),
+          dateModified: CONTENT_REVISED,
           speakableSelectors: ["h1", ".bella-answer"],
         }}
       />

@@ -4,6 +4,7 @@ import { neon } from "@neondatabase/serverless";
 import StructuredData from "@/components/StructuredData";
 import AuthorBox from "@/components/AuthorBox";
 import SiteFooter from "@/components/SiteFooter";
+import { DATA_REFRESHED } from "@/lib/site-dates";
 
 // Täglich neu rendern — dieser Artikel lebt von Echtzeit-Daten
 export const revalidate = 86400;
@@ -146,7 +147,7 @@ export default async function PreisbarometerPage() {
           description:
             "Live-Auswertung aus 8.600+ aktiven Produkten — keine Schätzwerte, echte Marktdaten.",
           url: "https://welches-hundefutter.today/blog/preisbarometer-2026",
-          dateModified: now.toISOString(),
+          dateModified: DATA_REFRESHED,
           speakableSelectors: ["h1", ".bella-answer"],
         }}
       />
