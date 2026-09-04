@@ -50,4 +50,4 @@ entferne Doppeltes. Klär mit `platform-architect`, welche Komponenten an toten 
 - Designsystem konsistent (Tokens, Spacing, Typo); keine generischen KI-Defaults.
 - Bella ist eine erlebbare Persönlichkeit, performant animiert.
 - Empfehlungs-/Vergleichs-UI mit Score, Preisvergleich, sichtbarer Offenlegung, klarem CTA.
-- Lighthouse mobil ≥ 95, CLS ~0; `npm run build` grün.
+- Lighthouse mobil ≥ 95, CLS ~0; `npm run ci` grün.

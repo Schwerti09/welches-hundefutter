@@ -51,7 +51,7 @@ jede mit eigenen Akzeptanzkriterien. Der Ist-Zustand steht in `CLAUDE.md` §2.
 
 ## Definition of Done (projektweit)
 - Keine erfundenen Zahlen mehr im UI. Keine Handy-Begriffe. Keine toten Verzeichnisse erweitert.
-- `cd bella-app && npm run build` ist grün.
+- `cd bella-app && npm run ci` ist grün (typecheck + lint + test + build == Netlify-Build-Gate).
 - Neue produktbezogene Seiten rendern aus der DB.
 - Jeder Affiliate-Link `rel="sponsored"`, Offenlegung sichtbar.
 

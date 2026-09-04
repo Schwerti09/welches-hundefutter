@@ -5,13 +5,16 @@
 [![Live](https://img.shields.io/badge/Live-welches--hundefutter.today-orange?style=flat-square)](https://welches-hundefutter.today)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)](https://nextjs.org)
 [![React 19](https://img.shields.io/badge/React-19-149eca?style=flat-square&logo=react)](https://react.dev)
-[![Tests](https://img.shields.io/badge/tests-90%20passing-brightgreen?style=flat-square&logo=vitest)](#qualität--sicherheit)
-[![Deployed on Netlify](https://img.shields.io/badge/Deployed-Netlify-00C7B7?style=flat-square&logo=netlify)](https://netlify.com)
+[![Tests](https://img.shields.io/badge/tests-118%20passing-brightgreen?style=flat-square&logo=vitest)](#qualität--sicherheit)
+[![Gate](https://img.shields.io/badge/gate-npm%20run%20ci%20(Netlify)-00C7B7?style=flat-square&logo=netlify)](#qualität--sicherheit)
 
-> **Stand 2026-09-03.** Aktive Umbau-Roadmap: [`../BELLA_NEXT_LEVEL.md`](../BELLA_NEXT_LEVEL.md).
-> Advisor-Allergen-Härtung (Phase 2A) weitgehend live — `avoidProtein` als hartes Konzept,
-> SQL-Ausschluss, Re-Query, zwei Safety-Assertions, ehrliche Leermeldung. Offen: blockierende
-> Eval im CI (2A.8). Audit: [`../docs/audits/2026-09-03-bella-chat-audit.md`](../docs/audits/2026-09-03-bella-chat-audit.md).
+> **Stand 2026-09-04.** Aktive Umbau-Roadmap: [`../BELLA_NEXT_LEVEL.md`](../BELLA_NEXT_LEVEL.md).
+> Phasen 0–2 erledigt, Phasen 3–5 laufen (jeweils „Teil 1" gebaut).
+> **Advisor-Allergen-Härtung (Phase 2A) komplett** — `avoidProtein` als hartes Konzept,
+> SQL-Ausschluss, Re-Query, zwei Safety-Assertions, ehrliche Leermeldung, **blockierende
+> Eval im Netlify-Build** (`allergen-eval.test.ts` gegen Neon). Audit:
+> [`../docs/audits/2026-09-03-bella-chat-audit.md`](../docs/audits/2026-09-03-bella-chat-audit.md).
+> **Kein GitHub Actions** — Deploy und Gate laufen über Netlify (`npm run ci`).
 
 ---
 
@@ -37,7 +40,8 @@ Das ist der strukturelle Burggraben, den Check24 oder statische Testseiten nicht
 - **Allergen-Sicherheit**: `avoidProtein` (getrennt vom Wunsch-Protein) wird auf SQL-Ebene
   ausgeschlossen; zwei Runtime-Assertions garantieren, dass kein solches Produkt in die
   `OFFERS`-Payload kommt; nichts Sicheres → ehrliche Leermeldung statt Notlösung.
-  Blockierender CI-Eval-Test: Roadmap 2A.8.
+  Abgesichert durch `src/lib/advisor/allergen-eval.test.ts` — läuft im Netlify-Build gegen Neon
+  (`DATABASE_URL` ist Netlify-Env), rot = kein Deploy.
 - Cross-Selling: kuratierte Begleitprodukte (max. 3, mit Begründung, Allergen-Ausschluss)
 - BARF-Modus, Welpen-/Seniorfutter · Rasse-Autostart (Rasse-Seite → BELLA kennt den Hund)
 - Rate-Limit + Origin-Check auf der Route
@@ -74,12 +78,13 @@ Das ist der strukturelle Burggraben, den Check24 oder statische Testseiten nicht
 | Styling | Tailwind v4 · `next/font` (Inter, self-hosted) |
 | KI | Gemini 2.5 Flash (Berater + Intent-JSON), Claude Haiku 4.5 (Fallback) |
 | Datenbank | Neon Postgres + Drizzle ORM (`drizzle/`-Migrationen) |
-| Feeds | AWIN Publisher API (a=615299) + AdCell → Python-Pipeline → Neon (Netlify Scheduled Functions) |
-| Deployment | Netlify (`base = bella-app`, Node 22, `@netlify/plugin-nextjs`, Edge + ISR) |
+| Feeds & Crons | AWIN (a=615299) + AdCell → Pipeline → Neon. **Netlify Scheduled Functions** (`netlify/functions/*.mts`): `import-feeds` (05:00), `price-alerts` (06:00), `ai-visibility` (Mo 07:00), `health-check` (stündlich) |
+| Deployment + Gate | **Netlify** (`base = bella-app`, Node 22, `@netlify/plugin-nextjs`, Edge + ISR). Build-Command = `npm run ci` → schlägt typecheck/lint/test/build fehl, gibt es keinen Deploy. **Kein GitHub Actions.** |
 | E-Mail | Resend (DOI Preis-Wecker, Outcome-Checks) |
-| Tests | Vitest (Unit) — CI-Gate: typecheck + lint + test + build je PR |
-| Sicherheit | CSP + COOP, Rate-Limit + Origin-Check auf den LLM-Routen |
-| Bilder | `next/image` · Rasse-Fotos self-hosted (`public/breeds/`) · Pexels (Tipps) |
+| Tests | Vitest (118 Unit) + Playwright (Smoke `e2e/smoke.spec.ts`, Visual `e2e/visual.spec.ts` — beide manuell gegen eine URL, nicht im Gate) |
+| Analytics | First-Party-Beacon `/api/track` + `events`-Tabelle (anonym, kein Cookie) — parallel zu GA4 im Übergang |
+| Sicherheit | CSP „Weg B" + COOP, Rate-Limit + Origin-Check auf den LLM-Routen |
+| Bilder | `next/image` · Rasse-Fotos self-hosted (`public/breeds/`) · generierte OG-Bilder (`opengraph-image.tsx`) |
 
 ---
 
@@ -92,19 +97,28 @@ Lighthouse mobil (PageSpeed, 2026-09):
 | ~91 → Ziel 98 | 100 | 96 → Ziel 100 | 100 |
 
 Hebel schon umgesetzt: self-hosted + `next/image`-optimierte Rasse-Fotos, GA `lazyOnload`,
-below-fold-Komponenten via `next/dynamic` + Idle-Mount, `optimizeCss`, moderne Browserslist.
-Rest steht in der Roadmap (Perf-Budget im CI, Motion-Politur, first-party Analytics).
+below-fold-Komponenten via `next/dynamic` + Idle-Mount, `optimizeCss`, moderne Browserslist,
+tote CSS-Animationen entfernt (Motion-Politur Teil 1). Rest in der Roadmap (Perf-Budget im
+Netlify-Build 6.2, `framer-motion`-Audit 3.5 Teil 2, GA4-Ablösung 5.2 Teil 2).
 
 ---
 
 ## Qualität & Sicherheit
 
-- **CI-Gate** (`.github/workflows/ci.yml`): `typecheck` + `lint` + `test` + `build` bei jedem PR.
-- **90 Unit-Tests** (Vitest) — Schwerpunkt Allergen-Sicherheit, Intent-Parsing, Scoring,
-  Verbrauchsmathematik, Rate-Limit.
-- **CSP + COOP** (`next.config.ts`), **Rate-Limit + Herkunftsprüfung** auf `/api/advisor/*`
-  und `/api/support/chat`.
+- **Gate = Netlify-Build.** Build-Command `npm run ci` = `typecheck` + `lint` + `test` +
+  `build`. Läuft für `main` **und** für Deploy Previews (PRs). **Kein GitHub Actions.**
+- **118 Unit-Tests** (Vitest) — Schwerpunkt Allergen-Sicherheit, Intent-Parsing, Scoring,
+  Verbrauchsmathematik, Rate-Limit, `<JsonLd>`-Serialisierung. Die DB-gestützte Allergen-Eval
+  (`allergen-eval.test.ts`) läuft im Netlify-Build gegen Neon mit; lokal ohne `DATABASE_URL`
+  via `describe.skipIf` übersprungen.
+- **Playwright-Smoke** (`e2e/smoke.spec.ts`, 5 Tests) + **Visual** (`e2e/visual.spec.ts`) —
+  manuell gegen eine Deploy-Preview-URL (`E2E_BASE_URL=… npm run test:e2e`), Browser im
+  Build-Image sind zu fragil für den Gate.
+- **CSP „Weg B" + COOP** (`next.config.ts`), **Rate-Limit + Herkunftsprüfung** auf `/api/advisor/*`,
+  `/api/support/chat`, `/api/track`.
 - **Drizzle-Migrationen** (`bella-app/drizzle/`) — kein DDL im Request-Pfad.
+- **SEO-Audit-Tools:** `npm run audit:content` (Thin-Content), `npm run audit:links`
+  (Orphan-/Cluster-Check). Reports in `../docs/audits/`.
 - Bekannte Baustellen + Reihenfolge: [`../BELLA_NEXT_LEVEL.md`](../BELLA_NEXT_LEVEL.md).
 
 ---
@@ -131,8 +145,20 @@ cp .env.example .env.local
 # Dev-Server starten
 npm run dev
 
-# Build prüfen (muss grün sein vor jedem Push)
-npm run build
+# Der Gate — muss grün sein vor jedem Push (identisch zum Netlify-Build-Command)
+npm run ci            # typecheck + lint + test + build
+
+# Datenbank-Migrationen
+npm run db:generate   # schema.ts → neue SQL-Migration in drizzle/
+npm run db:migrate    # gegen $DATABASE_URL anwenden
+
+# E2E / Visuell (nicht im Gate — gegen eine URL)
+E2E_BASE_URL=https://deploy-preview-…--welches-hundefutter.netlify.app npm run test:e2e
+npm run test:visual   # Screenshots; CI-Baselines liegen unter e2e/*-snapshots/
+
+# SEO-Audits (gegen einen laufenden `next start`)
+npm run audit:content
+npm run audit:links
 ```
 
 ---
@@ -150,7 +176,10 @@ DATABASE_URL="..." node scripts/load-dog-foods.mjs
 PEXELS_API_KEY="..." node scripts/fetch-tip-images.mjs
 ```
 
-Der Feed-Cron läuft täglich um 05:00 UTC auf Netlify. Neue Produkte werden sofort aktiv, inaktive Produkte erhalten `is_active = false` (kein Hard-Delete für Preishistorie).
+Der Feed-Cron läuft täglich um 05:00 UTC als **Netlify Scheduled Function**
+(`netlify/functions/import-feeds.mts`). Neue Produkte werden sofort aktiv, inaktive erhalten
+`is_active = false` (kein Hard-Delete für Preishistorie). Die GitHub-Workflows dafür sind
+entfernt — die `scripts/*` bleiben für manuelle/lokale Läufe.
 
 ---
 
@@ -166,11 +195,17 @@ welches-hundefutter/
     │   │   ├── problem/[slug]/   # Problem-Seiten (Allergie, etc.)
     │   │   ├── tipps/            # 1.400+ Tipps-Artikel
     │   │   └── tools/            # Futter-Finder, Lebenszeit-Rechner
-    │   ├── components/           # BellaAdvisor, BreedGallery, TopFoodsTable …
-    │   ├── db/                   # Drizzle Schema + Queries
-    │   ├── data/                 # breeds.ts, tips/*.ts (statische Seed-Daten)
-    │   └── lib/                  # dogCost, breeds-slim, utils
-    └── scripts/                  # Feed-Pipeline, Bilder-Download
+    │   │   ├── dev/components/   # Komponenten-Katalog (non-prod) für Design-QA
+    │   │   ├── api/track/        # First-Party-Analytics-Beacon
+    │   │   └── llms.txt, llms-full.txt   # KI-Suchmaschinen-Wissensbasis
+    │   ├── components/           # BellaAdvisor, BellaMascot, JsonLd, RelatedLinks, PageTracker …
+    │   ├── db/                   # Drizzle Schema (inkl. events) + Queries
+    │   ├── data/                 # breeds.ts, problems.ts, tips/*.ts (statische Seed-Daten)
+    │   └── lib/                  # advisor/*, linking/graph, analytics, site-dates, og-image …
+    ├── drizzle/                  # versionierte SQL-Migrationen (0000_baseline, 0001_events_analytics)
+    ├── e2e/                      # Playwright Smoke + Visual
+    ├── netlify/functions/        # Scheduled Functions: import-feeds, price-alerts, ai-visibility, health-check
+    └── scripts/                  # Feed-Pipeline, audit:content, audit:links, gen-build-date …
 ```
 
 ---

@@ -17,41 +17,41 @@ Preisvergleich und Cross-Selling (Snacks, Versicherung, Zubehör, alles für Hun
 - **Domain:** welches-hundefutter.today
 - **Persona:** BELLA (Fork von HANSI / HandyvertragTrotzSchufa)
 - **Ziel:** Platz 1 DACH für „welches hundefutter für meinen hund" (+ Cluster)
-- **Stack:** Next.js 16 (App Router) · React 18.3 (→ 19, Roadmap Op 1.1) · TS · Tailwind v4 · Neon Postgres (Drizzle) · Netlify · AWIN + AdCell · Gemini 2.5 Flash + Claude Haiku 4.5
+- **Stack:** Next.js 16 (App Router, Turbopack) · React 19 · TS · Tailwind v4 · Neon Postgres (Drizzle, versionierte Migrationen) · **Netlify** (Deploy **und** Qualitäts-Gate — kein GitHub Actions) · AWIN + AdCell · Gemini 2.5 Flash + Claude Haiku 4.5 / Sonnet · Vitest + Playwright
 
 ---
 
-## 2. GROUND TRUTH — Ist-Zustand (Stand 2026-09-03)
+## 2. GROUND TRUTH — Ist-Zustand (Stand 2026-09-04)
 
-**Das Fundament trägt. Phase = Next Level** — siehe `BELLA_NEXT_LEVEL.md` (36 nummerierte Operationen).
+**Das Fundament trägt. Phasen 0–2 erledigt, Phasen 3–5 laufen** — Detail + Fortschrittstabelle in `BELLA_NEXT_LEVEL.md` (36 nummerierte Operationen).
 
 ### ✅ Erledigt & live
 
 | Was | Detail |
 |---|---|
-| Migration HANSI→BELLA + toter Code | Abgeschlossen. App-Ordner heißt jetzt `bella-app/` (2026-09-03). Rest-Reste → Roadmap Op 0.2 |
+| Migration HANSI→BELLA + toter Code | Abgeschlossen. App-Ordner heißt `bella-app/`. |
 | `products.ts` Handy-Frankenstein | Abgelöst; Seiten rendern aus **Neon** (`src/db/queries/*`) |
-| über 11.000 Produkte | AWIN (`a=615299`) + AdCell, täglicher Cron via Netlify Scheduled Functions |
+| über 11.000 Produkte | AWIN (`a=615299`) + AdCell, **täglicher Cron via Netlify Scheduled Functions** (`netlify/functions/*.mts`) |
 | `price_history` | Snapshot nur bei Änderung, Lifecycle (`is_active`) |
-| KI-Berater (BELLA) | `/api/advisor/chat`, streamt, scort echte `dog_foods`, harter Allergen-Ausschluss, Futter-Pass-Anlage |
-| 186 Rasse-Seiten | `/rasse/[slug]` — Portionsrechner, FAQ, Fütterungs-Absätze; Fotos **self-hosted** in `public/breeds/` (2026-09-03) |
-| Programmatik | `/problem/*` (14), `/futtertyp/*`, `/lebensphase/*`, `/vergleich/*`, ~1.400 Tipps, Studien, Glossar |
-| Schicht 1 — Cross-sell | Kuratierte Begleit-Empfehlung (max. 3, mit Begründung) |
-| Schicht 2 — Preis-Wecker | DOI-E-Mail-Audience via `price_history`, `/preis-wecker` |
+| KI-Berater (BELLA) | `/api/advisor/chat`, streamt; refaktoriert in `src/lib/advisor/*`; Modell-Routing (ask→Flash/Haiku, recommend→Flash+thinking/Sonnet); Timeout + Fallback-Kette + `WARN:degraded` |
+| **Advisor-Allergen-Härtung (Phase 2A, komplett)** | `avoidProtein` als hartes Konzept, SQL-Ausschluss + `LIKE ANY`, Snack-Guard, Re-Query bei 0 Offers, **zwei Safety-Assertions** (kein gemiedenes Protein je in `OFFERS`), ehrliche „keine sichere Empfehlung"-Meldung. Blockierende Eval `src/lib/advisor/allergen-eval.test.ts` (läuft im Netlify-Build gegen Neon). Audit: `docs/audits/2026-09-03-bella-chat-audit.md` |
+| Fundament (Phase 0/1) | React 19 · CSP „Weg B" + COOP · In-Memory-Rate-Limit · versionierte Drizzle-Migrationen (`drizzle/0000_baseline`, `0001_events_analytics`) · `--font-inter` self-hosted · **118 Vitest** + **Playwright-Smoke** (`e2e/smoke.spec.ts`, 5 Tests) |
+| 186 Rasse-Seiten | `/rasse/[slug]` — Portionsrechner, FAQ, Fütterungs-Absätze; Fotos **self-hosted** in `public/breeds/`; **eigenes OG-Bild** (`opengraph-image.tsx`, Foto + Name + BELLA-Marke, on-demand) |
+| Programmatik | `/problem/*` (14), `/futtertyp/*`, `/lebensphase/*`, `/vergleich/*`, ~1.400 Tipps, Studien, Glossar, `/stadt/*` (Doorway-`noindex` < 100k Einw.) |
+| **Design-System (Phase 3, Teil 1)** | Semantische Farb-Tokens + `[data-theme]` Light/Dark + `ThemeToggle` (nicht-brechend, auf `/dev/components`) · kanonisches `BellaMascot` (SVG, 4 Posen, server-safe) · echte `not-found.tsx`/`loading.tsx` · tote CSS-Animationen entfernt · Komponenten-Katalog `/dev/components` + Playwright-Visual (`e2e/visual.spec.ts`, manuell) |
+| **Content/EEAT (Phase 4, Teil 1)** | `<JsonLd>` (getestet, XSS-hart) ersetzt **alle 21** handgerollten Blöcke · `dateModified` überall ehrlich (`CONTENT_REVISED` / `BUILD_DATE` aus `prebuild`, kein `new Date()`) · interner Cluster-Graph (`src/lib/linking/graph.ts` + `<RelatedLinks>`, Problem-Cluster: 0 Orphans) · `/llms-full.txt` (20 zitierfähige Kernantworten) · Audit-Tools `npm run audit:content` / `audit:links` (Reports in `docs/audits/`) |
+| **First-Party-Analytics (Phase 5, Teil 1)** | `events`-Tabelle + `/api/track` (anonym, Allowlist, kein Cookie/PII) + `track()` + `PageTracker` (pageview). Läuft **parallel zu GA4** (2-Wochen-Übergang). |
+| Schicht 1/2 — Cross-sell + Preis-Wecker | Kuratierte Begleit-Empfehlung (max. 3) · DOI-E-Mail-Audience via `price_history`, `/preis-wecker` |
 | Rechtshygiene | Impressum (DDG), Datenschutz inkl. KI, kein On-Load-Pixel |
-| PageSpeed / Sticky-CTA | 2026-09-03: GA `lazyOnload`, `next/image` für Rasse-Fotos, mobiler CTA entschärft |
+| Betrieb | Deploy + Qualitäts-Gate über **Netlify** (`npm run ci`); stündlicher Prod-Smoke `netlify/functions/health-check.mts` |
 
 ### 🔴 Offene Baustellen (Auszug — vollständig in `BELLA_NEXT_LEVEL.md`)
 
-- **Advisor-Notfall (Phase 2A):** ✅ 2A.1–2A.7 live — `avoidProtein` als hartes Konzept,
-  SQL-Allergen-Ausschluss, Snack-Guard, Re-Query, **zwei Safety-Assertions** (kein gemiedenes
-  Protein je in `OFFERS`), ehrliche Leermeldung, Prompt-Framing. **Offen: 2A.8** (blockierende
-  Allergen-Eval im CI). Audit: `docs/audits/2026-09-03-bella-chat-audit.md`.
-- **Fundament:** ✅ 0.x + 1.x weitgehend erledigt (React 19, CSP, Rate-Limit-Grundschutz, 109 Tests, Migrationen). Reste: Playwright-Smoke (1.4), verteilter Rate-Limit-Store (1.3), `strict-dynamic` CSP (1.2).
-- **BELLA:** Modell-Routing (2.2), Stream-Robustheit (2.3), Eval-Suite (2.4).
-- **Design:** nur Dark-Mode (3.1) · BELLA = Emoji (3.2) · kein OG-Bild pro Rasse (3.3) · `--font-inter` nie geladen (1.6)
-- **Content:** Thin-Content-Risiko bei 1.400 Tipps + `/stadt/*` (4.1) · kein Tierarzt-Review (4.2)
-- **Moat:** Futter-Pass-Schleife nicht geschlossen (5.1) · GA4 statt first-party (5.2) · Funnel ungemessen (5.3)
+- **Fundament-Reste:** verteilter Rate-Limit-Store (1.3), `strict-dynamic`-CSP + Nonce (1.2), `ai_usage`-Logging.
+- **Design Teil 2:** site-weite Migration `bg-white/x`→Tokens + `@media (prefers-color-scheme)` aktivieren (3.1) · off-brand `BellaCharacter` ablösen + `🐕`-CTA-Sweep (3.2) · OG-Layout für problem/vergleich/Blog (3.3) · `framer-motion`-Audit + View Transitions (3.5).
+- **Content Teil 2:** Thin-Content anreichern — `lebensphase/*`, `futtertyp/*`, `glossar/*` (4.1) · Cluster-Graph auf futtertyp/vergleich/rasse ausweiten (4.4) · „Antwort-zuerst"-Absätze + `CitableStat` breiter (4.5) · **Tierarzt-Review** (4.2, extern blockiert).
+- **Moat:** `events`-Migration in Neon einspielen + Events verdrahten + `/admin`-Dashboard, dann GA4 raus (5.2/5.3) · Futter-Pass-Nachschub-Schleife (5.1) · Outcome-Checks sichtbar (5.4).
+- **Betrieb:** Error-Tracking-Anbindung (6.1) · Perf-Budget in CI (6.2).
 
 ---
 
@@ -76,16 +76,16 @@ hundefutter-tests.net). Die gewinnen über **EEAT** (echte Tests, transparente S
 2. **Kein totes Verzeichnis erweitern.** Kein `src/features/`, `src/platform/` — gelöscht.
 3. **Keine erfundenen Zahlen.** „11.000+" steht da, weil so viele echte Datensätze in `dog_foods` sind. Ändert sich die DB, ändert sich die Zahl.
 4. **Keine medizinischen/tierärztlichen Heilversprechen.** „kann unterstützen", nicht „heilt".
-4a. **Allergen-Garantie (nicht verhandelbar).** Ein gemiedenes Protein darf **nie** in der `OFFERS:`-Payload landen. Im Zweifel NICHT empfehlen + ehrlich neu suchen. Per blockierendem CI-Test abgesichert (Roadmap 2A.8).
+4a. **Allergen-Garantie (nicht verhandelbar).** Ein gemiedenes Protein darf **nie** in der `OFFERS:`-Payload landen. Im Zweifel NICHT empfehlen + ehrlich neu suchen. Abgesichert durch `src/lib/advisor/allergen-eval.test.ts` — läuft im Netlify-Build gegen Neon (`DATABASE_URL` ist Netlify-Env), scheitert der Test, scheitert der Deploy.
 5. **Affiliate-Transparenz:** Jeder AWIN-Link `rel="sponsored"`, sichtbare Offenlegung. Pflicht.
 6. **Deutsch, Du-Form, Hundehalter-Sprache.** Kein Marketing-Sprech, keine Floskeln.
-7. **Build muss grün bleiben.** `cd bella-app && npm run build` vor jedem Push.
+7. **Gate muss grün bleiben.** `cd bella-app && npm run ci` (= `typecheck` + `lint` + `test` + `build`) vor jedem Push. Das ist derselbe Befehl, den Netlify als Build-Command ausführt — schlägt er fehl, gibt es keinen Deploy. **Kein GitHub Actions.**
 8. **Mobile-first.** > 70 % der Hundehalter suchen am Handy. Core Web Vitals sind Ranking-kritisch.
 9. **Kuratiert, nicht zugemüllt.** Cross-Sells max. 2–3 mit Begründung; Relevanz vor Provision; E-Mails Wert vor Frequenz; kein Versand ohne Double-Opt-in.
 
 ---
 
-## 5. Agent-Flotte & Delegation
+## 5. Agent-Flotte & Delegation (13 Spezialisten, `.claude/agents/`)
 
 | Agent | Rolle (Auftrag) | Wann rufen |
 |---|---|---|
@@ -95,7 +95,8 @@ hundefutter-tests.net). Die gewinnen über **EEAT** (echte Tests, transparente S
 | `bella-advisor` | Fragenflow, Scoring, Erklärungen, Prompt-Tuning | Empfehlungslogik, Conversation |
 | `content-engineer` | Rasse-/Problem-/Futtertyp-Seiten, FAQ, Schema, Seed-Daten | Neue Seiten, Texte |
 | `visual-designer` | Designsystem, BELLA-Charakter, CRO, OG-Images | UI, Komponenten, Conversion |
-| `seo-strategist` | Pfad zu DACH #1: Cluster, interne Links, Technical SEO | Ranking, Keywords, Wettbewerb |
+| `experience-architect` | Signatur-Erlebnisschicht: Motion-Choreografie, lebende BELLA, View-Transitions, Scroll-Storytelling — baut auf `visual-designer` auf | „unvergesslich", nicht nur „sauber" |
+| `seo-strategist` | Pfad zu DACH #1: Cluster, interne Links, Technical SEO, AI-Search | Ranking, Keywords, Wettbewerb |
 | `trust-compliance` | Recht (DSGVO/DDG), EEAT, Affiliate-Offenlegung, Health-Claims | Vor jedem Go-Live |
 | `cross-sell-curator` | Begleit-Empfehlung, `companion_for`, Anti-Müll-Disziplin | Cross-Selling, Versicherung, Zubehör |
 | `retention-growth` | Preis-Alerts, DOI-E-Mail-Audience, Lifecycle-Mails | Wiederkehr, E-Mail, `price_history` nutzen |
@@ -113,12 +114,33 @@ hundefutter-tests.net). Die gewinnen über **EEAT** (echte Tests, transparente S
 cd bella-app
 npm install
 npm run dev            # lokal
-npm run build          # MUSS grün sein vor Push
-npm run lint
 
-# Feed-Pipeline (täglich via Cron, manuell auslösbar):
-python scripts/parse-feeds.py            # erzeugt dog_foods.json aus AWIN-Feeds
-DATABASE_URL="postgres://…" node scripts/load-dog-foods.mjs   # upsert in Neon
+npm run ci             # DER GATE: typecheck + lint + test + build (== Netlify-Build-Command)
+npm run typecheck      # einzeln
+npm run lint
+npm run test           # Vitest (DB-/LLM-Evals via describe.skipIf ohne Keys übersprungen)
+npm run build
+
+# E2E / Visuell — NICHT im Gate, manuell gegen eine URL:
+E2E_BASE_URL=https://deploy-preview-42--welches-hundefutter.netlify.app npm run test:e2e
+npm run test:visual    # Screenshots, Baselines committen
+
+# Datenbank (Drizzle, versionierte Migrationen):
+npm run db:generate    # schema.ts → neue SQL-Migration in drizzle/
+npm run db:migrate      # offene Migrationen gegen $DATABASE_URL anwenden
+
+# SEO-/Content-Audits (gegen einen laufenden `next start`):
+npm run audit:content  # Thin-Content-Report
+npm run audit:links    # Interner-Link-/Orphan-Report
+
+# Feed-Pipeline: täglich automatisch via netlify/functions/import-feeds.mts.
+# Manuell/lokal (Fallback):
+python scripts/parse-feeds.py
+DATABASE_URL="postgres://…" node scripts/load-dog-foods.mjs
 ```
+
+**Cron = Netlify Scheduled Functions** (`bella-app/netlify/functions/`): `import-feeds.mts`
+(05:00), `price-alerts.mts` (06:00), `ai-visibility.mts` (Mo 07:00), `health-check.mts`
+(stündlich). Kein GitHub Actions mehr.
 
 `.env.local` nach `.env.example`: `DATABASE_URL`, `AWIN_PUBLISHER_ID`, `AWIN_API_TOKEN`, `GEMINI_API_KEY`, `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `SITE_URL`.

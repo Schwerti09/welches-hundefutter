@@ -1,14 +1,17 @@
 import { defineConfig, devices } from "@playwright/test";
 
 // E2E + visuelle Regression (Roadmap 1.4 / 3.4).
-// Erwartet einen bereits gebauten App-Stand (`npm run build`), startet `next start`.
+// NICHT im automatischen Gate — manuell laufen lassen:
+//   ohne E2E_BASE_URL: baut nichts, startet `next start` gegen einen lokalen `npm run build`
+//   mit  E2E_BASE_URL:  läuft gegen eine (Deploy-Preview-)URL, kein lokaler Server
+// `CI` wird von Netlify-Builds/CI-Runnern gesetzt und nur für Stabilitäts-Defaults genutzt.
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: process.env.CI ? [["github"], ["list"]] : "list",
+  reporter: [["list"], ["html", { open: "never" }]],
   timeout: 30_000,
   expect: {
     timeout: 10_000,

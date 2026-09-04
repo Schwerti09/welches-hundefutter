@@ -1,8 +1,10 @@
 import { test, expect } from "@playwright/test";
 
-// Visuelle Regression (Roadmap 3.4). Baselines werden im CI (Linux) erzeugt —
-// lokal auf Windows weichen sie durch Font-Rendering ab. Läuft als eigener,
-// NICHT-blockierender Workflow (.github/workflows/visual.yml).
+// Visuelle Regression (Roadmap 3.4). Läuft NICHT im automatischen Gate — manuell
+// gegen eine (Deploy-Preview-)URL:  E2E_BASE_URL=… npm run test:visual
+// Baselines unter e2e/visual.spec.ts-snapshots/ auf Linux erzeugen (Windows weicht
+// durch Font-Rendering ab) und committen. `/dev/components` braucht dabei
+// NEXT_PUBLIC_DEV_PAGES=1 beim Build.
 //
 // Dynamische Bereiche (Advisor, Live-Ticker) werden maskiert bzw. die Seite
 // bekommt Zeit sich zu setzen.

@@ -66,4 +66,4 @@ ab, Flow-Punkte (wo Bella reagiert) mit `bella-advisor`.
 - View-Transitions zwischen den Kern-Seiten; Motion-Tokens ins Designsystem integriert (kein Fork).
 - **Lighthouse mobil ≥ 95, CLS ~0, INP < 200 ms** — gemessen, nicht behauptet.
 - `prefers-reduced-motion`-Variante überall; ohne JS bleibt Inhalt nutzbar/indexierbar.
-- `npm run build` grün.
+- `npm run ci` grün.

@@ -64,4 +64,4 @@ dann erst weiter.
 - Persistentes Profil aus dem Flow; Verbrauchsmathematik zeigt Sack-Tage + €/Monat.
 - Nachschub-Wecker feuert nachweislich nur bei Fälligkeit **und** echtem Tiefpreis (Testfall in FUTTERPASS.md §8).
 - Steckbrief live unter `/hund/[token]`, opt-in, DSGVO-konform.
-- `trust-compliance`-Freigabe; `npm run build` grün.
+- `trust-compliance`-Freigabe; `npm run ci` grün.

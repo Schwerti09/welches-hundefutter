@@ -50,4 +50,4 @@ trotzdem deine Liste. Genau das hält Platz 1 ab, statt nur ihn zu erreichen.
 - Preis-Alert-Hook in BELLAs Flow; Engine triggert nachweislich bei echter Preissenkung aus `price_history`.
 - DOI-Flow live (Bestätigungslink, Consent-Logging); kein Versand ohne Bestätigung; Abmeldelink überall.
 - `subscribers`/`price_alerts` im Schema; Zustellbarkeit (SPF/DKIM/DMARC) eingerichtet.
-- `trust-compliance`-Freigabe für E-Mail/Consent; `npm run build` grün.
+- `trust-compliance`-Freigabe für E-Mail/Consent; `npm run ci` grün.

@@ -14,7 +14,7 @@ App-Code: `bella-app/` (Next.js 16 App Router · TypeScript · Tailwind v4 · Ne
 3. Jeder Affiliate-Link `rel="sponsored"` + sichtbare Offenlegung.
 4. Deutsch, Du-Form, Hundehalter-Sprache.
 5. Allergen-Sicherheit: was ein Allergiker nie empfohlen bekommen darf, wird durch einen Test abgesichert.
-6. `cd bella-app && npm run build` muss grün bleiben. Sobald vorhanden auch `npm run typecheck && npm run lint && npm test`.
+6. `cd bella-app && npm run ci` muss grün bleiben (`typecheck` + `lint` + `test` + `build`). Das ist zugleich der Deploy-Gate: **Netlify** führt `npm run ci` als Build-Command aus — **kein GitHub Actions**. Schlägt etwas fehl, gibt es keinen Deploy.
 7. Mobile-first; Core Web Vitals dürfen pro PR nicht schlechter werden.
 8. Server Components by default; `"use client"` nur wenn nötig.
 9. Keine neuen Excludes/Ignores in `tsconfig.json` / `eslint.config.mjs`.

@@ -29,10 +29,15 @@ Seite (Rasse/Problem/Vergleich)
 Jeder Übergang ist eine messbare Conversion-Rate. Wo sie einbricht, ist das Leck.
 
 ## Datenquellen (vorhanden, nichts erfinden)
-`affiliate_clicks`, `advisor_sessions`, `dog_profiles`, `subscribers`, `price_alerts`,
-`price_history`. Wenn ein Event fehlt (z. B. „Profil-Start" vs „Profil-fertig"), füge ein
-**leichtgewichtiges, anonymes** Event-Logging hinzu — kein Fremd-Tracker, kein PII, serverseitig,
-einwilligungsfrei (aggregiert). Stimm dich mit `platform-architect` über das Event-Schema ab.
+- **First-Party-Events (Roadmap 5.2, gebaut):** `events`-Tabelle + `POST /api/track` +
+  `track(name, props?)` aus `src/lib/analytics.ts`. Anonym, kein Cookie, kein PII, Event-Allowlist:
+  `pageview` (live via `PageTracker`), `advisor_start`, `advisor_offers`, `affiliate_click`,
+  `refill_click`, `alert_subscribe`. **Dein Job (5.3):** die noch nicht verdrahteten Events an
+  ihren echten Stellen auslösen und die Aggregat-Queries + `/admin`-Dashboard bauen.
+- **Bestehende Tabellen:** `affiliate_clicks`, `advisor_sessions`, `dog_profiles`, `subscribers`,
+  `price_alerts`, `price_history`.
+- GA4 läuft noch **parallel** (2-Wochen-Übergang) — nach dem Vergleich rausnehmen (5.2 Teil 2).
+- Neue Event-Namen oder Schema-Änderungen: mit `platform-architect` abstimmen, Migration via `db:generate`.
 
 ## Die Schleife schließen (das Eigentliche)
 Messen ist nur die Hälfte — du gibst die Signale zurück:
@@ -58,4 +63,4 @@ Metriken (reine Pageviews), nur Schritte, die zu Umsatz führen. A/B-fähig denk
 - Funnel-Events vollständig erfasst (anonym), jede Stufe hat eine messbare Rate.
 - Dashboard/Report zeigt Conversion je Stufe + Umsatz je Quelle + Nachschub-Wiederkauf-Rate.
 - Mind. eine Schleife geschlossen (ein Signal fließt nachweislich zurück in advisor/cross-sell/seo).
-- `trust-compliance`-Freigabe fürs Tracking; `npm run build` grün.
+- `trust-compliance`-Freigabe fürs Tracking; `npm run ci` grün.

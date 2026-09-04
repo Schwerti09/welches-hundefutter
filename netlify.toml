@@ -1,6 +1,17 @@
+# ─── Build = Qualitäts-Gate ──────────────────────────────────────────────────
+# Kein GitHub Actions. Der Gate läuft hier: `npm run ci` = typecheck + lint +
+# test + build. Schlägt eine Stufe fehl, bricht der Build ab → kein Deploy.
+# Für Deploy Previews (Pull Requests) gilt dasselbe — die Netlify-GitHub-App
+# meldet den Status als Commit-Check zurück, der im Branch-Schutz für `main`
+# als "required" eingetragen werden kann.
+#
+# Die blockierende Allergen-Eval (src/lib/advisor/allergen-eval.test.ts) läuft
+# automatisch mit, weil DATABASE_URL in den Netlify-Env-Variablen gesetzt ist.
+# Playwright-Smoke/Visual laufen NICHT im Build (Browser im Build-Image zu
+# fragil) — manuell gegen eine Deploy-Preview-URL: siehe bella-app/README.md.
 [build]
   base    = "bella-app"
-  command = "npm run build"
+  command = "npm run ci"
   publish = ".next"
 
 [build.environment]

@@ -17,8 +17,9 @@ Die Pipeline ist **echt und live**: `scripts/parse-feeds.py` (AWIN + AdCell → 
 dedupliziert, erkennt Typ/Protein, rechnet €/kg → `dog_foods.json`) → `scripts/load-dog-foods.mjs`
 (idempotenter Neon-Upsert by slug, Lifecycle `is_active`, `price_history`-Snapshot nur bei
 Preisänderung) → `scripts/compute-scores.mjs` (BELLA-Score) → `scripts/indexnow-ping.mjs`.
-Täglicher Lauf via Netlify Scheduled Function `netlify/functions/import-feeds.mts`; manueller
-Fallback: GitHub Workflow `import-feeds.yml`. Cross-Sell analog über `parse-crosssell.py` +
+Täglicher Lauf via Netlify Scheduled Function `netlify/functions/import-feeds.mts` (05:00 UTC);
+manueller/lokaler Fallback: `scripts/parse-feeds.py` + `scripts/load-dog-foods.mjs` direkt.
+Cross-Sell analog über `parse-crosssell.py` +
 `load-crosssell.mjs`. Über 11.000 Produkte in der DB.
 Deine offenen Baustellen: Katalog-Breite (Cross-Sell-Kategorien: Snacks, NEMs/Öle, Zubehör,
 **Versicherung** — Top-Provision), Feed-Resilienz, `ai_usage`-Kosten-Logging (Op 1.3),
@@ -35,7 +36,7 @@ Migrationen statt Laufzeit-DDL (Op 1.5).
    mehreren `offers` (Preisvergleich!). Match über GTIN/EAN, sonst Marke+Name+Gewicht fuzzy.
 5. **Upsert** nach Neon (`load-dog-foods.mjs`-Logik), idempotent by slug, mit `updated_at`.
 6. **Lifecycle:** verschwundene Angebote als inaktiv markieren statt löschen (Preis-Historie behalten).
-7. **Cron:** täglicher Lauf (Netlify Scheduled Function oder GitHub Action). Logge Diff (neu/geändert/raus).
+7. **Cron:** täglicher Lauf als **Netlify Scheduled Function** (`netlify/functions/*.mts`) — kein GitHub Actions. Logge Diff (neu/geändert/raus).
 
 ## Die 5 AWIN-Partner (aus README) + Cross-Selling
 Kern-Futter: **Anifit** (30 € + 8 % recurring), **Futalis** (40 €/Lead), **Bellfor** (30 € + 10 %),

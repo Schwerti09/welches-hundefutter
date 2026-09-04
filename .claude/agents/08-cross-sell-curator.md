@@ -51,4 +51,4 @@ modellieren — `companion_for` und die Produkt-Referenz sind die gemeinsame Bas
 - BELLA zeigt nach jeder Futter-Empfehlung max. 2–3 kontextuelle Begleitprodukte, jedes mit Begründung.
 - Testfall „Anifit für Labrador mit Hühnerallergie" → kuratiertes, plausibles Set (kein Müll, kein Huhn-Snack).
 - Versicherungs-Cross-Sell als ehrlicher Tippgeber-Link; `trust-compliance`-Check bestanden.
-- `npm run build` grün.
+- `npm run ci` grün.

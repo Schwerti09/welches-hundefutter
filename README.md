@@ -4,7 +4,7 @@
 BELLA findet in ~60 Sekunden aus einem live gepflegten Katalog (11.000+ Sorten,
 tagesaktuelle Preise) das passende Futter — mit nachvollziehbarer Begründung.
 
-**Live:** https://welches-hundefutter.today · **Deploy:** Netlify (auto bei Push auf `main`)
+**Live:** https://welches-hundefutter.today · **Deploy + Qualitäts-Gate:** Netlify (auto bei Push auf `main`; Build-Command `npm run ci` — **kein GitHub Actions**)
 
 ---
 
@@ -25,8 +25,9 @@ tagesaktuelle Preise) das passende Futter — mit nachvollziehbarer Begründung.
 ## Stack
 
 Next.js 16 (App Router, Turbopack) · React 19 · TypeScript · Tailwind v4 ·
-Neon Postgres + Drizzle · Netlify · AWIN + AdCell · Gemini 2.5 Flash + Claude Haiku 4.5 ·
-Vitest + CI-Gate
+Neon Postgres + Drizzle (versionierte Migrationen) · **Netlify** (Deploy **und** Gate,
+Scheduled Functions für Crons) · AWIN + AdCell · Gemini 2.5 Flash + Claude Haiku 4.5 / Sonnet ·
+Vitest (118) + Playwright
 
 ---
 
@@ -40,7 +41,9 @@ cp .env.example .env.local   # Werte eintragen (Neon, Gemini/Anthropic, Resend, 
 npm run dev
 ```
 
-Prüfen wie im CI: `npm run typecheck && npm run lint && npm test && npm run build`
+**Der Gate** (identisch zum Netlify-Build-Command): `npm run ci`
+= `typecheck` + `lint` + `test` + `build`. Schlägt er fehl, gibt es keinen Deploy.
+E2E/Visuell laufen separat gegen eine URL: `E2E_BASE_URL=… npm run test:e2e`.
 
 ---
 

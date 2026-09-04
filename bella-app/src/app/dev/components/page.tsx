@@ -5,8 +5,8 @@ import BellaMascot from "@/components/bella/BellaMascot";
 
 // Nicht-Prod Komponenten-Katalog (Roadmap 3.4 / 3.1). Zum Draufschauen vor/nach
 // Design-Änderungen (Tokens, Light/Dark, Motion). Kein SEO, nicht verlinkt.
-// Sichtbar in `npm run dev` ODER wenn NEXT_PUBLIC_DEV_PAGES=1 (visual.yml setzt das
-// beim Build, damit die visuelle Regression diese Seite screenshotten kann).
+// Sichtbar in `npm run dev` ODER wenn NEXT_PUBLIC_DEV_PAGES=1 beim Build gesetzt ist
+// (so kann der manuelle Visual-Lauf diese Seite screenshotten).
 // Auf der Live-Seite (Netlify, ohne Flag) → 404.
 export const dynamic = "force-static";
 export const metadata = { robots: { index: false, follow: false }, title: "Komponenten-Katalog (dev)" };

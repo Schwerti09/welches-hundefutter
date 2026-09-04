@@ -192,17 +192,22 @@ in Op 0.2) gelöscht. `bella-app/.env.example` neu: nur die real im Code genutzt
 
 - **Ziel:** Eine `.env.example`, die jede echte Variable erklärt.
 - **Dateien:** `bella-app/.env.example` (behalten, neu befüllen), `bella-app/env.example` (löschen).
-- **Vorgehen:** Alle in Code + `netlify/functions/*` + `.github/workflows/*` referenzierten `process.env.*` sammeln (`grep -rn "process.env." src netlify scripts`), jede mit 1-Zeilen-Kommentar + „required/optional" + „wo eintragen (Netlify UI / GH Secret)". Die 14 toten `NEXT_PUBLIC_*_ENABLED` streichen (nach Gegencheck `grep -rn "NEXT_PUBLIC_.*_ENABLED" src`).
+- **Vorgehen:** Alle in Code + `netlify/functions/*` + `scripts/*` referenzierten `process.env.*` sammeln (`grep -rn "process.env." src netlify scripts`), jede mit 1-Zeilen-Kommentar + „required/optional" + „wo eintragen (Netlify UI)". Die 14 toten `NEXT_PUBLIC_*_ENABLED` streichen (nach Gegencheck `grep -rn "NEXT_PUBLIC_.*_ENABLED" src`). Hinweis: alle Secrets liegen in der Netlify-UI — es gibt keine GitHub Secrets mehr.
 - **Akzeptanz:** `env.example` gelöscht. Jede `process.env`-Nutzung im Code taucht in `.env.example` auf. `README`/`CLAUDE.md`-Env-Absatz zeigt auf die eine Datei.
 - **Agent:** `platform-architect`. **Aufwand:** S. **Risiko:** niedrig. **Abhängt von:** —
 </details>
 
-### ✅ Operation 0.4 — CI-Gate — **TEILWEISE ERLEDIGT (2026-09-03)**
-Umgesetzt: `.github/workflows/ci.yml` (typecheck + lint + test + build, Node 22, npm-cache,
-concurrency-cancel) · `package.json` Scripts `typecheck` (`tsc --noEmit`) + `test` (Stub bis Op 1.4).
-Lokal grün. **Rest-Haken (Mensch):** auf GitHub unter *Settings → Branches → Add branch ruleset*
-für `main` „Require status checks to pass" = `ci` aktivieren, sonst blockt der rote Lauf den Merge nicht.
-<details><summary>ursprünglicher Plan</summary>
+### ✅ Operation 0.4 — Qualitäts-Gate (Netlify statt GitHub Actions) — **ERLEDIGT (2026-09-04)**
+**Kein GitHub Actions.** Der Gate ist der **Netlify-Build**: `netlify.toml` `command = "npm run ci"`
+= `typecheck` + `lint` + `test` + `build`. Schlägt eine Stufe fehl, bricht der Build ab → **kein
+Deploy**. Für `main` und für Deploy Previews (PRs) gilt derselbe Befehl. Die DB-Allergen-Eval
+(2A.8) läuft automatisch mit, weil `DATABASE_URL` Netlify-Env ist. `.github/workflows/` ist
+komplett entfernt (auch die drei manuellen Cron-Fallbacks — die echten Crons sind
+`netlify/functions/*.mts`); zusätzlich `netlify/functions/health-check.mts` (stündlicher
+Prod-Smoke). `package.json` Scripts: `ci`, `typecheck`, `test`, `test:e2e`, `test:visual`.
+**Rest-Haken (Mensch):** in GitHub *Settings → Branches* für `main` den Netlify-Deploy-Preview-
+Status als „required check" eintragen, damit ein roter Preview den Merge blockt.
+<details><summary>ursprünglicher Plan (GitHub Actions — verworfen)</summary>
 
 - **Ziel:** Roter Code kommt nicht nach `main`.
 - **Warum:** T11. Heute schützt nur die Disziplin „ich hab lokal gebaut".
@@ -290,11 +295,13 @@ nötig gewesen — Limit sitzt in den Node-Route-Handlern (Edge-Middleware hätt
 - **Agent:** `platform-architect`. **Aufwand:** M. **Risiko:** mittel (Redis-Abhängigkeit / false positives). **Abhängt von:** 1.2.
 </details>
 
-### ✅ Operation 1.4 — Test-Fundament — **ERLEDIGT (2026-09-03; Playwright-Smoke via 3.4)**
-Stand: **113 Vitest-Tests** + 2 DB-Evals (2A.8/2.4, `skipIf`) + 1 LLM-Judge-Eval (opt-in) +
-**5 Playwright-Smoke** (`e2e/smoke.spec.ts`, lokal grün, im CI blockierend). Ursprünglich:
-Vitest 3 + v8-Coverage, `vitest.config.ts`, `test`/`test:watch`/`test:coverage` Scripts,
-in `ci.yml` verdrahtet. **68 Unit-Tests** grün: `containsAllergen`/`allergenVariants` (Allergen-Sicherheit),
+### ✅ Operation 1.4 — Test-Fundament — **ERLEDIGT (2026-09-04)**
+Stand: **118 Vitest-Tests** + 2 DB-Evals (2A.8/2.4, `skipIf`) + 1 LLM-Judge-Eval (opt-in),
+alle im **Netlify-Build** (`npm run ci`) blockierend. **5 Playwright-Smoke**
+(`e2e/smoke.spec.ts`) + Visual (`e2e/visual.spec.ts`) laufen **manuell gegen eine URL**
+(`E2E_BASE_URL=… npm run test:e2e`), nicht im Build. Vitest 3 + v8-Coverage,
+`vitest.config.ts`, `test`/`test:watch`/`test:coverage` Scripts. Unit-Tests decken u. a. ab:
+`containsAllergen`/`allergenVariants` (Allergen-Sicherheit),
 `consumption-math`, `dogCost`, `issue-to-problem`, `glossary-links` — und `parseIntent` + `scoreFood`
 + `hasEnoughIntent`/`classifyTheme`/`computeConfidence` **nach Extraktion** aus `route.ts` in
 `src/lib/advisor/{intent,scoring}.ts` (verbatim, Verhalten unverändert → macht Op 2.1 sicher).
@@ -554,9 +561,9 @@ Weg **B** (echte Neon-DB, keine Fixtures). `fetchCandidates` + `fetchRelevantStu
 explizite Allergie / zwei Allergene / Folgeturn „ohne huhn") + Referenz-Test (Katalog nicht leer).
 Assertion pro Offer: `containsAnyAllergen(name+protein, avoidProtein) === false`, `type !== 'snack'` —
 für die normale **und** die `{ relax }`-Suche. Kein LLM nötig (Fast-Path setzt `avoidProtein` deterministisch).
-`ci.yml`: `DATABASE_URL` als env aus `secrets.DATABASE_URL` im Test- **und** Build-Step.
-**Rest-Haken (Mensch):** `DATABASE_URL` als GitHub-Actions-Secret hinterlegen (Settings → Secrets and
-variables → Actions). Ohne Secret werden die 7 Eval-Tests übersprungen (lokal + CI), der Rest läuft normal.
+Die Eval läuft im **Netlify-Build** mit, weil `DATABASE_URL` in den Netlify-Env-Variablen
+liegt (`npm run ci` → `vitest run`). Ohne `DATABASE_URL` (z. B. lokal) werden die 7 Eval-Tests
+via `describe.skipIf` übersprungen, der Rest läuft normal. **Kein GitHub-Actions-Secret nötig.**
 <details><summary>ursprünglicher Plan</summary>
 
 - **Dateien:** `eval/advisor/allergen/*.jsonl`, `eval/run.ts`, `package.json` (`eval:advisor`), `ci.yml`.
@@ -669,10 +676,10 @@ normale **und** die `{ relax }`-Suche. Braucht das `DATABASE_URL`-GitHub-Secret 
   (`bella-theme`), setzt `data-theme` auf `<html>`, reagiert auf andere Tabs, `aria-pressed`.
 - `/dev/components` nutzt jetzt durchgängig Tokens + zeigt den `ThemeToggle` + No-FOUC-Inline-Script
   → Light/Dark ist dort verifizierbar, ohne die Live-Seite anzufassen. Sichtbar in `npm run dev`
-  oder mit `NEXT_PUBLIC_DEV_PAGES=1` (setzt `visual.yml` beim Build); Live (Netlify) → 404.
+  oder mit `NEXT_PUBLIC_DEV_PAGES=1` (im Visual-Lauf beim Build gesetzt); Live (Netlify) → 404.
 - Grün: `tsc` · `lint` (0 Fehler) · `build` · 113 Vitest.
 
-**Bewusst NICHT gemacht (Teil 2 — eigener Schritt, braucht visuelle Baselines aus `visual.yml`):**
+**Bewusst NICHT gemacht (Teil 2 — eigener Schritt, braucht Linux-Visual-Baselines (`npm run test:visual`)):**
 - **Kein** `@media (prefers-color-scheme: light)` — würde für Hell-Nutzer sofort greifen, aber
   ~40 Komponenten hängen noch an hart­codiertem `bg-white/x` · `text-white/x` · `border-white/x`
   · `from-[#08080c]` → die Seite sähe halb-kaputt aus.
@@ -708,7 +715,7 @@ normale **und** die `{ relax }`-Suche. Braucht das `DATABASE_URL`-GitHub-Secret 
 - `🐕` in ~40 CTA-Button-Labels (`🐕 BELLA fragen …`) über `src/app/**` — „Deko-Emoji im Fließtext",
   aber grenzwertig als Marken-Element; eigener Sweep.
 - Optionales Lottie für den „Analyse"-Moment.
-- Reduced-Motion-Screenshot-Prüfung über `visual.yml`.
+- Reduced-Motion-Screenshot-Prüfung im Visual-Lauf.
 
 ### Operation 3.3 — OG-Bild-System pro Rasse (und Kern-Seitentypen) — 🟡 **RASSE ERLEDIGT (2026-09-03)**
 - **Ziel:** Jede `/rasse/[slug]` (und Problem/Vergleich/Blog) hat ein eigenes, generiertes Teilen-Bild.
@@ -745,11 +752,13 @@ Check (Twitter/Slack/WhatsApp) nach Deploy.
   `E2E_BASE_URL` überschreibbar). `e2e/smoke.spec.ts` — 5 Tests, **lokal grün** (Home ohne Konsolen-Fehler,
   `/rassen`-Bilder laden, `/rasse/[slug]` Hero+FAQ, robots/sitemap 200, Advisor antwortet). Scripts
   `test:e2e` / `test:visual`.
-- **`ci.yml`**: neuer **`e2e`-Job** (parallel, blockierend, deterministisch, kein API-Key).
-- **`e2e/visual.spec.ts` + `.github/workflows/visual.yml`**: `toHaveScreenshot` für Home / `/rassen` /
-  `/rasse/[slug]` / `/dev/components`, **nicht-blockierend, `workflow_dispatch`** — Baselines werden im
-  CI (Linux) erzeugt (`update`-Input), als Artefakt geprüft, dann committet. (Bewusst kein lokaler
-  Windows-Baseline — Font-Rendering weicht ab.)
+- **Update 2026-09-04 — kein GitHub Actions:** Playwright läuft nicht mehr im automatischen
+  Gate (Browser im Netlify-Build zu fragil). Smoke + Visual sind **manuelle Läufe gegen eine
+  Deploy-Preview-URL** (`E2E_BASE_URL=… npm run test:e2e` bzw. `npm run test:visual`). Der Gate
+  selbst (`npm run ci`) enthält typecheck + lint + **Vitest** + build.
+- **`e2e/visual.spec.ts`**: `toHaveScreenshot` für Home / `/rassen` / `/rasse/[slug]` /
+  `/dev/components`. Linux-Baselines unter `e2e/visual.spec.ts-snapshots/` committen (Windows
+  weicht durch Font-Rendering ab). `/dev/components` braucht `NEXT_PUBLIC_DEV_PAGES=1` beim Build.
 <details><summary>ursprünglicher Plan</summary>
 
 - **Ziel:** Design-Änderungen sind sichtbar bevor sie live gehen.
@@ -978,23 +987,36 @@ entfernen → Akzeptanz `grep gtag = 0`.
 
 ### Operation 6.1 — Error-Tracking + strukturierte Logs
 - **Ziel:** Wir erfahren von Fehlern, bevor der Nutzer mailt.
-- **Dateien:** `src/lib/environment/production-logging.ts` (aus 0.2 ggf. gelöscht → sauber neu), Sentry (oder OTEL zu einem Collector), Einbindung in `route.ts`-Catches, `netlify/functions/*`, `error.tsx`/`global-error.tsx`.
+- **Vorarbeit (da):** `netlify/functions/health-check.mts` pingt stündlich die Kernrouten und
+  loggt Fehlschläge (`console.error`) ins Function-Log. `not-found.tsx` existiert; `error.tsx`/
+  `global-error.tsx` fehlen noch.
+- **Dateien:** Sentry (oder OTEL zu einem Collector), Einbindung in `route.ts`-Catches,
+  `netlify/functions/*` (inkl. `health-check` → echtes Alert statt nur Log), `error.tsx`/`global-error.tsx`.
 - **Vorgehen:** Sentry (Next-SDK, Client+Server+Edge), Sampling, PII-Scrubbing (E-Mails, Hundenamen raus), Release-Tagging pro Deploy. Alerts: Stream-Fehlerrate, Feed-Import-Fehler, Cron-Fehlschlag, 5xx-Spike.
 - **Akzeptanz:** Provozierter Fehler erscheint in Sentry mit Stacktrace + Release. Alert-Regeln aktiv. Kein PII in den Events (Stichprobe).
 - **Agent:** `platform-architect`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** —
 
-### Operation 6.2 — Performance-Budget in CI
-- **Ziel:** Kein Merge, der die Vitals oder die JS-Bundle-Size über die Schwelle drückt.
-- **Dateien:** `ci.yml` (Lighthouse-CI gegen `next start` oder Netlify-Preview-URL), `lighthouserc.json`, optional `size-limit`.
-- **Vorgehen:** LHCI auf Home + `/rassen` + ein `/rasse/[slug]`. Budgets: Perf ≥ 95 (Warn), TBT ≤ 200 ms, CLS ≤ 0.02, First-Load-JS ≤ Baseline + 10 %. Anfangs Warn, dann blockierend.
-- **Akzeptanz:** PR, der 100 KB JS hinzufügt, wird geflaggt. Report als PR-Kommentar.
+### Operation 6.2 — Performance-Budget im Build
+- **Ziel:** Kein Deploy, der die Vitals oder die JS-Bundle-Size über die Schwelle drückt.
+- **Dateien:** `netlify.toml` / `package.json` (`ci`-Kette erweitern), `size-limit` + `.size-limit.json`;
+  optional ein Netlify-Build-Plugin, das Lighthouse gegen die Deploy-Preview-URL fährt (`onSuccess`).
+- **Vorgehen:** `size-limit` auf den First-Load-JS-Bundle in `npm run ci` einhängen (Budget = Baseline
+  + 10 %). Lighthouse-Check als Post-Deploy-Schritt (Netlify-Plugin oder `health-check`-Erweiterung)
+  auf Home + `/rassen` + ein `/rasse/[slug]`: Perf ≥ 95 (Warn), TBT ≤ 200 ms, CLS ≤ 0.02.
+- **Akzeptanz:** Ein Commit, der 100 KB JS hinzufügt, lässt `npm run ci` scheitern → kein Deploy.
+  Lighthouse-Report im Netlify-Deploy-Log.
 - **Agent:** `platform-architect` + `visual-designer`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 0.4.
 
-### Operation 6.3 — SECURITY.md, CODEOWNERS, PR-Template, Dependabot
+### Operation 6.3 — SECURITY.md, CODEOWNERS, PR-Template, Dependency-Updates
 - **Ziel:** Repo-Hygiene wie ein Produkt, nicht wie ein Bastelprojekt.
-- **Dateien:** neu `SECURITY.md`, `.github/CODEOWNERS`, `.github/pull_request_template.md`, `.github/dependabot.yml`.
-- **Vorgehen:** SECURITY.md (Kontakt, Scope, kein Bug-Bounty aber verantwortungsvolle Offenlegung). Dependabot wöchentlich, gruppiert, für npm + GH-Actions. PR-Template mit „Build grün? Vitals? Tests? Offenlegung?"-Checkliste.
-- **Akzeptanz:** Alle Dateien da. Erster Dependabot-PR läuft durch CI.
+- **Dateien:** neu `SECURITY.md`, `.github/CODEOWNERS`, `.github/pull_request_template.md`,
+  `.github/dependabot.yml`. (`.github/` bleibt nur für diese passiven Meta-Dateien — **keine
+  Workflows**.)
+- **Vorgehen:** SECURITY.md (Kontakt, Scope, verantwortungsvolle Offenlegung). Dependabot
+  wöchentlich, gruppiert, nur für **npm** (keine GH-Actions mehr). Alternativ `npm audit
+  --audit-level=high` als weiche Stufe in `npm run ci`. PR-Template mit „`npm run ci` grün?
+  Vitals? Offenlegung?"-Checkliste.
+- **Akzeptanz:** Alle Dateien da. Erster Dependabot-PR durchläuft den Netlify-Deploy-Preview-Gate.
 - **Agent:** `platform-architect` + `trust-compliance`. **Aufwand:** S. **Risiko:** niedrig. **Abhängt von:** 0.4.
 
 ### Operation 6.4 — Daten-Backup + Wiederherstellungs-Runbook
@@ -1089,7 +1111,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 0.1 | Doku auf eine Wahrheit | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 0.2 | Toten Code entfernen | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 0.3 | Env-Templates | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
-| 0.4 | CI-Gate | 🟡 Workflow live (Branch-Protection = Mensch) | 2026-09-03 | _(dieser Batch)_ |
+| 0.4 | Qualitäts-Gate | ✅ Netlify-Build `npm run ci` (kein GitHub Actions); `.github/workflows/` entfernt; `health-check.mts` Cron. Branch-Protection = Mensch | 2026-09-04 | _(dieser Batch)_ |
 | 1.1 | React 19 | ✅ live, Preview bestätigt | 2026-09-03 | 79383ce |
 | 1.2 | CSP + COOP | ✅ Weg B live · strict-dynamic als Folge-Op | 2026-09-03 | 6b68152 |
 | 1.3 | API Rate-Limit | 🟡 In-Memory-Limiter live · verteilter Store + ai_usage folgen | 2026-09-03 | _(dieser Batch)_ |
