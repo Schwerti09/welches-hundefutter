@@ -1082,10 +1082,23 @@ testen), dann `audit:deps` blockierend in `npm run ci` einhängen.
   lässt den Netlify-Build scheitern.
 - **Agent:** `platform-architect` + `trust-compliance`. **Aufwand:** S. **Risiko:** niedrig. **Abhängt von:** 0.4.
 
-### Operation 6.4 — Daten-Backup + Wiederherstellungs-Runbook
+### Operation 6.4 — Daten-Backup + Wiederherstellungs-Runbook — 🟡 **RUNBOOKS DA (2026-09-04)**
 - **Ziel:** Neon-Datenverlust ist überlebbar; die Feed-Pipeline hat ein dokumentiertes „so bootstrappst du neu".
-- **Dateien:** neu `docs/runbooks/db-restore.md`, `docs/runbooks/feed-bootstrap.md`, ggf. Scheduled Function „daily pg_dump → Netlify Blobs / S3".
-- **Akzeptanz:** Ein Restore in eine Scratch-DB wurde einmal real durchgespielt und im Runbook protokolliert. Backup-Job läuft + alertet bei Fehlschlag.
+
+**Was jetzt da ist:**
+- **`docs/runbooks/db-restore.md`** — Sofort-Einschätzung, dann 4 Fälle: einzelne Tabelle
+  zurückholen · ganze DB (Neon Branch-from-Time → `DATABASE_URL` in Netlify umbiegen →
+  Redeploy → Rauchtest) · Neon-Account weg (Kaltstart: `db:push` + Feed-Bootstrap) ·
+  Rauchtest-Befehle. **Primärer Schutz = Neons eingebaute PITR/Branching** (kein Cron nötig).
+- **`docs/runbooks/feed-bootstrap.md`** — Katalog von Null: `parse-feeds.py` →
+  `load-dog-foods.mjs` → `compute-scores.mjs` → Cross-Sell → IndexNow, mit Verifikations-
+  Queries und Stolpersteinen.
+
+**Offen (Teil 2):** (1) **Restore-Drill einmal real durchspielen** (Neon-Scratch-Branch,
+Ablauf aus `db-restore.md` §3 abhaken) und das Protokoll unten in den Runbook schreiben —
+das ist die eigentliche Akzeptanz. (2) `netlify/functions/db-backup.mts` (wöchentlich,
+reiner JS-Dump der User-Tabellen → Netlify Blobs, Design steht in `db-restore.md` Teil 2)
++ `scripts/db-restore-blobs.mjs`.
 - **Agent:** `platform-architect`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 6.1.
 
 ---
@@ -1213,6 +1226,6 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 6.1 | Error-Tracking | 🟡 `log.ts` (PII-Scrub) + Test + `error.tsx`/`global-error.tsx` + Advisor-Catches · Teil 2: Sentry-DSN + Alerts | 2026-09-04 | _(dieser Batch)_ |
 | 6.2 | Performance-Budget im Build | 🟡 `check:bundle` (geteiltes First-Load-JS gzip vs. `.bundle-budget.json`) in `npm run ci`, Baseline 129→Budget 145 KB · Teil 2: Lighthouse post-deploy | 2026-09-04 | _(dieser Batch)_ |
 | 6.3 | Repo-Hygiene | 🟡 SECURITY.md + CODEOWNERS + PR-Template + `audit:deps` (Warn) · Teil 2: `audit:deps` blockierend in `ci` | 2026-09-04 | _(dieser Batch)_ |
-| 6.4 | Backup + Runbook | ⬜ offen | | |
+| 6.4 | Backup + Runbook | 🟡 `docs/runbooks/db-restore.md` + `feed-bootstrap.md` · Teil 2: Restore-Drill real + `db-backup.mts` (Blobs) | 2026-09-04 | _(dieser Batch)_ |
 
 _Zuletzt aktualisiert: 2026-09-03 — Phase 0 + 1 + 2 (inkl. Phase 2A) weitgehend durch; offen: 2.4 + Phasen 3–6._

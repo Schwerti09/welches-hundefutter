@@ -18,7 +18,7 @@ tagesaktuelle Preise) das passende Futter — mit nachvollziehbarer Begründung.
 | [`.claude/agents/`](./.claude/agents/) | Agenten-Flotte (13 Spezialisten) + Delegationslogik. |
 | [`bella-app/ARCHITECTURE.md`](./bella-app/ARCHITECTURE.md) | Technischer Aufbau (Datenpfad, Advisor-Stream, Deploy). |
 | [`FUTTERPASS.md`](./FUTTERPASS.md) | Blaupause Futter-Pass-Schwungrad (Moat, Roadmap-Phase 5). |
-| [`docs/`](./docs/) | GEO-Protokoll, Audits, Status-Snapshots. |
+| [`docs/`](./docs/) | GEO-Protokoll, Audits (`audits/`), Betriebs-Runbooks (`runbooks/`), Status-Snapshots. |
 
 ---
 
