@@ -1083,7 +1083,7 @@ TBT ≤ 200 ms, CLS ≤ 0,02. Optional zusätzlich ein Per-Route-Budget.
   Lighthouse-Report im Netlify-Deploy-Log.
 - **Agent:** `platform-architect` + `visual-designer`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 0.4.
 
-### Operation 6.3 — SECURITY.md, CODEOWNERS, PR-Template, Dependency-Hygiene — 🟡 **DATEIEN DA (2026-09-04)**
+### Operation 6.3 — SECURITY.md, CODEOWNERS, PR-Template, Dependency-Hygiene — ✅ **ERLEDIGT (2026-09-04)**
 - **Ziel:** Repo-Hygiene wie ein Produkt, nicht wie ein Bastelprojekt — **ohne** GitHub-seitige
   Automation (alles läuft bei Netlify).
 
@@ -1094,12 +1094,13 @@ TBT ≤ 200 ms, CLS ≤ 0,02. Optional zusätzlich ein Per-Route-Budget.
   `netlify/`, `drizzle/`, `netlify.toml`. Greift, weil `.github/` jetzt nur passive Textdateien hält.
 - **`.github/pull_request_template.md`** — Checkliste: `npm run ci` grün, Doku im PR, Vitals,
   Allergen-Garantie, Affiliate-Offenlegung, keine Excludes/DDL, keine Secrets.
-- **`npm run audit:deps`** (`npm audit --audit-level=high`) — Warn-Lauf, noch nicht blockierend.
-  Stand 2026-09-04: **11 Findings (7 high, 4 moderate)**, überwiegend `sharp` → `libvips`-CVEs
-  (transitiv, Bildverarbeitung). `npm audit fix` verfügbar (ohne Breaking Changes).
-
-**Offen (Teil 2):** `npm audit fix` gezielt durchspielen + `npm run ci` gegenprüfen (Bild-Pipeline
-testen), dann `audit:deps` blockierend in `npm run ci` einhängen.
+- **`npm run audit:deps`** (`npm audit --audit-level=high`) — **blockierend in `npm run ci`**
+  (Nachtrag 2026-09-04). `npm audit fix` (ohne Breaking Changes) hat alle 7 High-Findings behoben
+  (`next` 16.2.6→16.3.4, `sharp`→0.35.4, `postcss`/`js-yaml`/`nanoid` gepatcht); Bild-Pipeline via
+  `next build` + `/rassen`-Bildladen-Smoke-Test gegengeprüft, keine Regression. Verbleibend: 4
+  Moderate im `esbuild`/`@esbuild-kit`-Zweig, deren einziger Non-Force-Fix ein 13-Minor-Downgrade
+  von `drizzle-kit` (0.31→0.18) wäre — betrifft nur den lokalen `drizzle-kit`-Dev-Server, nicht die
+  deployte Runtime; bewusst nicht erzwungen (AGENTS.md §71).
 - **Dateien:** neu `SECURITY.md`, `.github/CODEOWNERS`, `.github/pull_request_template.md`.
   `.github/` hält **nur** diese passiven, von GitHub gerenderten Textdateien — keine Workflows,
   kein Dependabot, keine Actions.
@@ -1254,7 +1255,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 5.4 | Outcome-Checks sichtbar | ⬜ offen | | |
 | 6.1 | Error-Tracking | 🟡 `log.ts` (PII-Scrub) + Test + `error.tsx`/`global-error.tsx` + Advisor-Catches · Teil 2: Sentry-DSN + Alerts | 2026-09-04 | _(dieser Batch)_ |
 | 6.2 | Performance-Budget im Build | 🟡 `check:bundle` (geteiltes First-Load-JS gzip vs. `.bundle-budget.json`) in `npm run ci`, Baseline 129→Budget 145 KB · Teil 2: Lighthouse post-deploy | 2026-09-04 | _(dieser Batch)_ |
-| 6.3 | Repo-Hygiene | 🟡 SECURITY.md + CODEOWNERS + PR-Template + `audit:deps` (Warn) · Teil 2: `audit:deps` blockierend in `ci` | 2026-09-04 | _(dieser Batch)_ |
+| 6.3 | Repo-Hygiene | ✅ SECURITY.md + CODEOWNERS + PR-Template + 7 High-CVEs gefixt + `audit:deps` blockierend in `ci` | 2026-09-04 | _(dieser Batch)_ |
 | 6.4 | Backup + Runbook | 🟡 `docs/runbooks/db-restore.md` + `feed-bootstrap.md` · Teil 2: Restore-Drill real + `db-backup.mts` (Blobs) | 2026-09-04 | _(dieser Batch)_ |
 
 _Zuletzt aktualisiert: 2026-09-03 — Phase 0 + 1 + 2 (inkl. Phase 2A) weitgehend durch; offen: 2.4 + Phasen 3–6._
