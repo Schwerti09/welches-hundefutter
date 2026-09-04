@@ -339,6 +339,14 @@ alle im **Netlify-Build** (`npm run ci`) blockierend. **5 Playwright-Smoke**
 `chatLogs` als Drizzle-Tabelle in `schema.ts`. `drizzle/0000_baseline.sql` (16 Tabellen) + snapshot/journal
 generiert. `drizzle/README.md` erklärt die Baseline-Situation (Prod-DB existiert schon → nicht blind
 `migrate`). Scripts `db:generate` / `db:migrate` / `db:push`. `grep "CREATE TABLE" src` = 0.
+
+> **Nachtrag 2026-09-04 (bei 5.2 entdeckt):** Die Prod-Neon-DB hat **keine `__drizzle_migrations`-Tabelle**
+> (nur per `push` gepflegt) und ist von `schema.ts` **gedriftet** — live existieren 13 Tabellen inkl.
+> `ai_visibility_checks`, `cross_sell`; es fehlen u. a. `dog_breeds`, `health_issues`, `offers`,
+> `affiliate_clicks`, `advisor_sessions`. `0000_baseline.sql` bildet also NICHT den echten Ist-Stand ab.
+> **Offener 1.5-Rest:** echten Ist-Stand als neue Baseline dumpen, `__drizzle_migrations` initialisieren,
+> Drift auflösen — danach ist `db:migrate` (auch im Build) gefahrlos. `events` wurde für 5.2 direkt per
+> DDL angelegt (nicht über `migrate`).
 <details><summary>ursprünglicher Plan</summary>
 
 ### Operation 1.5 — Drizzle-Migrationen statt Laufzeit-DDL
@@ -952,7 +960,7 @@ grün = manuelle Prüfung nach Deploy. Nonce-Aktivierung hängt an 1.2 (CSP `str
 - **Akzeptanz:** Seed-Profil mit `refill_due_at` in 2 Tagen → nächster Function-Lauf schickt genau eine Mail mit korrektem Link. Lebensphasen-Trigger feuert einmalig. Opt-out in jeder Mail.
 - **Agent:** `lifecycle-architect` + `retention-growth`. **Aufwand:** L. **Risiko:** mittel (E-Mail-Reputation, Frequenz). **Abhängt von:** 1.5, 6.1.
 
-### Operation 5.2 — First-Party-Analytics statt GA4 — 🟡 **PIPELINE ERLEDIGT (2026-09-04)**
+### Operation 5.2 — First-Party-Analytics statt GA4 — 🟡 **PIPELINE LIVE (2026-09-04)**
 - **Ziel:** Analytics ohne Fremd-Pixel — prinzipientreu (`CLAUDE.md`: „kein On-Load-Pixel"), DSGVO-leichter, schneller.
 - **Warum:** G2. GA4 widerspricht dem eigenen Prinzip und kostet PageSpeed/Consent-Komplexität.
 - **Dateien:** `src/app/api/vitals/route.ts` → erweitern zu `/api/track`, `src/components/WebVitals.tsx`, neue `events`-Tabelle (Migration), `GoogleAnalytics.tsx` entfernen, `layout.tsx`.
@@ -961,22 +969,23 @@ grün = manuelle Prüfung nach Deploy. Nonce-Aktivierung hängt an 1.2 (CSP `str
 - **Agent:** `conversion-analyst` + `trust-compliance`. **Aufwand:** M–L. **Risiko:** mittel (Datenkontinuität — Parallelbetrieb 2 Wochen). **Abhängt von:** 1.5.
 
 **Was jetzt live ist (additiv, GA4 bleibt vorerst — 2-Wochen-Parallelbetrieb):**
-- `events`-Tabelle in `schema.ts` + Migration **`drizzle/0001_events_analytics.sql`**
-  (neue Tabelle, gefahrlos gegen Prod `db:migrate`-bar). Anonym: keine Cookies,
-  kein PII, keine IP. `session_id` = kurzlebige sessionStorage-Kennung.
+- `events`-Tabelle in `schema.ts` + `drizzle/0001_events_analytics.sql`. **In Neon angelegt
+  (2026-09-04)** — das DDL aus `0001` wurde direkt eingespielt (die Prod-DB hat keine
+  `__drizzle_migrations`-Historie, wurde per `drizzle-kit push` gepflegt). Anonym: keine
+  Cookies, kein PII, keine IP. `session_id` = kurzlebige sessionStorage-Kennung.
 - **`src/app/api/track/route.ts`** — Beacon-Endpoint: Event-Allowlist (6 Namen),
   `props`-Sanitizing (flach, PII-Keys raus, gekappt), Rate-Limit, `device`-Grobklasse.
   Ohne `DATABASE_URL` oder bei Insert-Fehler → 204 (Client nie stören).
 - `src/lib/analytics.ts` — `track(name, props?)` via `sendBeacon`, interner Referrer-Pfad.
 - `src/components/PageTracker.tsx` (in `layout.tsx`) — `pageview` bei jedem Pfadwechsel.
-- Verifiziert: `/api/track` → 204 für valide + ungültige + Müll-Payloads; GET → 405;
-  GA4 weiter aktiv. Build grün, 118 Vitest.
+- **End-to-end verifiziert gegen Prod-Neon:** `POST /api/track` → 204, Row landet mit
+  korrektem `name`/`path`/`ref`/`session_id`/`device`/`props` in `events`. `pageview` läuft
+  ab jetzt für echte Besucher.
 
-**Offen (Teil 2):** Migration in Neon einspielen (`npm run db:migrate`, Mensch).
-2 Wochen Parallelbetrieb beobachten. `advisor_start`/`advisor_offers`/`affiliate_click`/
-`refill_click`/`alert_subscribe` an den echten Stellen verdrahten (überlappt mit 5.3).
-`/admin`-Aggregat-Dashboard. Dann `GoogleAnalytics.tsx` + `googletagmanager`-Prefetch
-entfernen → Akzeptanz `grep gtag = 0`.
+**Offen (Teil 2):** 2 Wochen Parallelbetrieb GA4 ↔ First-Party beobachten.
+`advisor_start`/`advisor_offers`/`affiliate_click`/`refill_click`/`alert_subscribe` an den
+echten Stellen verdrahten (überlappt mit 5.3). `/admin`-Aggregat-Dashboard. Dann
+`GoogleAnalytics.tsx` + `googletagmanager`-Prefetch entfernen → Akzeptanz `grep gtag = 0`.
 
 ### Operation 5.3 — Funnel-Instrumentierung Seite→Profil→Klick→Nachschub
 - **Ziel:** Wir sehen, wo Nutzer abspringen, und die Signale fließen zurück in Advisor/Cross-Sell/SEO.
@@ -1129,7 +1138,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 1.2 | CSP + COOP | ✅ Weg B live · strict-dynamic als Folge-Op | 2026-09-03 | 6b68152 |
 | 1.3 | API Rate-Limit | 🟡 In-Memory-Limiter live · verteilter Store + ai_usage folgen | 2026-09-03 | _(dieser Batch)_ |
 | 1.4 | Test-Fundament | ✅ 113 Vitest + 5 Playwright-Smoke + Evals | 2026-09-03 | _(dieser Batch)_ |
-| 1.5 | Drizzle-Migrationen | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
+| 1.5 | Drizzle-Migrationen | ✅ erledigt · ⚠️ Nachtrag: Prod-DB ohne `__drizzle_migrations` + gedriftet von `schema.ts` (echte Baseline + Drift-Auflösung offen) | 2026-09-03 | _(dieser Batch)_ |
 | 1.6 | Font-Bug + tsconfig | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 2.1 | Intent-LLM | ✅ Grundgerüst · ⚠️ Allergen-Fall offen → Phase 2A | 2026-09-03 | 7aa3742 |
 | **2A.1** | Allergen `avoidProtein` | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
@@ -1157,7 +1166,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 4.5 | GEO / AI-Search | 🟡 `/llms-full.txt` (20 Q&A + Quellen) + `/llms.txt`-Querverweis · Teil 2: Antwort-zuerst-Absätze, `CitableStat` breiter, Studien-`bella_summary` | 2026-09-04 | _(dieser Batch)_ |
 | 4.6 | JsonLd-Helfer | ✅ `<JsonLd>` + Test + alle 21 Stellen migriert (`<Freshness>` → 4.3) | 2026-09-04 | _(dieser Batch)_ |
 | 5.1 | Futter-Pass-Schleife | ⬜ offen | | |
-| 5.2 | First-Party-Analytics | 🟡 `events`-Tabelle + Migration `0001` + `/api/track` + `track()` + `PageTracker` (pageview) · Teil 2: Migration einspielen, Events verdrahten, `/admin`, GA4 raus | 2026-09-04 | _(dieser Batch)_ |
+| 5.2 | First-Party-Analytics | 🟡 `events` in Neon **live** + `/api/track` + `track()` + `PageTracker` (pageview läuft) · Teil 2: weitere Events verdrahten, `/admin`, GA4 raus | 2026-09-04 | _(dieser Batch)_ |
 | 5.3 | Funnel-Instrumentierung | ⬜ offen | | |
 | 5.4 | Outcome-Checks sichtbar | ⬜ offen | | |
 | 6.1 | Error-Tracking | ⬜ offen | | |
