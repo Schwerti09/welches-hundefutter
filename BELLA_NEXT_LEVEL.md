@@ -784,13 +784,33 @@ Lighthouse-Gegenprobe „nicht zusammengesetzte Animationen = 0" nach Deploy.
 
 ## PHASE 4 — Content & EEAT auf das nächste Level
 
-### Operation 4.1 — Thin-Content-Audit (programmatische Seiten)
+### Operation 4.1 — Thin-Content-Audit (programmatische Seiten) — 🟡 **TOOL + REPORT ERLEDIGT (2026-09-04)**
 - **Ziel:** Jede indexierte Seite hat nachweisbaren Eigenwert; „Scaled Content Abuse"-Risiko raus.
 - **Warum:** C1. 1.400+ Tipps + hunderte programmatische Seiten sind ein Google-Helpful-Content-Risiko.
 - **Dateien:** neu `scripts/content-audit.mjs` (Report: URL, Wortzahl, Template-Anteil, interne Links, unique Fakten), Ziel-Seitentypen: `/tipps/*`, `/futtertyp/*`, `/lebensphase/*`, `/vergleich/*`, `/stadt/*`, `/glossar/*`.
 - **Vorgehen:** Metriken je Seite; Schwellen definieren (z.B. < 350 sinnvolle Wörter **oder** > 70 % Template ⇒ Flag). Optionen pro Flag: anreichern (echte Daten aus DB/Portionsmathematik/Studien), zusammenlegen, oder `noindex` + aus Sitemap. `/stadt/*` (634 Seiten) besonders kritisch prüfen — hat eine Hundefutter-Stadtseite echten Wert?
 - **Akzeptanz:** Report committet unter `docs/audits/`. Jede geflaggte Seite hat eine Entscheidung (anreichern/mergen/noindex) mit Umsetzung. Sitemap enthält nur „wertige" URLs.
 - **Agent:** `seo-strategist` + `content-engineer`. **Aufwand:** L. **Risiko:** mittel (Index-Änderungen — schrittweise, mit GSC-Monitoring). **Abhängt von:** —
+
+**Was jetzt live ist:**
+- `bella-app/scripts/content-audit.mjs` + `npm run audit:content` — misst je URL sinnvolle
+  Wortzahl (Chrome/RSC/Loading-Fallback rausgeschnitten), interne Links, Template-Anteil
+  (geteilte Sätze zwischen Geschwister-Seiten), `noindex`, Titel. Flag: < 350 W **oder**
+  > 70 % Template bei indexierbaren Seiten.
+- `docs/audits/2026-09-04-thin-content-audit.md` — 29-URL-Stichprobe über 10 Typen, **Entscheidung
+  je Bucket**:
+  - ✅ `rasse` / `problem` / `vergleich` / `tipps-artikel` — gesund (460–660 W), keine Aktion.
+  - ✅ `stadt/*` — Doorway-`noindex` (< 100 k Einw.) **verifiziert wirksam**; Großstädte bei
+    58–60 % Template → beobachten.
+  - 🔴 `lebensphase/*` (4) — redaktioneller Body ~150 W → **anreichern** (nicht `noindex`, starke Keywords).
+  - 🟡 `futtertyp/*` — 2/3 unter 350 W (DB-Produkttabelle lokal nicht gerendert) → erst DB-Re-Audit, dann ggf. anreichern.
+  - 🟡 `tipps-kategorie/*` — inhaltlich reich, aber **102 interne Links/Seite** → Liste kürzen/paginieren.
+  - ⚪ `glossar/*` — lokal nur `notFound()` (kein `DATABASE_URL`) → **Re-Audit mit DB** Pflicht.
+
+**Offen (Teil 2):** (1) `npm run audit:content` **mit `DATABASE_URL`** neu, Report ersetzen —
+`glossar`/`lebensphase`/`futtertyp` sind ohne DB unterschätzt. (2) `lebensphase/*` anreichern.
+(3) `futtertyp/*` gegenmessen. (4) `glossar/*` anreichern vs. Cluster-Merge + `sitemap.ts`
+(`GLOSSAR_SLUGS`/`WISSENS_HUBS` aus DB statt Konstante). (5) `tipps-kategorie` Link-Kürzung.
 
 ### Operation 4.2 — Tierarzt-Review live schalten
 - **Ziel:** `reviewedBy`-Schema aktiv, sichtbares „fachlich geprüft von …" auf den Gesundheits-nahen Seiten.
@@ -1010,7 +1030,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 3.3 | OG-Bilder pro Rasse | 🟡 Rasse-OG mit Foto + BELLA-Marke, on-demand (kein 186er-Prebuild) · Teil 2: problem/vergleich/Blog-Layout + Custom-Font offen | 2026-09-03 | _(dieser Batch)_ |
 | 3.4 | Komponenten-Katalog + VisReg | ✅ Katalog + Playwright (Smoke blockierend, Visual manuell) | 2026-09-03 | _(dieser Batch)_ |
 | 3.5 | Motion-Politur | 🟡 tote nicht-composited Animationen entfernt (`sheen`/`scan-sweep`/`spotlight` + toter Hero-Block, −40 Zeilen CSS) · Teil 2: `framer-motion`-Audit + View Transitions offen | 2026-09-03 | _(dieser Batch)_ |
-| 4.1 | Thin-Content-Audit | ⬜ offen | | |
+| 4.1 | Thin-Content-Audit | 🟡 Tool (`audit:content`) + Report + Bucket-Entscheidungen · Teil 2: DB-Re-Audit + `lebensphase`/`futtertyp`/`glossar` anreichern | 2026-09-04 | _(dieser Batch)_ |
 | 4.2 | Tierarzt-Review live | ⬜ blockiert (Reviewer) | | |
 | 4.3 | Aktualitäts-Signal | ⬜ offen | | |
 | 4.4 | Interner Cluster-Graph | ⬜ offen | | |
