@@ -339,9 +339,10 @@ generiert. `drizzle/README.md` erklärt die Baseline-Situation (Prod-DB existier
 - **Dateien:** neu `bella-app/drizzle/` (SQL), `drizzle.config.ts`, `src/app/api/advisor/chat/route.ts` (`logChat`), evtl. weitere Routen mit demselben Muster (`grep -rn "CREATE TABLE IF NOT EXISTS" src`).
 - **Vorgehen:**
   1. `chat_logs`, `ai_usage` (aus 1.3) als Drizzle-Tabellen ins `schema.ts`.
-  2. `npx drizzle-kit generate` → SQL committen. Einmalig `drizzle-kit migrate` gegen Neon (oder GH-Action mit `DATABASE_URL`-Secret).
+  2. `npx drizzle-kit generate` → SQL committen. `drizzle-kit migrate` gegen Neon lokal
+     (`DATABASE_URL` aus `.env.local`) oder als einmaliger Schritt im Netlify-Build.
   3. Alle Laufzeit-DDL aus dem Code entfernen.
-  4. Optional CI-Job: `drizzle-kit check` gegen die Migrationen (Drift-Detektor).
+  4. Optional `drizzle-kit check` (Drift-Detektor) in `npm run ci` einhängen.
 - **Akzeptanz:** `grep -rn "CREATE TABLE" src` = 0. `drizzle/`-Ordner mit nummerierten SQL-Files committet. Advisor-Logging funktioniert weiter.
 - **Agent:** `platform-architect`. **Aufwand:** S–M. **Risiko:** niedrig. **Abhängt von:** —
 </details>
@@ -1009,16 +1010,18 @@ entfernen → Akzeptanz `grep gtag = 0`.
   Lighthouse-Report im Netlify-Deploy-Log.
 - **Agent:** `platform-architect` + `visual-designer`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 0.4.
 
-### Operation 6.3 — SECURITY.md, CODEOWNERS, PR-Template, Dependency-Updates
-- **Ziel:** Repo-Hygiene wie ein Produkt, nicht wie ein Bastelprojekt.
-- **Dateien:** neu `SECURITY.md`, `.github/CODEOWNERS`, `.github/pull_request_template.md`,
-  `.github/dependabot.yml`. (`.github/` bleibt nur für diese passiven Meta-Dateien — **keine
-  Workflows**.)
-- **Vorgehen:** SECURITY.md (Kontakt, Scope, verantwortungsvolle Offenlegung). Dependabot
-  wöchentlich, gruppiert, nur für **npm** (keine GH-Actions mehr). Alternativ `npm audit
-  --audit-level=high` als weiche Stufe in `npm run ci`. PR-Template mit „`npm run ci` grün?
-  Vitals? Offenlegung?"-Checkliste.
-- **Akzeptanz:** Alle Dateien da. Erster Dependabot-PR durchläuft den Netlify-Deploy-Preview-Gate.
+### Operation 6.3 — SECURITY.md, CODEOWNERS, PR-Template, Dependency-Hygiene
+- **Ziel:** Repo-Hygiene wie ein Produkt, nicht wie ein Bastelprojekt — **ohne** GitHub-seitige
+  Automation (alles läuft bei Netlify).
+- **Dateien:** neu `SECURITY.md`, `.github/CODEOWNERS`, `.github/pull_request_template.md`.
+  `.github/` hält **nur** diese passiven, von GitHub gerenderten Textdateien — keine Workflows,
+  kein Dependabot, keine Actions.
+- **Vorgehen:** SECURITY.md (Kontakt `support@welches-hundefutter.today`, Scope, verantwortungsvolle
+  Offenlegung). Dependency-Check: `npm audit --audit-level=high` als weiche Stufe in `npm run ci`
+  (erst Warn, dann blockierend); Updates manuell per `npm outdated` im Rhythmus. PR-Template mit
+  Checkliste „`npm run ci` grün? Vitals? Affiliate-Offenlegung? Doku im selben Commit?".
+- **Akzeptanz:** Dateien da. `npm audit` in der `ci`-Kette. Ein Commit mit bekannter High-CVE-Dep
+  lässt den Netlify-Build scheitern.
 - **Agent:** `platform-architect` + `trust-compliance`. **Aufwand:** S. **Risiko:** niedrig. **Abhängt von:** 0.4.
 
 ### Operation 6.4 — Daten-Backup + Wiederherstellungs-Runbook

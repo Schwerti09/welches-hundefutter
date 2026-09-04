@@ -143,4 +143,7 @@ DATABASE_URL="postgres://…" node scripts/load-dog-foods.mjs
 (05:00), `price-alerts.mts` (06:00), `ai-visibility.mts` (Mo 07:00), `health-check.mts`
 (stündlich). Kein GitHub Actions mehr.
 
-`.env.local` nach `.env.example`: `DATABASE_URL`, `AWIN_PUBLISHER_ID`, `AWIN_API_TOKEN`, `GEMINI_API_KEY`, `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `SITE_URL`.
+**Env & Secrets:** lokal `.env.local` nach `.env.example`; für Produktion **alles in der
+Netlify-UI** (*Site configuration → Environment variables*) — `DATABASE_URL`, `GEMINI_API_KEY`,
+`ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `EMAIL_FROM`, `SITE_URL`, `AWIN_FEED_URLS*`,
+`ADCELL_FEED_URLS*`, `INDEXNOW_KEY`, `PEXELS_API_KEY`, `OUTREACH_TOKEN`. **Keine GitHub Secrets.**

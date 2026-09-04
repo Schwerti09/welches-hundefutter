@@ -217,8 +217,11 @@ Route Handlers. Kein Connection-Pool nötig (serverless HTTP).
 - **E2E/Visuell laufen NICHT im Build** (Browser im Build-Image zu fragil) — manuell:
   `E2E_BASE_URL=<preview-url> npm run test:e2e` bzw. `npm run test:visual` (Baselines unter
   `e2e/*-snapshots/`, im CI-Linux erzeugt).
-- Env-Variablen in der Netlify-UI (DB, AI-Keys, AWIN-Feeds, `RESEND_API_KEY`,
-  `CRON_SECRET`, `SITE_URL`). Template: `bella-app/.env.example`.
+- **Alle** Env-Variablen und Secrets liegen in der **Netlify-UI** (*Site configuration →
+  Environment variables*) — `DATABASE_URL`, `GEMINI_API_KEY`, `ANTHROPIC_API_KEY`,
+  `RESEND_API_KEY`, `EMAIL_FROM`, `SITE_URL`, `AWIN_FEED_URLS*`, `ADCELL_FEED_URLS*`,
+  `INDEXNOW_KEY`, `PEXELS_API_KEY`, `OUTREACH_TOKEN`. Es gibt keine GitHub Secrets.
+  Template: `bella-app/.env.example`.
 
 ---
 

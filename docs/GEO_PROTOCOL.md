@@ -173,7 +173,9 @@ export async function pingIndexNow(urls: string[]) {
 }
 ```
 
-**Verdrahtung:** In den bestehenden täglichen Feed-Cron (GitHub Actions) einhängen — bei jeder Preis-/Produktänderung die betroffenen URLs an IndexNow schicken.
+**Verdrahtung:** Bereits im täglichen Feed-Cron (**Netlify Scheduled Function**
+`bella-app/netlify/functions/import-feeds.mts`, ruft `scripts/lib/indexnow-ping.mjs`) —
+bei jeder Preis-/Produktänderung gehen die betroffenen URLs an IndexNow. Kein GitHub Actions.
 
 **Akzeptanzkriterien A2:**
 - Bing Webmaster zeigt die Sitemap als eingelesen.

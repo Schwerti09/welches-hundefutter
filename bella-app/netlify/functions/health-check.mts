@@ -1,9 +1,8 @@
 import type { Config } from "@netlify/functions";
 
 /**
- * Stündlicher Produktions-Smoke (Roadmap 6.1, Ersatz für den früheren
- * GitHub-Actions-Lauf). Prüft die wichtigsten Routen der Live-Seite auf
- * Status + Inhalts-Marker. Fehler landen im Netlify-Function-Log
+ * Stündlicher Produktions-Smoke (Roadmap 6.1). Prüft die wichtigsten Routen der
+ * Live-Seite auf Status + Inhalts-Marker. Fehler landen im Netlify-Function-Log
  * (`console.error`) — eine echte Alerting-Anbindung folgt mit 6.1.
  */
 

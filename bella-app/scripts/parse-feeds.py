@@ -23,7 +23,7 @@ def _download(url, dest_dir, i):
         f.write(r.read())
     return path
 
-# Feeds aus Env-URLs (Cron/GitHub-Action) ODER lokale Dateien (manueller Lauf)
+# Feeds aus Env-URLs (Netlify Scheduled Function `import-feeds.mts`) ODER lokale Dateien (manueller Lauf)
 _awin_urls = [u.strip() for u in os.environ.get("AWIN_FEED_URLS", "").split(",") if u.strip()]
 _adcell_urls = [u.strip() for u in os.environ.get("ADCELL_FEED_URLS", "").split(",") if u.strip()]
 if _awin_urls or _adcell_urls:
