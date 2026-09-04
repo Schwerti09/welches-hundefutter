@@ -134,8 +134,9 @@ Messbar. Kein Vibe.
 Bevor gebaut wird, muss das Repo aufhören zu lügen.
 
 ### ✅ Operation 0.0 — App-Ordner `handyvertrag-app` → `bella-app` — **ERLEDIGT (2026-09-03)**
-`git mv`, `netlify.toml base`, `package.json name`, 3 CI-Workflows, `.gitignore` ×2,
-`CLAUDE.md`, `.claude/agents/{00,06}`, `README` angepasst. Legacy-Skript `migrate-from-hansi.sh` entfernt. Build grün.
+`git mv`, `netlify.toml base`, `package.json name`, `.gitignore` ×2, `CLAUDE.md`,
+`.claude/agents/{00,06}`, `README` angepasst. Legacy-Skript `migrate-from-hansi.sh` entfernt. Build grün.
+(Die damals mitgezogenen `.github/workflows/*` sind seit 0.4 komplett entfernt — kein GitHub Actions.)
 **Rest-Haken (Mensch):** in der Netlify-UI unter *Site configuration → Build & deploy → Build settings*
 prüfen, dass „Base directory" leer ist oder auf `bella-app` steht (sonst überstimmt die UI `netlify.toml`).
 
@@ -571,8 +572,8 @@ via `describe.skipIf` übersprungen, der Rest läuft normal. **Kein GitHub-Actio
   Lachs nicht", „allergisch gegen Getreide", nur Symptome „juckt sich ständig", „ohne Huhn bitte").
   Assertions (strukturell, ohne LLM-Judge): `OFFERS`-Payload hat **0** Produkte mit Avoid-Protein-Variante
   in `name`/`protein`; `type` nie `snack`; nichts Sicheres → leere Offers + ehrlicher Text + kein `PROFILE:`.
-  Als **blockierender** CI-Job (`npm run eval:advisor`), braucht `DATABASE_URL` + `GEMINI_API_KEY` als GH-Secrets
-  ODER läuft gegen einen fixen Fixture-Katalog (bevorzugt — deterministisch, kein Netz).
+  Als **blockierender** Teil von `npm run ci` (Netlify-Build) — `DATABASE_URL` ist Netlify-Env;
+  ohne DB via `describe.skipIf` übersprungen. `npm run eval:advisor` ist der opt-in LLM-Judge-Lauf.
 - **Akzeptanz:** Absichtlich gelockerter Filter → CI rot. Normalzustand grün. Läuft < 60 s.
 - **Agent:** `bella-advisor` + `trust-compliance`. **Aufwand:** L. **Risiko:** niedrig. **Abhängt von:** 2A.1–2A.6.
 </details>
@@ -636,9 +637,10 @@ Deterministischer Fallback-Text greift wie bisher — nie ein leerer Stream.
 - **Agent:** `bella-advisor` + `conversion-analyst`. **Aufwand:** L. **Risiko:** niedrig. **Abhängt von:** 1.4.
 
 ### ✅ Operation 2.5 — Allergen-Gate — **via Operation 2A.8 erledigt (2026-09-03)**
-`src/lib/advisor/allergen-eval.test.ts` ist genau dieser Gate: blockierender CI-Test gegen die
+`src/lib/advisor/allergen-eval.test.ts` ist genau dieser Gate: blockierender Test gegen die
 echte DB, 6 Szenarien, Assertion „kein `avoidProtein`-Produkt in den Offers, kein Snack" für die
-normale **und** die `{ relax }`-Suche. Braucht das `DATABASE_URL`-GitHub-Secret zum Scharfschalten.
+normale **und** die `{ relax }`-Suche. Läuft im **Netlify-Build** (`npm run ci`), weil
+`DATABASE_URL` Netlify-Env ist; lokal ohne DB via `describe.skipIf` übersprungen.
 <details><summary>ursprünglicher Plan</summary>
 
 - **Ziel:** Kein Deploy, wenn ein Allergiker-Szenario ein verbotenes Protein in den Offers hätte.
@@ -1131,11 +1133,11 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 2.2 | Modell-Routing | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 2.3 | Stream-Robustheit | 🟡 Server (Timeout+Logging+WARN) · Client-Retry offen | 2026-09-03 | _(dieser Batch)_ |
 | 2.4 | Advisor-Eval-Suite | ✅ strukturell + LLM-Judge (opt-in) | 2026-09-03 | _(dieser Batch)_ |
-| 2.5 | Allergen-Gate | ✅ via 2A.8 (braucht DB-Secret) | 2026-09-03 | 334a46b |
+| 2.5 | Allergen-Gate | ✅ via 2A.8 (läuft im Netlify-Build, DATABASE_URL = Netlify-Env) | 2026-09-03 | 334a46b |
 | 3.1 | Token-System Light/Dark | 🟡 Token-Ebene + `[data-theme]` Light/Dark + `ThemeToggle` live (nicht-brechend, auf `/dev/components`) · Teil 2: site-weite `bg-white/x`→Token-Migration + `@media (prefers-color-scheme)` offen | 2026-09-03 | _(dieser Batch)_ |
 | 3.2 | BELLA-Maskottchen | 🟡 kanonisches `BellaMascot` (SVG, 4 Posen, server-safe) + echte 404/Loading + Popup/Avatar-Einsatz · Teil 2: off-brand `BellaCharacter` ablösen + `🐕`-CTA-Sweep offen | 2026-09-03 | _(dieser Batch)_ |
 | 3.3 | OG-Bilder pro Rasse | 🟡 Rasse-OG mit Foto + BELLA-Marke, on-demand (kein 186er-Prebuild) · Teil 2: problem/vergleich/Blog-Layout + Custom-Font offen | 2026-09-03 | _(dieser Batch)_ |
-| 3.4 | Komponenten-Katalog + VisReg | ✅ Katalog + Playwright (Smoke blockierend, Visual manuell) | 2026-09-03 | _(dieser Batch)_ |
+| 3.4 | Komponenten-Katalog + VisReg | ✅ Katalog + Playwright Smoke/Visual (beide manuell gegen URL, nicht im Gate) | 2026-09-03 | _(dieser Batch)_ |
 | 3.5 | Motion-Politur | 🟡 tote nicht-composited Animationen entfernt (`sheen`/`scan-sweep`/`spotlight` + toter Hero-Block, −40 Zeilen CSS) · Teil 2: `framer-motion`-Audit + View Transitions offen | 2026-09-03 | _(dieser Batch)_ |
 | 4.1 | Thin-Content-Audit | 🟡 Tool (`audit:content`) + Report + Bucket-Entscheidungen · Teil 2: DB-Re-Audit + `lebensphase`/`futtertyp`/`glossar` anreichern | 2026-09-04 | _(dieser Batch)_ |
 | 4.2 | Tierarzt-Review live | ⬜ blockiert (Reviewer) | | |
@@ -1148,7 +1150,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 5.3 | Funnel-Instrumentierung | ⬜ offen | | |
 | 5.4 | Outcome-Checks sichtbar | ⬜ offen | | |
 | 6.1 | Error-Tracking | ⬜ offen | | |
-| 6.2 | Performance-Budget CI | ⬜ offen | | |
+| 6.2 | Performance-Budget im Build | ⬜ offen | | |
 | 6.3 | Repo-Hygiene | ⬜ offen | | |
 | 6.4 | Backup + Runbook | ⬜ offen | | |
 
