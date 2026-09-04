@@ -282,6 +282,8 @@ export async function POST(request: NextRequest) {
         imageUrl: o.image_url,
         affiliateUrl: o.affiliate_url,
         whyThis: o.whyThis,
+        reasons: o.reasons,        // AGENTS.md §13: strukturierte Begründung, nicht nur Freitext
+        scoreVersion: o.scoreVersion, // AGENTS.md §57: Score-Formel-Version
       }));
 
       emit(`OFFERS:${JSON.stringify({ offers: offerPayload, theme, confidence })}`);

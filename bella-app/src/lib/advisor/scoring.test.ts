@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { scoreFood, type DogFoodRow } from "./scoring";
+import { scoreFood, BELLA_SCORE_VERSION, type DogFoodRow } from "./scoring";
 
 function food(over: Partial<DogFoodRow> = {}): DogFoodRow {
   return {
@@ -37,5 +37,18 @@ describe("scoreFood", () => {
 
   it("liefert immer eine whyThis-Erklärung", () => {
     expect(scoreFood(food(), {}).whyThis.length).toBeGreaterThan(0);
+  });
+
+  it("liefert strukturierte, nachvollziehbare reasons (AGENTS.md §13)", () => {
+    const s = scoreFood(food({ suitable_for: ["welpen"] }), { lifePhase: "welpen", maxPricePerKg: 3 });
+    const lifeStage = s.reasons.find(r => r.type === "life_stage");
+    expect(lifeStage).toBeDefined();
+    expect(lifeStage?.result).toBe("pass");
+    const priceReason = s.reasons.find(r => r.type === "price");
+    expect(priceReason?.result).toBe("penalty");
+  });
+
+  it("ist mit einer BELLA_SCORE_VERSION versioniert (AGENTS.md §57)", () => {
+    expect(scoreFood(food(), {}).scoreVersion).toBe(BELLA_SCORE_VERSION);
   });
 });

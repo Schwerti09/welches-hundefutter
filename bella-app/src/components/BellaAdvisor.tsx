@@ -30,6 +30,8 @@ interface FoodCard {
   affiliateUrl?: string;
   imageUrl?: string | null;
   whyThis?: string | null;
+  reasons?: Array<{ type: string; result: "pass" | "penalty"; label: string; evidence?: string | number }>;
+  scoreVersion?: string;
   // tolerate legacy/handy-shaped payloads during the dog_foods migration
   deviceName?: string;
   providerName?: string;
