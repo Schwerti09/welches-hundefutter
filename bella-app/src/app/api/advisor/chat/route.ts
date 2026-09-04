@@ -68,6 +68,21 @@ async function logChat(entry: { sessionId: string; userMessage: string; bellaRep
   } catch { /* never block */ }
 }
 
+// AI-Kosten-Monitoring (Roadmap 1.3-Rest / AGENTS.md §40, §164). Ein Row pro
+// Provider-Versuch, Tokens best-effort. Darf den Response-Stream nie blockieren.
+function logAiUsage(entry: {
+  stage: "ask" | "recommend"; provider: "gemini" | "anthropic"; model: string;
+  ok: boolean; latencyMs: number; inputTokens?: number | null; outputTokens?: number | null; error?: string;
+}): void {
+  const url = process.env.DATABASE_URL;
+  if (!url) return;
+  const sql = neon(url);
+  sql`INSERT INTO ai_usage (route, stage, provider, model, ok, latency_ms, input_tokens, output_tokens, error)
+      VALUES ('advisor.chat', ${entry.stage}, ${entry.provider}, ${entry.model}, ${entry.ok},
+              ${entry.latencyMs}, ${entry.inputTokens ?? null}, ${entry.outputTokens ?? null}, ${entry.error?.slice(0, 300) ?? null})`
+    .catch(() => { /* never block */ });
+}
+
 // ─── Route ────────────────────────────────────────────────────────────────────
 
 export async function POST(request: NextRequest) {
@@ -175,6 +190,7 @@ export async function POST(request: NextRequest) {
       const providerErrors: string[] = [];
 
       if (geminiKey) {
+        const geminiStart = Date.now();
         try {
           const genAI = new GoogleGenerativeAI(geminiKey);
           const model = genAI.getGenerativeModel({ model: plan.gemini.model, systemInstruction: sysPrompt });
@@ -193,14 +209,23 @@ export async function POST(request: NextRequest) {
           });
           const result = await withTimeout(chat.sendMessageStream(message), plan.timeoutMs, "gemini");
           for await (const chunk of result.stream) { const t = chunk.text(); if (t) { fullText += t; emit(`TEXT:${t.replace(/\r?\n/g, "\\n")}`); } }
+          const usage = await result.response.then((r) => r.usageMetadata).catch(() => undefined);
+          logAiUsage({
+            stage: plan.label, provider: "gemini", model: plan.gemini.model, ok: true,
+            latencyMs: Date.now() - geminiStart, inputTokens: usage?.promptTokenCount, outputTokens: usage?.candidatesTokenCount,
+          });
         } catch (e) {
           fullText = "";
           const msg = e instanceof Error ? e.message : String(e);
           providerErrors.push(`gemini(${plan.gemini.model}): ${msg}`);
           logError("advisor.gemini", e, { plan: plan.label, model: plan.gemini.model });
+          logAiUsage({ stage: plan.label, provider: "gemini", model: plan.gemini.model, ok: false, latencyMs: Date.now() - geminiStart, error: msg });
         }
       }
       if (!fullText && anthropicKey) {
+        const anthropicStart = Date.now();
+        let inTok: number | undefined;
+        let outTok: number | undefined;
         try {
           const anthropic = new Anthropic({ apiKey: anthropicKey });
           const msgs = [...history.map(h => ({ role: h.role as "user" | "assistant", content: h.content })), { role: "user" as const, content: message }];
@@ -210,12 +235,16 @@ export async function POST(request: NextRequest) {
           );
           for await (const event of resp) {
             if (event.type === "content_block_delta" && event.delta.type === "text_delta") { const t = event.delta.text; if (t) { fullText += t; emit(`TEXT:${t.replace(/\r?\n/g, "\\n")}`); } }
+            else if (event.type === "message_start") { inTok = event.message.usage.input_tokens; }
+            else if (event.type === "message_delta") { outTok = event.usage.output_tokens; }
           }
+          logAiUsage({ stage: plan.label, provider: "anthropic", model: plan.anthropic.model, ok: true, latencyMs: Date.now() - anthropicStart, inputTokens: inTok, outputTokens: outTok });
         } catch (e) {
           fullText = "";
           const msg = e instanceof Error ? e.message : String(e);
           providerErrors.push(`anthropic(${plan.anthropic.model}): ${msg}`);
           logError("advisor.anthropic", e, { plan: plan.label, model: plan.anthropic.model });
+          logAiUsage({ stage: plan.label, provider: "anthropic", model: plan.anthropic.model, ok: false, latencyMs: Date.now() - anthropicStart, error: msg });
         }
       }
       if (!fullText) {

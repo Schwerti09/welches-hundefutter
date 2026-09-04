@@ -287,9 +287,15 @@ Umgesetzt: `src/lib/rate-limit.ts` — In-Memory-Sliding-Window pro IP (Modul-Sc
 Node-Instanz), zwei Fenster (15/min + ~150/h) auf `/api/advisor/chat` **und** `/api/support/chat`,
 `429` mit `Retry-After`. `checkSameOrigin`: fremde `Origin`/`Referer` → `403`, fehlender Header
 (curl/S2S) durchgelassen. 10 Unit-Tests. Ohne Redis, ohne neue Infra.
-**Offen:** verteilter Store (Upstash Redis / Netlify Blobs) für globales Limit über Instanzen,
-`ai_usage`-Kosten-Logging (Tokens/Modell), `AbortController`-Durchreichung. Kein `src/middleware.ts`
-nötig gewesen — Limit sitzt in den Node-Route-Handlern (Edge-Middleware hätte keinen persistenten Zustand).
+**`ai_usage`-Kosten-Logging: ✅ nachgezogen (2026-09-04, AGENTS.md §40/§164).** `ai_usage`-Tabelle
+(`drizzle/0002_ai_usage.sql`, direkt in Neon angelegt) + `logAiUsage()` in `route.ts` — ein Row
+pro Provider-Versuch (`route`/`stage`/`provider`/`model`/`ok`/`latency_ms`/`input_tokens`/
+`output_tokens`/`error`, gekürzt & PII-frei), sowohl im Erfolgs- als auch im Fehlerpfad, nie
+blockierend (`.catch(() => {})`, gleiches Muster wie `logChat`). Tokens best-effort: Gemini aus
+`result.response.usageMetadata`, Anthropic aus den `message_start`/`message_delta`-Stream-Events.
+**Weiterhin offen:** verteilter Rate-Limit-Store (Upstash Redis / Netlify Blobs) für globales
+Limit über Instanzen, `AbortController`-Durchreichung. Kein `src/middleware.ts` nötig gewesen —
+Limit sitzt in den Node-Route-Handlern (Edge-Middleware hätte keinen persistenten Zustand).
 <details><summary>ursprünglicher Plan</summary>
 
 - **Ziel:** `/api/advisor/chat` & andere teure Routen sind gegen Missbrauch/Kostenexplosion geschützt.
@@ -1201,7 +1207,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 0.4 | Qualitäts-Gate | ✅ Netlify-Build `npm run ci` (kein GitHub Actions); `.github/workflows/` entfernt; `health-check.mts` Cron; Ruleset „main protection" (PR + Netlify-Deploy-Preview-Check, Owner-Bypass) | 2026-09-04 | _(dieser Batch)_ |
 | 1.1 | React 19 | ✅ live, Preview bestätigt | 2026-09-03 | 79383ce |
 | 1.2 | CSP + COOP | ✅ Weg B live · strict-dynamic als Folge-Op | 2026-09-03 | 6b68152 |
-| 1.3 | API Rate-Limit | 🟡 In-Memory-Limiter live · verteilter Store + ai_usage folgen | 2026-09-03 | _(dieser Batch)_ |
+| 1.3 | API Rate-Limit | 🟡 In-Memory-Limiter live + ai_usage-Kosten-Logging live · verteilter Store folgt | 2026-09-03 | _(dieser Batch)_ |
 | 1.4 | Test-Fundament | ✅ 113 Vitest + 5 Playwright-Smoke + Evals | 2026-09-03 | _(dieser Batch)_ |
 | 1.5 | Drizzle-Migrationen | ✅ erledigt · ⚠️ Nachtrag: Prod-DB ohne `__drizzle_migrations` + gedriftet von `schema.ts` (echte Baseline + Drift-Auflösung offen) | 2026-09-03 | _(dieser Batch)_ |
 | 1.6 | Font-Bug + tsconfig | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |

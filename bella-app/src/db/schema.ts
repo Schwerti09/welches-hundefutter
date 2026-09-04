@@ -381,3 +381,29 @@ export const events = pgTable("events", {
 
 export type Event = typeof events.$inferSelect;
 export type NewEvent = typeof events.$inferInsert;
+
+// ─── AI-Kosten-/Nutzungs-Monitoring (Roadmap 1.3-Rest / AGENTS.md §40, §164) ──
+// Ein Row pro Provider-Versuch (nicht pro Nutzer-Nachricht — bei Fallback von
+// Gemini auf Anthropic entstehen zwei Rows). Tokens sind best-effort (nicht
+// jede Provider-Antwort liefert Usage-Metadaten mit); `error` ist eine kurze,
+// bereits gekürzte Fehlermeldung (kein Stacktrace, kein PII).
+export const aiUsage = pgTable("ai_usage", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  route: text("route").notNull(), // z.B. "advisor.chat"
+  stage: text("stage"), // "ask" | "recommend"
+  provider: text("provider").notNull(), // "gemini" | "anthropic"
+  model: text("model").notNull(),
+  ok: boolean("ok").notNull(),
+  latencyMs: integer("latency_ms"),
+  inputTokens: integer("input_tokens"),
+  outputTokens: integer("output_tokens"),
+  error: text("error"),
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => ({
+  routeIdx: index("ai_usage_route_idx").on(table.route),
+  providerIdx: index("ai_usage_provider_idx").on(table.provider),
+  createdIdx: index("ai_usage_created_idx").on(table.createdAt),
+}));
+
+export type AiUsage = typeof aiUsage.$inferSelect;
+export type NewAiUsage = typeof aiUsage.$inferInsert;
