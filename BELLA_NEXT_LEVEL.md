@@ -643,15 +643,16 @@ Qualitäts-Tuning ohne Deploy. `route.ts` nutzt `plan` statt hartkodierter Model
 - **Offen (→ 2.4):** Blind-Bewertung der Qualität, Latenz-/Kosten-Messung (`ai_usage`).
 - **Agent:** `bella-advisor`. **Aufwand:** S–M. **Risiko:** niedrig–mittel (Kosten). **Abhängt von:** 1.3.
 
-### 🟡 Operation 2.3 — Stream-Robustheit — **SERVER ERLEDIGT (2026-09-03), Client-Retry offen**
+### ✅ Operation 2.3 — Stream-Robustheit — **ERLEDIGT (2026-09-04)**
 `route.ts`: **Timeout pro Provider** (`withTimeout` via `Promise.race`, aus `planModels`), jeder
 Fehler → strukturiertes `console.error("[advisor] … failed", msg)` (Netlify-Function-Logs) statt
-stillem `catch { "" }`. Bricht alles → `emit("WARN:degraded")` (der Client ignoriert es heute
-gefahrlos, ist aber bereit für einen Retry-Hinweis) + `console.error` „beide Provider ohne Antwort".
-Deterministischer Fallback-Text greift wie bisher — nie ein leerer Stream.
-- **Offen:** Client-Retry-Chip in `BellaAdvisor.tsx` (763 Z. Client-Komponente), Client→Server
-  `AbortController`, echtes Error-Tracking (→ 6.1).
-- **Agent:** `bella-advisor` + `platform-architect`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 6.1 (Tracking) — oder parallel mit `console.error`-Stub.
+stillem `catch { "" }`. Bricht alles → `emit("WARN:degraded")` + `console.error` „beide Provider
+ohne Antwort". Deterministischer Fallback-Text greift wie bisher — nie ein leerer Stream.
+**Nachtrag 2026-09-04:** `BellaAdvisor.tsx` trackt `WARN:degraded` jetzt pro Nachricht
+(`Message.degraded`) und zeigt einen dezenten Hinweis + „🔄 Nochmal versuchen"-Button, der die
+vorherige Nutzernachricht erneut sendet (AGENTS.md §92/§161/§163).
+- **Weiterhin offen:** Client→Server `AbortController`, echtes Error-Tracking (→ 6.1 Sentry).
+- **Agent:** `bella-advisor` + `platform-architect`. **Aufwand:** M. **Risiko:** niedrig.
 
 ### ✅ Operation 2.4 — Advisor-Eval-Suite — **ERLEDIGT (2026-09-03)**
 `buildSystemPrompt` + `fallbackQuestion`/`fallbackRecommend` → **`src/lib/advisor/prompt.ts`**
@@ -1233,7 +1234,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | **2A.8** | Eval-Suite Allergen (blockierend, echte DB) | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | **2A.9** | Doku + README | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
 | 2.2 | Modell-Routing | ✅ erledigt | 2026-09-03 | _(dieser Batch)_ |
-| 2.3 | Stream-Robustheit | 🟡 Server (Timeout+Logging+WARN) · Client-Retry offen | 2026-09-03 | _(dieser Batch)_ |
+| 2.3 | Stream-Robustheit | ✅ Server (Timeout+Logging+WARN) + Client-Retry-Hinweis live | 2026-09-04 | _(dieser Batch)_ |
 | 2.4 | Advisor-Eval-Suite | ✅ strukturell + LLM-Judge (opt-in) | 2026-09-03 | _(dieser Batch)_ |
 | 2.5 | Allergen-Gate | ✅ via 2A.8 (läuft im Netlify-Build, DATABASE_URL = Netlify-Env) | 2026-09-03 | 334a46b |
 | 3.1 | Token-System Light/Dark | 🟡 Token-Ebene + `[data-theme]` Light/Dark + `ThemeToggle` live (nicht-brechend, auf `/dev/components`) · Teil 2: site-weite `bg-white/x`→Token-Migration + `@media (prefers-color-scheme)` offen | 2026-09-03 | _(dieser Batch)_ |
