@@ -52,7 +52,7 @@ function safeProps(v: unknown): Record<string, unknown> | null {
 }
 
 export async function POST(req: NextRequest) {
-  const limited = checkRateLimit(req, "track", [{ limit: 120, windowMs: 60_000 }]);
+  const limited = await checkRateLimit(req, "track", [{ limit: 120, windowMs: 60_000 }]);
   if (limited) return limited;
 
   let body: Record<string, unknown>;

@@ -86,8 +86,9 @@ function logAiUsage(entry: {
 // ─── Route ────────────────────────────────────────────────────────────────────
 
 export async function POST(request: NextRequest) {
-  // Missbrauchs-/Kostenschutz: zwei LLM-Calls pro Request. In-Memory pro Instanz (Roadmap Op 1.3).
-  const limited = checkRateLimit(request, "advisor", [
+  // Missbrauchs-/Kostenschutz: zwei LLM-Calls pro Request. Verteilt über Upstash,
+  // wenn konfiguriert, sonst In-Memory pro Instanz (Roadmap Op 1.3).
+  const limited = await checkRateLimit(request, "advisor", [
     { limit: 15, windowMs: 60_000 },
     { limit: 150, windowMs: 60 * 60_000 },
   ]);

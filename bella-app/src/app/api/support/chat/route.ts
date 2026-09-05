@@ -50,7 +50,7 @@ Wenn eine Frage außerhalb deines Wissens liegt, sag das ehrlich und verweise au
 support@welches-hundefutter.today.`;
 
 export async function POST(req: NextRequest) {
-  const limited = checkRateLimit(req, "support", [
+  const limited = await checkRateLimit(req, "support", [
     { limit: 15, windowMs: 60_000 },
     { limit: 120, windowMs: 60 * 60_000 },
   ]);
