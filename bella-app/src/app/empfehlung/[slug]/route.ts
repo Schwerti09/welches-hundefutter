@@ -17,10 +17,15 @@ export async function GET(
         SELECT affiliate_url FROM dog_foods WHERE slug = ${slug} LIMIT 1
       `
       if (rows[0]?.affiliate_url) {
-        // Click-Tracking (non-blocking) — First-Party-Events (Roadmap 5.3)
+        // Click-Tracking (non-blocking) — First-Party-Events (Roadmap 5.3).
+        // ?src=refill|lifecycle kommt aus den E-Mail-CTAs in run-price-alerts.mjs und
+        // bekommt einen eigenen Event-Namen statt einfach 'affiliate_click' zu sein,
+        // damit der Nachschub-/Lebensphasen-Funnel separat auswertbar ist.
         const referer = req.headers.get('referer') ?? ''
+        const src = req.nextUrl.searchParams.get('src')
+        const eventName = src === 'refill' || src === 'lifecycle' ? `${src}_click` : 'affiliate_click'
         sql`INSERT INTO events (name, path, ref, props)
-            VALUES ('affiliate_click', ${`/empfehlung/${slug}`}, ${referer || null}, ${JSON.stringify({ slug })}::jsonb)
+            VALUES (${eventName}, ${`/empfehlung/${slug}`}, ${referer || null}, ${JSON.stringify({ slug })}::jsonb)
         `.catch(() => {})
 
         return NextResponse.redirect(rows[0].affiliate_url as string, { status: 302 })

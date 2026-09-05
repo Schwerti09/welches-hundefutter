@@ -69,6 +69,12 @@ export async function runPriceAlerts({ dryRun = false } = {}) {
   const FROM = process.env.EMAIL_FROM || "BELLA <bella@welches-hundefutter.today>";
   const RESEND_KEY = process.env.RESEND_API_KEY;
 
+  // Nachschub-/Lebensphasen-Mails über /empfehlung/[slug] verlinken statt direkt auf die
+  // AWIN-URL, damit der Klick als eigenes Event (refill_click/lifecycle_click) statt gar
+  // nicht erfasst wird (Roadmap 5.3). Ohne Slug lieber die rohe Affiliate-URL als kaputter Link.
+  const trackedLink = (foodSlug, rawAffiliateUrl, src) =>
+    foodSlug ? `${SITE_URL}/empfehlung/${foodSlug}?src=${src}` : (rawAffiliateUrl || SITE_URL);
+
   async function send(to, subject, html) {
     if (dryRun) { console.log(`   [dry-run] -> ${to} :: ${subject}`); return true; }
     if (!RESEND_KEY) { console.log(`   [skip no key] -> ${to} :: ${subject}`); return false; }
@@ -177,7 +183,7 @@ export async function runPriceAlerts({ dryRun = false } = {}) {
     const subject = `📦 ${dogName}s Futter wird knapp – und gerade ${pct}% günstiger`;
     const html = refillHtml({
       dogName, foodName, daysLeft, pct, avg90, curPrice: a.cur_price,
-      affiliateUrl: a.affiliate_url || SITE_URL, unsubUrl, siteUrl: SITE_URL,
+      affiliateUrl: trackedLink(a.food_slug, a.affiliate_url, "refill"), unsubUrl, siteUrl: SITE_URL,
     });
 
     const ok = await send(a.email, subject, html);
@@ -222,7 +228,7 @@ export async function runPriceAlerts({ dryRun = false } = {}) {
     const daysLeft = Math.max(1, Math.ceil((new Date(a.transition_at) - Date.now()) / 864e5));
     const isLarge = a.weight_kg && parseFloat(a.weight_kg) >= 25;
     const unsubUrl = `${SITE_URL}/api/alerts/unsubscribe?token=${a.unsubscribe_token}`;
-    const affiliateUrl = a.affiliate_url || `${SITE_URL}/#bella-advisor`;
+    const affiliateUrl = a.food_slug ? trackedLink(a.food_slug, a.affiliate_url, "lifecycle") : `${SITE_URL}/#bella-advisor`;
 
     const subject = `🐾 ${dogName} wird bald Senior — jetzt vorbereiten`;
     const html = `<!doctype html><html lang="de"><body style="margin:0;background:#0b0b10;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#f4f1ea">
