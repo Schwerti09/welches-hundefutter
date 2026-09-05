@@ -1016,10 +1016,16 @@ grün = manuelle Prüfung nach Deploy. Nonce-Aktivierung hängt an 1.2 (CSP `str
   korrektem `name`/`path`/`ref`/`session_id`/`device`/`props` in `events`. `pageview` läuft
   ab jetzt für echte Besucher.
 
+> **Nachtrag 2026-09-04:** `/admin/analytics` + `/api/admin/analytics` live — Aggregat-Dashboard
+> (Funnel 7/30 Tage, 14-Tage-Verlauf, `ai_usage`-Kosten/Latenz je Provider), Auth über denselben
+> `OUTREACH_TOKEN` wie `/api/outreach/*` (kein zweites Admin-Token-Konzept), `/admin/` bereits in
+> `robots.txt` gesperrt. Live gegen Prod-DB verifiziert (echte Zahlen, 401 ohne/mit falschem Token).
+
 **Offen (Teil 2):** 2 Wochen Parallelbetrieb GA4 ↔ First-Party beobachten.
 `advisor_start`/`advisor_offers`/`affiliate_click`/`refill_click`/`alert_subscribe` an den
-echten Stellen verdrahten (überlappt mit 5.3). `/admin`-Aggregat-Dashboard. Dann
-`GoogleAnalytics.tsx` + `googletagmanager`-Prefetch entfernen → Akzeptanz `grep gtag = 0`.
+echten Stellen verdrahten (überlappt mit 5.3). Dann `GoogleAnalytics.tsx` +
+`googletagmanager`-Prefetch entfernen → Akzeptanz `grep gtag = 0` — **bewusst noch nicht jetzt**:
+GA4 bleibt die einzige einsehbare Quelle, solange niemand das neue Dashboard im Alltag genutzt hat.
 
 ### Operation 5.3 — Funnel-Instrumentierung Seite→Profil→Klick→Nachschub — 🟡 **EVENTS VERDRAHTET (2026-09-04)**
 - **Ziel:** Wir sehen, wo Nutzer abspringen, und die Signale fließen zurück in Advisor/Cross-Sell/SEO.
@@ -1269,7 +1275,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 4.5 | GEO / AI-Search | 🟡 `/llms-full.txt` (20 Q&A + Quellen) + `/llms.txt`-Querverweis · Teil 2: Antwort-zuerst-Absätze, `CitableStat` breiter, Studien-`bella_summary` | 2026-09-04 | _(dieser Batch)_ |
 | 4.6 | JsonLd-Helfer | ✅ `<JsonLd>` + Test + alle 21 Stellen migriert (`<Freshness>` → 4.3) | 2026-09-04 | _(dieser Batch)_ |
 | 5.1 | Futter-Pass-Schleife | ⬜ offen | | |
-| 5.2 | First-Party-Analytics | 🟡 `events` in Neon **live** + `/api/track` + `track()` + `PageTracker` (pageview läuft) · Teil 2: weitere Events verdrahten, `/admin`, GA4 raus | 2026-09-04 | _(dieser Batch)_ |
+| 5.2 | First-Party-Analytics | 🟡 `events` in Neon live + `/api/track` + `/admin/analytics`-Dashboard · Teil 2: 2-Wochen-Parallelbetrieb beobachten, dann GA4 raus | 2026-09-04 | _(dieser Batch)_ |
 | 5.3 | Funnel-Instrumentierung | 🟡 4/5 Events live (advisor_start/offers, affiliate_click, alert_subscribe) · Teil 2: Dashboard, Wochenreport, refill_click | 2026-09-04 | _(dieser Batch)_ |
 | 5.4 | Outcome-Checks sichtbar | ⬜ offen | | |
 | 6.1 | Error-Tracking | 🟡 `log.ts` (PII-Scrub) + Test + `error.tsx`/`global-error.tsx` + Advisor-Catches · Teil 2: Sentry-DSN + Alerts | 2026-09-04 | _(dieser Batch)_ |
