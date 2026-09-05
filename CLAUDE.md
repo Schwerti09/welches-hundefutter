@@ -47,7 +47,7 @@ Preisvergleich und Cross-Selling (Snacks, Versicherung, Zubehör, alles für Hun
 
 ### 🔴 Offene Baustellen (Auszug — vollständig in `BELLA_NEXT_LEVEL.md`)
 
-- **Fundament-Reste:** verteilter Rate-Limit-Store (1.3), `strict-dynamic`-CSP + Nonce (1.2). `ai_usage`-Logging ✅ live.
+- **Fundament-Reste:** `strict-dynamic`-CSP + Nonce (1.2). Rate-Limit (1.3) läuft jetzt verteilt über Upstash (Fallback: In-Memory) — `UPSTASH_REDIS_REST_URL`/`_TOKEN` in Netlify noch zu setzen. `ai_usage`-Logging ✅ live.
 - **Design Teil 2:** site-weite Migration `bg-white/x`→Tokens + `@media (prefers-color-scheme)` aktivieren (3.1) · off-brand `BellaCharacter` ablösen + `🐕`-CTA-Sweep (3.2) · OG-Layout für problem/vergleich/Blog (3.3) · `framer-motion`-Audit + View Transitions (3.5).
 - **Content Teil 2:** Thin-Content anreichern — `lebensphase/*`, `futtertyp/*`, `glossar/*` (4.1) · Cluster-Graph auf futtertyp/vergleich/rasse ausweiten (4.4) · „Antwort-zuerst"-Absätze + `CitableStat` breiter (4.5) · **Tierarzt-Review** (4.2, extern blockiert).
 - **Moat:** Futter-Pass-Schleife (5.1) **war bereits komplett gebaut** — Profil, Verbrauchsmathematik, Nachschub-/Lebensphasen-Wecker, teilbarer Steckbrief, alle 7 Funnel-Events (5.3) live, inkl. `refill_click`/`lifecycle_click`. `/admin/analytics`-Dashboard zeigt Funnel + KI-Kosten + Outcome-Trichter (5.4, intern — noch n=0). Offen: 2-Wochen-Parallelbetrieb GA4↔First-Party beobachten, dann GA4 raus; öffentliche Outcome-Stats brauchen erst echte Fallzahl + eine Tag-Taxonomie-Korrektur.
