@@ -981,7 +981,36 @@ grün = manuelle Prüfung nach Deploy. Nonce-Aktivierung hängt an 1.2 (CSP `str
 
 ## PHASE 5 — Wachstum & Moat schließen
 
-### Operation 5.1 — Futter-Pass-Schleife schließen (Nachschub → E-Mail → Re-Kauf)
+### ✅ Operation 5.1 — Futter-Pass-Schleife schließen (Nachschub → E-Mail → Re-Kauf) — **ERLEDIGT, war stale (2026-09-05)**
+
+> **Nachtrag 2026-09-05:** Diese Operation stand als „⬜ offen" in der Tabelle, obwohl der Code
+> das komplette 5-Stufen-Schwungrad aus `FUTTERPASS.md` bereits umsetzt — AGENTS.md §96/§97 in
+> Reinform („Roadmap ist nicht die Realität"). Vor jeder Änderung geprüft, nichts neu gebaut:
+> 1. **Profil:** `dog_profiles` (Drizzle, voller Datensatz inkl. `photo_data`, `food_preferences`).
+> 2. **Verbrauchsmathematik:** `src/lib/consumption-math.ts` (`dailyGrams`/`bagDays`, getestet) —
+>    aufgerufen sowohl in `/api/profiles` (manuelles Anlegen/Update) als auch inline im Chat
+>    (`route.ts`, schätzt Packungsgröße aus dem Produktnamen).
+> 3. **Nachschub-Wecker:** `price_alerts.mode='refill'` + `refill_due_at`, live gesetzt über
+>    `RefillSetup.tsx` (**direkt im Chat-Moment der Empfehlung**, nicht nur auf `/mein-hund`) →
+>    `POST /api/alerts/subscribe`. Versand täglich 06:00 über `run-price-alerts.mjs`
+>    (`REFILL_DAYS_AHEAD=5`, Cooldown 3 Tage, nur bei echtem Tiefpreis ≥5 % unter 90-Tage-Schnitt).
+> 4. **Lebensphasen-Trigger:** ebenfalls in `run-price-alerts.mjs` (`mode='lifecycle'`,
+>    30 Tage Vorlauf) — Senior-Umstellung inkl. Versicherungs-Cross-Sell in der Mail selbst.
+>    Ausgelöst von `/mein-hund` (`calcLifecycle` aus `src/lib/lifecycle.ts`).
+> 5. **Teilbarer Steckbrief:** `/hund/[share_token]` (476 Zeilen) — Sack-Fortschrittsbalken,
+>    Eignungs-Badges, `ShareButton`, korrekt `noindex` (DSGVO: kein öffentlich indexierter
+>    Personenbezug).
+>
+> **Tatsächlich noch offen (kleiner als angenommen):**
+> - `FUTTERPASS.md` Schritt 7 — Funnel-CTA-Umbau: **nicht verifiziert**, ob `/problem/*`,
+>   `/futtertyp/*` etc. tatsächlich in den Profil-Flow münden statt nur zu Produkten zu verlinken.
+> - Katalog-Verbreiterung NEM/Öl/Versicherung (`FUTTERPASS.md` Schritt 5) für den
+>   Lebensphasen-Cross-Sell — Warenbestand nicht geprüft.
+> - **Noch nie real durchlaufen:** 0 `refill`/`lifecycle`-Alerts in Prod bisher ausgelöst (siehe
+>   `/admin/analytics`) — der Pfad ist fertig, aber unbewiesen unter echten Nutzern.
+
+<details><summary>ursprünglicher Plan (Referenz)</summary>
+
 - **Ziel:** Aus dem Einmal-Klick wird wiederkehrender Umsatz. Der Burggraben (`FUTTERPASS.md`).
 - **Warum:** G1. `dog_profiles` + `est_bag_days` werden angelegt, aber nichts passiert, wenn der Sack leer wird.
 - **Dateien:** `netlify/functions/*` (neuer Scheduled Job „refill-due"), `src/lib/lifecycle.ts`, `src/lib/pack-reach.ts`, `src/lib/email.ts`, `priceAlerts` (mode `refill`), `/hund/[share_token]`.
@@ -993,6 +1022,7 @@ grün = manuelle Prüfung nach Deploy. Nonce-Aktivierung hängt an 1.2 (CSP `str
   5. Frequenz-Disziplin: max. 1 Nachschub-Mail pro Zyklus, kein Spam (`last_notified_at`).
 - **Akzeptanz:** Seed-Profil mit `refill_due_at` in 2 Tagen → nächster Function-Lauf schickt genau eine Mail mit korrektem Link. Lebensphasen-Trigger feuert einmalig. Opt-out in jeder Mail.
 - **Agent:** `lifecycle-architect` + `retention-growth`. **Aufwand:** L. **Risiko:** mittel (E-Mail-Reputation, Frequenz). **Abhängt von:** 1.5, 6.1.
+</details>
 
 ### Operation 5.2 — First-Party-Analytics statt GA4 — 🟡 **PIPELINE LIVE (2026-09-04)**
 - **Ziel:** Analytics ohne Fremd-Pixel — prinzipientreu (`CLAUDE.md`: „kein On-Load-Pixel"), DSGVO-leichter, schneller.
@@ -1027,30 +1057,51 @@ echten Stellen verdrahten (überlappt mit 5.3). Dann `GoogleAnalytics.tsx` +
 `googletagmanager`-Prefetch entfernen → Akzeptanz `grep gtag = 0` — **bewusst noch nicht jetzt**:
 GA4 bleibt die einzige einsehbare Quelle, solange niemand das neue Dashboard im Alltag genutzt hat.
 
-### Operation 5.3 — Funnel-Instrumentierung Seite→Profil→Klick→Nachschub — 🟡 **EVENTS VERDRAHTET (2026-09-04)**
+### ✅ Operation 5.3 — Funnel-Instrumentierung Seite→Profil→Klick→Nachschub — **ALLE EVENTS LIVE (2026-09-05)**
 - **Ziel:** Wir sehen, wo Nutzer abspringen, und die Signale fließen zurück in Advisor/Cross-Sell/SEO.
 
-**Was jetzt live ist:** 4 von 5 First-Party-Events feuern real (`pageview` bereits seit 5.2; jetzt
-zusätzlich `advisor_start` beim ersten Absenden, `advisor_offers` bei ≥1 zurückgegebenem Angebot
-mit `count`+`confidence`, `affiliate_click` im `/empfehlung/[slug]`-Redirect neben der Legacy-Tabelle
-`affiliate_clicks`, `alert_subscribe` in `/api/alerts/subscribe`). Live gegen Neon verifiziert —
-die `events`-Tabelle sammelt bereits echten Prod-Traffic. **`refill_click` offen:** es gibt noch
-keine reale Nachbestellen-CTA (hängt an 5.1).
+**Was jetzt live ist:** Alle 5 (+2) geplanten First-Party-Events feuern real: `pageview` (5.2),
+`advisor_start` beim ersten Absenden, `advisor_offers` bei ≥1 zurückgegebenem Angebot mit
+`count`+`confidence`, `affiliate_click` im `/empfehlung/[slug]`-Redirect, `alert_subscribe` in
+`/api/alerts/subscribe`. **`refill_click` war nicht an 5.1 blockiert** — die Nachbestellen-CTA
+existierte längst (`run-price-alerts.mjs`-Mails), sie verlinkte nur direkt auf die rohe AWIN-URL
+statt durch `/empfehlung/[slug]`. Beide E-Mails (Nachschub + Lebensphase) verlinken jetzt über
+`/empfehlung/[slug]?src=refill|lifecycle`, die Route emittiert daraus `refill_click`/
+`lifecycle_click` statt `affiliate_click`. Live gegen Neon verifiziert (Redirect + korrektes
+Event, danach bereinigt).
 
-**Offen (Teil 2):** Aggregat-Queries + `/admin`-Dashboard (überlappt 5.2 Teil 2). Wochenreport
-`docs/reports/*` mit Conversion je Stufe/Seitentyp/Advisor-Thema. Ableitungen zurück an
-`content-engineer`/`lifecycle-architect`. `refill_click` sobald 5.1 eine CTA hat.
+**Offen (Teil 2):** `/admin`-Dashboard existiert bereits (5.2-Nachtrag), zeigt aber noch keinen
+Wochenreport/keine Conversion-je-Stufe-Auswertung — nur rohe Zähler. Ableitungen zurück an
+`content-engineer`/`lifecycle-architect` bleiben manuell.
 - **Dateien:** Events aus 5.2, `src/app/empfehlung/[slug]/route.ts` (Klick-Attribution), Advisor-Route (Offer-Impression), Auswertungs-Query.
 - **Vorgehen:** Jede Stufe ein Event mit anonymer Session-Kette. Wochenreport: Conversion je Stufe, je Einstiegs-Seitentyp, je Advisor-Thema. Ableitungen: schwache Rasse-Seiten → `content-engineer`; Themen mit hoher Klick-, niedriger Nachschub-Rate → `lifecycle-architect`.
 - **Akzeptanz:** Report `docs/reports/` wöchentlich (halb-automatisch). Mind. eine konkrete Optimierung pro Monat aus den Daten abgeleitet und umgesetzt.
 - **Agent:** `conversion-analyst`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 5.2.
 
-### Operation 5.4 — Outcome-Checks sichtbar machen (Trust-Asset)
+### 🟡 Operation 5.4 — Outcome-Checks sichtbar machen (Trust-Asset) — **INTERN SICHTBAR (2026-09-05)**
 - **Ziel:** „Von 128 Haltern mit Allergie-Hund sagten 71 % nach 3 Wochen: besser." — das hat kein Vergleichsportal.
 - **Warum:** G4. Die Daten entstehen bereits (`outcome_checks`), werden aber nicht genutzt.
-- **Dateien:** Aggregat-Query, `<OutcomeStat>`-Component auf `/problem/*`, `/rasse/*`, `warum-bella`, Methodik-Seite; strikt als „Nutzererfahrung", nie medizinische Aussage (wie `REVIEWER`-Prinzip).
-- **Akzeptanz:** Sichtbare, ehrlich gerundete Aggregatzahl mit n und Zeitraum, sobald n ≥ 30 pro Kategorie. Disclaimer „subjektive Halter-Rückmeldung, keine Studie". `trust-compliance`-Freigabe.
-- **Agent:** `retention-growth` + `trust-compliance`. **Aufwand:** M. **Risiko:** mittel (Compliance-Formulierung). **Abhängt von:** —
+
+**Was jetzt da ist:** Der komplette Erhebungs-Pfad war bereits fertig (siehe 5.1-Nachtrag) — nur die
+Ergebnisse waren nirgends einsehbar, auch nicht intern. `/admin/analytics` zeigt jetzt Trichter
+(geplant/gesendet/beantwortet) + Ergebnis-Verteilung (`besser`/`gleich`/`schlechter`) + rohe
+Tag-Aufschlüsselung. Live gegen Prod geprüft: aktuell **0 Antworten** — der Pfad läuft, aber es gibt
+noch nichts zu zeigen.
+
+**Bewusst noch nicht gebaut:** die öffentliche `<OutcomeStat>`-Komponente aus dem ursprünglichen
+Plan. Zwei echte Blocker, kein Aufschub ohne Grund:
+1. **n=0.** Die eigene Akzeptanzschwelle (n≥30/Kategorie) ist meilenweit entfernt — eine Komponente
+   zu bauen, die aktuell nie rendert, ist unverifizierbarer Code, keine fertige Funktion.
+2. **Tag-Taxonomie passt nicht.** `outcome_checks.problem_tags` wird aus `dog_profiles.allergies`
+   (= gemiedene Proteine wie „huhn") + `health_flags` (= Lebensphase wie „welpen") befüllt — nicht
+   aus einer Problem-Kategorie wie `/problem/[slug]`s „allergie"/„sensibler-magen". Eine Komponente
+   gegen die falsche Taxonomie zu bauen wäre für immer leer, auch bei ausreichend n.
+- **Offen (Teil 2):** Tag-Erzeugung in `src/lib/outcome-tracker.ts` auf echte Problem-Kategorien
+  umstellen (Mapping von Protein/Lebensphase → `/problem/[slug]`-Slug, oder eigenes Vokabular),
+  DANACH `<OutcomeStat>` nach dem Muster von `<CitableStat>`/`getCitableStat` (`src/db/queries/stats.ts`)
+  bauen — exakt dieselbe „rendert nichts unter Schwellwert"-Disziplin, strikt als „Nutzererfahrung",
+  nie medizinische Aussage.
+- **Agent:** `retention-growth` + `trust-compliance`. **Aufwand:** M. **Risiko:** mittel (Compliance-Formulierung). **Abhängt von:** ausreichend Fallzahl.
 
 ---
 
@@ -1274,10 +1325,10 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 4.4 | Interner Cluster-Graph | 🟡 `audit:links` + `graph.ts`/`RelatedLinks` + Problem-Cluster (14 Seiten, 0 Orphans) · Teil 2: futtertyp/vergleich/rasse/lebensphase-Cluster | 2026-09-04 | _(dieser Batch)_ |
 | 4.5 | GEO / AI-Search | 🟡 `/llms-full.txt` (20 Q&A + Quellen) + `/llms.txt`-Querverweis · Teil 2: Antwort-zuerst-Absätze, `CitableStat` breiter, Studien-`bella_summary` | 2026-09-04 | _(dieser Batch)_ |
 | 4.6 | JsonLd-Helfer | ✅ `<JsonLd>` + Test + alle 21 Stellen migriert (`<Freshness>` → 4.3) | 2026-09-04 | _(dieser Batch)_ |
-| 5.1 | Futter-Pass-Schleife | ⬜ offen | | |
+| 5.1 | Futter-Pass-Schleife | ✅ war stale — Profil/Verbrauchsmathematik/Nachschub/Lebensphase/Steckbrief alle live · Rest: CTA-Umbau auf Programmatic-Seiten unverifiziert | 2026-09-05 | _(dieser Batch)_ |
 | 5.2 | First-Party-Analytics | 🟡 `events` in Neon live + `/api/track` + `/admin/analytics`-Dashboard · Teil 2: 2-Wochen-Parallelbetrieb beobachten, dann GA4 raus | 2026-09-04 | _(dieser Batch)_ |
-| 5.3 | Funnel-Instrumentierung | 🟡 4/5 Events live (advisor_start/offers, affiliate_click, alert_subscribe) · Teil 2: Dashboard, Wochenreport, refill_click | 2026-09-04 | _(dieser Batch)_ |
-| 5.4 | Outcome-Checks sichtbar | ⬜ offen | | |
+| 5.3 | Funnel-Instrumentierung | ✅ 7/7 Events live (inkl. refill_click/lifecycle_click) · Teil 2: Wochenreport/Ableitungen offen | 2026-09-05 | _(dieser Batch)_ |
+| 5.4 | Outcome-Checks sichtbar | 🟡 intern in `/admin/analytics` sichtbar (n=0 bisher) · öffentliche `<OutcomeStat>` blockiert auf Tag-Taxonomie + n≥30 | 2026-09-05 | _(dieser Batch)_ |
 | 6.1 | Error-Tracking | 🟡 `log.ts` (PII-Scrub) + Test + `error.tsx`/`global-error.tsx` + Advisor-Catches · Teil 2: Sentry-DSN + Alerts | 2026-09-04 | _(dieser Batch)_ |
 | 6.2 | Performance-Budget im Build | 🟡 `check:bundle` in `ci` (Baseline 129→Budget 145 KB) + täglicher `lighthouse-check` (PSI) · Teil 2: `PAGESPEED_API_KEY` fehlt noch (extern) | 2026-09-04 | _(dieser Batch)_ |
 | 6.3 | Repo-Hygiene | ✅ SECURITY.md + CODEOWNERS + PR-Template + 7 High-CVEs gefixt + `audit:deps` blockierend in `ci` | 2026-09-04 | _(dieser Batch)_ |

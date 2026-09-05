@@ -28,6 +28,7 @@ const EVENT_LABELS: Record<string, string> = {
   affiliate_click: "Affiliate-Klick",
   alert_subscribe: "Preis-Wecker abonniert",
   refill_click: "Nachschub-Klick",
+  lifecycle_click: "Lebensphasen-Klick",
 };
 
 export default function AnalyticsAdmin() {
