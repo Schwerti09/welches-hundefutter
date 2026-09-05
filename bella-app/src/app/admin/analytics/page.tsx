@@ -5,13 +5,21 @@ import { useState } from "react";
 interface FunnelRow { name: string; count: string }
 interface DailyRow { day: string; name: string; count: string }
 interface AiUsageRow { provider: string; ok: boolean; n: string; input_tokens: string | null; output_tokens: string | null; avg_latency_ms: string | null }
+interface OutcomeFunnel { scheduled: string; sent: string; responded: string }
+interface OutcomeResultRow { outcome: string | null; count: string }
+interface OutcomeTagRow { tag: string; outcome: string | null; count: string }
 interface AnalyticsData {
   generatedAt: string;
   funnel7d: FunnelRow[];
   funnel30d: FunnelRow[];
   daily14d: DailyRow[];
   aiUsage7d: AiUsageRow[];
+  outcomeFunnel: OutcomeFunnel;
+  outcomeResults: OutcomeResultRow[];
+  outcomeByTag: OutcomeTagRow[];
 }
+
+const OUTCOME_LABELS: Record<string, string> = { besser: "👍 Besser", gleich: "🤷 Gleich", schlechter: "👎 Schlechter" };
 
 const EVENT_LABELS: Record<string, string> = {
   pageview: "Seitenaufrufe",
@@ -150,6 +158,66 @@ export default function AnalyticsAdmin() {
                   </tbody>
                 </table>
               </div>
+            </section>
+
+            <section>
+              <h2 className="text-sm font-bold uppercase tracking-wider text-[#9a93a6] mb-3">Wirkungs-Tracker — Trust-Asset (Roadmap 5.4)</h2>
+              <p className="text-xs text-[#6b6577] mb-3">
+                21 Tage nach einer Empfehlung mit Allergie-/Gesundheits-Kontext fragt BELLA per
+                E-Mail nach. Noch <strong>nicht öffentlich</strong> ausgespielt — dafür fehlt die
+                Mindestfallzahl (n≥30/Kategorie) <em>und</em> passen die gespeicherten Tags (gemiedene
+                Proteine + Lebensphase) noch nicht zur <code>/problem/[slug]</code>-Taxonomie.
+              </p>
+              <div className="grid grid-cols-3 gap-3 mb-4">
+                <div className="rounded-2xl border border-white/10 p-4 text-center">
+                  <p className="text-2xl font-black">{data.outcomeFunnel.scheduled}</p>
+                  <p className="text-[11px] text-[#9a93a6] mt-1">geplant</p>
+                </div>
+                <div className="rounded-2xl border border-white/10 p-4 text-center">
+                  <p className="text-2xl font-black">{data.outcomeFunnel.sent}</p>
+                  <p className="text-[11px] text-[#9a93a6] mt-1">gesendet</p>
+                </div>
+                <div className="rounded-2xl border border-white/10 p-4 text-center">
+                  <p className="text-2xl font-black">{data.outcomeFunnel.responded}</p>
+                  <p className="text-[11px] text-[#9a93a6] mt-1">beantwortet</p>
+                </div>
+              </div>
+              {data.outcomeResults.length > 0 && (
+                <div className="rounded-2xl border border-white/10 overflow-hidden mb-4">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-white/[0.03] text-left text-[#9a93a6]">
+                        <th className="px-4 py-2.5 font-medium">Ergebnis</th>
+                        <th className="px-4 py-2.5 font-medium text-right">Antworten</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {data.outcomeResults.map((r, i) => (
+                        <tr key={i} className="border-t border-white/5">
+                          <td className="px-4 py-2.5">{OUTCOME_LABELS[r.outcome ?? ""] ?? r.outcome ?? "–"}</td>
+                          <td className="px-4 py-2.5 text-right">{r.count}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              {data.outcomeByTag.length > 0 && (
+                <details className="text-xs text-[#9a93a6]">
+                  <summary className="cursor-pointer select-none">Rohe Tags anzeigen (interne Einordnung, kein zitierfähiger Wert)</summary>
+                  <table className="w-full text-xs mt-2">
+                    <tbody>
+                      {data.outcomeByTag.map((r, i) => (
+                        <tr key={i} className="border-t border-white/5">
+                          <td className="px-3 py-1.5">{r.tag}</td>
+                          <td className="px-3 py-1.5">{OUTCOME_LABELS[r.outcome ?? ""] ?? r.outcome ?? "–"}</td>
+                          <td className="px-3 py-1.5 text-right">{r.count}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </details>
+              )}
             </section>
 
             <p className="text-[11px] text-[#6b6577]">Stand: {new Date(data.generatedAt).toLocaleString("de-DE")}</p>
