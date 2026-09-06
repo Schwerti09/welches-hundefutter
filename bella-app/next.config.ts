@@ -10,7 +10,7 @@ import type { NextConfig } from "next";
 // - connect/script: nur Google Analytics (gtag) zusätzlich erlaubt.
 const CSP = [
   "default-src 'self'",
-  "base-uri 'self'",
+  "base-uri 'none'", // die Seite nutzt kein <base> → 'none' schließt <base>-Injection komplett aus
   "form-action 'self'",
   "frame-ancestors 'self'",
   "object-src 'none'",
