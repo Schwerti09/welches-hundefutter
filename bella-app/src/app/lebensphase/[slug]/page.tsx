@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { neon } from "@neondatabase/serverless";
 import StructuredData from "@/components/StructuredData";
 import AuthorBox from "@/components/AuthorBox";
+import RelatedLinks from "@/components/RelatedLinks";
+import { relatedForLebensphase } from "@/lib/linking/graph";
 import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
 import SiteFooter from "@/components/SiteFooter";
 import { brandToSlug } from "@/db/queries/foods";
@@ -263,6 +265,8 @@ export default async function LebensphaseePage({ params }: { params: Promise<{ s
           ))}
         </div>
       </section>
+
+      <RelatedLinks items={relatedForLebensphase(slug)} title="Passend dazu" />
 
       <div className="max-w-5xl mx-auto w-full px-5 py-8">
         <AuthorBox compact />

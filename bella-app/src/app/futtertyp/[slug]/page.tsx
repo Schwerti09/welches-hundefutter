@@ -12,6 +12,8 @@ import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
 import StructuredData from "@/components/StructuredData";
 import SiteFooter from "@/components/SiteFooter";
 import CitableStat from "@/components/CitableStat";
+import RelatedLinks from "@/components/RelatedLinks";
+import { relatedForFuttertyp } from "@/lib/linking/graph";
 import { futtertypDirectAnswer } from "@/lib/direct-answer";
 import type { CitableVariant } from "@/db/queries/stats";
 import { brandToSlug } from "@/db/queries/foods";
@@ -335,6 +337,8 @@ export default async function FuttertypPage({ params }: { params: Promise<{ slug
           </div>
         </section>
       )}
+
+      <RelatedLinks items={relatedForFuttertyp(slug)} title="Passend dazu" />
 
       {/* Andere Futtertypen */}
       <section className="max-w-5xl mx-auto w-full px-5 pb-16">

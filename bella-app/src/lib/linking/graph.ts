@@ -137,3 +137,133 @@ export function relatedForProblem(slug: string): RelatedLink[] {
     { href: "/tipps/gesundheit", label: "100 Tipps zur Gesundheit" },
   ];
 }
+
+/** Verwandte Seiten je `/futtertyp/[slug]` (Roadmap 4.4 Teil 2). */
+export const FUTTERTYP_CLUSTER: Record<string, RelatedLink[]> = {
+  trockenfutter: [
+    { href: "/futtertyp/nassfutter", label: "Nassfutter" },
+    { href: "/futtertyp/kaltgepresst", label: "Kaltgepresstes Futter" },
+    { href: "/vergleich/trockenfutter-vs-nassfutter", label: "Trocken vs. Nass" },
+    { href: "/vergleich/kaltgepresst-vs-extrudiert", label: "Kaltgepresst vs. extrudiert" },
+    { href: "/problem/zahnsteine", label: "Zahnstein" },
+    { href: "/tipps/zaehne", label: "100 Tipps für die Zähne" },
+  ],
+  nassfutter: [
+    { href: "/futtertyp/trockenfutter", label: "Trockenfutter" },
+    { href: "/futtertyp/barf", label: "BARF" },
+    { href: "/vergleich/trockenfutter-vs-nassfutter", label: "Trocken vs. Nass" },
+    { href: "/vergleich/nassfutter-vs-barf", label: "Nassfutter vs. BARF" },
+    { href: "/problem/sensibler-magen", label: "Sensibler Magen" },
+    { href: "/tipps/hydration", label: "100 Tipps zur Flüssigkeitsversorgung" },
+  ],
+  barf: [
+    { href: "/futtertyp/nassfutter", label: "Nassfutter" },
+    { href: "/futtertyp/monoprotein", label: "Monoprotein-Futter" },
+    { href: "/vergleich/barf-vs-trockenfutter", label: "BARF vs. Trockenfutter" },
+    { href: "/vergleich/nassfutter-vs-barf", label: "Nassfutter vs. BARF" },
+    { href: "/problem/untergewicht", label: "Untergewicht" },
+    { href: "/tipps/barf", label: "100 BARF-Tipps" },
+  ],
+  kaltgepresst: [
+    { href: "/futtertyp/trockenfutter", label: "Trockenfutter" },
+    { href: "/vergleich/kaltgepresst-vs-extrudiert", label: "Kaltgepresst vs. extrudiert" },
+    { href: "/problem/sensibler-magen", label: "Sensibler Magen" },
+    { href: "/problem/gelenkprobleme", label: "Gelenkprobleme" },
+    { href: "/tipps/verdauung", label: "100 Tipps zur Verdauung" },
+  ],
+  getreidefrei: [
+    { href: "/futtertyp/hypoallergen", label: "Hypoallergenes Futter" },
+    { href: "/futtertyp/monoprotein", label: "Monoprotein-Futter" },
+    { href: "/vergleich/getreidefrei-vs-mit-getreide", label: "Getreidefrei vs. mit Getreide" },
+    { href: "/problem/allergie", label: "Futtermittelallergie" },
+    { href: "/problem/haut-und-fell", label: "Haut & Fell" },
+    { href: "/tipps/allergien", label: "100 Tipps bei Allergien" },
+  ],
+  hypoallergen: [
+    { href: "/futtertyp/monoprotein", label: "Monoprotein-Futter" },
+    { href: "/futtertyp/getreidefrei", label: "Getreidefreies Futter" },
+    { href: "/futtertyp/insekten", label: "Insektenfutter" },
+    { href: "/problem/allergie", label: "Futtermittelallergie" },
+    { href: "/problem/futtermittelunvertraeglichkeit", label: "Unverträglichkeit" },
+    { href: "/tipps/allergien", label: "100 Tipps bei Allergien" },
+  ],
+  monoprotein: [
+    { href: "/futtertyp/hypoallergen", label: "Hypoallergenes Futter" },
+    { href: "/futtertyp/insekten", label: "Insektenfutter" },
+    { href: "/vergleich/monoprotein-vs-mehrkomponenten", label: "Mono- vs. Mehrkomponenten" },
+    { href: "/problem/allergie", label: "Futtermittelallergie" },
+    { href: "/problem/haut-und-fell", label: "Haut & Fell" },
+    { href: "/tipps/fell-haut", label: "100 Tipps für Fell & Haut" },
+  ],
+  insekten: [
+    { href: "/futtertyp/monoprotein", label: "Monoprotein-Futter" },
+    { href: "/futtertyp/hypoallergen", label: "Hypoallergenes Futter" },
+    { href: "/vergleich/insektenfutter-vs-huehnchen", label: "Insekt vs. Huhn" },
+    { href: "/problem/allergie", label: "Futtermittelallergie" },
+    { href: "/tipps/allergien", label: "100 Tipps bei Allergien" },
+  ],
+  vegetarisch: [
+    { href: "/futtertyp/vegan", label: "Veganes Hundefutter" },
+    { href: "/futtertyp/insekten", label: "Insektenfutter" },
+    { href: "/problem/allergie", label: "Futtermittelallergie" },
+    { href: "/tipps/ernaehrung", label: "100 Tipps zur Ernährung" },
+  ],
+  vegan: [
+    { href: "/futtertyp/vegetarisch", label: "Vegetarisches Hundefutter" },
+    { href: "/futtertyp/insekten", label: "Insektenfutter" },
+    { href: "/problem/allergie", label: "Futtermittelallergie" },
+    { href: "/tipps/ernaehrung", label: "100 Tipps zur Ernährung" },
+  ],
+};
+
+export function relatedForFuttertyp(slug: string): RelatedLink[] {
+  return FUTTERTYP_CLUSTER[slug] ?? [
+    { href: "/futtertyp/trockenfutter", label: "Trockenfutter" },
+    { href: "/futtertyp/nassfutter", label: "Nassfutter" },
+    { href: "/futtertyp/barf", label: "BARF" },
+    { href: "/vergleich/trockenfutter-vs-nassfutter", label: "Trocken vs. Nass" },
+  ];
+}
+
+/** Verwandte Seiten je `/lebensphase/[slug]` (Roadmap 4.4 Teil 2). */
+export const LEBENSPHASE_CLUSTER: Record<string, RelatedLink[]> = {
+  welpen: [
+    { href: "/lebensphase/junghund", label: "Junghund" },
+    { href: "/lebensphase/adult", label: "Erwachsener Hund" },
+    { href: "/futtertyp/trockenfutter", label: "Trockenfutter" },
+    { href: "/problem/durchfall", label: "Durchfall" },
+    { href: "/tipps/welpen", label: "100 Welpen-Tipps" },
+  ],
+  junghund: [
+    { href: "/lebensphase/welpen", label: "Welpen" },
+    { href: "/lebensphase/adult", label: "Erwachsener Hund" },
+    { href: "/futtertyp/barf", label: "BARF" },
+    { href: "/tipps/sport-bewegung", label: "100 Tipps zu Sport & Bewegung" },
+    { href: "/tipps/ernaehrung", label: "100 Tipps zur Ernährung" },
+  ],
+  adult: [
+    { href: "/lebensphase/junghund", label: "Junghund" },
+    { href: "/lebensphase/senior", label: "Senior" },
+    { href: "/problem/uebergewicht", label: "Übergewicht" },
+    { href: "/futtertyp/trockenfutter", label: "Trockenfutter" },
+    { href: "/vergleich/premium-vs-budget", label: "Premium vs. Budget" },
+    { href: "/tipps/ernaehrung", label: "100 Tipps zur Ernährung" },
+  ],
+  senior: [
+    { href: "/lebensphase/adult", label: "Erwachsener Hund" },
+    { href: "/problem/gelenkprobleme", label: "Gelenkprobleme" },
+    { href: "/problem/arthrose", label: "Arthrose" },
+    { href: "/problem/nierenprobleme", label: "Nierenprobleme" },
+    { href: "/futtertyp/kaltgepresst", label: "Kaltgepresstes Futter" },
+    { href: "/tipps/senior-hund", label: "100 Tipps für Senioren" },
+  ],
+};
+
+export function relatedForLebensphase(slug: string): RelatedLink[] {
+  return LEBENSPHASE_CLUSTER[slug] ?? [
+    { href: "/lebensphase/welpen", label: "Welpen" },
+    { href: "/lebensphase/adult", label: "Erwachsener Hund" },
+    { href: "/lebensphase/senior", label: "Senior" },
+    { href: "/tipps/ernaehrung", label: "100 Tipps zur Ernährung" },
+  ];
+}
