@@ -92,20 +92,27 @@ Reihenfolge:
 
 ---
 
-## Teil 2 — noch offen: automatischer Logical-Backup-Job
+## Teil 2 — automatischer Logical-Backup-Job ✅ (2026-09-05)
 
-`netlify/functions/db-backup.mts` (wöchentlich), reiner JS-Dump der **mutablen /
-User-Daten-Tabellen** nach **Netlify Blobs** (`@netlify/blobs`):
+`netlify/functions/db-backup.mts` (**wöchentlich, Mo 03:15 UTC**), reiner JS-Dump der
+**mutablen / User-Daten-Tabellen** nach **Netlify Blobs** (`@netlify/blobs`, Store `db-backups`):
 
 ```
 dog_profiles, subscribers, price_alerts, outcome_checks, chat_logs, events,
 community_insights, ai_visibility_checks
 ```
 
-- pro Tabelle `select *` → NDJSON → `blobs.set("backup/<datum>/<tabelle>.ndjson", …)`
-- Retention: die letzten ~8 Wochen behalten, ältere löschen
-- Fehlschlag → `logError("db-backup", …)` (landet via `health-check`-Logik im Alert, sobald 6.1 Teil 2 steht)
-- Restore-Skript `scripts/db-restore-blobs.mjs`: Blob lesen → `insert … on conflict do update`
+- pro Tabelle `SELECT *` (Sicherheitsnetz `LIMIT 100000`) → NDJSON → `store.set("backup/<YYYY-MM-DD>/<tabelle>.ndjson", …)`
+- Retention: die letzten **8 Läufe** behalten, ältere Datumsordner löschen
+- Fehlschlag → `console.error("[db-backup] FAIL", …)` (landet im Netlify-Function-Log; Alert-Anbindung mit 6.1 Teil 2)
+- DB-Seite live gegen Prod verifiziert (alle 8 `SELECT *` laufen, ~785 KB NDJSON gesamt)
 
-**Nicht** gesichert werden müssen: `dog_foods`, `offers`, `price_history` (aus Feeds
+**Wiederherstellung:** `node scripts/db-restore-blobs.mjs`
+- ENV: `DATABASE_URL` (Ziel), `NETLIFY_SITE_ID`, `NETLIFY_API_TOKEN` (PAT)
+- `--list` zeigt verfügbare Läufe · `--date <YYYY-MM-DD>` wählt einen · `--table <name>` beschränkt · `--dry-run` prüft nur
+- pro Tabelle: NDJSON lesen → `INSERT … ON CONFLICT (id) DO UPDATE SET …` (idempotent)
+
+**Nicht** gesichert (bewusst): `dog_foods`, `offers`, `price_history` (aus Feeds
 regenerierbar), `studies`/`glossary_terms`/`topic_hubs` (aus `src/data` / Seeds).
+
+**Noch offen:** Restore-Drill einmal real durchspielen (Neon-Scratch-Branch, Ablauf aus §3 abhaken).
