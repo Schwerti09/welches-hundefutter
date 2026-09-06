@@ -962,11 +962,15 @@ echtem Datum statt Default.
   Nebeneffekt: 8/14 `/tipps/*`-Kategorien bekommen erstmals kontextuelle rein-Links.
 - Grün: `tsc` · `lint` · `build` · 118 Vitest.
 
-**Offen (Teil 2):** `FUTTERTYP_CLUSTER` + `VERGLEICH_CLUSTER` in `graph.ts`,
-`<RelatedLinks>` in `/futtertyp/[slug]` · `/vergleich/[static]` · `/rasse/[slug]` ·
-`/lebensphase/[slug]`. Restliche Flags: `/hochwertiges-hundefutter` (Orphan),
-`/rassen` (1 rein, Tiefe ∞), `/hundefutter-test` (2), 2 dünne Vergleiche.
-Breadcrumb-Konsistenz. `link-audit.mjs` auf `rasse`/`stadt`-Stichprobe erweitern.
+> **Nachtrag 2026-09-05:** `FUTTERTYP_CLUSTER` (10) + `LEBENSPHASE_CLUSTER` (4) in `graph.ts`
+> (Muster wie `PROBLEM_CLUSTER`: 4–7 kuratierte gemischte Ziele), `<RelatedLinks>` in
+> `/futtertyp/[slug]` + `/lebensphase/[slug]`. `audit:links` vorher→nachher: dünne Money-Seiten
+> (< 3 rein) **4 → 2**, 0 Sackgassen; die Futtertyp-Seiten haben jetzt 9–14 kontextuelle rein-Links.
+
+**Offen (Teil 2):** `/rasse/[slug]` (186 dynamische Slugs → generische Logik statt Pro-Slug-Listen)
++ `/vergleich/[static]`. Restliche Flags: `/hochwertiges-hundefutter` (Orphan), `/rassen`
+(1 rein, Tiefe ∞), `/hundefutter-test` (2). Breadcrumb-Konsistenz.
+`link-audit.mjs` auf `rasse`/`stadt`-Stichprobe erweitern.
 
 ### Operation 4.5 — GEO / AI-Search vervollständigen — 🟡 **llms-full.txt ERLEDIGT (2026-09-04)**
 - **Ziel:** Für KI-Antwortmaschinen (ChatGPT, Perplexity, Google AI, Claude) maximal zitierfähig.
@@ -1360,7 +1364,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 4.1 | Thin-Content-Audit | 🟡 Tool (`audit:content`) + Report + Bucket-Entscheidungen · Teil 2: DB-Re-Audit + `lebensphase`/`futtertyp`/`glossar` anreichern | 2026-09-04 | _(dieser Batch)_ |
 | 4.2 | Tierarzt-Review live | ⬜ blockiert (Reviewer) | | |
 | 4.3 | Aktualitäts-Signal | 🟡 `new Date()` aus allen `dateModified` raus (`BUILD_DATE`/`CONTENT_REVISED`), `<Freshness>` + prebuild-Datum · Teil 2: `<Freshness>` breiter, `datePublished` fixen | 2026-09-04 | _(dieser Batch)_ |
-| 4.4 | Interner Cluster-Graph | 🟡 `audit:links` + `graph.ts`/`RelatedLinks` + Problem-Cluster (14 Seiten, 0 Orphans) · Teil 2: futtertyp/vergleich/rasse/lebensphase-Cluster | 2026-09-04 | _(dieser Batch)_ |
+| 4.4 | Interner Cluster-Graph | 🟡 Problem- + Futtertyp- (10) + Lebensphase-Cluster (4) live · dünne Money-Seiten 4→2 · Teil 2: rasse (generisch) + statische Vergleiche | 2026-09-05 | _(dieser Batch)_ |
 | 4.5 | GEO / AI-Search | 🟡 `/llms-full.txt` (20 Q&A + Quellen) + `/llms.txt`-Querverweis · Teil 2: Antwort-zuerst-Absätze, `CitableStat` breiter, Studien-`bella_summary` | 2026-09-04 | _(dieser Batch)_ |
 | 4.6 | JsonLd-Helfer | ✅ `<JsonLd>` + Test + alle 21 Stellen migriert (`<Freshness>` → 4.3) | 2026-09-04 | _(dieser Batch)_ |
 | 5.1 | Futter-Pass-Schleife | ✅ war stale — Profil/Verbrauchsmathematik/Nachschub/Lebensphase/Steckbrief alle live · Rest: CTA-Umbau auf Programmatic-Seiten unverifiziert | 2026-09-05 | _(dieser Batch)_ |
