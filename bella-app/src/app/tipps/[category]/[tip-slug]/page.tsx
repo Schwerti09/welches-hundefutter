@@ -8,6 +8,7 @@ import SiteFooter from "@/components/SiteFooter";
 import TipArticleImage from "@/components/TipArticleImage";
 import ReadingProgress from "@/components/ReadingProgress";
 import JsonLd from "@/components/JsonLd";
+import { CONTENT_PUBLISHED } from "@/lib/site-dates";
 
 // Wandelt eine Überschrift in einen URL-tauglichen Anker-Slug um
 function slugifyHeading(text: string): string {
@@ -114,7 +115,7 @@ export default async function TipArticlePage({
         url: "https://welches-hundefutter.today/logo.png",
       },
     },
-    datePublished: "2025-01-01",
+    datePublished: CONTENT_PUBLISHED,
     dateModified: article.lastUpdated,
     mainEntityOfPage: `https://welches-hundefutter.today/tipps/${category}/${tipSlug}`,
     keywords: article.keywords.join(", "),

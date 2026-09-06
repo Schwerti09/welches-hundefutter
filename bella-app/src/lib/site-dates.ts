@@ -19,3 +19,11 @@ export const CONTENT_REVISED = "2026-06-01";
  * Marken-Übersichten, Katalog-Datasets, dynamische Marken-Vergleiche.
  */
 export const DATA_REFRESHED = BUILD_DATE;
+
+/**
+ * Erstveröffentlichung der Tipps-/Ratgeber-Sammlung — `datePublished` im
+ * Article-Schema. Bewusst in der Vergangenheit: alte, aber gepflegte Artikel
+ * (`dateModified` aktuell) sind ein starkes Evergreen-Signal. Zentral hier,
+ * nicht als Magic-String in der Seiten-Vorlage.
+ */
+export const CONTENT_PUBLISHED = "2025-01-01";
