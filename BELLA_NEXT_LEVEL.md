@@ -264,8 +264,13 @@ Konsolen-Warnings / Hydration-Fehler achten. Dann von 🟡 auf ✅.
 `img-src 'self' data: blob: https:` (AWIN-Händler-Bilder); GA (`googletagmanager` / `*.google-analytics.com`)
 in script/connect erlaubt. `Cross-Origin-Opener-Policy: same-origin-allow-popups`. Toter
 `pagead2.googlesyndication.com`-Prefetch raus. Build grün, CSP-Header per `next start` + curl verifiziert.
-**Offen (Folgeschritt):** `'strict-dynamic'` + Nonce/Hash für den Lighthouse-Audit „CSP wirksam gegen XSS"
-— bewusst zurückgestellt, weil Nonce-Middleware die SSG-Seiten dynamisch machen würde.
+**Nachtrag 2026-09-05:** `base-uri` von `'self'` → `'none'` verschärft (die Seite nutzt kein
+`<base>`, geprüft — null funktionale Kosten).
+**Offen (Folgeschritt, braucht Inhaber-Entscheidung):** `'strict-dynamic'` + Nonce/Hash für den
+Lighthouse-Audit „CSP wirksam gegen XSS". Bringt nur etwas gepaart mit Nonce/Hash; eine Nonce
+braucht Middleware; Nonce-Middleware erzwingt dynamisches Rendering auf allen ~2.372 SSG-Seiten
+→ großer P3-Verlust (Perf/SSG) für marginalen P0-Gewinn gegenüber der jetzigen CSP (kein
+`unsafe-eval`). Diese Abwägung ist eine bewusste Inhaber-Entscheidung, keine autonome.
 <details><summary>ursprünglicher Plan</summary>
 
 - **Ziel:** Lighthouse „CSP ist wirksam gegen XSS" bestanden, COOP gesetzt, keine `unsafe-inline`-Skripte.
@@ -803,9 +808,13 @@ futtertyp/lebensphase/tipps + 2× vergleich — aber **text-only** (`src/lib/og-
   → **kein** Prebuild von 186 Foto-OG-Bildern (Seitenzahl unverändert 2373), on-demand + 24 h Cache.
 - `/dev/components` zeigt die Live-OG-Vorschau.
 
-**Offen (Teil 2):** Foto/Maskottchen-Layout auch für `problem`/`vergleich`/Blog (aktuell text-only,
-aber günstig & stabil — niedrige Prio). Font via `fetch(.woff)` statt System-Sans. Social-Debugger-
-Check (Twitter/Slack/WhatsApp) nach Deploy.
+> **Nachtrag 2026-09-05:** Blog erledigt — `blog/[slug]/opengraph-image.tsx` bettet das
+> Artikel-Foto ein (analog `rasse/[slug]`, on-demand, „RATGEBER"-Badge), lange Titel bei 72 Zeichen
+> gekappt, unbekannter Slug → text-only 200. `problem`/`vergleich` bleiben text-only — kein
+> natürliches Foto, niedriger Mehrwert.
+
+**Offen (Teil 2, niedrige Prio):** Font via `fetch(.woff)` statt System-Sans. Social-Debugger-Check
+(Twitter/Slack/WhatsApp) nach Deploy.
 
 ### ✅ Operation 3.4 — Komponenten-Katalog + visuelle Regression — **ERLEDIGT (2026-09-03)**
 - **`/dev/components`** (non-prod, `notFound()` in Prod, `noindex`): Farb-Tokens, Typo-Skala, Buttons/Pills,
@@ -1345,7 +1354,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 2.5 | Allergen-Gate | ✅ via 2A.8 (läuft im Netlify-Build, DATABASE_URL = Netlify-Env) | 2026-09-03 | 334a46b |
 | 3.1 | Token-System Light/Dark | 🟡 Token-Ebene + `[data-theme]` Light/Dark + `ThemeToggle` live (nicht-brechend, auf `/dev/components`) · Teil 2: site-weite `bg-white/x`→Token-Migration + `@media (prefers-color-scheme)` offen | 2026-09-03 | _(dieser Batch)_ |
 | 3.2 | BELLA-Maskottchen | 🟡 `BellaMascot` (4 Posen) + 404/Loading/Popup/Avatar + off-brand `BellaCharacter` entfernt · Teil 2: `🐕`-CTA-Sweep offen | 2026-09-04 | _(dieser Batch)_ |
-| 3.3 | OG-Bilder pro Rasse | 🟡 Rasse-OG mit Foto + BELLA-Marke, on-demand (kein 186er-Prebuild) · Teil 2: problem/vergleich/Blog-Layout + Custom-Font offen | 2026-09-03 | _(dieser Batch)_ |
+| 3.3 | OG-Bilder pro Rasse | 🟡 Rasse + Blog mit Foto + BELLA-Marke, on-demand · problem/vergleich bewusst text-only · Teil 2: Custom-Font (.woff) offen | 2026-09-05 | _(dieser Batch)_ |
 | 3.4 | Komponenten-Katalog + VisReg | ✅ Katalog + Playwright Smoke/Visual (beide manuell gegen URL, nicht im Gate) | 2026-09-03 | _(dieser Batch)_ |
 | 3.5 | Motion-Politur | 🟡 tote CSS-Animationen raus + `framer-motion`-Audit: 2 ungemountete Nutzer (`MemoryTimeline`/`UserProfilePanel`) + `profileStore.ts` gelöscht, bleibt nur `AnalysisStorm` (Lazy-Chunk, nicht First-Load) · Teil 2: `AnalysisStorm`→CSS-Rip + View Transitions | 2026-09-05 | _(dieser Batch)_ |
 | 4.1 | Thin-Content-Audit | 🟡 Tool (`audit:content`) + Report + Bucket-Entscheidungen · Teil 2: DB-Re-Audit + `lebensphase`/`futtertyp`/`glossar` anreichern | 2026-09-04 | _(dieser Batch)_ |
