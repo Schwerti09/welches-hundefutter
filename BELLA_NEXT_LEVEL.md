@@ -922,10 +922,15 @@ Lighthouse-Gegenprobe „nicht zusammengesetzte Animationen = 0" nach Deploy.
   („Letzte Prüfung: <time>", auf 29 Seiten).
 - Grün: `tsc` · `lint` · `build` (prebuild läuft) · 118 Vitest.
 
-**Offen (Teil 2):** `<Freshness>` breiter auf Tool-/Daten-Seiten ohne `AuthorBox`
-(`/tools/*`, `/data/*`, `/widget`). `AuthorBox`-`reviewedAt` je Seitentyp aus einem
-echten Datum speisen statt Default. `datePublished` bei `tipps`-Artikeln (aktuell hart
-`"2025-01-01"`).
+> **Nachtrag 2026-09-05:** `datePublished` bei den ~1400 `tipps`-Artikeln raus aus dem
+> Inline-Magic-String → `CONTENT_PUBLISHED` in `site-dates.ts` (Wert unverändert, bewusst in der
+> Vergangenheit: alter Artikel + aktuelles `dateModified` = starkes Evergreen-Signal). Andere
+> `datePublished`-Stellen geprüft, sind schon ehrlich (Blog: echtes `publishedAt`; `/quellen`:
+> Studienjahr; Stiftung-Warentest-Ratgeber: echtes Datum).
+
+**Offen (Teil 2, niedrigwertig):** `<Freshness>` auf `/tools/*`/`/widget` — grenzwertig, Rechner
+und einbettbare Widgets brauchen kein Redaktionsdatum. `AuthorBox`-`reviewedAt` je Seitentyp aus
+echtem Datum statt Default.
 
 ### Operation 4.4 — Interner Cluster-Graph — 🟡 **TOOL + PROBLEM-CLUSTER ERLEDIGT (2026-09-04)**
 - **Ziel:** Bewusste Hub→Spoke→Sibling-Verlinkung, die Autorität auf die Money-Keywords bündelt.
