@@ -51,7 +51,7 @@ Preisvergleich und Cross-Selling (Snacks, Versicherung, Zubehör, alles für Hun
 - **Design Teil 2:** site-weite Migration `bg-white/x`→Tokens + `@media (prefers-color-scheme)` aktivieren (3.1) · off-brand `BellaCharacter` ablösen + `🐕`-CTA-Sweep (3.2) · OG-Layout für problem/vergleich/Blog (3.3) · `framer-motion`-Audit + View Transitions (3.5).
 - **Content Teil 2:** Thin-Content anreichern — `lebensphase/*`, `futtertyp/*`, `glossar/*` (4.1) · Cluster-Graph auf futtertyp/vergleich/rasse ausweiten (4.4) · „Antwort-zuerst"-Absätze + `CitableStat` breiter (4.5) · **Tierarzt-Review** (4.2, extern blockiert).
 - **Moat:** Futter-Pass-Schleife (5.1) **war bereits komplett gebaut** — Profil, Verbrauchsmathematik, Nachschub-/Lebensphasen-Wecker, teilbarer Steckbrief, alle 7 Funnel-Events (5.3) live, inkl. `refill_click`/`lifecycle_click`. `/admin/analytics`-Dashboard zeigt Funnel + KI-Kosten + Outcome-Trichter (5.4, intern — noch n=0). Offen: 2-Wochen-Parallelbetrieb GA4↔First-Party beobachten, dann GA4 raus; öffentliche Outcome-Stats brauchen erst echte Fallzahl + eine Tag-Taxonomie-Korrektur.
-- **Betrieb Teil 2:** Sentry-DSN + Alerts (6.1) · Lighthouse post-deploy (6.2) · `npm audit fix` + `audit:deps` blockierend (6.3) · Restore-Drill real durchspielen + `db-backup.mts` (6.4).
+- **Betrieb Teil 2:** Sentry-DSN + Alerts (6.1) · `PAGESPEED_API_KEY` für `lighthouse-check.mts` setzen (6.2) · Restore-Drill real durchspielen (6.4 — `db-backup.mts` läuft bereits).
 
 ---
 
@@ -140,8 +140,9 @@ DATABASE_URL="postgres://…" node scripts/load-dog-foods.mjs
 ```
 
 **Cron = Netlify Scheduled Functions** (`bella-app/netlify/functions/`): `import-feeds.mts`
-(05:00), `price-alerts.mts` (06:00), `ai-visibility.mts` (Mo 07:00), `health-check.mts`
-(stündlich). Kein GitHub Actions mehr.
+(05:00), `price-alerts.mts` (06:00), `outcome-checks.mts` (07:00), `ai-visibility.mts` (Mo 07:00),
+`health-check.mts` (stündlich), `lighthouse-check.mts` (täglich 04:30), `db-backup.mts` (Mo 03:15).
+Kein GitHub Actions mehr.
 
 **Env & Secrets:** lokal `.env.local` nach `.env.example`; für Produktion **alles in der
 Netlify-UI** (*Site configuration → Environment variables*) — `DATABASE_URL`, `GEMINI_API_KEY`,

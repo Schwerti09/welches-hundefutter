@@ -1197,7 +1197,7 @@ Restliche `console.error`-Routen (`api/alerts/*`, `api/auth/*`, `api/profiles` �
   lässt den Netlify-Build scheitern.
 - **Agent:** `platform-architect` + `trust-compliance`. **Aufwand:** S. **Risiko:** niedrig. **Abhängt von:** 0.4.
 
-### Operation 6.4 — Daten-Backup + Wiederherstellungs-Runbook — 🟡 **RUNBOOKS DA (2026-09-04)**
+### Operation 6.4 — Daten-Backup + Wiederherstellungs-Runbook — 🟡 **BACKUP-JOB LIVE, DRILL OFFEN (2026-09-05)**
 - **Ziel:** Neon-Datenverlust ist überlebbar; die Feed-Pipeline hat ein dokumentiertes „so bootstrappst du neu".
 
 **Was jetzt da ist:**
@@ -1209,11 +1209,16 @@ Restliche `console.error`-Routen (`api/alerts/*`, `api/auth/*`, `api/profiles` �
   `load-dog-foods.mjs` → `compute-scores.mjs` → Cross-Sell → IndexNow, mit Verifikations-
   Queries und Stolpersteinen.
 
+> **Nachtrag 2026-09-05:** (2) erledigt — `netlify/functions/db-backup.mts` (wöchentlich Mo 03:15 UTC,
+> NDJSON-Dump der 8 User-Daten-Tabellen → Blob-Store `db-backups`, Retention 8 Läufe) +
+> `scripts/db-restore-blobs.mjs` (`--list`/`--date`/`--table`/`--dry-run`,
+> `INSERT … ON CONFLICT (id) DO UPDATE`, braucht `NETLIFY_SITE_ID`/`NETLIFY_API_TOKEN`).
+> `@netlify/blobs` als Dep dazu. DB-Seite live gegen Prod verifiziert (alle 8 Selects, ~785 KB gesamt);
+> die Blob-Seite ist Standard-`@netlify/blobs`-API, in einer Netlify Function automatisch konfiguriert.
+
 **Offen (Teil 2):** (1) **Restore-Drill einmal real durchspielen** (Neon-Scratch-Branch,
-Ablauf aus `db-restore.md` §3 abhaken) und das Protokoll unten in den Runbook schreiben —
-das ist die eigentliche Akzeptanz. (2) `netlify/functions/db-backup.mts` (wöchentlich,
-reiner JS-Dump der User-Tabellen → Netlify Blobs, Design steht in `db-restore.md` Teil 2)
-+ `scripts/db-restore-blobs.mjs`.
+Ablauf aus `db-restore.md` §3 abhaken) und das Protokoll in den Runbook schreiben — das ist die
+eigentliche Akzeptanz.
 - **Agent:** `platform-architect`. **Aufwand:** M. **Risiko:** niedrig. **Abhängt von:** 6.1.
 
 ---
@@ -1341,6 +1346,6 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 6.1 | Error-Tracking | 🟡 `log.ts` (PII-Scrub) + Test + `error.tsx`/`global-error.tsx` + Advisor-Catches · Teil 2: Sentry-DSN + Alerts | 2026-09-04 | _(dieser Batch)_ |
 | 6.2 | Performance-Budget im Build | 🟡 `check:bundle` in `ci` (Baseline 129→Budget 145 KB) + täglicher `lighthouse-check` (PSI) · Teil 2: `PAGESPEED_API_KEY` fehlt noch (extern) | 2026-09-04 | _(dieser Batch)_ |
 | 6.3 | Repo-Hygiene | ✅ SECURITY.md + CODEOWNERS + PR-Template + 7 High-CVEs gefixt + `audit:deps` blockierend in `ci` | 2026-09-04 | _(dieser Batch)_ |
-| 6.4 | Backup + Runbook | 🟡 `docs/runbooks/db-restore.md` + `feed-bootstrap.md` · Teil 2: Restore-Drill real + `db-backup.mts` (Blobs) | 2026-09-04 | _(dieser Batch)_ |
+| 6.4 | Backup + Runbook | 🟡 Runbooks + `db-backup.mts` (wöchentl. Blob-Dump, 8 Tabellen) + `db-restore-blobs.mjs` live · Teil 2: Restore-Drill real durchspielen | 2026-09-05 | _(dieser Batch)_ |
 
 _Zuletzt aktualisiert: 2026-09-03 — Phase 0 + 1 + 2 (inkl. Phase 2A) weitgehend durch; offen: 2.4 + Phasen 3–6._
