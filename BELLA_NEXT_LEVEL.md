@@ -846,6 +846,16 @@ Behalten: `.aurora*`, `.caret`, `.reveal` (alle `transform`/`opacity`, composite
 Reduced-Motion-Block entsprechend bereinigt. Verifiziert: Build grün, `/`, `/rassen`,
 `/rasse/[slug]`, `/hundefutter-test` → 200, 113 Vitest.
 
+> **Nachtrag 2026-09-05 — `framer-motion`-Audit:** 3 Nutzer gefunden, davon 2 ungemountet
+> (`MemoryTimeline.tsx`, `UserProfilePanel.tsx`) — samt ihrer einzigen Abhängigkeit
+> `src/lib/profileStore.ts` gelöscht (−420 Zeilen). Bleibt **nur `AnalysisStorm.tsx`**, und die
+> lädt ausschließlich im Advisor-Lazy-Chunk (nicht im geteilten First-Load-JS — `check:bundle`
+> unverändert 127,6 KB). Die `framer-motion`-Nutzung dort ist überschaubar (einfache
+> `initial`/`animate`-Fades + 2 kleine `AnimatePresence`-`exit`), aber ein CSS-Rip bleibt ein
+> visueller Eingriff mit Regressionsrisiko bei begrenztem Gewinn (nur Lazy-Chunk).
+> **Offen (Teil 2):** `AnalysisStorm`→CSS/`@starting-style`, dann `framer-motion` ganz raus;
+> View Transitions API für Seitenwechsel.
+
 **Offen (Teil 2):** `framer-motion`-Audit (6 Komponenten: `AnalysisStorm`, `BellaDecisionUI`,
 `BellaExperience`, `MemoryTimeline`, `QuickStartCards`, `UserProfilePanel`) — triviale Fades/Slides
 → CSS, `AnalysisStorm` behalten; Bundle-Anteil messen. View Transitions API für Seitenwechsel.
@@ -1332,7 +1342,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 3.2 | BELLA-Maskottchen | 🟡 `BellaMascot` (4 Posen) + 404/Loading/Popup/Avatar + off-brand `BellaCharacter` entfernt · Teil 2: `🐕`-CTA-Sweep offen | 2026-09-04 | _(dieser Batch)_ |
 | 3.3 | OG-Bilder pro Rasse | 🟡 Rasse-OG mit Foto + BELLA-Marke, on-demand (kein 186er-Prebuild) · Teil 2: problem/vergleich/Blog-Layout + Custom-Font offen | 2026-09-03 | _(dieser Batch)_ |
 | 3.4 | Komponenten-Katalog + VisReg | ✅ Katalog + Playwright Smoke/Visual (beide manuell gegen URL, nicht im Gate) | 2026-09-03 | _(dieser Batch)_ |
-| 3.5 | Motion-Politur | 🟡 tote nicht-composited Animationen entfernt (`sheen`/`scan-sweep`/`spotlight` + toter Hero-Block, −40 Zeilen CSS) · Teil 2: `framer-motion`-Audit + View Transitions offen | 2026-09-03 | _(dieser Batch)_ |
+| 3.5 | Motion-Politur | 🟡 tote CSS-Animationen raus + `framer-motion`-Audit: 2 ungemountete Nutzer (`MemoryTimeline`/`UserProfilePanel`) + `profileStore.ts` gelöscht, bleibt nur `AnalysisStorm` (Lazy-Chunk, nicht First-Load) · Teil 2: `AnalysisStorm`→CSS-Rip + View Transitions | 2026-09-05 | _(dieser Batch)_ |
 | 4.1 | Thin-Content-Audit | 🟡 Tool (`audit:content`) + Report + Bucket-Entscheidungen · Teil 2: DB-Re-Audit + `lebensphase`/`futtertyp`/`glossar` anreichern | 2026-09-04 | _(dieser Batch)_ |
 | 4.2 | Tierarzt-Review live | ⬜ blockiert (Reviewer) | | |
 | 4.3 | Aktualitäts-Signal | 🟡 `new Date()` aus allen `dateModified` raus (`BUILD_DATE`/`CONTENT_REVISED`), `<Freshness>` + prebuild-Datum · Teil 2: `<Freshness>` breiter, `datePublished` fixen | 2026-09-04 | _(dieser Batch)_ |
