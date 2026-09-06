@@ -987,11 +987,16 @@ echtem Datum statt Default.
 - `robots.ts` KI-Bots (GPTBot, ClaudeBot, PerplexityBot, Google-Extended …) — war schon explizit.
 - Verifiziert: `/llms-full.txt` → 200 `text/plain`, 20 Q&A; Build grün, 118 Vitest.
 
-**Offen (Teil 2):** „Antwort-zuerst"-Absatz (2–3 Sätze, eigenständig) als erster Absatz
-auf den 10 wichtigsten Money-Seiten (`/problem/*`, `/futtertyp/*`, `/vergleich/*`) —
-teils via `.bella-answer`-Selektor schon vorhanden, Konsistenz-Check offen. `CitableStat`
-breiter (aktuell 2 Seiten). `bella_summary` aus Studien in `/studien/*` rendern. Leichtes
-first-party Bot-Zugriffs-Logging. Perplexity/ChatGPT-Zitat-Stichprobe nach Deploy dokumentieren.
+> **Nachtrag 2026-09-05:** `CitableStat` jetzt auf `/lebensphase/[slug]` (neue Varianten
+> `phase:welpen|junghund|adult|senior` in `getCitableStat` — Katalog-Anteil je `suitable_for`-Tag).
+> Live: `/lebensphase/senior` „3,2 % (253 Produkte) … als Seniorfutter deklariert", `/welpen` „6,5 %".
+> `junghund` trägt kein Produkt-Tag → rendert korrekt nichts. Damit `CitableStat` auf
+> `/problem/*` + `/futtertyp/*` + `/lebensphase/*`. `.bella-answer`-Absatz auch auf `/lebensphase/*`
+> bestätigt vorhanden.
+
+**Offen (Teil 2):** `.bella-answer`-Konsistenz-Check über `/vergleich/*` + Blog. `CitableStat`
+auf `/vergleich/*`. `bella_summary` aus Studien in `/studien/*` rendern. Leichtes first-party
+Bot-Zugriffs-Logging. Perplexity/ChatGPT-Zitat-Stichprobe nach Deploy dokumentieren.
 
 ### Operation 4.6 — `<JsonLd>` + `<Freshness>` Schema-Helfer — ✅ **JsonLd ERLEDIGT (2026-09-04)**
 - **Ziel:** Ein getesteter Weg, strukturierte Daten auszugeben.
@@ -1365,7 +1370,7 @@ Ein PR ist fertig, wenn **alle** zutreffen:
 | 4.2 | Tierarzt-Review live | ⬜ blockiert (Reviewer) | | |
 | 4.3 | Aktualitäts-Signal | 🟡 `new Date()` aus allen `dateModified` raus (`BUILD_DATE`/`CONTENT_REVISED`), `<Freshness>` + prebuild-Datum · Teil 2: `<Freshness>` breiter, `datePublished` fixen | 2026-09-04 | _(dieser Batch)_ |
 | 4.4 | Interner Cluster-Graph | 🟡 Problem- + Futtertyp- (10) + Lebensphase-Cluster (4) live · dünne Money-Seiten 4→2 · Teil 2: rasse (generisch) + statische Vergleiche | 2026-09-05 | _(dieser Batch)_ |
-| 4.5 | GEO / AI-Search | 🟡 `/llms-full.txt` (20 Q&A + Quellen) + `/llms.txt`-Querverweis · Teil 2: Antwort-zuerst-Absätze, `CitableStat` breiter, Studien-`bella_summary` | 2026-09-04 | _(dieser Batch)_ |
+| 4.5 | GEO / AI-Search | 🟡 `/llms-full.txt` + `CitableStat` auf problem/futtertyp/lebensphase (phase-Varianten neu) · Teil 2: vergleich/Blog-Konsistenz, Studien-`bella_summary` | 2026-09-05 | _(dieser Batch)_ |
 | 4.6 | JsonLd-Helfer | ✅ `<JsonLd>` + Test + alle 21 Stellen migriert (`<Freshness>` → 4.3) | 2026-09-04 | _(dieser Batch)_ |
 | 5.1 | Futter-Pass-Schleife | ✅ war stale — Profil/Verbrauchsmathematik/Nachschub/Lebensphase/Steckbrief alle live · Rest: CTA-Umbau auf Programmatic-Seiten unverifiziert | 2026-09-05 | _(dieser Batch)_ |
 | 5.2 | First-Party-Analytics | 🟡 `events` in Neon live + `/api/track` + `/admin/analytics`-Dashboard · Teil 2: 2-Wochen-Parallelbetrieb beobachten, dann GA4 raus | 2026-09-04 | _(dieser Batch)_ |
