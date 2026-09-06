@@ -5,12 +5,22 @@ import { neon } from "@neondatabase/serverless";
 import StructuredData from "@/components/StructuredData";
 import AuthorBox from "@/components/AuthorBox";
 import RelatedLinks from "@/components/RelatedLinks";
+import CitableStat from "@/components/CitableStat";
+import type { CitableVariant } from "@/db/queries/stats";
 import { relatedForLebensphase } from "@/lib/linking/graph";
 import BellaAdvisorWrapper from "@/components/BellaAdvisorWrapper";
 import SiteFooter from "@/components/SiteFooter";
 import { brandToSlug } from "@/db/queries/foods";
 
 export const revalidate = 86400;
+
+// Lebensphasen-Slug → zitierfähige Live-Statistik (Katalog-Anteil je Phase).
+// `junghund` fehlt bewusst: kein Produkt trägt das `suitable_for`-Tag → kein Satz.
+const PHASE_STAT: Record<string, CitableVariant> = {
+  welpen: "phase:welpen",
+  adult: "phase:adult",
+  senior: "phase:senior",
+};
 
 const PHASEN: Record<string, {
   name: string; tagline: string; description: string;
@@ -181,7 +191,8 @@ export default async function LebensphaseePage({ params }: { params: Promise<{ s
         <span className="pill mb-4">{phase.emoji} Lebensphase</span>
         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4 max-w-3xl">{phase.tagline}</h1>
         <p className="bella-answer text-[var(--muted)] leading-relaxed max-w-2xl mb-4">{phase.description}</p>
-        <p className="text-sm text-[var(--muted)] mb-8"><span className="font-semibold text-[var(--ink)]">Altersbereich:</span> {phase.ageRange}</p>
+        <p className="text-sm text-[var(--muted)] mb-6"><span className="font-semibold text-[var(--ink)]">Altersbereich:</span> {phase.ageRange}</p>
+        {PHASE_STAT[slug] && <CitableStat variant={PHASE_STAT[slug]} />}
         <Link href="#bella-advisor" className="btn-primary">BELLA fragt nach deinem Hund — Empfehlung in 60 s →</Link>
       </section>
 

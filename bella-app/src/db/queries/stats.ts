@@ -11,7 +11,11 @@ export type CitableVariant =
   | "typ:trocken"
   | "typ:nass"
   | "typ:barf"
-  | "typ:kaltgepresst";
+  | "typ:kaltgepresst"
+  | "phase:welpen"
+  | "phase:junghund"
+  | "phase:adult"
+  | "phase:senior";
 
 export interface CitableStatData {
   /** Vollständiger, zitierfähiger Satz (ohne Datum/Quelle). */
@@ -58,6 +62,29 @@ export async function getCitableStat(variant: CitableVariant): Promise<CitableSt
       return {
         sentence: `Der Durchschnittspreis von ${label[typ] ?? typ} liegt aktuell bei ${fmtEur(row.avg_p)} €/kg — über ${fmtN(row.n)} Sorten, Spanne ${fmtEur(row.min_p)}–${fmtEur(row.max_p)} €/kg.`,
         total: row.n,
+      };
+    }
+
+    if (variant.startsWith("phase:")) {
+      const phase = variant.slice(6);
+      const label: Record<string, string> = {
+        welpen: "Welpenfutter", junghund: "Junior-/Junghundfutter", adult: "Adult-Futter", senior: "Seniorfutter",
+      };
+      // suitable_for enthält die Lebensphasen-Tags aus dem Feed-Import.
+      const r = await sql.query(
+        `SELECT count(*)::int AS total,
+           count(*) FILTER (WHERE suitable_for @> ARRAY[$1]::text[]) ::int AS matching
+         FROM dog_foods WHERE ${BASE} AND ${FOOD_TYPES}`,
+        [phase],
+      );
+      const row = (Array.isArray(r) ? r[0] : (r as { rows: Record<string, number>[] }).rows?.[0]) as
+        | { total: number; matching: number }
+        | undefined;
+      if (!row || !row.total || row.total < 100 || !row.matching) return null;
+      const pct = (100 * row.matching) / row.total;
+      return {
+        sentence: `Von ${fmtN(row.total)} analysierten Hundefuttersorten sind ${fmtPct(pct)} % (${fmtN(row.matching)} Produkte) ausdrücklich als ${label[phase] ?? phase} deklariert.`,
+        total: row.total,
       };
     }
 
